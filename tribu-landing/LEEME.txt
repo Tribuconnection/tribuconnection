@@ -1,0 +1,25 @@
+LANDING TRIBU CONNECTION — v3
+=============================
+
+CAMBIOS DE ESTA VERSIÓN:
+  ✓ Párrafo "No somos cronistas..." en exactos 3 renglones
+  ✓ 4 fotos nuevas en los reels (sin bordes blancos del marco IG)
+    - Reel 4 cambió etiqueta a "Música en vivo" (la banda)
+  ✓ Espacio reducido antes de "Quiénes somos"
+  ✓ Espacio reducido antes de "Membresía / Tribu Pass"
+  ✓ Texto del CTA actualizado:
+    "Creamos propuestas a medida —cobertura, activación y contenido—
+     podés ver nuestro trabajo en Resonar, Conciencia Festival,
+     Expo-holística, entre otros."
+
+CONTENIDO DEL ZIP:
+  - index.html                  → Página completa (todo incluido, 617 KB)
+  - assets/logo_white.png       → Logo blanco (versión footer)
+  - assets/isotipo.png          → Solo las manos (favicon / menú)
+  - assets/reels/reel1..4.jpg   → Las 4 portadas (incrustadas + sueltas)
+
+PROBARLA AHORA:
+  Doble clic en "index.html". Funciona offline.
+
+SUBIRLA A INTERNET (gratis, 5 min):
+  https://app.netlify.com/drop → arrastrá la carpeta entera.
