@@ -1165,12 +1165,20 @@ onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
 /* Menú mobile */
 const burger = document.getElementById('burger');
 const menu = document.getElementById('mobileMenu');
+let menuOpenScrollY = 0;
 const toggleMenu = (open) => {
   menu.classList.toggle('open', open);
   burger.setAttribute('aria-expanded', open);
+  if(open) menuOpenScrollY = window.scrollY;
 };
 burger.addEventListener('click', () => toggleMenu(!menu.classList.contains('open')));
 menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+/* Cerrar el menú suavemente si se scrollea la página detrás */
+window.addEventListener('scroll', () => {
+  if(menu.classList.contains('open') && Math.abs(window.scrollY - menuOpenScrollY) > 4){
+    toggleMenu(false);
+  }
+}, {passive:true});
 
 /* Reveal al scrollear */
 const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
