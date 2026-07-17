@@ -549,6 +549,12 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .article-body .tags{ display:flex; flex-wrap:wrap; gap:.5rem; margin:1.6rem 0 2.2rem; }
 .article-body .tags span{ font-size:.78rem; color:var(--muted); border:1px solid var(--line); border-radius:999px; padding:.35rem .85rem; }
 .editable-flag{ font-size:.78rem; color:var(--amber); background:color-mix(in srgb, var(--amber) 12%, transparent); border:1px dashed color-mix(in srgb, var(--amber) 50%, transparent); border-radius:12px; padding:.7rem 1rem; margin-bottom:2rem; line-height:1.5; }
+.pull-quote{ position:relative; margin:2rem 0; padding:.3rem 0 .3rem 1.6rem; border-left:3px solid; border-image:var(--spectrum) 1; }
+.pull-quote p{ font-family:var(--font-display); font-style:italic; font-size:1.35rem; line-height:1.4; color:var(--cream); margin:0; }
+.pull-quote cite{ display:block; font-style:normal; font-size:.82rem; color:var(--muted); margin-top:.6rem; }
+.info-box{ margin:2rem 0; padding:1.3rem 1.5rem; border-radius:16px; background:var(--ink-2); border:1px solid var(--line); }
+.info-box .info-label{ font-size:.72rem; letter-spacing:.1em; text-transform:uppercase; color:var(--teal); font-weight:700; margin-bottom:.5rem; display:flex; align-items:center; gap:.5rem; }
+.info-box p{ margin:0; font-size:.96rem; color:var(--soft); line-height:1.6; }
 
 /* Tarjetas descargables IG (9:16) */
 .ig-block{ margin:2.4rem 0; }
@@ -577,7 +583,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
   <div class="wrap">
     <p class="eyebrow reveal">Notas</p>
     <h1 class="h2 reveal d1" style="margin-top:1rem">Historias de nuestra tribu.</h1>
-    <p class="lead reveal d2" style="margin-top:1rem">Perfiles y crónicas de las personas, proyectos y espacios que conectamos. Contenido que inspira, hecho por quienes lo viven.</p>
+    <p class="lead reveal d2" style="margin-top:1rem">Perfiles y crónicas de las personas, proyectos y espacios que conectamos.<br>Contenido que inspira, hecho por quienes lo viven.</p>
   </div>
 </section>
 
@@ -611,13 +617,40 @@ const NOTES = [
     body: [
       'Noe Carnavalo es profe de yoga, emprendedora y creadora de <strong style="color:var(--cream)">@casadharmayoga</strong> y <strong style="color:var(--cream)">@respiraciondmt</strong>, dos proyectos que nacieron de una necesidad muy simple: generar espacios reales de encuentro alrededor de la práctica consciente. Además, se desempeña como asesora en comercio exterior — un cruce poco común que ella lleva con naturalidad entre lo espiritual y lo profesional.',
       'En esta nota conversamos sobre cómo empezó cada proyecto, qué significa para ella sostener un espacio de yoga y respiración de forma sostenida en el tiempo, y cómo ve el crecimiento de la comunidad consciente en Buenos Aires.',
-      '<em>Ejemplo de cita — reemplazar con la cita real de la entrevista: "Sostener un espacio no es solo abrir la puerta un martes a las siete. Es sostenerlo semana tras semana, aunque un día vengan tres personas y al otro vengan treinta."</em>',
+      { type:'quote', text:'Sostener un espacio no es solo abrir la puerta un martes a las siete. Es sostenerlo semana tras semana, aunque un día vengan tres personas y al otro vengan treinta.', cite:'Cita de ejemplo — reemplazar por la real de la entrevista' },
+      { type:'box', label:'🔧 Dato a completar', text:'Acá va un dato destacado de la entrevista real: hace cuánto sostiene el espacio, cuántas personas pasaron, o algo que la gente no sabe de Casa Dharma Yoga.' },
       'Esta nota es un ejemplo de plantilla. El contenido completo de la entrevista, las fotos reales y las citas textuales se completan una vez realizada la nota con la persona.'
+    ]
+  },
+  {
+    slug: 'agustin-berardo-amanita',
+    title: 'Agustín Berardo: el sueño detrás del primer Festival Transformacional de Argentina',
+    kicker: 'Notas · Perfiles de la comunidad',
+    author: 'Agustín Berardo',
+    roleLine: 'Creador y director de Amanita Festival',
+    cover: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='750'%3E%3Crect width='1200' height='750' fill='%23151720'/%3E%3Ctext x='50%25' y='50%25' font-family='Georgia' font-size='170' fill='%238A8D98' text-anchor='middle' dominant-baseline='central'%3EAB%3C/text%3E%3C/svg%3E",
+    avatar: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%231E212B'/%3E%3Ctext x='50%25' y='50%25' font-family='Georgia' font-size='72' fill='%238A8D98' text-anchor='middle' dominant-baseline='central'%3EAB%3C/text%3E%3C/svg%3E",
+    excerpt: 'El creador y director de Amanita Festival cuenta cómo un sueño personal se transformó en una celebración colectiva de comunidad, naturaleza y presencia.',
+    tags: ['Amanita Festival', 'Comunidad Micelio', 'Festival transformacional', 'Entrevista'],
+    body: [
+      'Agustín Berardo es el creador y director de <strong style="color:var(--cream)">Amanita Festival</strong>, considerado el primer festival transformacional de Argentina. En una entrevista íntima, cuenta cómo lo que empezó como un sueño personal se convirtió en una celebración colectiva que reúne a cientos de personas para vivir una experiencia en comunidad, naturaleza y presencia.',
+      'A lo largo de la charla repasa el detrás de escena de armar un festival de esta escala: los miedos, la intuición como brújula, el rol clave del equipo que lo sostiene, y cómo algo que parecía imposible toma forma cuando muchas personas se alinean alrededor de un mismo propósito.',
+      { type:'box', label:'De qué se trata Amanita', text:'Un espacio pensado para que cualquier persona pueda llegar sola y sentirse en familia: la rutina se disuelve y da lugar a algo nuevo. El proyecto está conectado con la <strong style="color:var(--cream)">Comunidad Micelio</strong>.' },
+      { type:'quote', text:'Podés venir solo y salir sintiendo que encontraste una familia.', cite:'Idea central de la entrevista — reemplazar por la cita textual exacta del video' },
+      'Fuente: entrevista completa en YouTube — <a href="https://www.youtube.com/watch?v=yUkI2YPXeo8" target="_blank" rel="noopener" style="color:var(--teal)">ver el video</a>.',
+      { type:'box', label:'🔧 Completar', text:'Esta nota resume el video de YouTube. Para publicarla, sumá citas textuales exactas (con timestamp), fotos del festival y del equipo, y el enlace a Amanita Festival y Comunidad Micelio.' }
     ]
   }
 ];
 
 function esc(s){ return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function renderBlock(b){
+  if(typeof b === 'string') return '<p>'+b+'</p>';
+  if(b.type==='quote') return '<blockquote class="pull-quote"><p>“'+b.text+'”</p>'+(b.cite?'<cite>'+esc(b.cite)+'</cite>':'')+'</blockquote>';
+  if(b.type==='box') return '<div class="info-box">'+(b.label?'<div class="info-label">'+esc(b.label)+'</div>':'')+'<p>'+b.text+'</p></div>';
+  return '<p>'+(b.text||'')+'</p>';
+}
 
 function renderGrid(){
   const grid = document.getElementById('notasGrid');
@@ -646,7 +679,7 @@ function renderArticle(slug){
     '<div class="article-cover" style="background-image:url(\''+n.cover+'\')"></div>'+
     '<div class="editable-flag">🔧 Nota de ejemplo — reemplazá foto, cuerpo y citas por el contenido real de la entrevista.</div>'+
     '<div class="article-body">'+
-      n.body.map(p => '<p>'+p+'</p>').join('')+
+      n.body.map(renderBlock).join('')+
       '<div class="tags">'+n.tags.map(t=>'<span>'+esc(t)+'</span>').join('')+'</div>'+
     '</div>'+
     '<div class="ig-block">'+
