@@ -13,6 +13,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,400..700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 
 <style>
 /* ============================================================
@@ -443,6 +444,24 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .cal-filter.active{ background:var(--cream); color:var(--ink); border-color:var(--cream); font-weight:600; }
 .cal-add{ padding:.6rem 1.1rem; font-size:.9rem; }
 .cal-add span{ font-size:1.05rem; line-height:0; }
+.cal-toolbar-right{ display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; }
+.cal-viewtoggle{ display:flex; border:1px solid var(--line-2); border-radius:999px; padding:3px; gap:2px; }
+.cal-viewtoggle button{ border:0; background:none; color:var(--soft); font-family:var(--font-sans); font-size:.84rem; padding:.5rem .9rem; border-radius:999px; cursor:pointer; transition:.2s; }
+.cal-viewtoggle button.active{ background:var(--cream); color:var(--ink); font-weight:600; }
+.cal-map-wrap{ margin-top:.2rem; }
+#calMap{ width:100%; height:520px; border-radius:22px; border:1px solid var(--line); overflow:hidden; background:var(--ink-1); }
+.cal-map-note{ font-size:.8rem; color:var(--muted); margin-top:.9rem; }
+.cal-pin-badge{ width:26px; height:26px; border-radius:50% 50% 50% 0; transform:rotate(-45deg); border:2px solid var(--cream); box-shadow:0 2px 8px rgba(0,0,0,.5); }
+.leaflet-popup-content-wrapper{ background:var(--ink-1); color:var(--cream); border-radius:14px; border:1px solid var(--line-2); }
+.leaflet-popup-tip{ background:var(--ink-1); }
+.leaflet-popup-content{ margin:.85rem 1rem; font-family:var(--font-sans); }
+.map-pop-cat{ font-size:.68rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); display:flex; align-items:center; gap:.4rem; margin-bottom:.3rem; }
+.map-pop-cat i{ width:7px; height:7px; border-radius:50%; }
+.map-pop-title{ font-family:var(--font-display); font-size:1rem; margin-bottom:.2rem; }
+.map-pop-meta{ font-size:.8rem; color:var(--soft); }
+.leaflet-control-attribution{ background:rgba(12,13,16,.75) !important; color:var(--muted) !important; }
+.leaflet-control-attribution a{ color:var(--soft) !important; }
+@media (max-width:640px){ #calMap{ height:400px; } }
 .cal-list-wrap{ display:flex; flex-direction:column; }
 .cal-agenda-title{ font-family:var(--font-display); font-size:1.15rem; margin-bottom:.7rem; display:flex; align-items:baseline; justify-content:space-between; gap:.5rem; }
 .cal-count{ font-size:.75rem; color:var(--muted); font-family:var(--font-sans); }
@@ -462,6 +481,15 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .file-in input[type=file]{ position:absolute; opacity:0; width:0; height:0; }
 .file-name{ font-size:.8rem; color:var(--muted); margin-top:.4rem; text-align:center; word-break:break-word; }
 @media (max-width:460px){ .row2{ grid-template-columns:1fr; } }
+.geo-field{ position:relative; }
+.geo-suggest{ position:absolute; left:0; right:0; top:calc(100% + 4px); z-index:5; background:var(--ink-2); border:1px solid var(--line-2); border-radius:12px; overflow:hidden; display:none; max-height:220px; overflow-y:auto; }
+.geo-suggest.open{ display:block; }
+.geo-suggest button{ display:block; width:100%; text-align:left; padding:.7rem .9rem; background:none; border:0; border-bottom:1px solid var(--line); color:var(--soft); font-size:.86rem; font-family:var(--font-sans); cursor:pointer; line-height:1.4; }
+.geo-suggest button:last-child{ border-bottom:0; }
+.geo-suggest button:hover{ background:var(--ink-3); color:var(--cream); }
+.geo-suggest .geo-loading{ padding:.7rem .9rem; font-size:.82rem; color:var(--muted); }
+.geo-preview{ width:100%; height:0; border-radius:14px; overflow:hidden; margin-top:0; opacity:0; transition:height .25s ease, opacity .25s ease, margin-top .25s ease; border:1px solid var(--line); }
+.geo-preview.on{ height:180px; margin-top:.8rem; opacity:1; }
 
 /* ============ MODAL SUMARSE ============ */
 .modal-overlay{ position:fixed; inset:0; z-index:100; background:rgba(6,7,10,.74); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s ease; }
@@ -665,7 +693,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <strong style="color:var(--cream);white-space:nowrap">40% off</strong> en sesión mensual de 30 min de análisis de tu proyecto/emprendimiento</li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Te sumamos a la comunidad de WhatsApp</li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Participación anual en el streaming (a partir del 3er mes de miembro)</li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Una nota cada seis meses</li>
+          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Una nota periodística cada seis meses (que quedará alojada en nuestra web)</li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Una publicación de sorteo semestral</li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <strong style="color:var(--cream)">20% off</strong> en productos de feriantes de la comunidad</li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Eventos exclusivos solo para miembros</li>
@@ -778,9 +806,15 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
     </div>
     <div class="cal-toolbar reveal d1">
       <div class="cal-filters" id="calFilters"></div>
-      <button class="btn btn--ghost cal-add" id="calAdd" type="button"><span>＋</span> Solicitar agregar evento</button>
+      <div class="cal-toolbar-right">
+        <div class="cal-viewtoggle" id="calViewToggle">
+          <button type="button" class="active" data-view="list">📅 Calendario</button>
+          <button type="button" data-view="map">🗺️ Mapa</button>
+        </div>
+        <button class="btn btn--ghost cal-add" id="calAdd" type="button"><span>＋</span> Solicitar agregar evento</button>
+      </div>
     </div>
-    <div class="cal-grid-wrap reveal d1">
+    <div class="cal-grid-wrap reveal d1" id="calViewList">
       <div class="cal-card">
         <div class="cal-nav">
           <button class="cal-arrow" id="calPrev" aria-label="Mes anterior">‹</button>
@@ -795,6 +829,10 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
         <div class="cal-agenda-title">Próxima agenda <span class="cal-count" id="calCount"></span></div>
         <div class="cal-list" id="calList"></div>
       </div>
+    </div>
+    <div class="cal-map-wrap reveal d1" id="calViewMap" style="display:none">
+      <div id="calMap"></div>
+      <p class="cal-map-note">📍 Ubicaciones aproximadas a nivel de ciudad/localidad — confirmá la dirección exacta con la organización de cada evento.</p>
     </div>
   </div>
 </section>
@@ -900,7 +938,13 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
       </div>
       <div class="field">
         <label for="evLoc">Ubicación</label>
-        <input id="evLoc" name="Ubicacion" type="text" placeholder="Ciudad / lugar">
+        <div class="geo-field">
+          <input id="evLoc" name="Ubicacion" type="text" placeholder="Empezá a escribir la dirección…" autocomplete="off">
+          <div class="geo-suggest" id="evLocSuggest"></div>
+        </div>
+        <input type="hidden" id="evLat" name="Ubicacion_lat">
+        <input type="hidden" id="evLng" name="Ubicacion_lng">
+        <div id="evLocMap" class="geo-preview"></div>
       </div>
       <div class="field">
         <label for="evTags">Etiquetas</label>
@@ -972,6 +1016,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
   </div>
 </footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
 /* Nav: fondo al scrollear */
 const nav = document.getElementById('nav');
@@ -1032,31 +1077,31 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   };
   // 🔧 EDITABLE: agregá o modificá eventos acá. rubro: festivales | ferias | artisticos | holistico | congresos · status: Confirmado | Pendiente
   const EVENTS = [
-    { date:'2026-07-25', title:'Festival Holístico MAYA – Día Fuera del Tiempo', place:'Sierra de los Padres, Buenos Aires (sede y horario pendientes)', time:'', rubro:'holistico', status:'Pendiente', url:'' },
-    { date:'2026-08-08', title:'Encuentro Holístico Villa Gesell', place:'Hotel Royal, Villa Gesell (programación pendiente)', time:'', rubro:'holistico', status:'Pendiente', url:'' },
-    { date:'2026-08-09', title:'Encuentro Holístico Villa Gesell', place:'Hotel Royal, Villa Gesell (programación pendiente)', time:'', rubro:'holistico', status:'Pendiente', url:'' },
-    { date:'2026-08-09', title:'Buenos Aires Zen', place:'Moreno, Buenos Aires (sede a reconfirmar)', time:'', rubro:'holistico', status:'Pendiente', url:'' },
-    { date:'2026-08-20', title:'Expotécnica 2026', place:'Golden Center, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'' },
-    { date:'2026-08-21', title:'Expotécnica 2026', place:'Golden Center, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'' },
-    { date:'2026-09-09', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'' },
-    { date:'2026-09-10', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'' },
-    { date:'2026-09-11', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'' },
-    { date:'2026-10-05', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-10-06', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-10-07', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-10-08', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-10-09', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-10-27', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-10-28', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-10-29', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-10-30', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-11-19', title:'Primer Congreso Argentino de Sustentabilidad', place:'Hotel 13 de Julio, Mar del Plata', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-11-20', title:'Primer Congreso Argentino de Sustentabilidad', place:'Hotel 13 de Julio, Mar del Plata', time:'', rubro:'congresos', status:'Confirmado', url:'' },
-    { date:'2026-11-20', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'' },
-    { date:'2026-11-21', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'' },
-    { date:'2026-11-22', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'' },
-    { date:'2026-11-23', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'' },
-    { date:'2026-11-24', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'' }
+    { date:'2026-07-25', title:'Festival Holístico MAYA – Día Fuera del Tiempo', place:'Sierra de los Padres, Buenos Aires (sede y horario pendientes)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-37.9500, lng:-57.7333 },
+    { date:'2026-08-08', title:'Encuentro Holístico Villa Gesell', place:'Hotel Royal, Villa Gesell (programación pendiente)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-37.2633, lng:-56.9730 },
+    { date:'2026-08-09', title:'Encuentro Holístico Villa Gesell', place:'Hotel Royal, Villa Gesell (programación pendiente)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-37.2633, lng:-56.9730 },
+    { date:'2026-08-09', title:'Buenos Aires Zen', place:'Moreno, Buenos Aires (sede a reconfirmar)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-34.6444, lng:-58.7897 },
+    { date:'2026-08-20', title:'Expotécnica 2026', place:'Golden Center, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5755, lng:-58.4338 },
+    { date:'2026-08-21', title:'Expotécnica 2026', place:'Golden Center, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5755, lng:-58.4338 },
+    { date:'2026-09-09', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5885, lng:-58.4173 },
+    { date:'2026-09-10', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5885, lng:-58.4173 },
+    { date:'2026-09-11', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5885, lng:-58.4173 },
+    { date:'2026-10-05', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
+    { date:'2026-10-06', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
+    { date:'2026-10-07', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
+    { date:'2026-10-08', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
+    { date:'2026-10-09', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
+    { date:'2026-10-27', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
+    { date:'2026-10-28', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
+    { date:'2026-10-29', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
+    { date:'2026-10-30', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
+    { date:'2026-11-19', title:'Primer Congreso Argentino de Sustentabilidad', place:'Hotel 13 de Julio, Mar del Plata', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-37.9950, lng:-57.5533 },
+    { date:'2026-11-20', title:'Primer Congreso Argentino de Sustentabilidad', place:'Hotel 13 de Julio, Mar del Plata', time:'', rubro:'congresos', status:'Confirmado', url:'', lat:-37.9950, lng:-57.5533 },
+    { date:'2026-11-20', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
+    { date:'2026-11-21', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
+    { date:'2026-11-22', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
+    { date:'2026-11-23', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
+    { date:'2026-11-24', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 }
   ];
   const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const MES_ABR = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
@@ -1083,7 +1128,57 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
       html += '<button class="cal-filter'+(filter===k?' active':'')+'" data-f="'+k+'"><i style="background:'+RUBROS[k].color+'"></i>'+esc(RUBROS[k].label)+'</button>';
     });
     filtersEl.innerHTML = html;
-    filtersEl.querySelectorAll('.cal-filter').forEach(b=> b.addEventListener('click', ()=>{ filter=b.dataset.f; selected=null; renderFilters(); render(); renderList(); }));
+    filtersEl.querySelectorAll('.cal-filter').forEach(b=> b.addEventListener('click', ()=>{ filter=b.dataset.f; selected=null; renderFilters(); render(); renderList(); renderMap(); }));
+  }
+
+  /* ============ MAPA DE EVENTOS (Leaflet + OpenStreetMap) ============ */
+  let calMap = null, calMarkers = [];
+  function renderMap(){
+    if(!calMap) return; // el mapa se inicializa recién al abrir la vista Mapa
+    calMarkers.forEach(m => calMap.removeLayer(m));
+    calMarkers = [];
+    const seen = new Set();
+    const pts = [];
+    EVENTS.filter(pass).forEach(e=>{
+      if(e.lat==null || e.lng==null || seen.has(e.title)) return;
+      seen.add(e.title);
+      const dIni = EVENTS.filter(x=>x.title===e.title).map(x=>x.date).sort()[0];
+      const d = new Date(dIni+'T00:00');
+      const icon = L.divIcon({ className:'', html:'<div class="cal-pin-badge" style="background:'+color(e.rubro)+'"></div>', iconSize:[26,26], iconAnchor:[13,26], popupAnchor:[0,-24] });
+      const marker = L.marker([e.lat, e.lng], { icon }).addTo(calMap);
+      marker.bindPopup(
+        '<div class="map-pop-cat"><i style="background:'+color(e.rubro)+'"></i>'+esc((RUBROS[e.rubro]||{}).label||e.rubro)+'</div>'+
+        '<div class="map-pop-title">'+esc(e.title)+'</div>'+
+        '<div class="map-pop-meta">'+d.getDate()+' de '+MESES[d.getMonth()]+' · 📍 '+esc(e.place||'')+'</div>'
+      );
+      calMarkers.push(marker);
+      pts.push([e.lat, e.lng]);
+    });
+    if(pts.length) calMap.fitBounds(pts, { padding:[36,36], maxZoom:9 });
+  }
+  function initMap(){
+    if(calMap) return;
+    calMap = L.map('calMap', { scrollWheelZoom:false }).setView([-38.4, -63.6], 4);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>',
+      subdomains: 'abcd', maxZoom: 19
+    }).addTo(calMap);
+    renderMap();
+  }
+  const viewToggle = document.getElementById('calViewToggle');
+  const viewList = document.getElementById('calViewList');
+  const viewMap = document.getElementById('calViewMap');
+  if(viewToggle){
+    viewToggle.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        viewToggle.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const isMap = btn.dataset.view === 'map';
+        viewList.style.display = isMap ? 'none' : '';
+        viewMap.style.display = isMap ? '' : 'none';
+        if(isMap){ initMap(); setTimeout(()=>{ calMap.invalidateSize(); renderMap(); }, 60); }
+      });
+    });
   }
 
   function evCard(e){
@@ -1235,6 +1330,67 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) close(); });
   const fileIn = document.getElementById('evFiles'), fileName = document.getElementById('evFileName');
   if(fileIn) fileIn.addEventListener('change', ()=>{ fileName.textContent = fileIn.files.length ? [...fileIn.files].map(f=>f.name).join(', ') : ''; });
+
+  /* Autocompletado de dirección (Nominatim/OpenStreetMap) + mini-mapa de confirmación */
+  const locInput = document.getElementById('evLoc');
+  const suggestBox = document.getElementById('evLocSuggest');
+  const latInput = document.getElementById('evLat');
+  const lngInput = document.getElementById('evLng');
+  const previewEl = document.getElementById('evLocMap');
+  let geoTimer = null, geoMap = null, geoMarker = null, lastQuery = '';
+
+  function showPreview(lat, lng, label){
+    previewEl.classList.add('on');
+    setTimeout(()=>{
+      if(!geoMap){
+        geoMap = L.map('evLocMap', { zoomControl:false, attributionControl:false, scrollWheelZoom:false }).setView([lat,lng], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { subdomains:'abcd', maxZoom:19 }).addTo(geoMap);
+      }
+      geoMap.invalidateSize();
+      geoMap.setView([lat,lng], 14);
+      if(geoMarker) geoMap.removeLayer(geoMarker);
+      geoMarker = L.marker([lat,lng]).addTo(geoMap);
+      if(label) geoMarker.bindPopup(label);
+    }, 50);
+  }
+
+  function selectPlace(item){
+    locInput.value = item.display_name;
+    latInput.value = item.lat;
+    lngInput.value = item.lon;
+    suggestBox.classList.remove('open');
+    suggestBox.innerHTML = '';
+    showPreview(+item.lat, +item.lon, item.display_name);
+  }
+
+  locInput.addEventListener('input', ()=>{
+    latInput.value = ''; lngInput.value = '';
+    const q = locInput.value.trim();
+    clearTimeout(geoTimer);
+    if(q.length < 3){ suggestBox.classList.remove('open'); return; }
+    suggestBox.innerHTML = '<div class="geo-loading">Buscando…</div>';
+    suggestBox.classList.add('open');
+    geoTimer = setTimeout(async ()=>{
+      lastQuery = q;
+      try{
+        const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=0&limit=5&countrycodes=ar&q='+encodeURIComponent(q));
+        const data = await res.json();
+        if(q !== lastQuery) return; // llegó tarde, ya hay una búsqueda más nueva
+        if(!data.length){ suggestBox.innerHTML = '<div class="geo-loading">Sin resultados. Probá con más detalle.</div>'; return; }
+        suggestBox.innerHTML = '';
+        data.forEach(item=>{
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.textContent = item.display_name;
+          b.addEventListener('click', ()=> selectPlace(item));
+          suggestBox.appendChild(b);
+        });
+      }catch(err){
+        suggestBox.innerHTML = '<div class="geo-loading">No se pudo buscar. Escribí la dirección igual, la confirmamos por WhatsApp.</div>';
+      }
+    }, 450);
+  });
+  document.addEventListener('click', (e)=>{ if(!e.target.closest('.geo-field')) suggestBox.classList.remove('open'); });
 })();
 </script>
 </body>
