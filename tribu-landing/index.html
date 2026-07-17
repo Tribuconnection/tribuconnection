@@ -935,6 +935,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
     <h2 id="joinTitle">Sumate a la Tribu</h2>
     <p class="modal-sub">Dejanos tus datos y te escribimos para pasarte el alias y sumarte a la comunidad.</p>
     <form id="joinForm">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <div class="field">
         <label for="jName">Nombre</label>
         <input id="jName" name="Nombre" type="text" required placeholder="Tu nombre">
@@ -973,6 +974,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
     <h2 id="propTitle">Quiero una propuesta a medida</h2>
     <p class="modal-sub">Contanos sobre tu evento o marca y diseñamos una propuesta pensada para vos.</p>
     <form id="propForm">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <div class="field">
         <label for="pName">Nombre</label>
         <input id="pName" name="Nombre" type="text" required placeholder="Tu nombre">
@@ -1007,6 +1009,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_next" value="https://tribuconnection.com/#calendario">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <div class="field">
         <label for="evName">Nombre del evento</label>
         <input id="evName" name="Evento" type="text" required placeholder="Nombre del evento">
@@ -1466,6 +1469,8 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
 
   form.addEventListener('submit', async e=>{
     e.preventDefault();
+    const fdCheck = new FormData(form);
+    if(fdCheck.get('_honey')){ form.style.display='none'; msg.style.display='block'; return; }
     const btn = document.getElementById('joinSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(form);
@@ -1503,6 +1508,8 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
 
   form.addEventListener('submit', async e=>{
     e.preventDefault();
+    const fdCheck = new FormData(form);
+    if(fdCheck.get('_honey')){ form.style.display='none'; msg.style.display='block'; return; }
     const btn = document.getElementById('propSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(form);
@@ -1545,6 +1552,7 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   const lngInput = document.getElementById('evLng');
   const previewEl = document.getElementById('evLocMap');
   let geoTimer = null, geoMap = null, geoMarker = null, lastQuery = '';
+  const escHtml = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 
   function showPreview(lat, lng, label){
     previewEl.classList.add('on');
@@ -1557,7 +1565,7 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
       geoMap.setView([lat,lng], 14);
       if(geoMarker) geoMap.removeLayer(geoMarker);
       geoMarker = L.marker([lat,lng]).addTo(geoMap);
-      if(label) geoMarker.bindPopup(label);
+      if(label) geoMarker.bindPopup(escHtml(label));
     }, 50);
   }
 

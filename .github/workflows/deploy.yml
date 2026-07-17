@@ -18,6 +18,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
           # Carpeta raíz del sitio en Hostinger. Normalmente /public_html/.
           # Si el dominio es "addon", suele ser /domains/tribuconnection.com/public_html/
           server-dir: /public_html/
