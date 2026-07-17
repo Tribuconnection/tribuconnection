@@ -278,6 +278,13 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .plan .check-amber{ color:var(--amber); }
 .plan .btn{ width:100%; justify-content:center; }
 .pass-note{ margin-top:1.6rem; font-size:.86rem; color:var(--muted); display:flex; align-items:center; gap:.6rem; }
+.profile-benefits{ margin-top:2.6rem; padding-top:2.2rem; border-top:1px solid var(--line); }
+.profile-benefits-title{ font-size:.95rem; color:var(--soft); margin-bottom:1.2rem; }
+.profile-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem; }
+.profile-card{ border:1px solid var(--line); border-radius:16px; padding:1.2rem 1.3rem; background:var(--ink-1); }
+.profile-card b{ display:block; font-family:var(--font-display); font-size:1.05rem; margin-bottom:.5rem; }
+.profile-card p{ font-size:.88rem; color:var(--soft); line-height:1.5; }
+@media (max-width:860px){ .profile-grid{ grid-template-columns:1fr; } }
 .pass-note .pip{ width:7px; height:7px; border-radius:50%; background:var(--amber); flex:none; }
 
 /* ===================== CTA B2B ===================== */
@@ -667,6 +674,24 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
       </div>
     </div>
     <p class="pass-note reveal"><span class="pip"></span> Programa en lanzamiento. Los beneficios y los festivales aliados se suman de forma continua.</p>
+
+    <div class="profile-benefits reveal">
+      <p class="profile-benefits-title">Los beneficios se adaptan a cómo participás en la Tribu:</p>
+      <div class="profile-grid">
+        <div class="profile-card">
+          <b>Facilitador/a</b>
+          <p>Prioridad para ofrecer tu sesión o taller en el espacio de análisis mensual, y difusión de tus actividades en la comunidad de WhatsApp y el calendario.</p>
+        </div>
+        <div class="profile-card">
+          <b>Público general</b>
+          <p>Todos los descuentos (feriantes y festivales aliados) y acceso a los eventos exclusivos para miembros, sin necesidad de organizar nada.</p>
+        </div>
+        <div class="profile-card">
+          <b>Organizador/a de eventos</b>
+          <p>Tu evento sumado al calendario de la web, landing page cada 6 meses, y la sesión mensual enfocada en la difusión de tu propuesta.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -790,12 +815,11 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
         <input id="jRubro" name="Rubro" type="text" placeholder="¿A qué te dedicás?">
       </div>
       <div class="field">
-        <label>¿Cómo te identificás? (podés elegir varias)</label>
+        <label>¿Cómo te querés sumar a la Tribu?</label>
         <div class="chips">
-          <label class="chip"><input type="checkbox" name="Perfil" value="Feriante"><span>Feriante</span></label>
-          <label class="chip"><input type="checkbox" name="Perfil" value="Facilitador/a"><span>Facilitador/a</span></label>
-          <label class="chip"><input type="checkbox" name="Perfil" value="Marca"><span>Marca</span></label>
-          <label class="chip"><input type="checkbox" name="Perfil" value="Organizador/a"><span>Organizador/a</span></label>
+          <label class="chip"><input type="radio" name="Perfil" value="Facilitador/a" required><span>Facilitador/a</span></label>
+          <label class="chip"><input type="radio" name="Perfil" value="Público general" required><span>Público general</span></label>
+          <label class="chip"><input type="radio" name="Perfil" value="Organizador/a de eventos" required><span>Organizador/a de eventos</span></label>
         </div>
       </div>
       <div class="field">

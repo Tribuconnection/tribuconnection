@@ -559,7 +559,8 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 /* Tarjetas descargables IG (9:16) */
 .ig-block{ margin:2.4rem 0; }
 .ig-block-label{ font-size:.78rem; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:.8rem; display:flex; align-items:center; gap:.6rem; }
-.ig-card-wrap{ display:flex; flex-wrap:wrap; gap:1.4rem; align-items:flex-start; }
+.ig-card-wrap{ display:flex; flex-wrap:wrap; gap:1.8rem; align-items:flex-start; }
+.ig-item{ display:flex; flex-direction:column; align-items:center; gap:.8rem; }
 .ig-card{
   width:203px; aspect-ratio:9/16; border-radius:16px; overflow:hidden; position:relative;
   background:var(--ink); border:1px solid var(--line-2); flex:none;
@@ -572,9 +573,9 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .ig-card .ig-quote{ font-family:var(--font-display); font-style:italic; font-size:1.05rem; line-height:1.32; margin-bottom:14px; }
 .ig-card .ig-brand{ display:flex; align-items:center; gap:6px; font-size:.68rem; letter-spacing:.08em; text-transform:uppercase; opacity:.85; }
 .ig-card .ig-brand i{ width:16px; height:16px; border-radius:50%; background:var(--spectrum); flex:none; }
-.ig-card-actions{ display:flex; flex-direction:column; gap:.6rem; align-items:flex-start; padding-top:4px; }
-.ig-dl-btn{ font-size:.85rem; padding:.65rem 1.1rem; }
-.ig-note{ font-size:.78rem; color:var(--muted); max-width:26ch; line-height:1.5; }
+.ig-dl-btn{ font-size:.85rem; padding:.65rem 1.1rem; width:203px; justify-content:center; }
+.ig-note{ font-size:.78rem; color:var(--muted); margin-top:1rem; line-height:1.5; }
+@media (max-width:560px){ .ig-dl-btn{ width:158px; } }
 @media (max-width:860px){ .notas-grid{ grid-template-columns:1fr 1fr; } }
 @media (max-width:560px){ .notas-grid{ grid-template-columns:1fr; } .ig-card{ width:158px; } }
 </style>
@@ -602,6 +603,20 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 </section>
 
 <script>
+/* Genera una imagen de ejemplo (gradiente de marca + iniciales) para notas sin foto real todavía */
+function placeholderImg(initials, w, h){
+  const svg = "<svg xmlns='http://www.w3.org/2000/svg' width='"+w+"' height='"+h+"'>"+
+    "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>"+
+    "<stop offset='0%' stop-color='#D24B62'/><stop offset='27%' stop-color='#F4A623'/>"+
+    "<stop offset='52%' stop-color='#9BCB46'/><stop offset='76%' stop-color='#36B7C4'/>"+
+    "<stop offset='100%' stop-color='#9B7CB8'/></linearGradient></defs>"+
+    "<rect width='"+w+"' height='"+h+"' fill='#0C0D10'/>"+
+    "<rect width='"+w+"' height='"+h+"' fill='url(#g)' opacity='0.25'/>"+
+    "<text x='50%' y='50%' font-family='Georgia,serif' font-size='"+Math.round(h*0.3)+"' fill='#F4F1EA' text-anchor='middle' dominant-baseline='central' opacity='0.92'>"+initials+"</text>"+
+    "</svg>";
+  return 'data:image/svg+xml,'+encodeURIComponent(svg);
+}
+
 /* 🔧 EDITABLE: agregá nuevas notas a este array. slug único por nota. */
 const NOTES = [
   {
@@ -610,8 +625,8 @@ const NOTES = [
     kicker: 'Notas · Perfiles de la comunidad',
     author: 'Noe Carnavalo',
     roleLine: 'Artista · Profe de yoga · Emprendedora',
-    cover: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='750'%3E%3Crect width='1200' height='750' fill='%23151720'/%3E%3Ctext x='50%25' y='50%25' font-family='Georgia' font-size='170' fill='%238A8D98' text-anchor='middle' dominant-baseline='central'%3ENC%3C/text%3E%3C/svg%3E",
-    avatar: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%231E212B'/%3E%3Ctext x='50%25' y='50%25' font-family='Georgia' font-size='72' fill='%238A8D98' text-anchor='middle' dominant-baseline='central'%3ENC%3C/text%3E%3C/svg%3E",
+    cover: placeholderImg('NC', 1200, 750),
+    avatar: placeholderImg('NC', 200, 200),
     excerpt: 'Profe de yoga, emprendedora y creadora de Casa Dharma Yoga y Respiración DMT: una charla sobre sostener espacios de encuentro consciente en Buenos Aires.',
     tags: ['Yoga', 'Emprendimiento', 'Bienestar', 'Buenos Aires'],
     body: [
@@ -628,8 +643,8 @@ const NOTES = [
     kicker: 'Notas · Perfiles de la comunidad',
     author: 'Agustín Berardo',
     roleLine: 'Creador y director de Amanita Festival',
-    cover: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1200' height='750'%3E%3Crect width='1200' height='750' fill='%23151720'/%3E%3Ctext x='50%25' y='50%25' font-family='Georgia' font-size='170' fill='%238A8D98' text-anchor='middle' dominant-baseline='central'%3EAB%3C/text%3E%3C/svg%3E",
-    avatar: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Crect width='200' height='200' fill='%231E212B'/%3E%3Ctext x='50%25' y='50%25' font-family='Georgia' font-size='72' fill='%238A8D98' text-anchor='middle' dominant-baseline='central'%3EAB%3C/text%3E%3C/svg%3E",
+    cover: placeholderImg('AB', 1200, 750),
+    avatar: placeholderImg('AB', 200, 200),
     excerpt: 'El creador y director de Amanita Festival cuenta cómo un sueño personal se transformó en una celebración colectiva de comunidad, naturaleza y presencia.',
     tags: ['Amanita Festival', 'Comunidad Micelio', 'Festival transformacional', 'Entrevista'],
     body: [
@@ -685,20 +700,22 @@ function renderArticle(slug){
     '<div class="ig-block">'+
       '<div class="ig-block-label">📲 Descargá para compartir en Instagram (formato historia 9:16)</div>'+
       '<div class="ig-card-wrap">'+
-        '<div class="ig-card" id="igCard1">'+
-          '<div class="ig-bg" style="background-image:url(\''+n.avatar+'\')"></div><div class="ig-tint"></div>'+
-          '<div class="ig-content"><div class="ig-quote">"'+esc(n.excerpt)+'"</div><div class="ig-brand"><i></i>tribuconnection.com/notas</div></div>'+
-        '</div>'+
-        '<div class="ig-card" id="igCard2">'+
-          '<div class="ig-bg" style="background-image:url(\''+n.cover+'\')"></div><div class="ig-tint"></div>'+
-          '<div class="ig-content"><div class="ig-quote">'+esc(n.title)+'</div><div class="ig-brand"><i></i>tribuconnection.com/notas</div></div>'+
-        '</div>'+
-        '<div class="ig-card-actions">'+
+        '<div class="ig-item">'+
+          '<div class="ig-card" id="igCard1">'+
+            '<div class="ig-bg" style="background-image:url(\''+n.avatar+'\')"></div><div class="ig-tint"></div>'+
+            '<div class="ig-content"><div class="ig-quote">"'+esc(n.excerpt)+'"</div><div class="ig-brand"><i></i>tribuconnection.com/notas</div></div>'+
+          '</div>'+
           '<button class="btn btn--ghost ig-dl-btn" data-shot="igCard1" data-name="'+esc(n.slug)+'-cita">⬇ Descargar tarjeta 1</button>'+
+        '</div>'+
+        '<div class="ig-item">'+
+          '<div class="ig-card" id="igCard2">'+
+            '<div class="ig-bg" style="background-image:url(\''+n.cover+'\')"></div><div class="ig-tint"></div>'+
+            '<div class="ig-content"><div class="ig-quote">'+esc(n.title)+'</div><div class="ig-brand"><i></i>tribuconnection.com/notas</div></div>'+
+          '</div>'+
           '<button class="btn btn--ghost ig-dl-btn" data-shot="igCard2" data-name="'+esc(n.slug)+'-portada">⬇ Descargar tarjeta 2</button>'+
-          '<p class="ig-note">Se descarga como imagen PNG en formato vertical (1080×1920), lista para subir como historia o reel de portada.</p>'+
         '</div>'+
       '</div>'+
+      '<p class="ig-note">Se descarga como imagen PNG en formato vertical (1080×1920), lista para subir como historia o reel de portada.</p>'+
     '</div>';
   listSec.style.display='none'; gridSec.style.display='none'; artSec.style.display='';
   window.scrollTo(0,0);
