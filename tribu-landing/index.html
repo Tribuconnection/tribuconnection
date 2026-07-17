@@ -512,6 +512,12 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .leaflet-control-attribution{ background:rgba(12,13,16,.75) !important; color:var(--muted) !important; }
 .leaflet-control-attribution a{ color:var(--soft) !important; }
 @media (max-width:640px){ #calMap{ height:400px; } }
+.mobile-br{ display:none; }
+@media (max-width:640px){
+  .mobile-br{ display:inline; }
+  .cta-actions{ flex-direction:column; align-items:center; text-align:center; }
+  .mobile-menu .btn{ text-align:center; }
+}
 .cal-list-wrap{ display:flex; flex-direction:column; }
 .cal-agenda-title{ font-family:var(--font-display); font-size:1.05rem; margin-bottom:.5rem; display:flex; align-items:baseline; justify-content:space-between; gap:.5rem; }
 .cal-count{ font-size:.75rem; color:var(--muted); font-family:var(--font-sans); }
@@ -650,7 +656,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
       <p class="lead reveal d2">No somos cronistas: somos parte de la escena.<br>Diseñamos situaciones donde algo pasa de verdad —curiosidad, sorpresa, encuentro—<br>y lo convertimos en contenido que la gente quiere compartir porque fue parte.</p>
     </div>
 
-    <p class="momento-quote reveal">"El contenido es la excusa. El valor está en la conexión que produce."</p>
+    <p class="momento-quote reveal">"El contenido es la excusa.<br class="mobile-br"> El valor está en la conexión que produce."</p>
 
     <div class="ejes">
       <div class="eje green reveal">        <h3>Activar experiencias</h3>
@@ -690,7 +696,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
         <h2 class="h2 reveal d1" style="margin:1.2rem 0 1.8rem">La tribu que<br><span class="grad">conecta tribus</span>.</h2>
         <p class="reveal d1">Para nosotros, una <span class="hl">tribu</span> es un grupo de personas que comparten un espacio, una forma de vincularse y un código común —aunque sea por un momento. Lo que la define no es la actividad, sino el vínculo.</p>
         <p class="reveal d2">No creamos la comunidad: ya existe. Nuestro rol es <span class="hl">reconocerla, unirla y amplificar su energía</span>. Hablamos persona a persona, no como una cuenta. Y donde detectamos una afinidad, tendemos el puente.</p>
-        <p class="bridge reveal d3">Tribu Connection no es el centro. Es el puente.</p>
+        <p class="bridge reveal d3">Tribu Connection no es el centro.<br class="mobile-br"> Es el puente.</p>
       </div>
       <div class="tribu-card reveal d2">
         <p class="cap">Nuestro ADN</p>
@@ -738,14 +744,14 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
         <div class="price"><b>$20.000</b><span style="color:var(--muted)">/ mes</span></div>
         <div class="tier-note">Plan anual, abonado mes a mes.</div>
         <ul>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <strong style="color:var(--cream)">1 landing page para tu evento</strong> cada 6 meses</li>
+          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <span><strong style="color:var(--cream)">1 landing page para tu evento</strong> cada 6 meses</span></li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Sumás tu evento al calendario de la web de Tribu</li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <strong style="color:var(--cream);white-space:nowrap">40% off</strong> en sesión mensual de 30 min de análisis de tu proyecto/emprendimiento</li>
+          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <span><strong style="color:var(--cream);white-space:nowrap">40% off</strong> en sesión mensual de 30 min de análisis de tu proyecto/emprendimiento</span></li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Te sumamos a la comunidad de WhatsApp</li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Participación anual en el streaming (a partir del 3er mes de miembro)</li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Una nota periodística cada seis meses (que quedará alojada en nuestra web)</li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Una publicación de sorteo semestral</li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <strong style="color:var(--cream)">20% off</strong> en productos de feriantes de la comunidad</li>
+          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <span><strong style="color:var(--cream)">20% off</strong> en productos de feriantes de la comunidad</span></li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Eventos exclusivos solo para miembros</li>
         </ul>
         <a href="mailto:contacto@tribuconnection.com?subject=Quiero%20el%20Tribu%20Pass%20Plus" class="btn btn--spectrum" data-join>Quiero sumarme a la Tribu</a>
