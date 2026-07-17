@@ -338,6 +338,38 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 }
 .foot-bottom .dots{ display:flex; gap:6px; }
 .foot-bottom .dots i{ width:8px; height:8px; border-radius:50%; }
+.foot-legal{ display:flex; flex-wrap:wrap; gap:.4rem; }
+.foot-legal a{ color:var(--muted); text-decoration:underline; text-underline-offset:2px; transition:.2s; }
+.foot-legal a:hover{ color:var(--cream); }
+
+/* ============ COOKIE BAR ============ */
+.cookie-bar{
+  position:fixed; left:0; right:0; bottom:0; z-index:90; padding:16px var(--pad);
+  transform:translateY(120%); transition:transform .5s cubic-bezier(.4,0,.2,1);
+}
+.cookie-bar.show{ transform:translateY(0); }
+.cookie-bar-inner{
+  max-width:900px; margin-inline:auto; display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap;
+  background:var(--ink-1); border:1px solid var(--line-2); border-radius:18px; padding:1.1rem 1.4rem;
+  box-shadow:0 20px 50px -16px rgba(0,0,0,.6);
+}
+.cookie-bar-text{ flex:1; min-width:240px; font-size:.86rem; color:var(--soft); line-height:1.55; }
+.cookie-bar-text b{ color:var(--cream); }
+.cookie-bar-text a{ color:var(--teal); text-decoration:underline; text-underline-offset:2px; }
+.cookie-bar .btn{ flex:none; padding:.7rem 1.3rem; font-size:.9rem; }
+@media (max-width:560px){ .cookie-bar-inner{ flex-direction:column; align-items:stretch; } .cookie-bar .btn{ width:100%; justify-content:center; } }
+
+/* ============ MODAL LEGAL ============ */
+.legal-tabs{ display:flex; gap:.5rem; margin-bottom:1.4rem; flex-wrap:wrap; }
+.legal-tabs button{ border:1px solid var(--line-2); background:var(--ink-2); color:var(--soft); font-family:var(--font-sans); font-size:.82rem; padding:.45rem .9rem; border-radius:999px; cursor:pointer; transition:.2s; }
+.legal-tabs button.active{ background:var(--cream); color:var(--ink); border-color:var(--cream); font-weight:600; }
+.legal-body{ max-height:52vh; overflow-y:auto; padding-right:.4rem; font-size:.92rem; color:var(--soft); line-height:1.65; }
+.legal-body h3{ font-family:var(--font-display); font-size:1.05rem; color:var(--cream); margin:1.3rem 0 .5rem; }
+.legal-body h3:first-child{ margin-top:0; }
+.legal-body p{ margin-bottom:.9rem; }
+.legal-body ul{ margin:0 0 .9rem 1.2rem; }
+.legal-body li{ margin-bottom:.4rem; }
+.legal-updated{ font-size:.78rem; color:var(--muted); margin-bottom:1.2rem; }
 
 /* ===================== REVEAL (animación al scrollear) ===================== */
 .reveal{ opacity:0; transform:translateY(26px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
@@ -970,6 +1002,84 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
   </div>
 </div>
 
+<!-- ===================== COOKIE BAR ===================== -->
+<div class="cookie-bar" id="cookieBar">
+  <div class="cookie-bar-inner">
+    <p class="cookie-bar-text">🍪 Usamos <b>cookies esenciales</b> para que el sitio funcione correctamente. No usamos cookies de publicidad ni de seguimiento. <a href="#" data-legal="cookies">Ver política de cookies</a>.</p>
+    <button class="btn btn--spectrum" id="cookieAccept" type="button">Aceptar</button>
+  </div>
+</div>
+
+<!-- ===================== MODAL LEGAL ===================== -->
+<div class="modal-overlay" id="legalModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+    <button class="modal-close" id="legalClose" aria-label="Cerrar">✕</button>
+    <h2 id="legalTitle">Información legal</h2>
+    <div class="legal-tabs">
+      <button type="button" data-tab="privacidad">Política de privacidad</button>
+      <button type="button" data-tab="cookies">Cookies</button>
+      <button type="button" data-tab="terminos">Términos y condiciones</button>
+    </div>
+
+    <div class="legal-body" id="legal-privacidad" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Quiénes somos</h3>
+      <p>Tribu Connection ("nosotros") es responsable del tratamiento de los datos personales que nos compartís a través de <b style="color:var(--cream)">tribuconnection.com</b>. Ante cualquier consulta sobre tus datos, escribinos a <a href="mailto:contacto@tribuconnection.com" style="color:var(--teal)">contacto@tribuconnection.com</a>.</p>
+      <h3>Qué datos recopilamos</h3>
+      <p>Solo los que nos compartís voluntariamente al completar alguno de nuestros formularios (Sumarme a la Tribu, Solicitar evento, Propuesta a medida): nombre, rubro, WhatsApp o email, y los detalles que quieras contarnos. No recopilamos datos de navegación con fines publicitarios.</p>
+      <h3>Para qué los usamos</h3>
+      <ul>
+        <li>Responder tu consulta y contactarte por WhatsApp o email.</li>
+        <li>Gestionar tu membresía Tribu Pass, si te sumás.</li>
+        <li>Evaluar solicitudes para sumar un evento al calendario.</li>
+        <li>Evaluar propuestas de cobertura para marcas y festivales.</li>
+      </ul>
+      <h3>Con quién los compartimos</h3>
+      <p>No vendemos ni cedemos tus datos a terceros con fines comerciales. Usamos un proveedor técnico de envío de formularios (FormSubmit) únicamente para que tu mensaje nos llegue por email; no lo usamos para publicidad.</p>
+      <h3>Tus derechos</h3>
+      <p>De acuerdo con la Ley N.° 25.326 de Protección de Datos Personales de Argentina, tenés derecho a acceder, rectificar, actualizar y solicitar la supresión de tus datos. Podés ejercerlos escribiendo a <a href="mailto:contacto@tribuconnection.com" style="color:var(--teal)">contacto@tribuconnection.com</a>. La Agencia de Acceso a la Información Pública, en su carácter de Órgano de Control de la Ley N.° 25.326, tiene la atribución de atender denuncias y reclamos que interpongan quienes resulten afectados en sus derechos.</p>
+      <h3>Cambios en esta política</h3>
+      <p>Podemos actualizar esta política ocasionalmente. La fecha de la última actualización figura arriba.</p>
+    </div>
+
+    <div class="legal-body" id="legal-cookies" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Qué cookies usamos</h3>
+      <p>Este sitio <b style="color:var(--cream)">no usa cookies de publicidad, seguimiento ni analítica de terceros</b>. Solo guardamos una preferencia en el almacenamiento local de tu navegador (localStorage) para recordar que ya viste este aviso y no mostrártelo de nuevo en cada visita.</p>
+      <h3>Mapas y contenido embebido</h3>
+      <p>La sección de Calendario usa mapas de OpenStreetMap para mostrar la ubicación de los eventos. Este servicio puede cargar recursos desde sus propios servidores al mostrar el mapa, según su propia política de privacidad.</p>
+      <h3>Formularios</h3>
+      <p>Los formularios del sitio (Sumarme a la Tribu, Solicitar evento, Propuesta a medida) envían la información directamente por email a través de un proveedor externo (FormSubmit), sin instalar cookies de seguimiento en tu navegador.</p>
+      <h3>Si sumamos analítica en el futuro</h3>
+      <p>Si en algún momento incorporamos herramientas de estadísticas o analítica, actualizaremos esta política y te pediremos tu consentimiento antes de activarlas.</p>
+      <h3>Cómo borrar tu preferencia</h3>
+      <p>Podés eliminar la preferencia guardada borrando los datos de navegación (cookies y datos de sitio) de tu navegador para este sitio.</p>
+    </div>
+
+    <div class="legal-body" id="legal-terminos" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Aceptación</h3>
+      <p>Al usar <b style="color:var(--cream)">tribuconnection.com</b> aceptás estos términos y condiciones. Si no estás de acuerdo, te pedimos que no uses el sitio.</p>
+      <h3>Sobre Tribu Connection</h3>
+      <p>Somos una agencia de contenido y experiencias para festivales, ferias y marcas del mundo consciente. Generamos cobertura, contenido y conectamos comunidades.</p>
+      <h3>Calendario de eventos</h3>
+      <p>Las fechas, sedes y horarios publicados en nuestro calendario son informativos, provistos por las organizaciones de cada evento o recopilados de fuentes públicas, y pueden cambiar sin previo aviso. Te recomendamos confirmar los detalles directamente con la organización de cada evento antes de asistir.</p>
+      <h3>Tribu Pass (membresía)</h3>
+      <p>Los beneficios descriptos para cada plan son informativos y están sujetos a disponibilidad. El programa se encuentra en lanzamiento y los beneficios y festivales aliados se suman de forma continua, como se indica en la sección correspondiente del sitio.</p>
+      <h3>Solicitudes y propuestas</h3>
+      <p>El envío de un formulario (para sumar un evento al calendario, sumarte a la Tribu, o solicitar una propuesta a medida) no garantiza su aceptación o publicación. Nos reservamos el derecho de admisión de contenido de acuerdo con nuestra línea editorial.</p>
+      <h3>Propiedad intelectual</h3>
+      <p>Los textos, el diseño, la marca y el logo de Tribu Connection nos pertenecen. El contenido audiovisual de coberturas puede pertenecer también a los eventos, artistas o marcas originales retratados.</p>
+      <h3>Enlaces a terceros</h3>
+      <p>El sitio incluye enlaces a redes sociales (Instagram, TikTok, YouTube) y servicios externos. No nos responsabilizamos por el contenido, disponibilidad o políticas de privacidad de sitios de terceros.</p>
+      <h3>Limitación de responsabilidad</h3>
+      <p>El sitio se ofrece "tal cual". No garantizamos su disponibilidad ininterrumpida ni la ausencia total de errores.</p>
+      <h3>Legislación aplicable</h3>
+      <p>Estos términos se rigen por las leyes de la República Argentina. Cualquier consulta, escribinos a <a href="mailto:contacto@tribuconnection.com" style="color:var(--teal)">contacto@tribuconnection.com</a>.</p>
+    </div>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="wrap">
     <div class="footer-grid">
@@ -1009,6 +1119,11 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
     </div>
     <div class="foot-bottom">
       <span>© 2026 Tribu Connection · Conectores de tribus</span>
+      <span class="foot-legal">
+        <a href="#" data-legal="privacidad">Política de privacidad</a> ·
+        <a href="#" data-legal="cookies">Cookies</a> ·
+        <a href="#" data-legal="terminos">Términos y condiciones</a>
+      </span>
       <span class="dots">
         <i style="background:var(--red)"></i><i style="background:var(--amber)"></i><i style="background:var(--green)"></i><i style="background:var(--teal)"></i><i style="background:var(--purple)"></i>
       </span>
@@ -1391,6 +1506,44 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     }, 450);
   });
   document.addEventListener('click', (e)=>{ if(!e.target.closest('.geo-field')) suggestBox.classList.remove('open'); });
+})();
+
+/* ============ COOKIE BAR + MODAL LEGAL ============ */
+(function(){
+  const bar = document.getElementById('cookieBar');
+  const KEY = 'tribu_cookies_ok';
+  if(bar && !localStorage.getItem(KEY)){
+    setTimeout(()=> bar.classList.add('show'), 600);
+  }
+  const acceptBtn = document.getElementById('cookieAccept');
+  if(acceptBtn) acceptBtn.addEventListener('click', ()=>{
+    localStorage.setItem(KEY, '1');
+    bar.classList.remove('show');
+  });
+
+  const legalOverlay = document.getElementById('legalModal');
+  if(!legalOverlay) return;
+  const legalClose = document.getElementById('legalClose');
+  const tabs = legalOverlay.querySelectorAll('.legal-tabs button');
+  const bodies = legalOverlay.querySelectorAll('.legal-body');
+
+  function openLegal(tabName){
+    tabs.forEach(t=> t.classList.toggle('active', t.dataset.tab===tabName));
+    bodies.forEach(b=> b.style.display = (b.id==='legal-'+tabName) ? '' : 'none');
+    legalOverlay.classList.add('open'); legalOverlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeLegal(){
+    legalOverlay.classList.remove('open'); legalOverlay.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+  document.querySelectorAll('[data-legal]').forEach(link=>{
+    link.addEventListener('click', (e)=>{ e.preventDefault(); openLegal(link.dataset.legal); });
+  });
+  tabs.forEach(t=> t.addEventListener('click', ()=> openLegal(t.dataset.tab)));
+  legalClose.addEventListener('click', closeLegal);
+  legalOverlay.addEventListener('click', e=>{ if(e.target===legalOverlay) closeLegal(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && legalOverlay.classList.contains('open')) closeLegal(); });
 })();
 </script>
 </body>
