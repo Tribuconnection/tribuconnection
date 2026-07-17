@@ -254,34 +254,34 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .mnemo li:nth-child(5) .ltr{ color:var(--purple); }
 
 /* ===================== TRIBU PASS ===================== */
-.pass-intro{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,5vw,4rem); align-items:end; margin-bottom:clamp(2.6rem,5vw,3.6rem); }
+.pass-intro{ display:grid; grid-template-columns:.55fr 1.45fr; gap:clamp(1.6rem,4vw,3rem); align-items:end; margin-bottom:clamp(1.8rem,3.5vw,2.6rem); }
 .pass-intro p{ color:var(--soft); font-size:1.06rem; max-width:48ch; }
-.plans{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.4rem; }
+.plans{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.1rem; }
 .plan{
-  position:relative; border:1px solid var(--line); border-radius:22px; padding:1.7rem 1.6rem;
+  position:relative; border:1px solid var(--line); border-radius:20px; padding:1.2rem 1.3rem;
   background:var(--ink-1); display:flex; flex-direction:column;
 }
 .plan--plus{ border-color:transparent; background:
     linear-gradient(var(--ink-1),var(--ink-1)) padding-box,
     var(--spectrum) border-box; box-shadow:0 30px 80px -40px rgba(54,183,196,.4); }
 .plan .badge{
-  position:absolute; top:-13px; left:2rem; font-size:.72rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
-  background:var(--spectrum); color:#15110f; padding:.4em .9em; border-radius:999px;
+  position:absolute; top:-11px; left:1.6rem; font-size:.66rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+  background:var(--spectrum); color:#15110f; padding:.35em .8em; border-radius:999px;
 }
-.plan .tier{ font-family:var(--font-display); font-size:1.5rem; font-weight:560; margin-bottom:.3rem; }
-.plan .tier-sub{ color:var(--muted); font-size:.9rem; margin-bottom:1.4rem; }
-.plan .price{ display:flex; align-items:baseline; gap:.4rem; margin-bottom:.5rem; }
-.plan .tier-note{ font-size:.82rem; color:var(--muted); margin-bottom:1.4rem; font-style:italic; }
-.plan .price b{ font-family:var(--font-display); font-weight:560; font-size:2.2rem; line-height:1; letter-spacing:-.02em; }
-.plan .price s{ text-decoration:none; color:var(--muted); font-size:.95rem; }
-.plan ul{ list-style:none; display:flex; flex-direction:column; gap:.65rem; margin-bottom:1.5rem; flex:1; }
-.plan li{ display:flex; align-items:flex-start; gap:.7rem; font-size:.95rem; color:var(--soft); }
+.plan .tier{ font-family:var(--font-display); font-size:1.25rem; font-weight:560; margin-bottom:.2rem; }
+.plan .tier-sub{ color:var(--muted); font-size:.82rem; margin-bottom:.8rem; }
+.plan .price{ display:flex; align-items:baseline; gap:.4rem; margin-bottom:.3rem; }
+.plan .tier-note{ font-size:.76rem; color:var(--muted); margin-bottom:.8rem; font-style:italic; }
+.plan .price b{ font-family:var(--font-display); font-weight:560; font-size:1.8rem; line-height:1; letter-spacing:-.02em; }
+.plan .price s{ text-decoration:none; color:var(--muted); font-size:.88rem; }
+.plan ul{ list-style:none; display:flex; flex-direction:column; gap:.45rem; margin-bottom:1rem; flex:1; }
+.plan li{ display:flex; align-items:flex-start; gap:.6rem; font-size:.86rem; color:var(--soft); line-height:1.4; }
 .plan li svg{ flex:none; margin-top:.2rem; }
 .plan .check-green{ color:var(--green); }
 .plan .check-amber{ color:var(--amber); }
 .plan .btn{ width:100%; justify-content:center; }
-.pass-note{ margin-top:1.6rem; font-size:.86rem; color:var(--muted); display:flex; align-items:center; gap:.6rem; }
-.profile-benefits{ margin-top:2.6rem; padding-top:2.2rem; border-top:1px solid var(--line); }
+.pass-note{ margin-top:1rem; font-size:.82rem; color:var(--muted); display:flex; align-items:center; gap:.6rem; }
+.profile-benefits{ margin-top:1.6rem; padding-top:1.4rem; border-top:1px solid var(--line); }
 .profile-benefits-title{ font-size:.95rem; color:var(--soft); margin-bottom:1.2rem; }
 .profile-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.1rem; }
 .profile-card{ border:1px solid var(--line); border-radius:16px; padding:1.2rem 1.3rem; background:var(--ink-1); }
@@ -696,7 +696,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
         <p class="eyebrow reveal">Membresía</p>
         <h2 class="h2 reveal d1" style="margin-top:1.2rem">Tribu Pass</h2>
       </div>
-      <p class="reveal d2" style="grid-column:1 / -1; margin-top:1rem; max-width:900px">Una sola membresía mensual con beneficios en todo el ecosistema consciente:<br>descuentos en festivales aliados, biblioteca de contenido y acceso a la comunidad.<br>El movimiento como forma de pertenecer.</p>
+      <p class="reveal d2" style="font-size:.9rem">Una sola membresía mensual con beneficios en todo el ecosistema consciente:<br>descuentos en festivales aliados, biblioteca de contenido y acceso a la comunidad.<br>El movimiento como forma de pertenecer.</p>
     </div>
 
     <div class="plans">
