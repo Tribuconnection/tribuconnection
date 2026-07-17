@@ -187,21 +187,21 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .momento-quote{
   font-family:var(--font-display); font-weight:400; font-style:italic;
   font-size:clamp(1.25rem, 2.1vw, 1.7rem); line-height:1.4; color:var(--cream);
-  max-width:none; margin-bottom:1.3rem;
+  max-width:none; margin-bottom:.6rem;
 }
 .momento-quote b{ font-style:normal; font-weight:560; }
 
-.ejes{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.1rem; margin-top:clamp(2.5rem,5vw,3.6rem); }
+.ejes{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.1rem; margin-top:clamp(1.5rem,3vw,2.2rem); }
 .eje{
-  position:relative; padding:1.7rem 1.5rem 1.8rem; border-radius:var(--r);
+  position:relative; padding:1.3rem 1.3rem 1.4rem; border-radius:var(--r);
   background:var(--ink-1); border:1px solid var(--line); overflow:hidden;
   transition:transform .3s ease, border-color .3s ease, background .3s ease;
 }
 .eje::before{ content:""; position:absolute; inset:0 auto 0 0; width:3px; background:var(--c); opacity:.9; }
 .eje:hover{ transform:translateY(-5px); border-color:var(--line-2); background:var(--ink-2); }
 .eje .dot{ width:12px; height:12px; border-radius:50%; background:var(--c); margin-bottom:1.1rem; box-shadow:0 0 0 5px color-mix(in srgb,var(--c) 18%, transparent); }
-.eje h3{ font-size:1.18rem; margin-bottom:.6rem; letter-spacing:-.01em; min-height:2.45em; display:flex; align-items:flex-start; }
-.eje p{ font-size:.94rem; color:var(--soft); line-height:1.55; }
+.eje h3{ font-size:1.1rem; margin-bottom:.5rem; letter-spacing:-.01em; min-height:2.2em; display:flex; align-items:flex-start; }
+.eje p{ font-size:.88rem; color:var(--soft); line-height:1.5; }
 .eje.green{  --c:var(--green); }
 .eje.teal{   --c:var(--teal); }
 .eje.purple{ --c:var(--purple); }
@@ -592,7 +592,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 </section>
 
 <!-- ===================== MOMENTOS (lo principal) ===================== -->
-<section class="section" id="momentos" style="padding-bottom:clamp(28px,4vw,52px)">
+<section class="section" id="momentos" style="padding-top:clamp(18px,2.5vw,32px);padding-bottom:clamp(28px,4vw,52px)">
   <div class="wrap">
     <div class="sec-head sec-head--wide">
       <p class="eyebrow reveal">Lo que hacemos</p>
