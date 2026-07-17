@@ -768,7 +768,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
           <li><svg class="check-green" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Difusión de tu propuesta en nuestras redes</li>
           <li><svg class="check-green" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Tu aporte sostiene a la comunidad consciente</li>
         </ul>
-        <a href="mailto:contacto@tribuconnection.com?subject=Quiero%20subir%20mi%20evento%20al%20calendario%20(Cafecito)" class="btn btn--ghost" data-join>Contribuir</a>
+        <a href="mailto:contacto@tribuconnection.com?subject=Quiero%20subir%20mi%20evento%20al%20calendario%20(Cafecito)" class="btn btn--ghost" data-join data-plan="Cafecito">Contribuir</a>
       </div>
 
       <div class="plan plan--plus reveal d2">
@@ -788,7 +788,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <span><strong style="color:var(--cream)">20% off</strong> en productos de feriantes de la comunidad</span></li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Eventos exclusivos solo para miembros</li>
         </ul>
-        <a href="mailto:contacto@tribuconnection.com?subject=Quiero%20el%20Tribu%20Pass%20Plus" class="btn btn--spectrum" data-join>Quiero sumarme a la Tribu</a>
+        <a href="mailto:contacto@tribuconnection.com?subject=Quiero%20el%20Tribu%20Pass%20Plus" class="btn btn--spectrum" data-join data-plan="Tribu Plus">Quiero sumarme a la Tribu</a>
       </div>
     </div>
     <p class="pass-note reveal"><span class="pip"></span> Programa en lanzamiento. Los beneficios y los festivales aliados se suman de forma continua.</p>
@@ -936,6 +936,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
     <p class="modal-sub">Dejanos tus datos y te escribimos para pasarte el alias y sumarte a la comunidad.</p>
     <form id="joinForm">
       <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <input type="hidden" name="Plan" id="joinPlan" value="General">
       <div class="field">
         <label for="jName">Nombre</label>
         <input id="jName" name="Nombre" type="text" required placeholder="Tu nombre">
@@ -1004,11 +1005,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
     <button class="modal-close" id="eventClose" aria-label="Cerrar">✕</button>
     <h2 id="evTitle">Solicitar agregar evento</h2>
     <p class="modal-sub">Contanos sobre tu evento y lo sumamos al calendario de la Tribu.</p>
-    <form action="https://formsubmit.co/contacto@tribuconnection.com" method="POST" enctype="multipart/form-data">
-      <input type="hidden" name="_subject" value="Solicitud para agregar evento al calendario">
-      <input type="hidden" name="_template" value="table">
-      <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="_next" value="https://tribuconnection.com/#calendario">
+    <form id="eventForm">
       <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <div class="field">
         <label for="evName">Nombre del evento</label>
@@ -1083,9 +1080,10 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
         <label for="evLink">Link a fotos/video (opcional)</label>
         <input id="evLink" name="Link_media" type="url" placeholder="Drive, WeTransfer, IG… (para archivos grandes)">
       </div>
-      <button type="submit" class="btn btn--spectrum">Enviar solicitud</button>
+      <button type="submit" class="btn btn--spectrum" id="evSubmit">Enviar solicitud</button>
       <p class="modal-note">Para videos pesados, mejor pegá un link. Te confirmamos por WhatsApp o mail.</p>
     </form>
+    <div class="modal-msg" id="evMsg">¡Recibido! Gracias por sumar tu evento 🌟<br>Lo revisamos y te confirmamos por WhatsApp o mail.</div>
   </div>
 </div>
 
@@ -1220,6 +1218,9 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
+/* Google Sheets: URL del Web App de Apps Script (ver google-apps-script/INSTRUCCIONES.txt) */
+const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz.../exec';
+
 /* Nav: fondo al scrollear */
 const nav = document.getElementById('nav');
 const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
@@ -1460,7 +1461,11 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   if(!overlay) return;
   const form = document.getElementById('joinForm');
   const msg = document.getElementById('joinMsg');
-  const open = (e)=>{ if(e) e.preventDefault(); overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
+  const planInput = document.getElementById('joinPlan');
+  const open = (e)=>{
+    if(e){ e.preventDefault(); planInput.value = e.currentTarget.dataset.plan || 'General'; }
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+  };
   const close = ()=>{ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
   document.querySelectorAll('[data-join]').forEach(b => b.addEventListener('click', open));
   document.getElementById('joinClose').addEventListener('click', close);
@@ -1474,20 +1479,12 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     const btn = document.getElementById('joinSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(form);
-    const payload = {
-      Nombre: fd.get('Nombre')||'', Rubro: fd.get('Rubro')||'',
-      Perfil: fd.getAll('Perfil').join(', '), Contacto: fd.get('Contacto')||'',
-      Detalles: fd.get('Detalles')||'',
-      _subject:'Nueva persona quiere sumarse a la Tribu', _template:'table', _captcha:'false'
-    };
+    fd.set('Tipo', 'Join');
     try{
-      await fetch('https://formsubmit.co/ajax/contacto@tribuconnection.com', {
-        method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body: JSON.stringify(payload)
-      });
+      await fetch(SHEETS_ENDPOINT, { method:'POST', mode:'no-cors', body: fd });
       form.style.display='none'; msg.style.display='block';
     }catch(err){
-      const body = encodeURIComponent('Nombre: '+payload.Nombre+'\nRubro: '+payload.Rubro+'\nPerfil: '+payload.Perfil+'\nContacto: '+payload.Contacto+'\nDetalles: '+payload.Detalles);
+      const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nRubro: '+(fd.get('Rubro')||'')+'\nPerfil: '+fd.getAll('Perfil').join(', ')+'\nPlan: '+(fd.get('Plan')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nDetalles: '+(fd.get('Detalles')||''));
       window.location.href='mailto:contacto@tribuconnection.com?subject=Quiero%20sumarme%20a%20la%20Tribu&body='+body;
     }finally{ btn.textContent='Enviar'; btn.disabled=false; }
   });
@@ -1542,6 +1539,33 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   document.getElementById('eventClose').addEventListener('click', close);
   overlay.addEventListener('click', e=>{ if(e.target===overlay) close(); });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) close(); });
+
+  const evForm = document.getElementById('eventForm');
+  const evMsg = document.getElementById('evMsg');
+  evForm.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const rubroInput = document.getElementById('evRubro');
+    if(!rubroInput.value){
+      const rubroBtn = document.getElementById('rubroSel').querySelector('.cselect-btn');
+      rubroBtn.style.borderColor='var(--red)';
+      document.getElementById('rubroSel').scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    const fdCheck = new FormData(evForm);
+    if(fdCheck.get('_honey')){ evForm.style.display='none'; evMsg.style.display='block'; return; }
+    const btn = document.getElementById('evSubmit');
+    btn.textContent='Enviando...'; btn.disabled=true;
+    const fd = new FormData(evForm);
+    fd.set('Tipo', 'Evento');
+    try{
+      await fetch(SHEETS_ENDPOINT, { method:'POST', mode:'no-cors', body: fd });
+      evForm.style.display='none'; evMsg.style.display='block';
+    }catch(err){
+      const body = encodeURIComponent('Evento: '+(fd.get('Evento')||'')+'\nRubro: '+(fd.get('Rubro')||'')+'\nFecha: '+(fd.get('Fecha')||'')+'\nUbicación: '+(fd.get('Ubicacion')||'')+'\nEtiquetas: '+(fd.get('Etiquetas')||'')+'\nDescripción: '+(fd.get('Descripcion')||'')+'\nLink fotos/video: '+(fd.get('Link_media')||''));
+      window.location.href='mailto:contacto@tribuconnection.com?subject=Solicitud%20para%20agregar%20evento%20al%20calendario&body='+body;
+    }finally{ btn.textContent='Enviar solicitud'; btn.disabled=false; }
+  });
+
   const fileIn = document.getElementById('evFiles'), fileName = document.getElementById('evFileName');
   if(fileIn) fileIn.addEventListener('change', ()=>{ fileName.textContent = fileIn.files.length ? [...fileIn.files].map(f=>f.name).join(', ') : ''; });
 
@@ -1668,17 +1692,6 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
 
   document.addEventListener('click', ()=> closeAll(null));
   document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAll(null); });
-
-  const evForm = document.querySelector('#eventModal form');
-  if(evForm && cs){
-    evForm.addEventListener('submit', e=>{
-      if(!document.getElementById('evRubro').value){
-        e.preventDefault();
-        cs.querySelector('.cselect-btn').style.borderColor='var(--red)';
-        cs.scrollIntoView({behavior:'smooth', block:'center'});
-      }
-    });
-  }
 })();
 
 /* ============ COOKIE BAR + MODAL LEGAL ============ */

@@ -1,0 +1,56 @@
+INTEGRACIÓN CON GOOGLE SHEETS — PASO A PASO
+============================================
+
+Esto conecta 2 formularios de la web (Solicitar evento, y Sumarme a la
+Tribu / Tribu Plus / Cafecito) a una planilla de Google Sheets, con aviso
+automático por mail a contacto@tribuconnection.com en cada envío.
+
+1) CREAR EL PROYECTO DE APPS SCRIPT
+   - Entrá a https://script.google.com con la cuenta info.tribuconnection@gmail.com
+   - "Proyecto nuevo"
+   - Borrá el contenido de Code.gs y pegá el contenido de este mismo
+     archivo Code.gs (el que está en esta carpeta)
+   - Nombrá el proyecto, por ejemplo "Tribu Connection - Formularios"
+
+2) CREAR LA PLANILLA (una sola vez)
+   - Arriba, en el selector de funciones, elegí "setup" y tocá "Ejecutar" (▶)
+   - Google va a pedir autorización (primera vez): "Avanzado" → "Ir a
+     [nombre del proyecto] (no seguro)" → "Permitir". Es tu propio script,
+     es seguro autorizarlo.
+   - En "Ejecuciones" (ícono de reloj a la izquierda) vas a ver el log con
+     la URL de la planilla creada: "Tribu Connection - Formularios", con
+     3 pestañas: Eventos, Tribu Pass, Cafecito.
+   - No hace falta volver a correr "setup" nunca más (el script se acuerda
+     de la planilla).
+
+3) DESPLEGAR COMO WEB APP
+   - Arriba a la derecha: "Implementar" → "Nueva implementación"
+   - Tipo: "Aplicación web"
+   - Descripción: lo que quieras (ej: "v1")
+   - "Ejecutar como": Yo (tu cuenta)
+   - "Quién tiene acceso": Cualquier usuario
+   - "Implementar"
+   - Copiá la URL que termina en /exec
+
+4) CONECTAR LA WEB
+   - Abrí index.html y buscá la línea (cerca del inicio del <script>):
+       const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbz.../exec';
+   - Reemplazá esa URL por la que copiaste en el paso 3
+   - Subí el cambio (git add / commit / push — el deploy a Hostinger es
+     automático)
+
+5) SI DESPUÉS CAMBIÁS EL CÓDIGO DE Code.gs
+   - "Implementar" → "Administrar implementaciones" → ícono de lápiz →
+     "Nueva versión" → "Implementar"
+   - La URL /exec se mantiene igual, no hace falta tocar la web de nuevo
+
+NOTAS
+   - Los adjuntos (fotos/video) del formulario de eventos se guardan en una
+     carpeta de Drive llamada "Tribu Connection - Adjuntos de eventos"
+     (se crea sola la primera vez), y el link queda en la columna
+     "Adjuntos" de la hoja Eventos.
+   - El formulario de "Propuesta a medida" (B2B) sigue funcionando por
+     FormSubmit como hasta ahora, no se tocó.
+   - Si algún envío falla (sin conexión, etc.), el navegador abre un mail
+     prellenado a contacto@tribuconnection.com como respaldo, igual que
+     antes.
