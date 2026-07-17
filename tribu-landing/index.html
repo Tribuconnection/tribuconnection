@@ -539,6 +539,36 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .file-in input[type=file]{ position:absolute; opacity:0; width:0; height:0; }
 .file-name{ font-size:.8rem; color:var(--muted); margin-top:.4rem; text-align:center; word-break:break-word; }
 @media (max-width:460px){ .row2{ grid-template-columns:1fr; } }
+
+/* Select y date-picker personalizados (redondeados, estética Tribu) */
+.cselect, .cdate{ position:relative; }
+.cselect-btn{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:.5rem; background:var(--ink-2); border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; color:var(--cream); font-family:var(--font-sans); font-size:.98rem; cursor:pointer; text-align:left; transition:.2s; }
+.cselect-btn:hover{ border-color:var(--line-2); }
+.cselect.open > .cselect-btn, .cdate.open > .cselect-btn{ border-color:var(--teal); background:var(--ink-3); }
+.cselect-val{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.cselect-val.is-ph{ color:var(--muted); }
+.cselect-chev{ flex:none; color:var(--muted); transition:transform .2s; }
+.cselect.open .cselect-chev{ transform:rotate(180deg); }
+.cselect-list{ position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:12; background:var(--ink-2); border:1px solid var(--line-2); border-radius:16px; padding:.4rem; box-shadow:0 20px 50px -16px rgba(0,0,0,.65); display:none; }
+.cselect.open .cselect-list{ display:block; animation:cpop-in .18s ease; }
+@keyframes cpop-in{ from{ opacity:0; transform:translateY(-5px);} to{ opacity:1; transform:none;} }
+.cselect-list button{ display:block; width:100%; text-align:left; background:none; border:0; color:var(--soft); font-family:var(--font-sans); font-size:.92rem; padding:.6rem .8rem; border-radius:10px; cursor:pointer; transition:.15s; }
+.cselect-list button:hover, .cselect-list button.sel{ background:var(--ink-3); color:var(--cream); }
+.cdate-pop{ position:absolute; right:0; left:auto; top:calc(100% + 6px); z-index:12; width:min(270px,80vw); background:var(--ink-2); border:1px solid var(--line-2); border-radius:18px; padding:.9rem; box-shadow:0 20px 50px -16px rgba(0,0,0,.65); display:none; }
+.cdate.open .cdate-pop{ display:block; animation:cpop-in .18s ease; }
+.cdate-nav{ display:flex; align-items:center; justify-content:space-between; margin-bottom:.6rem; }
+.cdate-nav .cal-arrow{ width:32px; height:32px; font-size:1rem; }
+.cdate-month{ font-family:var(--font-display); font-size:.98rem; text-transform:capitalize; }
+.cdate-week{ display:grid; grid-template-columns:repeat(7,1fr); gap:2px; margin-bottom:4px; }
+.cdate-week span{ text-align:center; font-size:.66rem; color:var(--muted); text-transform:uppercase; }
+.cdate-days{ display:grid; grid-template-columns:repeat(7,1fr); gap:2px; }
+.cdate-days button{ aspect-ratio:1; border:1px solid transparent; background:none; color:var(--soft); font-family:var(--font-sans); font-size:.84rem; border-radius:9px; cursor:pointer; transition:.15s; padding:0; }
+.cdate-days button:hover{ background:var(--ink-3); color:var(--cream); }
+.cdate-days button.today{ border-color:var(--line-2); color:var(--cream); }
+.cdate-days button.sel{ background:var(--cream); color:var(--ink); font-weight:600; }
+.cdate-days .empty{ visibility:hidden; }
+.cdate-actions{ display:flex; justify-content:space-between; margin-top:.6rem; }
+.cdate-actions button{ background:none; border:0; color:var(--teal); font-size:.82rem; font-family:var(--font-sans); cursor:pointer; padding:.2rem; }
 .geo-field{ position:relative; }
 .geo-suggest{ position:absolute; left:0; right:0; top:calc(100% + 4px); z-index:5; background:var(--ink-2); border:1px solid var(--line-2); border-radius:12px; overflow:hidden; display:none; max-height:220px; overflow-y:auto; }
 .geo-suggest.open{ display:block; }
@@ -980,18 +1010,43 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
       </div>
       <div class="row2">
         <div class="field">
-          <label for="evRubro">Rubro</label>
-          <select id="evRubro" name="Rubro" required>
-            <option value="" disabled selected>Elegí un rubro</option>
-            <option>Festivales</option>
-            <option>Ferias / exposiciones</option>
-            <option>Eventos artísticos</option>
-            <option>Holístico &amp; Bienestar</option>
-          </select>
+          <label>Rubro</label>
+          <div class="cselect" id="rubroSel">
+            <button type="button" class="cselect-btn" aria-haspopup="listbox" aria-expanded="false">
+              <span class="cselect-val is-ph">Elegí un rubro</span>
+              <svg class="cselect-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="cselect-list" role="listbox">
+              <button type="button" role="option" data-val="Festivales">Festivales</button>
+              <button type="button" role="option" data-val="Ferias / exposiciones">Ferias / exposiciones</button>
+              <button type="button" role="option" data-val="Eventos artísticos">Eventos artísticos</button>
+              <button type="button" role="option" data-val="Holístico &amp; Bienestar">Holístico &amp; Bienestar</button>
+            </div>
+            <input type="hidden" name="Rubro" id="evRubro">
+          </div>
         </div>
         <div class="field">
-          <label for="evDate">Fecha</label>
-          <input id="evDate" name="Fecha" type="date">
+          <label>Fecha</label>
+          <div class="cdate" id="dateSel">
+            <button type="button" class="cselect-btn" aria-haspopup="dialog" aria-expanded="false">
+              <span class="cselect-val is-ph" id="dateDisplay">dd/mm/aaaa</span>
+              <svg class="cselect-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/></svg>
+            </button>
+            <div class="cdate-pop">
+              <div class="cdate-nav">
+                <button type="button" class="cal-arrow" data-nav="-1" aria-label="Mes anterior">‹</button>
+                <span class="cdate-month">—</span>
+                <button type="button" class="cal-arrow" data-nav="1" aria-label="Mes siguiente">›</button>
+              </div>
+              <div class="cdate-week"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span><span>Do</span></div>
+              <div class="cdate-days"></div>
+              <div class="cdate-actions">
+                <button type="button" data-clear>Borrar</button>
+                <button type="button" data-today>Hoy</button>
+              </div>
+            </div>
+            <input type="hidden" name="Fecha" id="evDate">
+          </div>
         </div>
       </div>
       <div class="field">
@@ -1540,6 +1595,79 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     }, 450);
   });
   document.addEventListener('click', (e)=>{ if(!e.target.closest('.geo-field')) suggestBox.classList.remove('open'); });
+})();
+
+/* ============ SELECT Y FECHA PERSONALIZADOS (modal evento) ============ */
+(function(){
+  const cs = document.getElementById('rubroSel');
+  const dp = document.getElementById('dateSel');
+  const closeAll = (except)=>{ if(cs && cs!==except) cs.classList.remove('open'); if(dp && dp!==except) dp.classList.remove('open'); };
+  const pad = n => String(n).padStart(2,'0');
+
+  if(cs){
+    const btn = cs.querySelector('.cselect-btn');
+    const val = cs.querySelector('.cselect-val');
+    const hidden = document.getElementById('evRubro');
+    btn.addEventListener('click', e=>{ e.stopPropagation(); const willOpen=!cs.classList.contains('open'); closeAll(cs); cs.classList.toggle('open', willOpen); btn.setAttribute('aria-expanded', willOpen); btn.style.borderColor=''; });
+    cs.querySelectorAll('.cselect-list button').forEach(o=>{
+      o.addEventListener('click', ()=>{
+        hidden.value = o.dataset.val;
+        val.textContent = o.textContent;
+        val.classList.remove('is-ph');
+        cs.querySelectorAll('.cselect-list button').forEach(x=>x.classList.remove('sel'));
+        o.classList.add('sel');
+        cs.classList.remove('open');
+      });
+    });
+  }
+
+  if(dp){
+    const btn = dp.querySelector('.cselect-btn');
+    const disp = document.getElementById('dateDisplay');
+    const hidden = document.getElementById('evDate');
+    const monthEl = dp.querySelector('.cdate-month');
+    const daysEl = dp.querySelector('.cdate-days');
+    const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+    const today = new Date(); today.setHours(0,0,0,0);
+    const isoToday = today.getFullYear()+'-'+pad(today.getMonth()+1)+'-'+pad(today.getDate());
+    let view = new Date(today.getFullYear(), today.getMonth(), 1);
+    let selected = null;
+    function pick(ds, d, m, y){ selected=ds; hidden.value=ds; disp.textContent=pad(d)+'/'+pad(m+1)+'/'+y; disp.classList.remove('is-ph'); dp.classList.remove('open'); }
+    function render(){
+      monthEl.textContent = MESES[view.getMonth()] + ' ' + view.getFullYear();
+      daysEl.innerHTML='';
+      const start = (new Date(view.getFullYear(), view.getMonth(), 1).getDay()+6)%7;
+      const total = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
+      for(let i=0;i<start;i++){ const s=document.createElement('span'); s.className='empty'; daysEl.appendChild(s); }
+      for(let d=1; d<=total; d++){
+        const b=document.createElement('button'); b.type='button'; b.textContent=d;
+        const ds = view.getFullYear()+'-'+pad(view.getMonth()+1)+'-'+pad(d);
+        if(ds===isoToday) b.classList.add('today');
+        if(ds===selected) b.classList.add('sel');
+        b.addEventListener('click', e=>{ e.stopPropagation(); pick(ds, d, view.getMonth(), view.getFullYear()); });
+        daysEl.appendChild(b);
+      }
+    }
+    btn.addEventListener('click', e=>{ e.stopPropagation(); const willOpen=!dp.classList.contains('open'); closeAll(dp); dp.classList.toggle('open', willOpen); if(willOpen) render(); });
+    dp.querySelector('.cdate-pop').addEventListener('click', e=> e.stopPropagation());
+    dp.querySelectorAll('[data-nav]').forEach(nb=> nb.addEventListener('click', e=>{ e.stopPropagation(); view.setMonth(view.getMonth()+parseInt(nb.dataset.nav,10)); render(); }));
+    dp.querySelector('[data-today]').addEventListener('click', e=>{ e.stopPropagation(); view=new Date(today.getFullYear(),today.getMonth(),1); pick(isoToday, today.getDate(), today.getMonth(), today.getFullYear()); });
+    dp.querySelector('[data-clear]').addEventListener('click', e=>{ e.stopPropagation(); selected=null; hidden.value=''; disp.textContent='dd/mm/aaaa'; disp.classList.add('is-ph'); render(); });
+  }
+
+  document.addEventListener('click', ()=> closeAll(null));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAll(null); });
+
+  const evForm = document.querySelector('#eventModal form');
+  if(evForm && cs){
+    evForm.addEventListener('submit', e=>{
+      if(!document.getElementById('evRubro').value){
+        e.preventDefault();
+        cs.querySelector('.cselect-btn').style.borderColor='var(--red)';
+        cs.scrollIntoView({behavior:'smooth', block:'center'});
+      }
+    });
+  }
 })();
 
 /* ============ COOKIE BAR + MODAL LEGAL ============ */
