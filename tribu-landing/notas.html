@@ -603,16 +603,20 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 </section>
 
 <script>
-/* Genera una imagen de ejemplo (gradiente de marca + iniciales) para notas sin foto real todavía */
+/* Genera una imagen de ejemplo (silueta genérica + gradiente de marca) para notas sin foto real todavía */
 function placeholderImg(initials, w, h){
-  const svg = "<svg xmlns='http://www.w3.org/2000/svg' width='"+w+"' height='"+h+"'>"+
+  const cx = w/2, headR = h*0.17, headCy = h*0.38, shR = h*0.42, shCy = h*1.02;
+  const svg = "<svg xmlns='http://www.w3.org/2000/svg' width='"+w+"' height='"+h+"' viewBox='0 0 "+w+" "+h+"'>"+
     "<defs><linearGradient id='g' x1='0' y1='0' x2='1' y2='1'>"+
     "<stop offset='0%' stop-color='#D24B62'/><stop offset='27%' stop-color='#F4A623'/>"+
     "<stop offset='52%' stop-color='#9BCB46'/><stop offset='76%' stop-color='#36B7C4'/>"+
     "<stop offset='100%' stop-color='#9B7CB8'/></linearGradient></defs>"+
-    "<rect width='"+w+"' height='"+h+"' fill='#0C0D10'/>"+
-    "<rect width='"+w+"' height='"+h+"' fill='url(#g)' opacity='0.25'/>"+
-    "<text x='50%' y='50%' font-family='Georgia,serif' font-size='"+Math.round(h*0.3)+"' fill='#F4F1EA' text-anchor='middle' dominant-baseline='central' opacity='0.92'>"+initials+"</text>"+
+    "<rect width='"+w+"' height='"+h+"' fill='#12131a'/>"+
+    "<rect width='"+w+"' height='"+h+"' fill='url(#g)' opacity='0.24'/>"+
+    "<circle cx='"+cx+"' cy='"+headCy+"' r='"+headR+"' fill='#F4F1EA' opacity='0.5'/>"+
+    "<ellipse cx='"+cx+"' cy='"+shCy+"' rx='"+shR+"' ry='"+(shR*0.9)+"' fill='#F4F1EA' opacity='0.45'/>"+
+    "<text x='"+(w-16)+"' y='"+(h-16)+"' font-family='Plus Jakarta Sans,sans-serif' font-size='"+Math.round(h*0.09)+"' font-weight='700' fill='#F4F1EA' text-anchor='end' opacity='0.85'>"+initials+"</text>"+
+    "<text x='16' y='"+(h-16)+"' font-family='Plus Jakarta Sans,sans-serif' font-size='"+Math.round(h*0.032)+"' fill='#F4F1EA' text-anchor='start' opacity='0.55'>foto de ejemplo</text>"+
     "</svg>";
   return 'data:image/svg+xml,'+encodeURIComponent(svg);
 }
