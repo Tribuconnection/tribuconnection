@@ -279,7 +279,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .pass-note .pip{ width:7px; height:7px; border-radius:50%; background:var(--amber); flex:none; }
 
 /* ===================== CTA B2B ===================== */
-.cta{ position:relative; overflow:hidden; }
+.cta{ position:relative; overflow:hidden; padding-block:clamp(56px,6vw,80px) clamp(56px,8vw,110px); scroll-margin-top:8px; }
 .cta-box{
   position:relative; border:1px solid var(--line); border-radius:28px; overflow:hidden;
   padding:clamp(1.9rem,4vw,3rem) clamp(2.4rem,6vw,4.5rem); background:
@@ -288,7 +288,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
     var(--ink-1);
 }
 .cta-box .eyebrow{ margin-bottom:1rem; }
-.cta-box h2{ max-width:16ch; margin-bottom:1rem; }
+.cta-box h2{ max-width:16ch; margin-bottom:1rem; font-size:clamp(1.9rem,3.8vw,2.8rem); }
 .cta-box .lead{ max-width:54ch; margin-bottom:1.7rem; }
 .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; margin-bottom:1.8rem; }
 .step{ border-top:1px solid var(--line); padding-top:1.1rem; }
