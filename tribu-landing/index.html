@@ -81,8 +81,8 @@ body{
 
 /* Layout */
 .wrap{ max-width:var(--maxw); margin-inline:auto; padding-inline:var(--pad); }
-.section{ position:relative; z-index:1; padding-block:clamp(72px,11vw,150px); }
-.section--tight{ padding-block:clamp(48px,7vw,90px); }
+.section{ position:relative; z-index:1; padding-block:clamp(44px,6vw,84px); }
+.section--tight{ padding-block:clamp(32px,4.5vw,60px); }
 
 /* Tipografía */
 h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight:560; line-height:1.04; letter-spacing:-.02em; }
@@ -174,7 +174,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .stat:nth-child(4) .num{ color:var(--green); }
 
 /* ===================== MOMENTOS (lo principal) ===================== */
-.sec-head{ max-width:760px; margin-bottom:clamp(3rem,6vw,4.5rem); }
+.sec-head{ max-width:760px; margin-bottom:clamp(1.8rem,4vw,2.8rem); }
 .sec-head .eyebrow{ margin-bottom:1.3rem; }
 .sec-head h2{ margin-bottom:1.4rem; }
 .sec-head--wide{ max-width:none; }
@@ -266,7 +266,8 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 }
 .plan .tier{ font-family:var(--font-display); font-size:1.5rem; font-weight:560; margin-bottom:.3rem; }
 .plan .tier-sub{ color:var(--muted); font-size:.9rem; margin-bottom:1.4rem; }
-.plan .price{ display:flex; align-items:baseline; gap:.4rem; margin-bottom:1.6rem; }
+.plan .price{ display:flex; align-items:baseline; gap:.4rem; margin-bottom:.5rem; }
+.plan .tier-note{ font-size:.82rem; color:var(--muted); margin-bottom:1.4rem; font-style:italic; }
 .plan .price b{ font-family:var(--font-display); font-weight:560; font-size:2.7rem; line-height:1; letter-spacing:-.02em; }
 .plan .price s{ text-decoration:none; color:var(--muted); font-size:.95rem; }
 .plan ul{ list-style:none; display:flex; flex-direction:column; gap:.85rem; margin-bottom:2rem; flex:1; }
@@ -372,6 +373,80 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
   .reveal{ opacity:1 !important; transform:none !important; transition:none !important; }
   .hero-star{ animation:none; }
 }
+
+/* ============ SERVICIOS ============ */
+.svc-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; margin-top:.5rem; }
+.svc{ border:1px solid var(--line); border-radius:18px; background:var(--ink-1); padding:1.5rem; }
+.svc h3{ font-family:var(--font-display); font-size:1.15rem; margin-bottom:1rem; display:flex; align-items:center; gap:.6rem; }
+.svc h3 i{ width:9px; height:9px; border-radius:50%; flex:none; }
+.svc ul{ list-style:none; display:flex; flex-direction:column; gap:.6rem; }
+.svc li{ font-size:.92rem; color:var(--soft); padding-left:1.1rem; position:relative; line-height:1.45; }
+.svc li::before{ content:""; position:absolute; left:.15rem; top:.55rem; width:5px; height:5px; border-radius:50%; background:var(--muted); }
+.svc-extra{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-top:1.2rem; }
+
+/* ============ CALENDARIO ============ */
+.cal-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:1.4rem 2rem; flex-wrap:wrap; margin-bottom:2rem; }
+.cal-nav{ display:flex; align-items:center; gap:.6rem; }
+.cal-nav > button{ width:42px; height:42px; border-radius:50%; border:1px solid var(--line-2); background:var(--ink-1); color:var(--cream); font-size:1.2rem; cursor:pointer; display:grid; place-items:center; transition:.2s; line-height:1; }
+.cal-nav > button:hover{ border-color:var(--cream); background:var(--ink-2); }
+.cal-month{ font-family:var(--font-display); font-size:clamp(1.3rem,3vw,1.9rem); text-transform:capitalize; min-width:8.5ch; text-align:center; }
+.cal-today-btn{ font-size:.82rem; color:var(--muted); background:none; border:1px solid var(--line); border-radius:999px; padding:.45rem .95rem; cursor:pointer; transition:.2s; }
+.cal-today-btn:hover{ color:var(--cream); border-color:var(--line-2); }
+.cal-grid-wrap{ display:grid; grid-template-columns:1.35fr 1fr; gap:1.6rem; align-items:start; }
+.cal-card{ border:1px solid var(--line); border-radius:22px; background:var(--ink-1); padding:clamp(1rem,2vw,1.5rem); }
+.cal-weekdays{ display:grid; grid-template-columns:repeat(7,1fr); gap:.4rem; margin-bottom:.5rem; }
+.cal-weekdays span{ text-align:center; font-size:.7rem; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); }
+.cal-days{ display:grid; grid-template-columns:repeat(7,1fr); gap:.4rem; }
+.cal-day{ position:relative; aspect-ratio:1; border-radius:12px; border:1px solid transparent; background:transparent; color:var(--soft); font-size:.9rem; font-family:var(--font-sans); cursor:default; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.2rem; transition:.15s; padding:0; }
+.cal-day > span:first-child{ line-height:1; }
+.cal-day.other{ color:var(--muted); opacity:.35; }
+.cal-day.today{ border-color:var(--line-2); color:var(--cream); }
+.cal-day.has-ev{ cursor:pointer; background:var(--ink-2); color:var(--cream); border-color:var(--line); }
+.cal-day.has-ev:hover{ border-color:var(--cream); transform:translateY(-2px); }
+.cal-day.sel{ background:var(--ink-3); border-color:var(--cream); }
+.cal-dots{ display:flex; gap:3px; }
+.cal-dots i{ width:5px; height:5px; border-radius:50%; }
+.cal-list{ display:flex; flex-direction:column; gap:.8rem; }
+.cal-list h3{ font-family:var(--font-display); font-size:1.15rem; margin-bottom:.1rem; }
+.ev{ display:flex; gap:.9rem; padding:.85rem 1rem; border:1px solid var(--line); border-radius:16px; background:var(--ink-1); transition:.2s; text-decoration:none; color:inherit; }
+.ev:hover{ border-color:var(--line-2); background:var(--ink-2); }
+.ev-date{ flex:none; width:44px; text-align:center; }
+.ev-date b{ display:block; font-family:var(--font-display); font-size:1.4rem; line-height:1; color:var(--cream); }
+.ev-date span{ font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+.ev-body{ flex:1; min-width:0; }
+.ev-cat{ display:inline-flex; align-items:center; gap:.4rem; font-size:.7rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:.15rem; }
+.ev-cat i{ width:7px; height:7px; border-radius:50%; }
+.ev-title{ font-weight:600; color:var(--cream); font-size:.98rem; }
+.ev-meta{ font-size:.84rem; color:var(--soft); margin-top:.1rem; }
+.cal-empty{ color:var(--muted); font-size:.9rem; padding:.6rem 0; line-height:1.5; }
+.cat-festival{ background:var(--amber); } .cat-taller{ background:var(--green); } .cat-feria{ background:var(--teal); } .cat-encuentro{ background:var(--purple); } .cat-ceremonia{ background:var(--red); }
+.cal-legend{ display:flex; flex-wrap:wrap; gap:.7rem 1.1rem; margin-top:1.3rem; }
+.cal-legend span{ display:inline-flex; align-items:center; gap:.45rem; font-size:.78rem; color:var(--muted); }
+.cal-legend i{ width:8px; height:8px; border-radius:50%; }
+
+/* ============ MODAL SUMARSE ============ */
+.modal-overlay{ position:fixed; inset:0; z-index:100; background:rgba(6,7,10,.74); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px); display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; visibility:hidden; transition:opacity .3s ease, visibility .3s ease; }
+.modal-overlay.open{ opacity:1; visibility:visible; }
+.modal{ width:min(560px,100%); max-height:92vh; overflow-y:auto; background:var(--ink-1); border:1px solid var(--line-2); border-radius:24px; padding:clamp(1.6rem,4vw,2.6rem); position:relative; transform:translateY(16px) scale(.98); transition:transform .3s cubic-bezier(.4,0,.2,1); }
+.modal-overlay.open .modal{ transform:none; }
+.modal-close{ position:absolute; top:16px; right:16px; width:38px; height:38px; border-radius:50%; border:1px solid var(--line); background:var(--ink-2); color:var(--soft); font-size:1rem; cursor:pointer; display:grid; place-items:center; transition:.2s; }
+.modal-close:hover{ color:var(--cream); border-color:var(--cream); }
+.modal h2{ font-size:clamp(1.5rem,3.5vw,2rem); margin-bottom:.35rem; }
+.modal .modal-sub{ color:var(--soft); font-size:.95rem; margin-bottom:1.5rem; line-height:1.5; }
+.field{ margin-bottom:1.05rem; }
+.field > label{ display:block; font-size:.76rem; letter-spacing:.06em; color:var(--muted); margin-bottom:.5rem; text-transform:uppercase; }
+.field input, .field textarea{ width:100%; background:var(--ink-2); border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; color:var(--cream); font-family:var(--font-sans); font-size:.98rem; transition:.2s; }
+.field input:focus, .field textarea:focus{ outline:none; border-color:var(--teal); background:var(--ink-3); }
+.field textarea{ resize:vertical; min-height:76px; }
+.chips{ display:flex; flex-wrap:wrap; gap:.55rem; }
+.chip input{ position:absolute; opacity:0; width:0; height:0; }
+.chip span{ display:inline-block; padding:.55rem 1rem; border:1px solid var(--line-2); border-radius:999px; font-size:.9rem; color:var(--soft); cursor:pointer; transition:.2s; user-select:none; }
+.chip input:checked + span{ background:var(--cream); color:var(--ink); border-color:var(--cream); font-weight:600; }
+.chip span:hover{ border-color:var(--cream); }
+.modal .btn{ width:100%; justify-content:center; margin-top:.5rem; }
+.modal-msg{ text-align:center; padding:1.5rem 0; color:var(--cream); font-size:1.05rem; line-height:1.5; display:none; }
+.modal-note{ font-size:.8rem; color:var(--muted); text-align:center; margin-top:1rem; line-height:1.5; }
+@media (max-width:860px){ .cal-grid-wrap{ grid-template-columns:1fr; } .svc-grid{ grid-template-columns:1fr; } .svc-extra{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -394,7 +469,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
     <a href="#propuestas">Para marcas</a>
   </div>
   <div class="nav-cta">
-    <a href="#tribu-pass" class="btn btn--spectrum">Sumarme a la Tribu</a>
+    <a href="#tribu-pass" class="btn btn--spectrum" data-join>Sumarme a la Tribu</a>
     <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -407,7 +482,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
   <a href="#nosotros">Nosotros</a>
   <a href="#tribu-pass">Tribu Pass</a>
   <a href="#propuestas">Para marcas</a>
-  <a href="#tribu-pass" class="btn btn--spectrum">Sumarme a la Tribu</a>
+  <a href="#tribu-pass" class="btn btn--spectrum" data-join>Sumarme a la Tribu</a>
 </div>
 
 <!-- ============================ HERO ============================ -->
@@ -420,6 +495,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
     <p class="sub reveal d2">Agencia de contenido y experiencia para festivales, ferias y marcas del mundo consciente. Generamos momentos reales, los volvemos contenido vivo y amplificamos la comunidad que ya existe.</p>
     <div class="hero-actions reveal d3">
       <a href="#tribu-pass" class="btn btn--spectrum">Conocé Tribu Pass</a>
+      <a href="#calendario" class="btn btn--ghost">Calendario de eventos</a>
       <a href="#propuestas" class="btn btn--ghost">Propuestas para marcas <span class="arr">→</span></a>
     </div>
   </div>
@@ -449,7 +525,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 </section>
 
 <!-- ===================== MOMENTOS (lo principal) ===================== -->
-<section class="section" id="momentos" style="padding-bottom:clamp(48px,6vw,88px)">
+<section class="section" id="momentos" style="padding-bottom:clamp(28px,4vw,52px)">
   <div class="wrap">
     <div class="sec-head sec-head--wide">
       <p class="eyebrow reveal">Lo que hacemos</p>
@@ -489,7 +565,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 </section>
 
 <!-- ===================== NOSOTROS ===================== -->
-<section class="section about" id="nosotros" style="padding-top:clamp(40px,5vw,72px);padding-bottom:clamp(48px,6vw,88px)">
+<section class="section about" id="nosotros" style="padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(28px,4vw,52px)">
   <div class="wrap">
     <div class="about-grid">
       <div class="about-copy">
@@ -514,7 +590,7 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 </section>
 
 <!-- ===================== TRIBU PASS ===================== -->
-<section class="section" id="tribu-pass" style="padding-top:clamp(40px,5vw,72px)">
+<section class="section" id="tribu-pass" style="padding-top:clamp(24px,3vw,44px)">
   <div class="wrap">
     <div class="pass-intro">
       <div>
@@ -527,12 +603,15 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
     <div class="plans">
       <div class="plan reveal d1">
         <div class="tier">Cafecito</div>
-        <div class="tier-sub">Por pedido particular</div>
-        <div class="price"><b>$5.000</b><span style="color:var(--muted)">/ pedido</span></div>
+        <div class="tier-sub">Por pedido particular · aporte a voluntad</div>
+        <div class="price"><b>Desde $5.000</b><span style="color:var(--muted)">/ pedido</span></div>
+        <div class="tier-note">Pequeños aportes, a tu medida.</div>
         <ul>
-          <li><svg class="check-green" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Subida al calendario de Tribu Connection</li>
+          <li><svg class="check-green" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Sumás tu evento al calendario de Tribu Connection</li>
+          <li><svg class="check-green" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Difusión de tu propuesta en nuestras redes</li>
+          <li><svg class="check-green" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Tu aporte sostiene a la comunidad consciente</li>
         </ul>
-        <a href="mailto:contacto@tribuconnection.com?subject=Quiero%20subir%20mi%20evento%20al%20calendario%20(Cafecito)" class="btn btn--ghost">Contribuir</a>
+        <a href="mailto:contacto@tribuconnection.com?subject=Quiero%20subir%20mi%20evento%20al%20calendario%20(Cafecito)" class="btn btn--ghost" data-join>Contribuir</a>
       </div>
 
       <div class="plan plan--plus reveal d2">
@@ -540,14 +619,15 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
         <div class="tier">Tribu Plus</div>
         <div class="tier-sub">La experiencia completa, todo el año</div>
         <div class="price"><b>$20.000</b><span style="color:var(--muted)">/ mes</span></div>
+        <div class="tier-note">Plan anual, abonado mes a mes.</div>
         <ul>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <strong style="color:var(--cream)">25% de descuento</strong> en festivales aliados</li>
+          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <strong style="color:var(--cream)">1 landing page para tu evento</strong> cada 6 meses</li>
+          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Sumás tu evento al calendario de la web de Tribu</li>
+          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Sesión mensual de 30 min de análisis de tu proyecto/emprendimiento</li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> 10% off en productos de feriantes</li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> 1 sesión mensual con un facilitador de la red</li>
           <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Eventos exclusivos solo para miembros</li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Todo lo del plan Conector</li>
         </ul>
-        <a href="mailto:contacto@tribuconnection.com?subject=Quiero%20el%20Tribu%20Pass%20Plus" class="btn btn--spectrum">Quiero el Plus</a>
+        <a href="mailto:contacto@tribuconnection.com?subject=Quiero%20el%20Tribu%20Pass%20Plus" class="btn btn--spectrum" data-join>Quiero el Plus</a>
       </div>
     </div>
     <p class="pass-note reveal"><span class="pip"></span> Programa en lanzamiento. Los beneficios y los festivales aliados se suman de forma continua.</p>
@@ -578,6 +658,127 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 </section>
 
 <!-- ===================== FOOTER ===================== -->
+<!-- ===================== SERVICIOS ===================== -->
+<section class="section section--tight" id="servicios">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Servicios que ofrecemos</p>
+      <h2 class="h2">Todo lo que hacemos por tu evento.</h2>
+    </div>
+    <div class="svc-grid">
+      <div class="svc reveal"><h3><i style="background:var(--teal)"></i>Antes del evento</h3>
+        <ul>
+          <li>Difusión previa del evento</li>
+          <li>Inclusión en la Agenda de Tribu Connection</li>
+          <li>Entrevista previa con facilitador/a, organizador/a o referente</li>
+          <li>Organización y difusión de sorteos (opcional)</li>
+          <li>Landing page para comunicar la experiencia</li>
+        </ul>
+      </div>
+      <div class="svc reveal d1"><h3><i style="background:var(--amber)"></i>Durante el evento</h3>
+        <ul>
+          <li>Cobertura audiovisual integral</li>
+          <li>Contenido en tiempo real: reels, historias, fotos y entrevistas</li>
+          <li>Registro desde una mirada auténtica y cercana</li>
+        </ul>
+      </div>
+      <div class="svc reveal d2"><h3><i style="background:var(--green)"></i>Después del evento</h3>
+        <ul>
+          <li>Edición profesional del material audiovisual</li>
+          <li>Entrega del contenido listo para publicar</li>
+          <li>Publicación en las redes de Tribu Connection (opcional)</li>
+        </ul>
+      </div>
+    </div>
+    <div class="svc-extra">
+      <div class="svc reveal"><h3><i style="background:var(--purple)"></i>Alianzas y colaboraciones</h3>
+        <ul>
+          <li>Cobertura y difusión para marcas conscientes</li>
+          <li>Entrevistas y contenido para emprendimientos, espacios y proyectos</li>
+          <li>Acciones colaborativas para ampliar el alcance de iniciativas afines</li>
+        </ul>
+      </div>
+      <div class="svc reveal d1"><h3><i style="background:var(--red)"></i>Servicios personalizados</h3>
+        <ul>
+          <li>Propuestas a medida según los objetivos de cada evento, marca o proyecto</li>
+          <li>Estrategias de comunicación y creación de contenido adaptadas a cada necesidad</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CALENDARIO ===================== -->
+<section class="section section--tight" id="calendario">
+  <div class="wrap">
+    <div class="cal-head">
+      <div class="sec-head reveal" style="margin-bottom:0">
+        <p class="eyebrow">Agenda</p>
+        <h2 class="h2">Calendario de Tribu Connection.</h2>
+      </div>
+      <div class="cal-nav reveal d1">
+        <button id="calPrev" aria-label="Mes anterior">‹</button>
+        <span class="cal-month" id="calMonth">—</span>
+        <button id="calNext" aria-label="Mes siguiente">›</button>
+        <button class="cal-today-btn" id="calToday">Hoy</button>
+      </div>
+    </div>
+    <div class="cal-grid-wrap reveal d1">
+      <div class="cal-card">
+        <div class="cal-weekdays"><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span></div>
+        <div class="cal-days" id="calDays"></div>
+        <div class="cal-legend">
+          <span><i class="cat-festival"></i>Festival</span>
+          <span><i class="cat-taller"></i>Taller</span>
+          <span><i class="cat-feria"></i>Feria</span>
+          <span><i class="cat-encuentro"></i>Encuentro</span>
+          <span><i class="cat-ceremonia"></i>Ceremonia</span>
+        </div>
+      </div>
+      <div class="cal-list" id="calList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MODAL SUMARSE ===================== -->
+<div class="modal-overlay" id="joinModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="joinTitle">
+    <button class="modal-close" id="joinClose" aria-label="Cerrar">✕</button>
+    <h2 id="joinTitle">Sumate a la Tribu</h2>
+    <p class="modal-sub">Dejanos tus datos y te escribimos para pasarte el alias y sumarte a la comunidad.</p>
+    <form id="joinForm">
+      <div class="field">
+        <label for="jName">Nombre</label>
+        <input id="jName" name="Nombre" type="text" required placeholder="Tu nombre">
+      </div>
+      <div class="field">
+        <label for="jRubro">Rubro</label>
+        <input id="jRubro" name="Rubro" type="text" placeholder="¿A qué te dedicás?">
+      </div>
+      <div class="field">
+        <label>¿Cómo te identificás? (podés elegir varias)</label>
+        <div class="chips">
+          <label class="chip"><input type="checkbox" name="Perfil" value="Feriante"><span>Feriante</span></label>
+          <label class="chip"><input type="checkbox" name="Perfil" value="Facilitador/a"><span>Facilitador/a</span></label>
+          <label class="chip"><input type="checkbox" name="Perfil" value="Marca"><span>Marca</span></label>
+          <label class="chip"><input type="checkbox" name="Perfil" value="Organizador/a"><span>Organizador/a</span></label>
+        </div>
+      </div>
+      <div class="field">
+        <label for="jContact">WhatsApp / Email</label>
+        <input id="jContact" name="Contacto" type="text" required placeholder="¿Cómo te contactamos?">
+      </div>
+      <div class="field">
+        <label for="jDetails">Detalles</label>
+        <textarea id="jDetails" name="Detalles" placeholder="Contanos un poco sobre vos, tu proyecto o evento"></textarea>
+      </div>
+      <button type="submit" class="btn btn--spectrum" id="joinSubmit">Enviar</button>
+      <p class="modal-note">Te respondemos a la brevedad. También podés escribirnos a contacto@tribuconnection.com</p>
+    </form>
+    <div class="modal-msg" id="joinMsg">¡Recibido! Gracias por sumarte 🌟<br>Te vamos a escribir muy pronto.</div>
+  </div>
+</div>
+
 <footer class="footer">
   <div class="wrap">
     <div class="footer-grid">
@@ -672,6 +873,122 @@ const statIO = new IntersectionObserver((entries)=>{
   entries.forEach(e=>{ if(e.isIntersecting){ animateNum(e.target); statIO.unobserve(e.target); } });
 }, {threshold:.6});
 document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
+
+/* ============ CALENDARIO ============ */
+(function(){
+  // 🔧 EDITABLE: agregá o modificá eventos acá. cat: festival | taller | feria | encuentro | ceremonia
+  const EVENTS = [
+    { date:'2026-07-19', title:'Resonar · Encuentro consciente', place:'Buenos Aires', time:'18:00', cat:'festival', url:'' },
+    { date:'2026-07-26', title:'Feria Tribu · Emprendedores', place:'Palermo', time:'12:00', cat:'feria', url:'' },
+    { date:'2026-08-02', title:'Taller de respiración', place:'Tigre', time:'10:30', cat:'taller', url:'' },
+    { date:'2026-08-09', title:'Conciencia Festival', place:'Córdoba', time:'16:00', cat:'festival', url:'' },
+    { date:'2026-08-16', title:'Ceremonia de luna llena', place:'Delta del Paraná', time:'19:30', cat:'ceremonia', url:'' },
+    { date:'2026-08-23', title:'Expo-holística', place:'La Rural', time:'11:00', cat:'encuentro', url:'' }
+  ];
+  const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const MES_ABR = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const daysEl = document.getElementById('calDays');
+  const listEl = document.getElementById('calList');
+  const monthEl = document.getElementById('calMonth');
+  if(!daysEl) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  let view = new Date(today.getFullYear(), today.getMonth(), 1);
+  const iso = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const evByDate = ds => EVENTS.filter(e => e.date === ds).sort((a,b)=> (a.time||'').localeCompare(b.time||''));
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  function renderList(dateStr, heading){
+    const evs = dateStr ? evByDate(dateStr)
+      : EVENTS.filter(e => new Date(e.date+'T00:00') >= today).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5);
+    let html = '<h3>'+ esc(heading||'Próximos eventos') +'</h3>';
+    if(!evs.length){ html += '<p class="cal-empty">No hay eventos para este día. Elegí otra fecha o mirá los próximos con el botón «Hoy».</p>'; listEl.innerHTML = html; return; }
+    evs.forEach(e=>{
+      const d = new Date(e.date+'T00:00');
+      const tag = e.url ? 'a' : 'div';
+      const href = e.url ? ' href="'+esc(e.url)+'" target="_blank" rel="noopener"' : '';
+      html += '<'+tag+' class="ev"'+href+'>'+
+        '<div class="ev-date"><b>'+d.getDate()+'</b><span>'+MES_ABR[d.getMonth()]+'</span></div>'+
+        '<div class="ev-body">'+
+          '<span class="ev-cat"><i class="cat-'+esc(e.cat)+'"></i>'+esc(e.cat)+'</span>'+
+          '<div class="ev-title">'+esc(e.title)+'</div>'+
+          '<div class="ev-meta">'+ (e.time?esc(e.time)+' · ':'') + esc(e.place||'') +'</div>'+
+        '</div></'+tag+'>';
+    });
+    listEl.innerHTML = html;
+  }
+
+  function render(){
+    monthEl.textContent = MESES[view.getMonth()] + ' ' + view.getFullYear();
+    daysEl.innerHTML = '';
+    const start = (new Date(view.getFullYear(), view.getMonth(), 1).getDay()+6)%7; // lunes = 0
+    const total = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
+    const prevTotal = new Date(view.getFullYear(), view.getMonth(), 0).getDate();
+    for(let i=0;i<start;i++){ const c=document.createElement('div'); c.className='cal-day other'; c.textContent=prevTotal-start+1+i; daysEl.appendChild(c); }
+    for(let day=1; day<=total; day++){
+      const dObj = new Date(view.getFullYear(), view.getMonth(), day);
+      const ds = iso(dObj);
+      const evs = evByDate(ds);
+      const cell = document.createElement('button');
+      cell.type='button'; cell.className='cal-day';
+      if(iso(today)===ds) cell.classList.add('today');
+      let dots='';
+      [...new Set(evs.map(e=>e.cat))].slice(0,4).forEach(c=> dots+='<i class="cat-'+esc(c)+'"></i>');
+      cell.innerHTML = '<span>'+day+'</span>'+(dots?'<span class="cal-dots">'+dots+'</span>':'');
+      if(evs.length){
+        cell.classList.add('has-ev');
+        cell.addEventListener('click', ()=>{
+          document.querySelectorAll('.cal-day.sel').forEach(x=>x.classList.remove('sel'));
+          cell.classList.add('sel');
+          renderList(ds, dObj.getDate()+' de '+MESES[dObj.getMonth()]);
+        });
+      }
+      daysEl.appendChild(cell);
+    }
+    const trailing=(7-((start+total)%7))%7;
+    for(let i=1;i<=trailing;i++){ const c=document.createElement('div'); c.className='cal-day other'; c.textContent=i; daysEl.appendChild(c); }
+  }
+  document.getElementById('calPrev').addEventListener('click', ()=>{ view.setMonth(view.getMonth()-1); render(); });
+  document.getElementById('calNext').addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); render(); });
+  document.getElementById('calToday').addEventListener('click', ()=>{ view=new Date(today.getFullYear(),today.getMonth(),1); render(); renderList(null); });
+  render(); renderList(null);
+})();
+
+/* ============ MODAL SUMARSE ============ */
+(function(){
+  const overlay = document.getElementById('joinModal');
+  if(!overlay) return;
+  const form = document.getElementById('joinForm');
+  const msg = document.getElementById('joinMsg');
+  const open = (e)=>{ if(e) e.preventDefault(); overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
+  const close = ()=>{ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
+  document.querySelectorAll('[data-join]').forEach(b => b.addEventListener('click', open));
+  document.getElementById('joinClose').addEventListener('click', close);
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) close(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) close(); });
+
+  form.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const btn = document.getElementById('joinSubmit');
+    btn.textContent='Enviando...'; btn.disabled=true;
+    const fd = new FormData(form);
+    const payload = {
+      Nombre: fd.get('Nombre')||'', Rubro: fd.get('Rubro')||'',
+      Perfil: fd.getAll('Perfil').join(', '), Contacto: fd.get('Contacto')||'',
+      Detalles: fd.get('Detalles')||'',
+      _subject:'Nueva persona quiere sumarse a la Tribu', _template:'table', _captcha:'false'
+    };
+    try{
+      await fetch('https://formsubmit.co/ajax/contacto@tribuconnection.com', {
+        method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body: JSON.stringify(payload)
+      });
+      form.style.display='none'; msg.style.display='block';
+    }catch(err){
+      const body = encodeURIComponent('Nombre: '+payload.Nombre+'\nRubro: '+payload.Rubro+'\nPerfil: '+payload.Perfil+'\nContacto: '+payload.Contacto+'\nDetalles: '+payload.Detalles);
+      window.location.href='mailto:contacto@tribuconnection.com?subject=Quiero%20sumarme%20a%20la%20Tribu&body='+body;
+    }finally{ btn.textContent='Enviar'; btn.disabled=false; }
+  });
+})();
 </script>
 </body>
 </html>
