@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Un Instante Eterno · Ciclo de Encuentros — El Beso del Árbol</title>
+<meta name="description" content="Una noche para volver a conectar con vos. 8 de agosto · 18:00 hs · INKI OTANI, Florida, Buenos Aires.">
+<link rel="canonical" href="https://tribuconnection.com/un-instante-eterno/">
+<meta property="og:title" content="Un Instante Eterno · Ciclo de Encuentros">
+<meta property="og:description" content="Una noche para volver a conectar con vos. 8 de agosto · 18:00 hs · INKI OTANI, Buenos Aires.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tribuconnection.com/un-instante-eterno/">
+<meta property="og:image" content="https://tribuconnection.com/un-instante-eterno/img/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="628">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Un Instante Eterno · Ciclo de Encuentros">
+<meta name="twitter:description" content="Una noche para volver a conectar con vos. 8 de agosto · 18:00 hs · INKI OTANI, Buenos Aires.">
+<meta name="twitter:image" content="https://tribuconnection.com/un-instante-eterno/img/og-cover.jpg">
+
+<!--
+================================================================================
+  UN INSTANTE ETERNO — Landing
+  Desarrollado por Tribu Connection
+
+  ▸ PENDIENTES A CARGAR (buscar la palabra PENDIENTE en este archivo):
+      1. VIDEO      → constante CONFIG.videoId  (ID de YouTube, ~30s, vertical)
+      2. WHATSAPP   → constante CONFIG.whatsapp (número con código país, sin +)
+      3. ZOOM       → constante CONFIG.zoomUrl  (landing de inscripción)
+                      Si el Zoom no está activo: borrar el bloque #bloque-zoom
+      4. FOTOS "DÓNDE" → 3 archivos de Gabriel (living / parque / cocina).
+                      Reemplazar los <img> de la sección DÓNDE.
+  ▸ Las imágenes van embebidas en base64 para que este archivo sea
+    autocontenido y se pueda previsualizar de una. Para producción,
+    extraerlas a /img y referenciarlas por ruta (mejor caché y peso).
+================================================================================
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,600;6..96,700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/* ─── TOKENS ────────────────────────────────────────────────────────────── */
+:root{
+  --noche:      #0C0908;   /* fondo base, negro cálido */
+  --brasa:      #16100C;   /* superficies elevadas */
+  --madera:     #2C2018;   /* bordes / hairlines */
+  --ambar:      #C07C3A;   /* acento: llama de vela. Usar con cuentagotas */
+  --ambar-tenue:rgba(192,124,58,.22);
+  --crema:      #E8DECF;   /* texto principal */
+  --tenue:      #9C8B79;   /* texto secundario */
+
+  --display:'Bodoni Moda', 'Didot', Georgia, serif;
+  --texto:'Jost', -apple-system, 'Segoe UI', sans-serif;
+
+  --gap: clamp(48px, 8vw, 104px);
+  --marco: clamp(20px, 5vw, 64px);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--noche); color:var(--crema);
+  font-family:var(--texto); font-weight:300; font-size:17px; line-height:1.75;
+  -webkit-font-smoothing:antialiased; overflow-x:hidden;
+}
+img{max-width:100%;display:block}
+::selection{background:var(--ambar);color:var(--noche)}
+
+.env{max-width:1180px;margin:0 auto;padding:0 var(--marco)}
+section{padding:var(--gap) 0;position:relative}
+
+/* ─── TIPOGRAFÍA ────────────────────────────────────────────────────────── */
+.eyebrow{
+  font-size:11px; font-weight:400; letter-spacing:.42em; text-transform:uppercase;
+  color:var(--ambar); margin-bottom:28px;
+}
+h1,h2{font-family:var(--display);font-weight:400;line-height:1.06;letter-spacing:.06em}
+h1{font-size:clamp(38px,6.6vw,74px);text-transform:uppercase}
+h2{font-size:clamp(26px,3.4vw,40px);text-transform:uppercase;letter-spacing:.1em}
+p{max-width:62ch}
+p + p{margin-top:1.35em}
+/* Cortes de línea pedidos por el cliente. Se aplican de 720px para arriba;
+   abajo de eso el texto corta solo, si no se desborda en el celular. */
+.corte{display:none}
+em{font-style:italic;font-family:var(--display);font-size:1.06em}
+
+/* ─── BOTONES ───────────────────────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:12px;
+  font-family:var(--texto);font-size:12px;font-weight:400;
+  letter-spacing:.26em;text-transform:uppercase;text-decoration:none;
+  padding:19px 40px;border:1px solid var(--ambar);border-radius:2px;
+  background:transparent;color:var(--ambar);cursor:pointer;
+  transition:background .45s ease,color .45s ease;
+  text-align:center;
+}
+.btn:hover,.btn:focus-visible{background:var(--ambar);color:var(--noche)}
+.btn--solid{background:var(--ambar);color:var(--noche)}
+.btn--solid:hover,.btn--solid:focus-visible{background:transparent;color:var(--ambar)}
+.btn--ghost{border-color:var(--madera);color:var(--tenue)}
+.btn--ghost:hover,.btn--ghost:focus-visible{background:transparent;border-color:var(--crema);color:var(--crema)}
+.btn--full{display:flex;width:100%}
+:focus-visible{outline:2px solid var(--ambar);outline-offset:4px}
+
+/* ─── HERO ──────────────────────────────────────────────────────────────── */
+.hero{
+  position:relative;
+  min-height:100vh;min-height:100svh;display:flex;align-items:center;
+  padding-top:calc(var(--gap) * .8);padding-bottom:calc(var(--gap) * .8);
+  overflow:hidden;
+}
+.hero__grid{display:grid;gap:clamp(40px,6vw,72px);align-items:center;position:relative;z-index:2}
+.hero__copy{max-width:520px}
+.hero h1{margin-bottom:26px}
+.hero__sub{
+  font-family:var(--display);font-style:italic;font-size:clamp(18px,2.1vw,23px);
+  color:var(--crema);line-height:1.5;max-width:22ch;
+}
+.hero__linea{width:44px;height:1px;background:var(--ambar);margin:34px 0}
+.hero__dato{
+  font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--tenue);
+  line-height:2.1;margin-bottom:38px;
+}
+.hero__dato b{color:var(--crema);font-weight:400}
+
+/* Firma de la página: el eclipse que respira.
+   Un anillo de luz (inhala 4s · exhala 6s) con un punto de luz que lo recorre
+   lentamente. Es el círculo del afiche de referencia, hecho respiración. */
+.aliento{
+  position:absolute;pointer-events:none;z-index:1;
+  right:13%;top:50%;
+  width:min(80vh,700px);aspect-ratio:1;transform:translateY(-50%);
+}
+.aliento__nucleo{
+  position:absolute;inset:0;
+  animation:respirar 11s cubic-bezier(.4,0,.5,1) infinite;
+}
+.aliento__halo{
+  position:absolute;inset:-16%;border-radius:50%;
+  background:radial-gradient(circle,rgba(192,124,58,.14) 0%,rgba(192,124,58,.05) 44%,transparent 68%);
+}
+.aliento__anillo{
+  position:absolute;inset:0;border-radius:50%;
+  border:1px solid rgba(192,124,58,.40);
+  box-shadow:0 0 60px rgba(192,124,58,.10), inset 0 0 70px rgba(192,124,58,.06);
+}
+.aliento__anillo--in{inset:16%;border-color:rgba(192,124,58,.14);box-shadow:none}
+.aliento__orbita{position:absolute;inset:0;animation:orbitar 26s linear infinite}
+/* Destello, no bolita: sin fondo sólido ni borde: sólo un degradado radial que
+   se apaga suave, más un desenfoque para que no quede ningún canto duro. */
+.aliento__luz{
+  position:absolute;top:0;left:50%;
+  width:180px;height:180px;transform:translate(-50%,-50%);
+  border-radius:50%;filter:blur(9px);
+  background:radial-gradient(circle,
+    rgba(255,244,224,.40) 0%,
+    rgba(243,204,150,.24) 18%,
+    rgba(210,144,74,.12) 38%,
+    rgba(192,124,58,.05) 56%,
+    rgba(192,124,58,0)   72%);
+}
+@keyframes respirar{
+  0%   {transform:scale(1);    opacity:.7}
+  36%  {transform:scale(1.05); opacity:1}
+  46%  {transform:scale(1.05); opacity:1}
+  100% {transform:scale(1);    opacity:.7}
+}
+@keyframes orbitar{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+
+/* ─── VIDEO (vertical 9:16) ─────────────────────────────────────────────── */
+.video{
+  position:relative;aspect-ratio:9/16;width:100%;max-width:340px;margin:0 auto;
+  max-height:76vh;max-height:76svh;border:1px solid var(--madera);border-radius:3px;
+  overflow:hidden;background:var(--brasa);cursor:pointer;
+}
+.video img{width:100%;height:100%;object-fit:cover;opacity:.62;transition:opacity .6s,transform 6s ease-out}
+.video:hover img{opacity:.78;transform:scale(1.03)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.video__play{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:20px;
+  border:0;background:transparent;color:var(--crema);cursor:pointer;font-family:var(--texto);
+}
+.video__anillo{
+  width:64px;height:64px;border:1px solid var(--crema);border-radius:50%;
+  display:grid;place-items:center;transition:border-color .4s,background .4s;
+}
+.video__anillo svg{width:14px;height:16px;margin-left:3px;fill:var(--crema);transition:fill .4s}
+.video:hover .video__anillo{background:var(--ambar);border-color:var(--ambar)}
+.video:hover .video__anillo svg{fill:var(--noche)}
+.video__label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--crema)}
+
+/* ─── EL ESPEJO ─────────────────────────────────────────────────────────
+   Bloque centrado y compuesto: los renglones están donde los pidió el
+   cliente. El renglón más largo tiene 81 caracteres, así que los cortes
+   fijos sólo entran de 1000px para arriba; abajo de eso el texto corta
+   solo dentro de una columna de lectura. Las tres frases clave en crema
+   + 700: quien no lee todo, se lleva el sentido leyendo sólo las negritas. */
+.espejo{background:var(--brasa);border-block:1px solid var(--madera);text-align:center}
+.espejo .env{max-width:900px}
+.espejo p{
+  font-family:var(--display);font-weight:400;
+  font-size:clamp(18px,1.95vw,22px);line-height:1.75;
+  color:#B8A895;max-width:640px;margin-inline:auto;
+}
+.espejo p + p{margin-top:1.15em}
+.espejo b{font-weight:700;color:var(--crema)}
+.espejo__cierre{
+  color:var(--ambar) !important;font-style:italic;
+  font-size:clamp(19px,2vw,23px) !important;line-height:1.5 !important;
+  margin-top:1.9em !important;max-width:none !important;
+}
+.corte-esp{display:none}
+.corte2{display:none}
+
+
+/* ─── QUÉ ES ────────────────────────────────────────────────────────────── */
+.qes__grid{display:grid;gap:clamp(36px,5vw,80px);align-items:start}
+.epigrafe{
+  font-family:var(--display);font-style:italic;font-size:clamp(21px,2.7vw,30px);
+  line-height:1.45;color:var(--crema);
+}
+.qes__cuerpo p{color:#B8A895;font-weight:300}
+.qes__cuerpo b{font-weight:600;color:var(--crema)}
+.cita{
+  font-family:var(--display);font-style:italic;color:var(--crema);
+  border-left:1px solid var(--ambar);padding-left:26px;margin:2.4em 0 !important;
+  font-size:clamp(17px,1.9vw,20px);line-height:1.6;
+}
+.noes{margin-top:2.4em;border-top:1px solid var(--madera);padding-top:1.6em}
+.qes__foto{
+  margin-top:clamp(36px,4.5vw,60px);overflow:hidden;background:var(--brasa);
+  aspect-ratio:16/10;border:1px solid var(--madera);
+}
+.qes__foto img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(.9) brightness(.9);transition:transform 1.4s ease,filter 1.2s ease;
+}
+.qes__foto:hover img{transform:scale(1.03);filter:saturate(1) brightness(1)}
+.noes span{
+  display:block;font-size:11px;font-weight:300;letter-spacing:.34em;
+  text-transform:uppercase;color:var(--tenue);padding:11px 0;
+}
+.noes span + span{border-top:1px solid rgba(44,32,24,.6)}
+
+/* ─── HITOS ─────────────────────────────────────────────────────────────── */
+.hitos{margin-top:var(--gap);border-top:1px solid var(--madera);padding-top:clamp(32px,4vw,50px)}
+.hitos__t{
+  font-size:11px;letter-spacing:.42em;text-transform:uppercase;color:var(--ambar);
+  margin-bottom:44px;
+}
+.hitos__grid{display:grid;gap:clamp(34px,4vw,52px)}
+.hito__n{
+  font-family:var(--display);font-size:15px;color:var(--ambar);
+  letter-spacing:.2em;margin-bottom:16px;
+}
+.hito__t{
+  font-family:var(--display);font-size:22px;letter-spacing:.04em;
+  color:var(--crema);margin-bottom:12px;
+}
+.hito p{font-size:15px;color:var(--tenue);line-height:1.7}
+.hito__opc{
+  display:inline-block;margin-top:14px;font-size:10px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--ambar);border:1px solid var(--ambar-tenue);
+  padding:5px 12px;border-radius:2px;
+}
+
+/* ─── DÓNDE ─────────────────────────────────────────────────────────────── */
+.donde{background:var(--brasa);border-block:1px solid var(--madera)}
+.galeria{display:grid;gap:10px;margin-bottom:clamp(48px,6vw,72px)}
+.galeria figure{overflow:hidden;background:var(--noche);aspect-ratio:4/5}
+.galeria img{width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.86);transition:transform 1.2s ease,filter 1.2s ease}
+.galeria figure:hover img{transform:scale(1.05);filter:saturate(1) brightness(1)}
+.donde__grid{display:grid;gap:clamp(36px,5vw,72px);align-items:start}
+.donde__txt{font-size:clamp(16px,1.7vw,19px);color:var(--crema);line-height:1.75;max-width:none}
+.datos{border-top:1px solid var(--madera)}
+.datos div{
+  display:flex;justify-content:space-between;gap:24px;align-items:baseline;
+  padding:16px 0;border-bottom:1px solid var(--madera);
+}
+.datos dt{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--tenue)}
+.datos dd{font-family:var(--display);font-size:17px;color:var(--crema);text-align:right}
+
+/* ─── PRUEBA SOCIAL ─────────────────────────────────────────────────────── */
+.social__cab{
+  display:grid;gap:clamp(36px,5vw,64px);align-items:center;
+  margin-bottom:clamp(48px,6vw,72px);
+}
+.social__intro{
+  font-family:var(--display);font-size:clamp(19px,2.3vw,26px);font-style:italic;
+  line-height:1.6;max-width:24ch;
+}
+.social__foto{overflow:hidden;background:var(--brasa);aspect-ratio:4/3}
+.social__foto img{
+  width:100%;height:100%;object-fit:cover;
+  filter:saturate(.85) brightness(.9);transition:transform 1.4s ease,filter 1.2s ease;
+}
+.social__foto:hover img{transform:scale(1.04);filter:saturate(1) brightness(1)}
+.testis{display:grid;gap:12px;margin-bottom:var(--gap)}
+.testi{border:1px solid var(--madera);border-radius:2px;padding:clamp(24px,3vw,34px)}
+.testi__n{
+  font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ambar);
+  margin-bottom:16px;
+}
+.testi p{font-size:15.5px;color:var(--tenue);line-height:1.75;max-width:none}
+
+/* ─── BIO ───────────────────────────────────────────────────────────────── */
+.bio{border-top:1px solid var(--madera);padding-top:clamp(36px,4.5vw,54px)}
+.bio__grid{display:grid;gap:clamp(36px,4.5vw,56px)}
+.bio__foto{aspect-ratio:3/4;overflow:hidden;background:var(--brasa);margin-bottom:26px}
+.bio__foto img{width:100%;height:100%;object-fit:cover;filter:saturate(.8) brightness(.88);transition:filter 1s}
+.bio__card:hover .bio__foto img{filter:saturate(1) brightness(1)}
+.bio__n{
+  font-family:var(--display);font-size:22px;letter-spacing:.05em;margin-bottom:14px;
+  display:flex;align-items:center;gap:12px;
+}
+.bio__ig{
+  display:grid;place-items:center;width:26px;height:26px;flex-shrink:0;
+  color:var(--tenue);transition:color .35s ease;
+}
+.bio__ig:hover,.bio__ig:focus-visible{color:var(--ambar)}
+.bio__ig svg{width:17px;height:17px}
+.bio__card p{font-size:15px;color:var(--tenue);line-height:1.75;text-align:justify;text-justify:inter-word}
+.bio__firma{margin-top:clamp(36px,4.5vw,48px);text-align:center}
+.bio__firma em{display:block;font-size:clamp(18px,2.2vw,24px);color:var(--crema);margin-bottom:14px}
+.bio__firma span{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--tenue)}
+
+/* ─── NEWSLETTER ────────────────────────────────────────────────────────── */
+.news{text-align:center}
+.news .eyebrow{margin-left:auto;margin-right:auto}
+.news .env{max-width:620px}
+.news__txt{
+  font-family:var(--display);font-size:clamp(19px,2.3vw,25px);line-height:1.55;
+  color:var(--crema);margin:0 auto 40px;
+}
+.news__txt b{color:var(--ambar);font-weight:400;font-style:italic}
+
+/* ─── PRECIO ────────────────────────────────────────────────────────────── */
+.precio{background:var(--brasa);border-block:1px solid var(--madera)}
+.precio .env{max-width:620px;text-align:center}
+.precio h2{margin-bottom:44px}
+.card{border:1px solid var(--madera);border-radius:3px;padding:clamp(32px,5vw,52px);background:var(--noche)}
+.card__framing{
+  font-size:12.5px;letter-spacing:.04em;color:var(--tenue);line-height:1.7;
+  max-width:40ch;margin:0 auto 34px;
+}
+
+/* Precio: por defecto lista mediana + descuento protagonista */
+.precio__bloque{margin-bottom:34px}
+.precio__lista{
+  font-family:var(--display);font-size:clamp(27px,4vw,38px);line-height:1;
+  color:var(--tenue);margin-bottom:16px;transition:all .4s ease;
+}
+.tachable{position:relative;display:inline-block}
+.precio__desc{display:flex;flex-direction:column;gap:6px}
+.precio__desc-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--ambar)}
+.precio__desc-monto{
+  font-family:var(--display);font-size:clamp(42px,6.4vw,60px);line-height:1;
+  color:var(--crema);letter-spacing:.02em;
+}
+/* Estado con cupón aplicado: se invierte la jerarquía */
+.precio__bloque[data-cupon="si"] .precio__lista{
+  font-size:clamp(18px,2.4vw,23px);color:var(--tenue);order:2;margin:14px 0 0;
+}
+.precio__bloque[data-cupon="si"] .tachable::after{
+  content:'';position:absolute;left:-4%;right:-4%;top:52%;height:1.5px;
+  background:var(--tenue);transform:scaleX(0);transform-origin:left;
+  animation:tachar .5s .1s cubic-bezier(.6,0,.2,1) forwards;
+}
+@keyframes tachar{to{transform:scaleX(1)}}
+.precio__bloque[data-cupon="si"]{display:flex;flex-direction:column}
+.precio__bloque[data-cupon="si"] .precio__desc-label{color:#7BAE7B}
+.precio__bloque[data-cupon="si"] .precio__desc-monto{font-size:clamp(47px,7.3vw,67px)}
+
+/* Campo de cupón */
+.cupon{border-top:1px solid var(--madera);border-bottom:1px solid var(--madera);padding:26px 0;margin-bottom:34px;text-align:left}
+.cupon__label{display:block;font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--tenue);margin-bottom:12px}
+.cupon__row{display:flex;gap:8px}
+.cupon__input{
+  flex:1;min-width:0;font-family:var(--texto);font-size:15px;letter-spacing:.04em;
+  color:var(--crema);background:var(--brasa);border:1px solid var(--madera);
+  border-radius:2px;padding:13px 16px;transition:border-color .3s;
+}
+.cupon__input::placeholder{color:#6B5C4E}
+.cupon__input:focus{outline:none;border-color:var(--ambar)}
+.cupon__btn{
+  font-family:var(--texto);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  background:transparent;border:1px solid var(--ambar);color:var(--ambar);
+  padding:0 20px;border-radius:2px;cursor:pointer;white-space:nowrap;transition:background .3s,color .3s;
+}
+.cupon__btn:hover{background:var(--ambar);color:var(--noche)}
+.cupon__msg{font-size:12px;letter-spacing:.02em;margin-top:12px;min-height:1em;transition:color .3s}
+.cupon__msg[data-estado="ok"]{color:#7BAE7B}
+.cupon__msg[data-estado="err"]{color:#C77}
+.cupon__link{display:inline-block;margin-top:14px;font-size:11.5px;color:var(--ambar);text-decoration:none;border-bottom:1px solid var(--ambar-tenue);transition:border-color .3s}
+.cupon__link:hover{border-color:var(--ambar)}
+
+.card__limite{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--tenue);margin:20px auto 0}
+.card .btn{width:100%}
+.precio__nota{font-size:13.5px;color:var(--tenue);margin:28px auto 0;max-width:46ch;line-height:1.9}
+
+/* Bloque de pago desplegable */
+.pago{
+  display:grid;grid-template-rows:0fr;
+  transition:grid-template-rows .6s cubic-bezier(.4,0,.2,1),opacity .5s;
+  opacity:0;
+}
+.pago[data-abierto="true"]{grid-template-rows:1fr;opacity:1}
+.pago__in{overflow:hidden}
+.pago__body{margin-top:36px;border-top:1px solid var(--madera);padding-top:36px;text-align:left}
+.paso{margin-bottom:30px}
+.paso:last-child{margin-bottom:0}
+.paso__n{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--ambar);margin-bottom:12px}
+.paso p{font-size:14.5px;color:var(--tenue);margin-bottom:16px}
+.pago__monto{color:var(--crema)}
+.pago__monto .via{color:var(--tenue);text-decoration:line-through;margin-right:6px}
+.alias{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  border:1px solid var(--madera);border-radius:2px;padding:14px 14px 14px 20px;background:var(--brasa);
+}
+.alias code{font-family:var(--texto);font-size:17px;letter-spacing:.04em;color:var(--crema)}
+.alias button{
+  font-family:var(--texto);font-size:10px;letter-spacing:.22em;text-transform:uppercase;
+  background:transparent;border:1px solid var(--ambar);color:var(--ambar);
+  padding:10px 16px;border-radius:2px;cursor:pointer;white-space:nowrap;
+  transition:background .3s,color .3s;
+}
+.alias button:hover{background:var(--ambar);color:var(--noche)}
+.alias button[data-copiado="true"]{background:var(--ambar);color:var(--noche);border-color:var(--ambar)}
+
+/* ─── CIERRE ────────────────────────────────────────────────────────────── */
+.cierre .env{max-width:920px;text-align:center}
+.cierre__intro{
+  font-family:var(--display);font-style:italic;font-size:clamp(19px,2.3vw,26px);
+  line-height:1.5;margin:0 auto 36px;max-width:24ch;color:var(--crema);
+}
+/* Zoom con protagonismo: card enmarcada, no una nota al pie */
+.zoom{
+  margin-top:clamp(36px,5vw,56px);border:1px solid var(--ambar-tenue);border-radius:3px;
+  padding:clamp(32px,5vw,52px);background:linear-gradient(180deg,rgba(192,124,58,.05),transparent);
+}
+.zoom__k{font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:var(--ambar);margin:0 auto 20px}
+.zoom__txt{
+  font-family:var(--display);font-style:italic;font-size:clamp(18px,2vw,23px);
+  line-height:1.55;margin:0 auto 32px;max-width:58ch;color:var(--crema);
+}
+.btn--zoom{border-color:var(--ambar);color:var(--ambar)}
+.btn--zoom:hover,.btn--zoom:focus-visible{background:var(--ambar);color:var(--noche)}
+.zoom .sep{margin:0 auto 30px}
+.sep{display:flex;align-items:center;gap:18px;max-width:280px}
+.sep::before,.sep::after{content:'';flex:1;height:1px;background:var(--ambar-tenue)}
+.sep i{width:7px;height:7px;border:1px solid var(--ambar);border-radius:50%}
+
+/* ─── COMPARTIR ─────────────────────────────────────────────────────────── */
+.compartir{background:var(--brasa);border-top:1px solid var(--madera);text-align:center}
+.compartir__t{font-family:var(--display);font-size:clamp(22px,2.8vw,30px);color:var(--crema);margin:0 auto 12px}
+.compartir__s{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--tenue);margin:0 auto 36px}
+.compartir__btns{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
+.share{
+  display:inline-flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none;
+  font-family:var(--texto);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tenue);
+  background:transparent;border:1px solid var(--madera);border-radius:2px;padding:14px 22px;
+  transition:color .35s ease,border-color .35s ease;
+}
+.share svg{width:17px;height:17px}
+.share:hover,.share:focus-visible{color:var(--ambar);border-color:var(--ambar)}
+.share[data-copiado="true"]{color:var(--ambar);border-color:var(--ambar)}
+
+
+/* ─── FOOTER ────────────────────────────────────────────────────────────
+   Tres zonas: redes a la izquierda · marca al centro · crédito a la derecha.
+   La marca queda centrada de verdad porque las dos columnas laterales son 1fr. */
+footer{border-top:1px solid var(--madera);padding:56px 0 44px}
+.foot{display:grid;gap:38px;justify-items:center;text-align:center}
+
+.foot__redes{display:flex;gap:14px;list-style:none}
+.foot__redes a{
+  display:grid;place-items:center;width:42px;height:42px;
+  border:1px solid var(--madera);border-radius:50%;color:var(--tenue);
+  transition:color .4s ease,border-color .4s ease;
+}
+.foot__redes a:hover,.foot__redes a:focus-visible{color:var(--ambar);border-color:var(--ambar)}
+.foot__redes svg{width:19px;height:19px}
+
+/* max-width:none → si no, hereda el max-width:62ch de p y el centrado
+   se calcula dentro de esa caja, no dentro del ancho real del pie */
+.foot__marca{
+  font-family:var(--display);font-size:13px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--tenue);max-width:none;
+}
+.foot__dev{display:inline-flex;flex-direction:row;align-items:center;gap:18px;text-decoration:none}
+.foot__dev-t{
+  font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:#6B5C4E;
+  line-height:2;text-align:left;white-space:nowrap;transition:color .4s ease;
+}
+.foot__dev:hover .foot__dev-t,.foot__dev:focus-visible .foot__dev-t{color:var(--tenue)}
+.foot__dev img{width:120px;height:auto;opacity:1}
+
+/* ─── REVELADO AL SCROLL ────────────────────────────────────────────────
+   El contenido está VISIBLE por defecto. La animación sólo se enciende si
+   el JS corre y la activa (html.anim). Si el script falla, no existe o el
+   navegador es viejo, la página se ve igual: nunca depende del JavaScript. */
+.rev{opacity:1;transform:none}
+html.anim .rev{
+  opacity:0;transform:translateY(22px);
+  transition:opacity 1.1s ease,transform 1.1s cubic-bezier(.2,.7,.3,1);
+}
+html.anim .rev.on{opacity:1;transform:none}
+
+/* ─── ESCALA ────────────────────────────────────────────────────────────── */
+@media (min-width:720px){
+  .corte{display:inline}
+  .hero__sub,.cierre__intro,.precio__nota{max-width:none}
+  /* nowrap: los renglones quedan donde los pusiste, sin depender de cuánto
+     mida la fuente real. Los contenedores tienen aire de sobra para que entren.
+     .zoom__txt queda afuera a propósito: su ancho ya se autocalibra en ch
+     (ver su regla propia), así nunca desborda la card sea cual sea la fuente real. */
+  .cierre__intro,.precio__nota{white-space:nowrap}
+  .galeria{grid-template-columns:repeat(3,1fr)}
+  .testis{grid-template-columns:1fr 1fr}
+  .bio__grid{grid-template-columns:1fr 1fr}
+  .hitos__grid{grid-template-columns:repeat(3,1fr)}
+  .social__cab{grid-template-columns:1fr 1fr}
+}
+/* El pie de 3 columnas necesita más ancho: el crédito lleva la leyenda al lado */
+@media (min-width:840px){
+  .foot{grid-template-columns:1fr auto 1fr;gap:24px;align-items:center}
+  .foot__redes{justify-self:start}
+  .foot__dev{justify-self:end}
+}
+@media (min-width:900px){
+  .espejo__cierre{white-space:nowrap}
+  /* Los cuatro renglonados pedidos por el cliente. nowrap para que no dependan
+     de cuánto mida la fuente real; las columnas se ensancharon para que entren. */
+  .corte2{display:inline}
+  .donde__txt,.cita{white-space:nowrap}
+  .junto{white-space:nowrap}
+  /* sin el max-width los renglones pedidos no entran en 24ch */
+  .social__intro{max-width:none;white-space:nowrap}
+}
+@media (min-width:1200px){
+  /* mantiene unida la frase en negrita → el corte cae solo donde se pidió */
+  .qes__ultimo b{white-space:nowrap}
+}
+@media (min-width:1000px){
+  .espejo .env{max-width:1180px}
+  .espejo p{max-width:none;white-space:nowrap}
+  .corte-esp{display:inline}
+}
+@media (min-width:900px){
+  .hero__grid{grid-template-columns:.85fr 1.05fr}
+  .hero__copy{order:2}
+  .video{order:1}
+  .qes__grid{grid-template-columns:.85fr 1.15fr}
+  .donde__grid{grid-template-columns:1.4fr .6fr}
+  .video{max-width:390px;margin:0 auto 0 0}
+}
+@media (max-width:899px){
+  .aliento{right:auto;left:50%;top:34%;transform:translate(-50%,-50%);width:min(90vw,430px)}
+  @keyframes respirar{
+    0%{transform:translate(-50%,-50%) scale(1);opacity:.45}
+    36%{transform:translate(-50%,-50%) scale(1.045);opacity:.8}
+    46%{transform:translate(-50%,-50%) scale(1.045);opacity:.8}
+    100%{transform:translate(-50%,-50%) scale(1);opacity:.45}
+  }
+  .hero{min-height:auto;padding-top:calc(var(--gap) * .7)}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none !important;transition-duration:.01ms !important}
+  html.anim .rev{opacity:1;transform:none}
+  .aliento{opacity:.55}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ 1 · HERO + VIDEO ════════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="aliento" aria-hidden="true">
+    <div class="aliento__nucleo">
+      <span class="aliento__halo"></span>
+      <span class="aliento__anillo"></span>
+      <span class="aliento__anillo aliento__anillo--in"></span>
+      <span class="aliento__orbita"><i class="aliento__luz"></i></span>
+    </div>
+  </div>
+  <div class="env hero__grid">
+
+    <div class="hero__copy">
+      <p class="eyebrow">Ciclo de encuentros</p>
+      <h1>Un instante<br>eterno</h1>
+      <p class="hero__sub">Una noche para volver <br class="corte">a conectar con vos</p>
+      <div class="hero__linea"></div>
+      <p class="hero__dato">
+        <b>8 de agosto</b> · 18:00 hs<br>
+        <b>INKI OTANI</b> · Buenos Aires
+      </p>
+      <a href="#que-es" class="btn btn--solid" data-scroll>Descubrir la experiencia</a>
+    </div>
+
+    <!-- Video vertical 9:16. Fachada: no carga YouTube hasta el click (sin autoplay). -->
+    <div class="video" id="video" role="button" tabindex="0" aria-label="Reproducir el video de Un Instante Eterno">
+      <img src="img/concierto.jpg" alt="Encuentro de El Beso del Árbol a la luz de las velas" width="1400" height="787">
+      <span class="video__play">
+        <span class="video__anillo"><svg viewBox="0 0 14 16" aria-hidden="true"><path d="M0 0l14 8-14 8z"/></svg></span>
+        <span class="video__label">Ver el teaser</span>
+      </span>
+    </div>
+
+  </div>
+</header>
+
+<!-- ═══ 2 · QUÉ ES EL EVENTO ════════════════════════════════════════════ -->
+<section class="qes" id="que-es">
+  <div class="env">
+    <div class="qes__grid">
+      <div class="qes__izq rev">
+        <p class="epigrafe">¿Hace cuánto que los días <br class="corte">te pasan sin que los <br class="corte">estés viviendo?</p>
+
+        <!-- DEV: los tres "No es…" en tipografía distinta, más chica y espaciada -->
+        <div class="noes">
+          <span>No es una práctica corporal</span>
+          <span>No es un taller</span>
+          <span>No es un simple concierto</span>
+        </div>
+      </div>
+
+      <div class="qes__cuerpo rev">
+        <p><b>Un Instante Eterno es un ciclo de encuentros.</b> Cada uno explora un tema que nos toca a todos: los vínculos, el éxito, la abundancia, el estrés, el miedo al futuro.</p>
+        <p>La propuesta empieza invitándonos a bajar el ritmo. Desde ahí entramos juntos en un recorrido de canciones, respiración y dinámicas somáticas, diseñado para que emerja algo que uno ya sabe pero rara vez se detiene a escuchar: <b>una mirada más clara de quién soy y hacia dónde voy.</b></p>
+
+        <p class="cita">“Hay cosas que no necesitan ser explicadas, <br class="corte2">sólo el momento preciso para revelarse.”</p>
+      </div>
+    </div>
+
+    <figure class="qes__foto rev">
+      <img src="img/transformacion.jpg" alt="De la tensión cotidiana a la calma del encuentro" loading="lazy">
+    </figure>
+
+    <div class="hitos rev">
+      <p class="hitos__t">Los hitos de la noche</p>
+      <div class="hitos__grid">
+        <article class="hito">
+          <p class="hito__n">1 ·</p>
+          <h3 class="hito__t">La llegada</h3>
+          <p>Aquietar la mente para conectar con el cuerpo <span class="junto">y la calma interior.</span></p>
+        </article>
+        <article class="hito">
+          <p class="hito__n">2 ·</p>
+          <h3 class="hito__t">El viaje de regreso</h3>
+          <p>Música en vivo, dinámicas somáticas y experienciales, infusión caliente ayurvédica.</p>
+        </article>
+        <article class="hito">
+          <p class="hito__n">3 ·</p>
+          <h3 class="hito__t">La integración</h3>
+          <p>Cena + bebida a cargo de un chef gourmet.</p>
+          <span class="hito__opc">Opcional · $22.000</span>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 4 · DÓNDE ═══════════════════════════════════════════════════════ -->
+<section class="donde">
+  <div class="env">
+    <!-- Fotos de Andrés/Gabriel: living (handpan) · parque (fogón) · cocina (chef) -->
+    <div class="galeria rev">
+      <figure><img src="img/donde_living.jpg" alt="El living, preparado para la experiencia" loading="lazy"></figure>
+      <figure><img src="img/donde_parque.jpg" alt="El parque, con los fogoneros encendidos" loading="lazy"></figure>
+      <figure><img src="img/donde_cocina.jpg" alt="La cena gourmet, servida por el chef" loading="lazy"></figure>
+    </div>
+
+    <div class="donde__grid rev">
+      <p class="donde__txt">La noche transcurre en una casa privada en Buenos Aires… <br class="corte2">un living diseñado para la experiencia, fogoneros encendidos <br class="corte2">en el parque, y una cena gourmet para quienes eligen quedarse.</p>
+
+      <dl class="datos">
+        <div><dt>Fecha</dt><dd>8 de agosto</dd></div>
+        <div><dt>Hora</dt><dd>18:00 hs</dd></div>
+        <div><dt>Lugar</dt><dd>INKI OTANI<br>Florida, Buenos Aires</dd></div>
+      </dl>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 5 · PRUEBA SOCIAL + BIO ═════════════════════════════════════════ -->
+<section class="social">
+  <div class="env">
+    <div class="social__cab rev">
+      <p class="social__intro">Esto es lo que está generando <br class="corte2">nuestra música en la vida de <br class="corte2">cientos de miles de personas:</p>
+      <figure class="social__foto">
+        <img src="img/instrumentos.jpg" alt="El handpan, la guitarra y las velas antes del encuentro" loading="lazy">
+      </figure>
+    </div>
+
+    <div class="testis rev">
+      <blockquote class="testi">
+        <p class="testi__n">Anna</p>
+        <p>“Su música fue la forma más hermosa de sacarme una vieja venda gastada de una herida aún más vieja. Lo sentí, lo escuché profundamente.”</p>
+      </blockquote>
+      <blockquote class="testi">
+        <p class="testi__n">Astrid</p>
+        <p>“Se me dificulta demasiado concentrarme y gracias a su música no solo logro hacerlo, puedo mantenerme largos períodos de tiempo enfocada.”</p>
+      </blockquote>
+      <blockquote class="testi">
+        <p class="testi__n">Yvonne</p>
+        <p>“Escuché a El Beso Del Árbol entrenando y sentí una calma enorme. Llegué a casa, medité, y mientras pensaba en su música empecé a llorar sin saber por qué. Ahí entendí: su música no acompaña, sana.”</p>
+      </blockquote>
+      <blockquote class="testi">
+        <p class="testi__n">Carlos</p>
+        <p>“Este es el camino correcto hacia el lugar que siempre busqué.”</p>
+      </blockquote>
+    </div>
+
+    <div class="bio rev">
+      <div class="bio__grid">
+        <article class="bio__card">
+          <div class="bio__foto"><img src="img/gabi.jpg" alt="Gabriel Pietronave, El Beso del Árbol" loading="lazy"></div>
+          <h3 class="bio__n">El Beso del Árbol
+            <a class="bio__ig" href="https://www.instagram.com/elbesodelarbol/" target="_blank" rel="noopener" aria-label="Instagram de El Beso del Árbol">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.05" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </h3>
+          <p>El proyecto musical de Gabriel Pietronave, compositor y productor. Su música acompaña hoy a más de 200.000 personas en el mundo —desde Berlín hasta Ciudad de México— como refugio sonoro para volver a la calma.</p>
+        </article>
+        <article class="bio__card">
+          <div class="bio__foto"><img src="img/cintia.jpg" alt="Cintia Belen" loading="lazy"></div>
+          <h3 class="bio__n">Cintia Belen
+            <a class="bio__ig" href="https://www.instagram.com/cintiabelentg/" target="_blank" rel="noopener" aria-label="Instagram de Cintia Belen">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.05" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </h3>
+          <p>Cantora, compositora, bailarina y performer. Ha viajado por el mundo expresando su talento a través de la música, la danza y el escenario. Su obra crea espacios de escucha que invitan a conectar con el corazón y habitar la sensibilidad.</p>
+        </article>
+      </div>
+
+      <div class="bio__firma">
+        <em>“La música expresa lo que es imposible decir con palabras”</em>
+        <span>Cintia Belen &amp; El Beso del Árbol</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ 6 · PRECIO Y RESERVA ════════════════════════════════════════════ -->
+<!-- ═══ 5 · NEWSLETTER · 10% DE DESCUENTO ═══════════════════════════════ -->
+<section class="news">
+  <div class="env rev">
+    <p class="eyebrow">Un regalo para vos</p>
+    <p class="news__txt">Suscribite a nuestro newsletter y obtené un <b>10% de descuento</b> en tu entrada. Además vas a recibir música nueva, próximas fechas y contenido que hacemos solo para quienes están cerca.</p>
+    <!-- DEV: lleva a la mini-landing del newsletter (Anexo A). Poné la ruta en CONFIG.newsletterUrl -->
+    <a class="btn btn--solid" id="newsletter" href="#" target="_blank" rel="noopener">Quiero mi descuento</a>
+  </div>
+</section>
+
+<!-- ═══ 6 · PRECIO Y RESERVA ════════════════════════════════════════════ -->
+<section class="precio" id="reserva">
+  <div class="env rev">
+    <h2>Date este momento</h2>
+
+    <div class="card">
+      <p class="card__framing">Una experiencia de 4+ horas: música en vivo, dinámicas somáticas e infusión ayurvédica.</p>
+
+      <!-- Precio: por defecto $60.000 mediano + el descuento como protagonista.
+           Al aplicar cupón, se invierte la jerarquía (ver JS). -->
+      <div class="precio__bloque" data-cupon="no">
+        <p class="precio__lista"><span class="tachable">$60.000</span></p>
+        <p class="precio__desc">
+          <span class="precio__desc-label">Con tu código del newsletter</span>
+          <span class="precio__desc-monto">$54.000</span>
+        </p>
+      </div>
+
+      <!-- Campo de cupón -->
+      <div class="cupon">
+        <label class="cupon__label" for="cupon-input">¿Tenés tu código?</label>
+        <div class="cupon__row">
+          <input type="text" id="cupon-input" class="cupon__input" placeholder="Ingresá tu código" autocomplete="off" spellcheck="false">
+          <button type="button" id="cupon-btn" class="cupon__btn">Aplicar</button>
+        </div>
+        <p class="cupon__msg" id="cupon-msg" role="status" aria-live="polite"></p>
+        <a class="cupon__link" id="cupon-link" href="#" target="_blank" rel="noopener">¿No tenés código? Conseguilo acá →</a>
+      </div>
+
+      <button class="btn btn--solid btn--full" id="abrirPago" aria-expanded="false" aria-controls="pago">
+        Reservar mi lugar
+      </button>
+
+      <p class="card__limite">Plazas muy limitadas · 8 de agosto</p>
+
+      <div class="pago" id="pago" data-abierto="false">
+        <div class="pago__in"><div class="pago__body">
+
+          <div class="paso">
+            <p class="paso__n">Paso 1</p>
+            <p>Transferí <span class="pago__monto" id="pago-monto">$60.000</span> al alias:</p>
+            <div class="alias">
+              <code id="alias">semilla.arbol.cielo</code>
+              <button id="copiar" data-copiado="false">Copiar alias</button>
+            </div>
+          </div>
+
+          <div class="paso">
+            <p class="paso__n">Paso 2</p>
+            <p>Una vez hecha la transferencia, envianos el comprobante y te confirmamos tu lugar.</p>
+            <a class="btn btn--full" id="wa" href="#" target="_blank" rel="noopener">Enviar comprobante por WhatsApp</a>
+          </div>
+
+        </div></div>
+      </div>
+    </div>
+
+    <p class="precio__nota">Incluye la experiencia completa de la noche. <br class="corte">La cena post-evento es opcional y se coordina en el lugar.</p>
+  </div>
+</section>
+
+<!-- ═══ 7 · CIERRE Y CTA FINAL ══════════════════════════════════════════ -->
+<section class="cierre">
+  <div class="env rev">
+    <p class="cierre__intro">Si sentís que esta noche es para vos, reservá tu lugar.</p>
+    <a href="#reserva" class="btn btn--solid" id="ctaFinal">Reservar mi lugar</a>
+
+    <!-- Zoom con protagonismo. Si el Zoom no está confirmado para el 18/7,
+         borrar este bloque #zoom-block entero (botón + texto), según brief. -->
+    <div class="zoom" id="zoom-block">
+      <div class="sep" aria-hidden="true"><i></i></div>
+      <p class="zoom__k">¿Preferís conocernos primero?</p>
+      <p class="zoom__txt">Sumate a nuestro encuentro gratuito por Zoom — <br class="corte">una muestra de Un Instante Eterno y un momento <br class="corte">para reconectar con el disfrute de estar vivos.</p>
+      <a class="btn btn--zoom" id="zoom" href="#" target="_blank" rel="noopener">Sumarme a la charla gratuita</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COMPARTIR ═══════════════════════════════════════════════════════ -->
+<section class="compartir">
+  <div class="env rev">
+    <p class="compartir__t">¿A quién te gustaría invitar?</p>
+    <p class="compartir__s">Compartí esta experiencia:</p>
+    <div class="compartir__btns">
+      <a class="share" id="share-wa" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.336-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/></svg>
+        <span>WhatsApp</span>
+      </a>
+      <a class="share" id="share-ig" href="https://www.instagram.com/elbesodelarbol/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.2" cy="6.8" r="1.05" fill="currentColor" stroke="none"/></svg>
+        <span>Instagram</span>
+      </a>
+      <button class="share" id="share-copy" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2.5"/><path d="M6 15H5a2 2 0 01-2-2V5a2 2 0 012-2h8a2 2 0 012 2v1"/></svg>
+        <span id="share-copy-label">Copiar enlace</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ══════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="env foot">
+
+    <ul class="foot__redes">
+      <li><a href="https://www.instagram.com/elbesodelarbol/" target="_blank" rel="noopener" aria-label="Instagram de El Beso del Árbol">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="5"/>
+          <circle cx="12" cy="12" r="4.2"/>
+          <circle cx="17.2" cy="6.8" r="1.05" fill="currentColor" stroke="none"/>
+        </svg>
+      </a></li>
+      <li><a href="http://elbesodelarbol.com/" target="_blank" rel="noopener" aria-label="Sitio web de El Beso del Árbol">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true">
+          <circle cx="12" cy="12" r="9"/>
+          <path d="M3.3 9.3h17.4M3.3 14.7h17.4"/>
+          <path d="M12 3c2.4 2.5 3.7 5.6 3.7 9S14.4 18.5 12 21c-2.4-2.5-3.7-5.6-3.7-9S9.6 5.5 12 3z"/>
+        </svg>
+      </a></li>
+    </ul>
+
+    <p class="foot__marca">Un Instante Eterno</p>
+
+    <a class="foot__dev" href="https://tribuconnection.com" target="_blank" rel="noopener">
+      <span class="foot__dev-t">Experiencia digital<br>desarrollada por</span>
+      <img src="img/tribu.png" alt="Tribu Connection" width="120" height="54">
+    </a>
+
+  </div>
+</footer>
+
+<script>
+/* ═══ CONFIGURACIÓN ═══════════════════════════════════════════════════
+   Datos confirmados en el brief v2. Sólo faltan 3 PENDIENTES. */
+var CONFIG = {
+  videoId       : '',                    // PENDIENTE · ID de YouTube del teaser (resuelve Gabriel)
+  zoomUrl       : '',                    // PENDIENTE · link de inscripción al Zoom (resuelve Gabriel)
+  newsletterUrl : '/newsletter',         // mini-landing del Anexo A (ruta interna a maquetar/conectar)
+  whatsapp      : '541155929759',        // confirmado
+  alias         : 'semilla.arbol.cielo', // confirmado
+  cupon         : 'INSTANTE322',         // confirmado · validación en el front
+  precioLista   : 60000,
+  precioDesc    : 54000,
+  waTexto       : 'Hola! Acabo de transferir para reservar mi lugar en Un Instante Eterno. Adjunto el comprobante:'
+};
+
+var fmt = function(n){ return '$' + n.toLocaleString('es-AR'); };
+
+/* ── Links que dependen de CONFIG ── */
+var wa = document.getElementById('wa');
+wa.href = CONFIG.whatsapp
+  ? 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(CONFIG.waTexto)
+  : '#';
+
+var zoom = document.getElementById('zoom');
+if (zoom) zoom.href = CONFIG.zoomUrl || '#';
+
+var newsletterBtn = document.getElementById('newsletter');
+var cuponLink = document.getElementById('cupon-link');
+if (newsletterBtn) newsletterBtn.href = CONFIG.newsletterUrl || '#';
+if (cuponLink) cuponLink.href = CONFIG.newsletterUrl || '#';
+
+/* ── Video: fachada de YouTube, se carga recién al hacer click ── */
+var video = document.getElementById('video');
+function abrirVideo(){
+  if (!CONFIG.videoId || video.dataset.on) return;
+  video.dataset.on = '1';
+  var f = document.createElement('iframe');
+  f.src = 'https://www.youtube-nocookie.com/embed/' + CONFIG.videoId + '?autoplay=1&rel=0&playsinline=1&modestbranding=1';
+  f.allow = 'accelerometer; autoplay; encrypted-media; picture-in-picture';
+  f.allowFullscreen = true;
+  f.title = 'Un Instante Eterno — teaser';
+  video.innerHTML = '';
+  video.appendChild(f);
+}
+video.addEventListener('click', abrirVideo);
+video.addEventListener('keydown', function(e){
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); abrirVideo(); }
+});
+
+/* ── Cupón de descuento (validación en el front) ── */
+var cuponInput = document.getElementById('cupon-input');
+var cuponBtn   = document.getElementById('cupon-btn');
+var cuponMsg   = document.getElementById('cupon-msg');
+var bloque     = document.querySelector('.precio__bloque');
+var pagoMonto  = document.getElementById('pago-monto');
+var cuponAplicado = false;
+
+function pintarMonto(){
+  if (cuponAplicado) {
+    pagoMonto.innerHTML = '<span class="via">' + fmt(CONFIG.precioLista) + '</span>' + fmt(CONFIG.precioDesc);
+  } else {
+    pagoMonto.textContent = fmt(CONFIG.precioLista);
+  }
+}
+function aplicarCupon(){
+  var val = (cuponInput.value || '').trim().toUpperCase();
+  if (!val) return;
+  if (val === CONFIG.cupon) {
+    cuponAplicado = true;
+    bloque.setAttribute('data-cupon', 'si');
+    cuponMsg.textContent = 'Descuento aplicado ✓';
+    cuponMsg.setAttribute('data-estado', 'ok');
+    cuponInput.disabled = true;
+    cuponBtn.disabled = true;
+    cuponBtn.style.opacity = '.5';
+  } else {
+    cuponMsg.textContent = 'Código no válido';
+    cuponMsg.setAttribute('data-estado', 'err');
+  }
+  pintarMonto();
+}
+cuponBtn.addEventListener('click', aplicarCupon);
+cuponInput.addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); aplicarCupon(); } });
+pintarMonto();
+
+/* ── Bloque de pago ── */
+var pago = document.getElementById('pago');
+var abrirPago = document.getElementById('abrirPago');
+var card = document.querySelector('.precio .card');
+
+function togglePago(forzar){
+  var abierto = (typeof forzar === 'boolean') ? forzar : (pago.dataset.abierto !== 'true');
+  pago.dataset.abierto = abierto;
+  abrirPago.setAttribute('aria-expanded', abierto);
+}
+
+/* Deja la tarjeta arriba de todo para que el bloque de pago entre en pantalla
+   sin tener que scrollear a mano. El scroll suave lo da el CSS. */
+function irAlPago(){
+  var y = card.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop) - 40;
+  window.scrollTo(0, y < 0 ? 0 : y);
+}
+
+abrirPago.addEventListener('click', function(){
+  var abriendo = pago.dataset.abierto !== 'true';
+  togglePago();
+  if (abriendo) {
+    irAlPago();
+    /* Se repite al terminar de desplegarse: recién ahí la página tiene su
+       alto final y el primer scroll podría haber quedado corto. */
+    setTimeout(irAlPago, 650);
+  }
+});
+
+/* ── Copiar alias ── */
+var btnCopiar = document.getElementById('copiar');
+btnCopiar.addEventListener('click', function(){
+  function aviso(){
+    btnCopiar.textContent = 'Copiado ✓';
+    btnCopiar.dataset.copiado = 'true';
+    setTimeout(function(){
+      btnCopiar.textContent = 'Copiar alias';
+      btnCopiar.dataset.copiado = 'false';
+    }, 2200);
+  }
+  function respaldo(){
+    var t = document.createElement('textarea');
+    t.value = CONFIG.alias; t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t); t.select();
+    try { document.execCommand('copy'); } catch (e) {}
+    t.remove(); aviso();
+  }
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(CONFIG.alias).then(aviso, respaldo);
+  } else {
+    respaldo();
+  }
+});
+
+/* ── CTA final de la sección 7: baja a la reserva y abre el pago ── */
+var ctaFinal = document.getElementById('ctaFinal');
+if (ctaFinal) {
+  ctaFinal.addEventListener('click', function(){
+    togglePago(true);
+    setTimeout(irAlPago, 650);
+  });
+}
+
+/* ── Compartir ──
+   DEV: URL provisoria confirmada por el cliente. Si cambia la ruta final
+   dentro de elbesodelarbol.com, actualizar shareData.url. */
+var shareData = {
+  url: 'https://www.elbesodelarbol.com/un-instante-eterno',
+  texto: 'Te invito a Un Instante Eterno, un ciclo de encuentros para volver a conectar. 8 de agosto, Buenos Aires:'
+};
+var shareWa = document.getElementById('share-wa');
+if (shareWa) shareWa.href = 'https://wa.me/?text=' + encodeURIComponent(shareData.texto + ' ' + shareData.url);
+
+var shareCopy = document.getElementById('share-copy');
+var shareCopyLabel = document.getElementById('share-copy-label');
+if (shareCopy) {
+  shareCopy.addEventListener('click', function(){
+    function ok(){
+      shareCopyLabel.textContent = 'Enlace copiado ✓';
+      shareCopy.dataset.copiado = 'true';
+      setTimeout(function(){
+        shareCopyLabel.textContent = 'Copiar enlace';
+        shareCopy.dataset.copiado = 'false';
+      }, 2200);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareData.url).then(ok, ok);
+    } else {
+      var t = document.createElement('textarea');
+      t.value = shareData.url; t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); } catch (e) {}
+      t.remove(); ok();
+    }
+  });
+}
+
+/* ── Revelado al scroll (mejora progresiva) ──
+   Sólo se activa si el navegador soporta IntersectionObserver. Si no, el
+   contenido ya está visible y no pasa nada. threshold 0 → funciona sin
+   importar cuán alto sea el elemento. */
+if ('IntersectionObserver' in window &&
+    !(window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches)) {
+
+  document.documentElement.classList.add('anim');
+
+  var io = new IntersectionObserver(function(entradas){
+    for (var i = 0; i < entradas.length; i++) {
+      if (entradas[i].isIntersecting) {
+        entradas[i].target.classList.add('on');
+        io.unobserve(entradas[i].target);
+      }
+    }
+  }, { threshold: 0, rootMargin: '0px 0px -10% 0px' });
+
+  var revs = document.querySelectorAll('.rev');
+  for (var i = 0; i < revs.length; i++) { io.observe(revs[i]); }
+
+  /* Red de seguridad: si tras el primer scroll no se reveló nada, se apaga
+     la animación y queda todo visible. */
+  window.addEventListener('scroll', function(){
+    setTimeout(function(){
+      if (!document.querySelector('.rev.on')) {
+        document.documentElement.classList.remove('anim');
+      }
+    }, 1500);
+  }, { once: true, passive: true });
+}
+</script>
+</body>
+</html>
