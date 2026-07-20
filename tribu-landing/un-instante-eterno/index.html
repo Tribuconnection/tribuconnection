@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Un Instante Eterno · Ciclo de Encuentros — El Beso del Árbol</title>
-<meta name="description" content="Una noche para volver a conectar con vos. 8 de agosto · 18:00 hs · INKI OTANI, Florida, Buenos Aires.">
+<meta name="description" content="Una noche para volver a conectar con vos. 5 de septiembre · 18:00 hs · INKI OTANI, Florida, Buenos Aires.">
 <!-- Favicon: la misma esfera de luz cálida del hero. SVG inline (se ve nítido
      a cualquier tamaño, no pesa una request aparte) + PNG de respaldo para
      navegadores que todavía no soportan favicon en SVG. -->
@@ -13,7 +13,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="img/favicon-180.png">
 <link rel="canonical" href="https://tribuconnection.com/un-instante-eterno/">
 <meta property="og:title" content="Un Instante Eterno · Ciclo de Encuentros">
-<meta property="og:description" content="Una noche para volver a conectar con vos. 8 de agosto · 18:00 hs · INKI OTANI, Buenos Aires.">
+<meta property="og:description" content="Una noche para volver a conectar con vos. 5 de septiembre · 18:00 hs · INKI OTANI, Buenos Aires.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tribuconnection.com/un-instante-eterno/">
 <meta property="og:image" content="https://tribuconnection.com/un-instante-eterno/img/og-cover.jpg">
@@ -21,7 +21,7 @@
 <meta property="og:image:height" content="628">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Un Instante Eterno · Ciclo de Encuentros">
-<meta name="twitter:description" content="Una noche para volver a conectar con vos. 8 de agosto · 18:00 hs · INKI OTANI, Buenos Aires.">
+<meta name="twitter:description" content="Una noche para volver a conectar con vos. 5 de septiembre · 18:00 hs · INKI OTANI, Buenos Aires.">
 <meta name="twitter:image" content="https://tribuconnection.com/un-instante-eterno/img/og-cover.jpg">
 
 <!--
@@ -542,7 +542,9 @@ html.anim .rev.on{opacity:1;transform:none}
   .hero__grid{grid-template-columns:.85fr 1.05fr}
   .hero__copy{order:2}
   .video{order:1}
-  .qes__grid{grid-template-columns:.85fr 1.15fr}
+  .qes .env{max-width:760px}
+  .epigrafe{text-align:center;margin-inline:auto}
+  .qes__foto{aspect-ratio:16/9}
   .donde__grid{grid-template-columns:1.4fr .6fr}
   .video{max-width:390px;margin:0 auto 0 0}
 }
@@ -584,7 +586,7 @@ html.anim .rev.on{opacity:1;transform:none}
       <p class="hero__sub">Una noche para volver <br class="corte">a conectar con vos</p>
       <div class="hero__linea"></div>
       <p class="hero__dato">
-        <b>8 de agosto</b> · 18:00 hs<br>
+        <b>5 de septiembre</b> · 18:00 hs<br>
         <b>INKI OTANI</b> · Buenos Aires
       </p>
       <a href="#que-es" class="btn btn--solid" data-scroll>Descubrir la experiencia</a>
@@ -625,7 +627,7 @@ html.anim .rev.on{opacity:1;transform:none}
         <p><b>Un Instante Eterno es un ciclo de encuentros.</b> Cada uno explora un tema que nos toca a todos: los vínculos, el éxito, la abundancia, el estrés, el miedo al futuro.</p>
 
         <figure class="qes__foto-grupo">
-          <img src="img/grupo.jpg" alt="El grupo reunido junto a Gabriel y Cintia durante el encuentro" loading="lazy">
+          <img src="img/concierto.jpg" alt="El círculo reunido junto a Gabriel y Cintia tocando durante el encuentro" loading="lazy">
         </figure>
 
         <p>La propuesta empieza invitándonos a bajar el ritmo. Desde ahí entramos juntos en un recorrido de canciones, respiración y dinámicas somáticas, diseñado para que emerja algo que uno ya sabe pero rara vez se detiene a escuchar: <b>una mirada más clara de quién soy y hacia dónde voy.</b></p>
@@ -672,7 +674,7 @@ html.anim .rev.on{opacity:1;transform:none}
       <p class="donde__txt">La noche transcurre en una casa privada en Buenos Aires… <br class="corte2">un living diseñado para la experiencia, fogoneros encendidos <br class="corte2">en el parque, y una cena gourmet para quienes eligen quedarse.</p>
 
       <dl class="datos">
-        <div><dt>Fecha</dt><dd>8 de agosto</dd></div>
+        <div><dt>Fecha</dt><dd>5 de septiembre</dd></div>
         <div><dt>Hora</dt><dd>18:00 hs</dd></div>
         <div><dt>Lugar</dt><dd>INKI OTANI<br>Florida, Buenos Aires</dd></div>
       </dl>
@@ -786,7 +788,7 @@ html.anim .rev.on{opacity:1;transform:none}
         Reservar mi lugar
       </button>
 
-      <p class="card__limite">Plazas muy limitadas · 8 de agosto</p>
+      <p class="card__limite">Plazas muy limitadas · 5 de septiembre</p>
 
       <div class="pago" id="pago" data-abierto="false">
         <div class="pago__in"><div class="pago__body">
@@ -1012,7 +1014,7 @@ btnCopiar.addEventListener('click', function(){
    y los meta og:url/og:image del <head> — tienen que ser la misma. */
 var shareData = {
   url: 'https://tribuconnection.com/un-instante-eterno/',
-  texto: 'Te invito a Un Instante Eterno, un ciclo de encuentros para volver a conectar. 8 de agosto, Buenos Aires:'
+  texto: 'Te invito a Un Instante Eterno, un ciclo de encuentros para volver a conectar. 5 de septiembre, Buenos Aires:'
 };
 var shareWa = document.getElementById('share-wa');
 if (shareWa) shareWa.href = 'https://wa.me/?text=' + encodeURIComponent(shareData.texto + ' ' + shareData.url);
