@@ -175,30 +175,28 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 }
 @keyframes orbitar{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
-/* ─── LUZ GUÍA ──────────────────────────────────────────────────────────
-   La misma luz del "aliento" del hero, liberada del círculo: acompaña el
-   scroll de principio a fin, flotando cerca de lo que se está leyendo.
-   Se mueve con inercia (JS al final del body) en vez de pegada 1:1 al
-   scroll, para que la sensación sea de flotar, no de arrastrarse. */
-.guia{
-  position:fixed;inset:0;pointer-events:none;z-index:1;
-  overflow:hidden;
-}
-.guia__luz{
-  position:absolute;top:0;left:0;
-  width:150px;height:150px;transform:translate(-50%,-50%);
-  border-radius:50%;filter:blur(13px);mix-blend-mode:screen;
-  opacity:0;transition:opacity 1.6s ease;
+/* ─── LUZ FOCO ──────────────────────────────────────────────────────────
+   Mientras el hero ocupa la pantalla, la respiración se queda arriba,
+   quieta. Apenas la persona baja más allá de él, esta luz se suelta y
+   salta de título en foto en subtítulo en punteo (.foco), quedándose
+   sobre lo que esté cruzando el centro de la pantalla en cada momento
+   (ver JS: IntersectionObserver + lerp). Se mueve en X y en Y, no en un
+   carril fijo — por eso cambia de lado según dónde esté cada bloque. */
+.foco-luz{
+  position:fixed;top:0;left:0;pointer-events:none;z-index:1;
+  width:190px;height:190px;
+  border-radius:50%;filter:blur(15px);mix-blend-mode:screen;
+  opacity:0;transition:opacity .9s ease;
   background:radial-gradient(circle,
-    rgba(255,244,224,.34) 0%,
-    rgba(243,204,150,.20) 20%,
-    rgba(210,144,74,.10) 42%,
+    rgba(255,244,224,.30) 0%,
+    rgba(243,204,150,.18) 20%,
+    rgba(210,144,74,.09) 42%,
     rgba(192,124,58,.04) 62%,
     rgba(192,124,58,0)   78%);
 }
-.guia__luz.on{opacity:1}
+.foco-luz.on{opacity:1}
 @media (max-width:640px){
-  .guia__luz{width:100px;height:100px}
+  .foco-luz{width:130px;height:130px}
 }
 
 /* ─── VIDEO (vertical 9:16) ─────────────────────────────────────────────── */
@@ -614,9 +612,8 @@ html.anim .rev.on{opacity:1;transform:none}
 </head>
 <body>
 
-<!-- Luz guía: acompaña el scroll de toda la página (ver CSS .guia y el
-     script al final del body). Vive fuera de las secciones a propósito. -->
-<div class="guia" aria-hidden="true"><span class="guia__luz"></span></div>
+<!-- Luz foco: ver CSS .foco-luz y el script al final del body. -->
+<span class="foco-luz" aria-hidden="true"></span>
 
 <!-- ═══ 1 · HERO + VIDEO ════════════════════════════════════════════════ -->
 <header class="hero">
@@ -659,10 +656,10 @@ html.anim .rev.on{opacity:1;transform:none}
   <div class="env">
     <div class="qes__row rev">
       <div class="qes__izq">
-        <p class="epigrafe">¿Cuánto hace que los días <br class="corte">te pasan sin que los <br class="corte">estés viviendo?</p>
+        <p class="epigrafe foco">¿Cuánto hace que los días <br class="corte">te pasan sin que los <br class="corte">estés viviendo?</p>
 
         <!-- DEV: los tres "No es…" en tipografía distinta, más chica y espaciada -->
-        <div class="noes">
+        <div class="noes foco">
           <span>No es una práctica corporal</span>
           <span>No es un taller</span>
           <span>No es un simple concierto</span>
@@ -680,39 +677,39 @@ html.anim .rev.on{opacity:1;transform:none}
         </div>
       </div>
 
-      <figure class="qes__foto">
+      <figure class="qes__foto foco">
         <img src="img/transformacion.jpg" alt="De la tensión cotidiana a la calma del encuentro" loading="lazy">
       </figure>
     </div>
 
     <div class="qes__row qes__row--flip rev">
-      <figure class="qes__foto-grupo">
+      <figure class="qes__foto-grupo foco">
         <img src="img/concierto.jpg" alt="El círculo reunido junto a Gabriel y Cintia tocando durante el encuentro" loading="lazy">
       </figure>
 
       <div class="qes__cuerpo">
-        <p><b>Un Instante Eterno es un ciclo de encuentros.</b> Cada uno explora un tema que nos toca a todos: los vínculos, el éxito, la abundancia, el estrés, el miedo al futuro.</p>
+        <p class="foco"><b>Un Instante Eterno es un ciclo de encuentros.</b> Cada uno explora un tema que nos toca a todos: los vínculos, el éxito, la abundancia, el estrés, el miedo al futuro.</p>
 
-        <p>La propuesta empieza invitándonos a bajar el ritmo. Desde ahí entramos juntos en un recorrido de canciones, respiración y dinámicas somáticas, diseñado para que emerja algo que uno ya sabe pero rara vez se detiene a escuchar: <b>una mirada más clara de quién soy y hacia dónde voy.</b></p>
+        <p class="foco">La propuesta empieza invitándonos a bajar el ritmo. Desde ahí entramos juntos en un recorrido de canciones, respiración y dinámicas somáticas, diseñado para que emerja algo que uno ya sabe pero rara vez se detiene a escuchar: <b>una mirada más clara de quién soy y hacia dónde voy.</b></p>
 
-        <p class="cita">“Hay cosas que no necesitan ser explicadas, <br class="corte2">sólo el momento preciso para revelarse.”</p>
+        <p class="cita foco">“Hay cosas que no necesitan ser explicadas, <br class="corte2">sólo el momento preciso para revelarse.”</p>
       </div>
     </div>
 
     <div class="hitos rev">
       <p class="hitos__t">Los hitos de la noche</p>
       <div class="hitos__grid">
-        <article class="hito">
+        <article class="hito foco">
           <p class="hito__n">1 ·</p>
           <h3 class="hito__t">La llegada</h3>
           <p>Aquietar la mente para conectar con el cuerpo <span class="junto">y la calma interior.</span></p>
         </article>
-        <article class="hito">
+        <article class="hito foco">
           <p class="hito__n">2 ·</p>
           <h3 class="hito__t">El viaje de regreso</h3>
           <p>Música en vivo, dinámicas somáticas y experienciales, infusión caliente ayurvédica.</p>
         </article>
-        <article class="hito">
+        <article class="hito foco">
           <p class="hito__n">3 ·</p>
           <h3 class="hito__t">La integración</h3>
           <p>Cena + bebida a cargo de un chef gourmet.</p>
@@ -728,15 +725,15 @@ html.anim .rev.on{opacity:1;transform:none}
   <div class="env">
     <!-- Fotos de Andrés/Gabriel: living (handpan) · parque (fogón) · cocina (chef) -->
     <div class="galeria rev">
-      <figure><img src="img/donde_living.jpg" alt="El living, preparado para la experiencia" loading="lazy"></figure>
-      <figure><img src="img/donde_parque.jpg" alt="El parque, con los fogoneros encendidos" loading="lazy"></figure>
-      <figure><img src="img/donde_cocina.jpg" alt="La cena gourmet, servida por el chef" loading="lazy"></figure>
+      <figure class="foco"><img src="img/donde_living.jpg" alt="El living, preparado para la experiencia" loading="lazy"></figure>
+      <figure class="foco"><img src="img/donde_parque.jpg" alt="El parque, con los fogoneros encendidos" loading="lazy"></figure>
+      <figure class="foco"><img src="img/donde_cocina.jpg" alt="La cena gourmet, servida por el chef" loading="lazy"></figure>
     </div>
 
     <div class="donde__grid rev">
-      <p class="donde__txt">La noche transcurre en una casa privada en Buenos Aires… <br class="corte2">un living diseñado para la experiencia, fogoneros encendidos <br class="corte2">en el parque, y una cena gourmet para quienes eligen quedarse.</p>
+      <p class="donde__txt foco">La noche transcurre en una casa privada en Buenos Aires… <br class="corte2">un living diseñado para la experiencia, fogoneros encendidos <br class="corte2">en el parque, y una cena gourmet para quienes eligen quedarse.</p>
 
-      <dl class="datos">
+      <dl class="datos foco">
         <div><dt>Fecha</dt><dd>5 de septiembre</dd></div>
         <div><dt>Hora</dt><dd>18:00 hs</dd></div>
         <div><dt>Lugar</dt><dd>INKI OTANI<br>Florida, Buenos Aires</dd></div>
@@ -749,26 +746,26 @@ html.anim .rev.on{opacity:1;transform:none}
 <section class="social">
   <div class="env">
     <div class="social__cab rev">
-      <p class="social__intro">Esto es lo que está generando <br class="corte2">nuestra música en la vida de <br class="corte2">cientos de miles de personas:</p>
-      <figure class="social__foto">
+      <p class="social__intro foco">Esto es lo que está generando <br class="corte2">nuestra música en la vida de <br class="corte2">cientos de miles de personas:</p>
+      <figure class="social__foto foco">
         <img src="img/instrumentos.jpg" alt="El handpan, la guitarra y las velas antes del encuentro" loading="lazy">
       </figure>
     </div>
 
     <div class="testis rev">
-      <blockquote class="testi">
+      <blockquote class="testi foco">
         <p class="testi__n">Anna</p>
         <p>“Su música fue la forma más hermosa de sacarme una vieja venda gastada de una herida aún más vieja. Lo sentí, lo escuché profundamente.”</p>
       </blockquote>
-      <blockquote class="testi">
+      <blockquote class="testi foco">
         <p class="testi__n">Astrid</p>
         <p>“Se me dificulta demasiado concentrarme y gracias a su música no solo logro hacerlo, puedo mantenerme largos períodos de tiempo enfocada.”</p>
       </blockquote>
-      <blockquote class="testi">
+      <blockquote class="testi foco">
         <p class="testi__n">Yvonne</p>
         <p>“Escuché a El Beso Del Árbol entrenando y sentí una calma enorme. Llegué a casa, medité, y mientras pensaba en su música empecé a llorar sin saber por qué. Ahí entendí: su música no acompaña, sana.”</p>
       </blockquote>
-      <blockquote class="testi">
+      <blockquote class="testi foco">
         <p class="testi__n">Carlos</p>
         <p>“Este es el camino correcto hacia el lugar que siempre busqué.”</p>
       </blockquote>
@@ -776,7 +773,7 @@ html.anim .rev.on{opacity:1;transform:none}
 
     <div class="bio rev">
       <div class="bio__grid">
-        <article class="bio__card">
+        <article class="bio__card foco">
           <div class="bio__foto"><img src="img/gabi.jpg" alt="Gabriel Pietronave, El Beso del Árbol" loading="lazy"></div>
           <h3 class="bio__n">El Beso del Árbol
             <a class="bio__ig" href="https://www.instagram.com/elbesodelarbol/" target="_blank" rel="noopener" aria-label="Instagram de El Beso del Árbol">
@@ -788,7 +785,7 @@ html.anim .rev.on{opacity:1;transform:none}
           </h3>
           <p>Compositor, productor y músico. Su proyecto El Beso del Árbol acompaña hoy a más de 200.000 personas en el mundo, desde Berlín hasta Ciudad de México, como refugio sonoro para volver a la calma. Un espacio donde la música se transforma en presencia.</p>
         </article>
-        <article class="bio__card">
+        <article class="bio__card foco">
           <div class="bio__foto"><img src="img/cintia.jpg" alt="Cintia Belen" loading="lazy"></div>
           <h3 class="bio__n">Cintia Belen
             <a class="bio__ig" href="https://www.instagram.com/cintiabelentg/" target="_blank" rel="noopener" aria-label="Instagram de Cintia Belen">
@@ -799,7 +796,7 @@ html.anim .rev.on{opacity:1;transform:none}
         </article>
       </div>
 
-      <div class="bio__firma">
+      <div class="bio__firma foco">
         <em>“La música expresa lo que es imposible decir con palabras”</em>
         <span>Cintia Belen &amp; El Beso del Árbol</span>
       </div>
@@ -812,7 +809,7 @@ html.anim .rev.on{opacity:1;transform:none}
 <section class="news">
   <div class="env rev">
     <p class="eyebrow">Un regalo para vos</p>
-    <p class="news__txt">Suscribite a nuestro newsletter y obtené un <b>10% de descuento</b> en tu entrada. Además vas a recibir música nueva, próximas fechas y contenido que hacemos solo para quienes están cerca.</p>
+    <p class="news__txt foco">Suscribite a nuestro newsletter y obtené un <b>10% de descuento</b> en tu entrada. Además vas a recibir música nueva, próximas fechas y contenido que hacemos solo para quienes están cerca.</p>
     <!-- DEV: lleva a la mini-landing del newsletter (Anexo A). Poné la ruta en CONFIG.newsletterUrl -->
     <a class="btn btn--solid" id="newsletter" href="#" target="_blank" rel="noopener">Quiero mi descuento</a>
   </div>
@@ -821,9 +818,9 @@ html.anim .rev.on{opacity:1;transform:none}
 <!-- ═══ 6 · PRECIO Y RESERVA ════════════════════════════════════════════ -->
 <section class="precio" id="reserva">
   <div class="env rev">
-    <h2>Date este momento</h2>
+    <h2 class="foco">Date este momento</h2>
 
-    <div class="card">
+    <div class="card foco">
       <p class="card__framing">Una experiencia de aproximadamente 4 horas: música en vivo, dinámicas somáticas e infusión ayurvédica.</p>
 
       <!-- Precio: por defecto $60.000 mediano + el descuento como protagonista.
@@ -887,7 +884,7 @@ html.anim .rev.on{opacity:1;transform:none}
   <div class="env rev">
     <div class="zoom" id="zoom-block">
       <p class="zoom__k">¿Preferís conocernos primero?</p>
-      <p class="zoom__txt">Sumate sin cargo a un encuentro especial por Zoom donde vas a conocer el espíritu de “Un Instante Eterno” y descubrir si resuena con vos.</p>
+      <p class="zoom__txt foco">Sumate sin cargo a un encuentro especial por Zoom donde vas a conocer el espíritu de “Un Instante Eterno” y descubrir si resuena con vos.</p>
       <a class="btn btn--zoom" id="zoom" href="#" target="_blank" rel="noopener">Sumarme al encuentro previo</a>
     </div>
   </div>
@@ -1123,65 +1120,53 @@ if (shareCopy) {
   });
 }
 
-/* ── Luz guía ──
-   Nace en el centro del círculo del hero (.aliento, el anillo estático —
-   no el destello que orbita, que se movería y daría un punto de partida
-   distinto cada vez) y viaja con la persona hasta cerca del final de la
-   página. La posición horizontal se fija una sola vez, en el centro real
-   del anillo en esta pantalla; sólo la vertical se anima. El destino
-   vertical se calcula en coordenadas del documento (punto de partida real
-   + un punto cercano al final), y en cada cuadro se convierte a coordenadas
-   de pantalla restando el scroll actual. Un lerp (interpolación suave) le
-   da la sensación de flotar detrás del scroll en vez de ir pegada 1:1. Si
-   el navegador no soporta algo de esto, o hay preferencia por menos
-   movimiento, la luz simplemente no aparece (arranca en opacity:0) y la
-   página queda igual. */
+/* ── Luz foco ──
+   Detecta qué elemento marcado con .foco (título, foto, subtítulo, texto
+   o punteo) está cruzando el centro de la pantalla en cada momento —una
+   franja angosta a mitad del viewport, vigilada con IntersectionObserver—
+   y mueve la luz hacia el centro real de ESE elemento (getBoundingClientRect
+   en vivo, en cada cuadro). Un lerp la hace flotar hacia el destino en vez
+   de saltar. Como cada bloque de la página está en un lado distinto
+   (título a la izquierda, foto a la derecha, cita centrada, etc.), el
+   resultado es que la luz se va moviendo en X y en Y, no en un carril fijo.
+   Se mantiene apagada mientras el hero ocupa la pantalla —ahí ya "vive" la
+   respiración original, quieta— y aparece recién cuando la persona baja
+   más allá de él. Si el navegador no soporta IntersectionObserver o hay
+   preferencia por menos movimiento, no aparece y la página queda igual. */
 (function(){
-  var luz = document.querySelector('.guia__luz');
-  var origen = document.querySelector('.aliento');
-  if (!luz || !origen) return;
+  var luz = document.querySelector('.foco-luz');
+  var hero = document.querySelector('.hero');
+  var focos = Array.prototype.slice.call(document.querySelectorAll('.foco'));
+  if (!luz || !hero || !focos.length || !('IntersectionObserver' in window)) return;
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
 
-  var inicioDocY = 0, finDocY = 0, maxScroll = 1;
-  var actual = null, destino = 0;
+  var activo = null;
+  var actualX = null, actualY = 0, destinoX = 0, destinoY = 0;
 
-  function medir(){
-    var rect = origen.getBoundingClientRect();
-    luz.style.left = (rect.left + rect.width / 2) + 'px';
-    inicioDocY = rect.top + rect.height / 2 + window.scrollY;
-    var alto = document.documentElement.scrollHeight;
-    finDocY = alto - window.innerHeight * 0.15;
-    maxScroll = Math.max(1, alto - window.innerHeight);
-  }
-
-  function calcularDestino(){
-    var progreso = Math.min(1, Math.max(0, window.scrollY / maxScroll));
-    var docY = inicioDocY + (finDocY - inicioDocY) * progreso;
-    destino = docY - window.scrollY;
-  }
+  var io = new IntersectionObserver(function(entradas){
+    for (var i = 0; i < entradas.length; i++) {
+      if (entradas[i].isIntersecting) activo = entradas[i].target;
+    }
+  }, { rootMargin: '-40% 0px -40% 0px', threshold: 0 });
+  focos.forEach(function(el){ io.observe(el); });
 
   function animar(){
-    if (actual === null) actual = destino;
-    actual += (destino - actual) * 0.07;
-    var flote = Math.sin(Date.now() / 1700) * 9;
-    luz.style.transform = 'translate(-50%, calc(-50% + ' + (actual + flote) + 'px))';
+    var pasoHero = window.scrollY > hero.offsetHeight * 0.6;
+    if (activo && pasoHero) {
+      var r = activo.getBoundingClientRect();
+      destinoX = r.left + r.width / 2;
+      destinoY = r.top + r.height / 2;
+      luz.classList.add('on');
+    } else {
+      luz.classList.remove('on');
+    }
+    if (actualX === null) { actualX = destinoX; actualY = destinoY; }
+    actualX += (destinoX - actualX) * 0.09;
+    actualY += (destinoY - actualY) * 0.09;
+    luz.style.transform = 'translate(calc(' + actualX + 'px - 50%), calc(' + actualY + 'px - 50%))';
     requestAnimationFrame(animar);
   }
-
-  medir();
-  calcularDestino();
-  luz.classList.add('on');
   requestAnimationFrame(animar);
-
-  window.addEventListener('scroll', calcularDestino, { passive: true });
-  window.addEventListener('resize', function(){ medir(); calcularDestino(); });
-
-  /* Las fuentes de Google llegan async y pueden mover el alto del hero
-     (y con él, el círculo) después de la primera medición. Se vuelve a
-     medir en cuanto terminan de cargar para no arrancar desalineada. */
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(function(){ medir(); calcularDestino(); });
-  }
 })();
 
 /* ── Revelado al scroll (mejora progresiva) ──
