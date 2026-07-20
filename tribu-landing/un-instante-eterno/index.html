@@ -228,6 +228,10 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
    en el orden natural del HTML; desde 900px cada fila pasa a 2 columnas. */
 .qes__row{display:grid;gap:clamp(28px,4vw,56px);align-items:start}
 .qes__row + .qes__row{margin-top:clamp(40px,5vw,72px)}
+/* En escritorio la columna de texto se estira a la altura de la foto
+   (que es más alta) para poder anclar el sello ornamental abajo, en el
+   aire que deja libre la lista "no es". */
+.qes__izq{position:relative}
 .epigrafe{
   font-family:var(--display);font-style:italic;font-size:clamp(21px,2.7vw,30px);
   line-height:1.45;color:var(--crema);
@@ -240,7 +244,14 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
   font-size:clamp(17px,1.9vw,20px);line-height:1.6;
 }
 .noes{margin-top:2.4em;border-top:1px solid var(--madera);padding-top:1.6em}
-/* Retrato de la chica: columna angosta → proporción vertical */
+/* Sello ornamental: el mismo "eclipse que respira" del hero, en miniatura.
+   Sólo aparece en escritorio, donde la lista deja aire libre debajo. */
+.qes__sello{display:none;position:absolute;left:2px;bottom:8px;width:118px;aspect-ratio:1;pointer-events:none}
+.qes__sello .aliento__luz{width:52px;height:52px;filter:blur(5px)}
+.qes__sello .aliento__anillo{box-shadow:0 0 26px rgba(192,124,58,.10), inset 0 0 30px rgba(192,124,58,.06)}
+/* Retrato de la chica: columna angosta → proporción vertical. El margen
+   superior sólo es necesario apilado en mobile; en escritorio se anula
+   para que arranque a la misma altura que el texto (ver media query). */
 .qes__foto{
   margin-top:clamp(28px,3.5vw,44px);overflow:hidden;background:var(--brasa);
   aspect-ratio:4/5;border:1px solid var(--madera);
@@ -548,6 +559,9 @@ html.anim .rev.on{opacity:1;transform:none}
   .hero__copy{order:2}
   .video{order:1}
   .qes__row{grid-template-columns:1fr 1fr}
+  .qes__izq{align-self:stretch}
+  .qes__foto{margin-top:0}
+  .qes__sello{display:block}
   .donde__grid{grid-template-columns:1.4fr .6fr}
   .video{max-width:390px;margin:0 auto 0 0}
 }
@@ -619,6 +633,17 @@ html.anim .rev.on{opacity:1;transform:none}
           <span>No es una práctica corporal</span>
           <span>No es un taller</span>
           <span>No es un simple concierto</span>
+        </div>
+
+        <!-- Sello ornamental: el mismo "eclipse que respira" del hero, en
+             miniatura. Sólo visible en escritorio, en el aire que deja la lista. -->
+        <div class="qes__sello" aria-hidden="true">
+          <div class="aliento__nucleo">
+            <span class="aliento__halo"></span>
+            <span class="aliento__anillo"></span>
+            <span class="aliento__anillo aliento__anillo--in"></span>
+            <span class="aliento__orbita"><i class="aliento__luz"></i></span>
+          </div>
         </div>
       </div>
 
