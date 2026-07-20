@@ -223,7 +223,11 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 
 
 /* ─── QUÉ ES ────────────────────────────────────────────────────────────── */
-.qes__grid{display:grid;gap:clamp(36px,5vw,80px);align-items:start}
+/* Dos filas en zigzag: 1) pregunta+"no es" junto a la foto de la chica,
+   2) foto del círculo junto al resto del texto. En mobile todo se apila
+   en el orden natural del HTML; desde 900px cada fila pasa a 2 columnas. */
+.qes__row{display:grid;gap:clamp(28px,4vw,56px);align-items:center}
+.qes__row + .qes__row{margin-top:clamp(40px,5vw,72px)}
 .epigrafe{
   font-family:var(--display);font-style:italic;font-size:clamp(21px,2.7vw,30px);
   line-height:1.45;color:var(--crema);
@@ -236,7 +240,7 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
   font-size:clamp(17px,1.9vw,20px);line-height:1.6;
 }
 .noes{margin-top:2.4em;border-top:1px solid var(--madera);padding-top:1.6em}
-/* Retrato bajo la pregunta: columna angosta → proporción vertical */
+/* Retrato de la chica: columna angosta → proporción vertical */
 .qes__foto{
   margin-top:clamp(28px,3.5vw,44px);overflow:hidden;background:var(--brasa);
   aspect-ratio:4/5;border:1px solid var(--madera);
@@ -246,9 +250,9 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
   filter:saturate(.9) brightness(.9);transition:transform 1.4s ease,filter 1.2s ease;
 }
 .qes__foto:hover img{transform:scale(1.03);filter:saturate(1) brightness(1)}
-/* Foto de grupo dentro del cuerpo: columna más ancha → proporción horizontal */
+/* Foto del círculo: proporción horizontal */
 .qes__foto-grupo{
-  margin:1.8em 0;overflow:hidden;background:var(--brasa);
+  overflow:hidden;background:var(--brasa);
   aspect-ratio:3/2;border:1px solid var(--madera);
 }
 .qes__foto-grupo img{
@@ -542,9 +546,7 @@ html.anim .rev.on{opacity:1;transform:none}
   .hero__grid{grid-template-columns:.85fr 1.05fr}
   .hero__copy{order:2}
   .video{order:1}
-  .qes .env{max-width:760px}
-  .epigrafe{text-align:center;margin-inline:auto}
-  .qes__foto{aspect-ratio:16/9}
+  .qes__row{grid-template-columns:1fr 1fr}
   .donde__grid{grid-template-columns:1.4fr .6fr}
   .video{max-width:390px;margin:0 auto 0 0}
 }
@@ -607,13 +609,9 @@ html.anim .rev.on{opacity:1;transform:none}
 <!-- ═══ 2 · QUÉ ES EL EVENTO ════════════════════════════════════════════ -->
 <section class="qes" id="que-es">
   <div class="env">
-    <div class="qes__grid">
-      <div class="qes__izq rev">
+    <div class="qes__row rev">
+      <div class="qes__izq">
         <p class="epigrafe">¿Cuánto hace que los días <br class="corte">te pasan sin que los <br class="corte">estés viviendo?</p>
-
-        <figure class="qes__foto rev">
-          <img src="img/transformacion.jpg" alt="De la tensión cotidiana a la calma del encuentro" loading="lazy">
-        </figure>
 
         <!-- DEV: los tres "No es…" en tipografía distinta, más chica y espaciada -->
         <div class="noes">
@@ -623,12 +621,18 @@ html.anim .rev.on{opacity:1;transform:none}
         </div>
       </div>
 
-      <div class="qes__cuerpo rev">
-        <p><b>Un Instante Eterno es un ciclo de encuentros.</b> Cada uno explora un tema que nos toca a todos: los vínculos, el éxito, la abundancia, el estrés, el miedo al futuro.</p>
+      <figure class="qes__foto">
+        <img src="img/transformacion.jpg" alt="De la tensión cotidiana a la calma del encuentro" loading="lazy">
+      </figure>
+    </div>
 
-        <figure class="qes__foto-grupo">
-          <img src="img/concierto.jpg" alt="El círculo reunido junto a Gabriel y Cintia tocando durante el encuentro" loading="lazy">
-        </figure>
+    <div class="qes__row qes__row--flip rev">
+      <figure class="qes__foto-grupo">
+        <img src="img/concierto.jpg" alt="El círculo reunido junto a Gabriel y Cintia tocando durante el encuentro" loading="lazy">
+      </figure>
+
+      <div class="qes__cuerpo">
+        <p><b>Un Instante Eterno es un ciclo de encuentros.</b> Cada uno explora un tema que nos toca a todos: los vínculos, el éxito, la abundancia, el estrés, el miedo al futuro.</p>
 
         <p>La propuesta empieza invitándonos a bajar el ritmo. Desde ahí entramos juntos en un recorrido de canciones, respiración y dinámicas somáticas, diseñado para que emerja algo que uno ya sabe pero rara vez se detiene a escuchar: <b>una mirada más clara de quién soy y hacia dónde voy.</b></p>
 
