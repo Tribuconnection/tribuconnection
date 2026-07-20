@@ -640,3 +640,16 @@ body[data-accent] .eyebrow::before{ background:var(--spectrum); }
 
 /* ===== Agenda: al saltar desde el nav, dejar aire arriba y abajo ===== */
 #calendario{ scroll-margin-top:104px; padding-top:clamp(28px,3.5vw,52px); padding-bottom:clamp(48px,6vw,90px); }
+
+/* ===== Fixes de alineación: svc / case grids con títulos de distinta altura ===== */
+.svc{ display:flex; flex-direction:column; }
+.svc h3{ align-items:flex-start; min-height:2.5rem; }
+.case{ display:flex; flex-direction:column; }
+.case h4{ min-height:2.5rem; display:flex; align-items:flex-start; }
+
+/* ===== Headings de una sola línea (cuando el diseño lo pide explícito) ===== */
+.h2--1line{ white-space:nowrap; max-width:none; }
+@media (max-width:760px){ .h2--1line{ white-space:normal; } }
+
+/* ===== Botones largos en mobile: permitir wrap para que no se corten ===== */
+@media (max-width:480px){ .btn{ white-space:normal; text-align:center; } }
