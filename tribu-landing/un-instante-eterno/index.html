@@ -175,6 +175,32 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 }
 @keyframes orbitar{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 
+/* ─── LUZ GUÍA ──────────────────────────────────────────────────────────
+   La misma luz del "aliento" del hero, liberada del círculo: acompaña el
+   scroll de principio a fin, flotando cerca de lo que se está leyendo.
+   Se mueve con inercia (JS al final del body) en vez de pegada 1:1 al
+   scroll, para que la sensación sea de flotar, no de arrastrarse. */
+.guia{
+  position:fixed;inset:0;pointer-events:none;z-index:1;
+  overflow:hidden;
+}
+.guia__luz{
+  position:absolute;top:0;left:0;
+  width:150px;height:150px;transform:translate(-50%,-50%);
+  border-radius:50%;filter:blur(13px);mix-blend-mode:screen;
+  opacity:0;transition:opacity 1.6s ease;
+  background:radial-gradient(circle,
+    rgba(255,244,224,.34) 0%,
+    rgba(243,204,150,.20) 20%,
+    rgba(210,144,74,.10) 42%,
+    rgba(192,124,58,.04) 62%,
+    rgba(192,124,58,0)   78%);
+}
+.guia__luz.on{opacity:1}
+@media (max-width:640px){
+  .guia__luz{width:100px;height:100px}
+}
+
 /* ─── VIDEO (vertical 9:16) ─────────────────────────────────────────────── */
 .video{
   position:relative;aspect-ratio:9/16;width:100%;max-width:340px;margin:0 auto;
@@ -587,6 +613,10 @@ html.anim .rev.on{opacity:1;transform:none}
 </style>
 </head>
 <body>
+
+<!-- Luz guía: acompaña el scroll de toda la página (ver CSS .guia y el
+     script al final del body). Vive fuera de las secciones a propósito. -->
+<div class="guia" aria-hidden="true"><span class="guia__luz"></span></div>
 
 <!-- ═══ 1 · HERO + VIDEO ════════════════════════════════════════════════ -->
 <header class="hero">
@@ -1092,6 +1122,67 @@ if (shareCopy) {
     }
   });
 }
+
+/* ── Luz guía ──
+   Nace en el centro del círculo del hero (.aliento, el anillo estático —
+   no el destello que orbita, que se movería y daría un punto de partida
+   distinto cada vez) y viaja con la persona hasta cerca del final de la
+   página. La posición horizontal se fija una sola vez, en el centro real
+   del anillo en esta pantalla; sólo la vertical se anima. El destino
+   vertical se calcula en coordenadas del documento (punto de partida real
+   + un punto cercano al final), y en cada cuadro se convierte a coordenadas
+   de pantalla restando el scroll actual. Un lerp (interpolación suave) le
+   da la sensación de flotar detrás del scroll en vez de ir pegada 1:1. Si
+   el navegador no soporta algo de esto, o hay preferencia por menos
+   movimiento, la luz simplemente no aparece (arranca en opacity:0) y la
+   página queda igual. */
+(function(){
+  var luz = document.querySelector('.guia__luz');
+  var origen = document.querySelector('.aliento');
+  if (!luz || !origen) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+
+  var inicioDocY = 0, finDocY = 0, maxScroll = 1;
+  var actual = null, destino = 0;
+
+  function medir(){
+    var rect = origen.getBoundingClientRect();
+    luz.style.left = (rect.left + rect.width / 2) + 'px';
+    inicioDocY = rect.top + rect.height / 2 + window.scrollY;
+    var alto = document.documentElement.scrollHeight;
+    finDocY = alto - window.innerHeight * 0.15;
+    maxScroll = Math.max(1, alto - window.innerHeight);
+  }
+
+  function calcularDestino(){
+    var progreso = Math.min(1, Math.max(0, window.scrollY / maxScroll));
+    var docY = inicioDocY + (finDocY - inicioDocY) * progreso;
+    destino = docY - window.scrollY;
+  }
+
+  function animar(){
+    if (actual === null) actual = destino;
+    actual += (destino - actual) * 0.07;
+    var flote = Math.sin(Date.now() / 1700) * 9;
+    luz.style.transform = 'translate(-50%, calc(-50% + ' + (actual + flote) + 'px))';
+    requestAnimationFrame(animar);
+  }
+
+  medir();
+  calcularDestino();
+  luz.classList.add('on');
+  requestAnimationFrame(animar);
+
+  window.addEventListener('scroll', calcularDestino, { passive: true });
+  window.addEventListener('resize', function(){ medir(); calcularDestino(); });
+
+  /* Las fuentes de Google llegan async y pueden mover el alto del hero
+     (y con él, el círculo) después de la primera medición. Se vuelve a
+     medir en cuanto terminan de cargar para no arrancar desalineada. */
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(function(){ medir(); calcularDestino(); });
+  }
+})();
 
 /* ── Revelado al scroll (mejora progresiva) ──
    Sólo se activa si el navegador soporta IntersectionObserver. Si no, el
