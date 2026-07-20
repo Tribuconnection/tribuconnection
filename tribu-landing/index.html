@@ -959,9 +959,17 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     const btn = document.getElementById('joinSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(form);
-    fd.set('Tipo', 'Join');
+    const payload = {
+      Nombre: fd.get('Nombre')||'', Rubro: fd.get('Rubro')||'',
+      Perfil: fd.getAll('Perfil').join(', '), Plan: fd.get('Plan')||'',
+      Contacto: fd.get('Contacto')||'', Detalles: fd.get('Detalles')||'',
+      _subject:'Nuevo - Sumarme a la Tribu', _template:'table', _captcha:'false'
+    };
     try{
-      await fetch(SHEETS_ENDPOINT, { method:'POST', mode:'no-cors', body: fd });
+      await fetch('https://formsubmit.co/ajax/contacto@tribuconnection.com', {
+        method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body: JSON.stringify(payload)
+      });
       form.style.display='none'; msg.style.display='block';
     }catch(err){
       const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nRubro: '+(fd.get('Rubro')||'')+'\nPerfil: '+fd.getAll('Perfil').join(', ')+'\nPlan: '+(fd.get('Plan')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nDetalles: '+(fd.get('Detalles')||''));
@@ -1036,9 +1044,17 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     const btn = document.getElementById('evSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(evForm);
-    fd.set('Tipo', 'Evento');
+    const payload = {
+      Evento: fd.get('Evento')||'', Rubro: fd.get('Rubro')||'', Fecha: fd.get('Fecha')||'',
+      Ubicacion: fd.get('Ubicacion')||'', Ubicacion_lat: fd.get('Ubicacion_lat')||'', Ubicacion_lng: fd.get('Ubicacion_lng')||'',
+      Etiquetas: fd.get('Etiquetas')||'', Descripcion: fd.get('Descripcion')||'', Link_media: fd.get('Link_media')||'',
+      _subject:'Nueva solicitud de evento para la agenda', _template:'table', _captcha:'false'
+    };
     try{
-      await fetch(SHEETS_ENDPOINT, { method:'POST', mode:'no-cors', body: fd });
+      await fetch('https://formsubmit.co/ajax/contacto@tribuconnection.com', {
+        method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
+        body: JSON.stringify(payload)
+      });
       evForm.style.display='none'; evMsg.style.display='block';
     }catch(err){
       const body = encodeURIComponent('Evento: '+(fd.get('Evento')||'')+'\nRubro: '+(fd.get('Rubro')||'')+'\nFecha: '+(fd.get('Fecha')||'')+'\nUbicación: '+(fd.get('Ubicacion')||'')+'\nEtiquetas: '+(fd.get('Etiquetas')||'')+'\nDescripción: '+(fd.get('Descripcion')||'')+'\nLink fotos/video: '+(fd.get('Link_media')||''));
