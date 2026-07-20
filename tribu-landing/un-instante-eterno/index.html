@@ -316,6 +316,9 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 .datos dd{font-family:var(--display);font-size:17px;color:var(--crema);text-align:right}
 
 /* ─── PRUEBA SOCIAL ─────────────────────────────────────────────────────── */
+/* Menos aire abajo: la cita de cierre ya funciona como remate visual,
+   no necesita todo el padding-bottom estándar antes del newsletter. */
+.social{padding-bottom:clamp(28px,4vw,56px)}
 .social__cab{
   display:grid;gap:clamp(36px,5vw,64px);align-items:center;
   margin-bottom:clamp(48px,6vw,72px);
@@ -360,7 +363,7 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 .bio__firma span{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--tenue)}
 
 /* ─── NEWSLETTER ────────────────────────────────────────────────────────── */
-.news{text-align:center}
+.news{text-align:center;padding-top:clamp(24px,3vw,48px)}
 .news .eyebrow{margin-left:auto;margin-right:auto}
 .news .env{max-width:620px}
 .news__txt{
