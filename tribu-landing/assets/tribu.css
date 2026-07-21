@@ -236,6 +236,9 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .mnemo li:nth-child(3) .ltr{ color:var(--green); }
 .mnemo li:nth-child(4) .ltr{ color:var(--teal); }
 .mnemo li:nth-child(5) .ltr{ color:var(--purple); }
+/* Variante en grilla de 2 columnas (landings organizas-experiencias/representas-marca); colapsa a 1 en mobile */
+.mnemo.mnemo--grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.6rem 2rem; margin-top:1.6rem; }
+@media (max-width:640px){ .mnemo.mnemo--grid{ grid-template-columns:1fr; } }
 
 /* ===================== TRIBU PASS ===================== */
 .pass-intro{ display:grid; grid-template-columns:auto 1fr; gap:clamp(1.6rem,4vw,3rem); align-items:end; margin-bottom:clamp(1.8rem,3.5vw,2.6rem); }
@@ -413,6 +416,8 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .svc li{ font-size:.92rem; color:var(--soft); padding-left:1.1rem; position:relative; line-height:1.45; }
 .svc li::before{ content:""; position:absolute; left:.15rem; top:.55rem; width:5px; height:5px; border-radius:50%; background:var(--muted); }
 .svc-extra{ display:grid; grid-template-columns:1fr 1fr; gap:1.2rem; margin-top:1.2rem; }
+/* Variante para landings con 4 servicios en una sola fila (solo desktop; en mobile respeta el 1fr de .svc-grid) */
+@media (min-width:861px){ .svc-grid.svc-grid--4{ grid-template-columns:repeat(4,minmax(0,1fr)); } }
 
 /* ============ CALENDARIO ============ */
 .cal-head{ display:flex; align-items:flex-end; justify-content:space-between; gap:1.4rem 2rem; flex-wrap:wrap; margin-bottom:2rem; }
@@ -598,9 +603,9 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .path.is-green{ --c:var(--green); }
 .path.is-teal{ --c:var(--teal); }
 .path.is-amber{ --c:var(--amber); }
-.paths--4{ grid-template-columns:repeat(4,1fr); }
-@media (max-width:1100px){ .paths--4{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:860px){ .paths{ grid-template-columns:1fr; } }
+/* Siempre las 4 en una sola fila (se achican en vez de wrappear); minmax(0,1fr) evita que el contenido desborde el ancho de pantalla */
+.paths.paths--4{ grid-template-columns:repeat(4,minmax(0,1fr)); }
 
 /* ===== Theming por landing (un acento en vez del espectro) ===== */
 body[data-accent="red"]{ --spectrum:linear-gradient(100deg,#E0576E,#D24B62 55%,#b83b50); accent-color:var(--red); }
@@ -617,6 +622,9 @@ body[data-accent] .eyebrow::before{ background:var(--spectrum); }
 .challenge p{ font-size:.82rem; color:var(--soft); line-height:1.4; }
 @media (max-width:860px){ .challenges{ grid-template-columns:1fr 1fr 1fr; } }
 @media (max-width:520px){ .challenges{ grid-template-columns:1fr 1fr; } }
+/* Variante para grupos de exactamente 3 (ej. "El camino": Visibilidad/Conexión/Comunidad) */
+.challenges.challenges--3{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+@media (max-width:640px){ .challenges.challenges--3{ grid-template-columns:1fr; } }
 
 /* ===== Casos reales ===== */
 .cases{ display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-top:1.5rem; }
