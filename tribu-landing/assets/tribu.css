@@ -597,6 +597,9 @@ h1,h2,h3{ font-family:var(--font-display); font-optical-sizing:auto; font-weight
 .path.is-red{ --c:var(--red); }
 .path.is-green{ --c:var(--green); }
 .path.is-teal{ --c:var(--teal); }
+.path.is-amber{ --c:var(--amber); }
+.paths--4{ grid-template-columns:repeat(4,1fr); }
+@media (max-width:1100px){ .paths--4{ grid-template-columns:repeat(2,1fr); } }
 @media (max-width:860px){ .paths{ grid-template-columns:1fr; } }
 
 /* ===== Theming por landing (un acento en vez del espectro) ===== */
@@ -610,6 +613,7 @@ body[data-accent] .eyebrow::before{ background:var(--spectrum); }
 .challenge{ text-align:center; padding:1.2rem .8rem; border-radius:14px; background:var(--ink-1); border:1px solid var(--line); transition:transform .3s,border-color .3s; }
 .challenge:hover{ transform:translateY(-4px); border-color:var(--line-2); }
 .challenge .ch-ic{ width:44px; height:44px; margin:0 auto .8rem; border-radius:50%; display:grid; place-items:center; font-size:1.25rem; background:color-mix(in srgb,var(--teal) 14%, transparent); }
+.challenge b{ display:block; font-family:var(--font-display); font-size:1.05rem; margin-bottom:.35rem; }
 .challenge p{ font-size:.82rem; color:var(--soft); line-height:1.4; }
 @media (max-width:860px){ .challenges{ grid-template-columns:1fr 1fr 1fr; } }
 @media (max-width:520px){ .challenges{ grid-template-columns:1fr 1fr; } }
