@@ -652,7 +652,7 @@ body[data-accent] .eyebrow::before{ background:var(--spectrum); }
 .story:hover .story-cover{ transform:translateY(-5px); }
 .story-cover::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, transparent 30%, rgba(12,13,16,.9) 100%); pointer-events:none; }
 .story-tag{
-  position:relative; z-index:2; align-self:flex-start; margin:1rem 0 0 1rem;
+  position:absolute; top:1rem; left:1rem; z-index:2;
   font-size:.66rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--cream);
   background:rgba(12,13,16,.5); backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
   padding:.35em .8em; border-radius:999px;
