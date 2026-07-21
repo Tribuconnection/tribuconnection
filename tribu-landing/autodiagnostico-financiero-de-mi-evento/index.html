@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auto-diagnóstico financiero de tu evento · Tribu Connection</title>
+<meta name="description" content="Encontrá el punto de equilibrio y ganancia para tu evento. Calculá cuántas personas necesitás para no perder plata y cuánto ganás con cada persona extra.">
+<link rel="canonical" href="https://www.tribuconnection.com/autodiagnostico-financiero-de-mi-evento/">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.tribuconnection.com/autodiagnostico-financiero-de-mi-evento/">
+<meta property="og:title" content="Auto-diagnóstico financiero de tu evento · Tribu Connection">
+<meta property="og:description" content="Encontrá el punto de equilibrio y ganancia para tu evento. Calculá cuántas personas necesitás para no perder plata y cuánto ganás con cada persona extra.">
+<meta property="og:image" content="https://www.tribuconnection.com/assets/og-autodiagnostico-financiero.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Auto-diagnóstico financiero de tu evento · Tribu Connection">
+<meta name="twitter:description" content="Encontrá el punto de equilibrio y ganancia para tu evento.">
+<meta name="twitter:image" content="https://www.tribuconnection.com/assets/og-autodiagnostico-financiero.png">
+<link rel="icon" href="/assets/isotipo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -44,11 +58,10 @@ body{
 
 /* Header */
 header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:8px}
-.brand img{height:64px;width:auto;display:block}
-.brand .logo-oscuro{display:none}
-body.oscuro .brand .logo-claro{display:none}
-body.oscuro .brand .logo-oscuro{display:block}
+.brand{display:flex;align-items:center;gap:10px;color:var(--tinta)}
+.brand img{height:48px;width:auto;display:block}
+.brand b{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.3rem;letter-spacing:-.02em;line-height:1}
+.brand b span{display:block;font-weight:500;font-size:.62rem;letter-spacing:.3em;color:var(--gris);text-transform:uppercase;margin-top:4px}
 .toggle-tema{font-family:'Poppins',sans-serif;font-size:.75rem;font-weight:600;padding:8px 14px;border-radius:999px;border:1.5px solid var(--borde);background:var(--tarjeta);color:var(--gris);cursor:pointer;transition:all .15s}
 .toggle-tema:hover{color:var(--tinta);border-color:var(--tinta)}
 h1{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(1.3rem,3.2vw,1.85rem);line-height:1.15;margin-bottom:6px}
@@ -154,8 +167,8 @@ footer b{color:var(--tinta)}
 <div class="wrap">
 <header>
   <div class="brand">
-    <img class="logo-claro" src="/assets/isotipo.png" alt="Tribu Connection">
-    <img class="logo-oscuro" src="/assets/logo_white.png" alt="Tribu Connection">
+    <img src="/assets/isotipo.png" alt="">
+    <b>tribu<span>connection</span></b>
   </div>
   <button class="toggle-tema" id="toggleTema">🌙 Modo oscuro</button>
 </header>
