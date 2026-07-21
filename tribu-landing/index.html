@@ -701,6 +701,15 @@
 /* Google Sheets: URL del Web App de Apps Script (ver google-apps-script/INSTRUCCIONES.txt) */
 const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwyaT9_K7Y2RXFbr8X_9vPGwRfrbmncEOV1Gcsa907VSx4bMcjxiIqHwx4DbJahMVRS/exec';
 
+/* Envia el formulario a la planilla. Lanza excepcion si no se pudo guardar,
+   para que quien llama muestre el respaldo por mail en vez de un falso "Recibido". */
+async function enviarASheets(fd, tipo){
+  fd.set('Tipo', tipo);
+  const res = await fetch(SHEETS_ENDPOINT, { method:'POST', body: fd });
+  const data = await res.json();
+  if(!data.ok) throw new Error(data.error || 'No se pudo guardar');
+}
+
 /* Nav: fondo al scrollear */
 const nav = document.getElementById('nav');
 const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
@@ -959,17 +968,9 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     const btn = document.getElementById('joinSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(form);
-    const payload = {
-      Nombre: fd.get('Nombre')||'', Rubro: fd.get('Rubro')||'',
-      Perfil: fd.getAll('Perfil').join(', '), Plan: fd.get('Plan')||'',
-      Contacto: fd.get('Contacto')||'', Detalles: fd.get('Detalles')||'',
-      _subject:'Nuevo - Sumarme a la Tribu', _template:'table', _captcha:'false'
-    };
+    fd.set('Perfil', fd.getAll('Perfil').join(', '));
     try{
-      await fetch('https://formsubmit.co/ajax/contacto@tribuconnection.com', {
-        method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body: JSON.stringify(payload)
-      });
+      await enviarASheets(fd, 'Join');
       form.style.display='none'; msg.style.display='block';
     }catch(err){
       const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nRubro: '+(fd.get('Rubro')||'')+'\nPerfil: '+fd.getAll('Perfil').join(', ')+'\nPlan: '+(fd.get('Plan')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nDetalles: '+(fd.get('Detalles')||''));
@@ -998,19 +999,11 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     const btn = document.getElementById('propSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(form);
-    const payload = {
-      Nombre: fd.get('Nombre')||'', 'Marca / Evento': fd.get('Marca_Evento')||'',
-      Contacto: fd.get('Contacto')||'', Detalles: fd.get('Detalles')||'',
-      _subject:'Quiero una propuesta a medida', _template:'table', _captcha:'false'
-    };
     try{
-      await fetch('https://formsubmit.co/ajax/contacto@tribuconnection.com', {
-        method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body: JSON.stringify(payload)
-      });
+      await enviarASheets(fd, 'Propuesta');
       form.style.display='none'; msg.style.display='block';
     }catch(err){
-      const body = encodeURIComponent('Nombre: '+payload.Nombre+'\nMarca/Evento: '+payload['Marca / Evento']+'\nContacto: '+payload.Contacto+'\nDetalles: '+payload.Detalles);
+      const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nMarca/Evento: '+(fd.get('Marca_Evento')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nDetalles: '+(fd.get('Detalles')||''));
       window.location.href='mailto:contacto@tribuconnection.com?subject=Quiero%20una%20propuesta%20a%20medida&body='+body;
     }finally{ btn.textContent='Enviar'; btn.disabled=false; }
   });
@@ -1044,17 +1037,8 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     const btn = document.getElementById('evSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(evForm);
-    const payload = {
-      Evento: fd.get('Evento')||'', Rubro: fd.get('Rubro')||'', Fecha: fd.get('Fecha')||'',
-      Ubicacion: fd.get('Ubicacion')||'', Ubicacion_lat: fd.get('Ubicacion_lat')||'', Ubicacion_lng: fd.get('Ubicacion_lng')||'',
-      Etiquetas: fd.get('Etiquetas')||'', Descripcion: fd.get('Descripcion')||'', Link_media: fd.get('Link_media')||'',
-      _subject:'Nueva solicitud de evento para la agenda', _template:'table', _captcha:'false'
-    };
     try{
-      await fetch('https://formsubmit.co/ajax/contacto@tribuconnection.com', {
-        method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'},
-        body: JSON.stringify(payload)
-      });
+      await enviarASheets(fd, 'Evento');
       evForm.style.display='none'; evMsg.style.display='block';
     }catch(err){
       const body = encodeURIComponent('Evento: '+(fd.get('Evento')||'')+'\nRubro: '+(fd.get('Rubro')||'')+'\nFecha: '+(fd.get('Fecha')||'')+'\nUbicación: '+(fd.get('Ubicacion')||'')+'\nEtiquetas: '+(fd.get('Etiquetas')||'')+'\nDescripción: '+(fd.get('Descripcion')||'')+'\nLink fotos/video: '+(fd.get('Link_media')||''));

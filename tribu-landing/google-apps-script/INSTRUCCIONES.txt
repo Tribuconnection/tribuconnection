@@ -49,8 +49,12 @@ NOTAS
      carpeta de Drive llamada "Tribu Connection - Adjuntos de eventos"
      (se crea sola la primera vez), y el link queda en la columna
      "Adjuntos" de la hoja Eventos.
-   - El formulario de "Propuesta a medida" (B2B) sigue funcionando por
-     FormSubmit como hasta ahora, no se tocó.
-   - Si algún envío falla (sin conexión, etc.), el navegador abre un mail
-     prellenado a contacto@tribuconnection.com como respaldo, igual que
-     antes.
+   - Los 3 formularios del sitio (Solicitar evento, Sumarme a la Tribu y
+     Propuesta a medida) van a la planilla. Las hojas que falten se crean
+     solas: la primera propuesta que llegue genera la hoja "Propuestas".
+   - Si un envío falla, el sitio ya NO muestra "¡Recibido!": abre un mail
+     prellenado a contacto@tribuconnection.com como respaldo, así no se
+     pierde el contacto.
+   - La cabecera Content-Security-Policy del .htaccess incluye
+     script.google.com y script.googleusercontent.com. Si se edita esa
+     cabecera, hay que conservarlos o los formularios dejan de enviar.

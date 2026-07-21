@@ -6,13 +6,14 @@
  * Ver INSTRUCCIONES.txt para el paso a paso de despliegue.
  */
 
-const SHEET_NAMES = { EVENTOS: 'Eventos', TRIBU_PASS: 'Tribu Pass', CAFECITO: 'Cafecito' };
+const SHEET_NAMES = { EVENTOS: 'Eventos', TRIBU_PASS: 'Tribu Pass', CAFECITO: 'Cafecito', PROPUESTAS: 'Propuestas' };
 const NOTIFY_EMAIL = 'contacto@tribuconnection.com';
 
 const HEADERS = {
   'Eventos': ['Fecha de envío', 'Evento', 'Rubro', 'Fecha del evento', 'Ubicación', 'Lat', 'Lng', 'Etiquetas', 'Descripción', 'Link fotos/video', 'Adjuntos'],
   'Tribu Pass': ['Fecha de envío', 'Nombre', 'Rubro', 'Perfil', 'Plan', 'Contacto', 'Detalles'],
-  'Cafecito': ['Fecha de envío', 'Nombre', 'Rubro', 'Perfil', 'Plan', 'Contacto', 'Detalles']
+  'Cafecito': ['Fecha de envío', 'Nombre', 'Rubro', 'Perfil', 'Plan', 'Contacto', 'Detalles'],
+  'Propuestas': ['Fecha de envío', 'Nombre', 'Marca / Evento', 'Contacto', 'Detalles']
 };
 
 /** Ejecutar una sola vez desde el editor de Apps Script para crear la planilla. */
@@ -28,19 +29,25 @@ function getSheet_() {
   if (id) {
     try { ss = SpreadsheetApp.openById(id); } catch (e) { id = null; }
   }
-  if (!id) {
+  const esNueva = !id;
+  if (esNueva) {
     ss = SpreadsheetApp.create('Tribu Connection - Formularios');
     props.setProperty('SHEET_ID', ss.getId());
-    ss.getSheets()[0].setName(SHEET_NAMES.EVENTOS);
-    ss.insertSheet(SHEET_NAMES.TRIBU_PASS);
-    ss.insertSheet(SHEET_NAMES.CAFECITO);
-    Object.keys(HEADERS).forEach(name => {
-      const sh = ss.getSheetByName(name);
-      sh.getRange(1, 1, 1, HEADERS[name].length).setValues([HEADERS[name]]);
-      sh.setFrozenRows(1);
-    });
   }
+  const porDefecto = esNueva ? ss.getSheets()[0] : null;
+  Object.keys(HEADERS).forEach(name => getOrCreateSheet_(ss, name));
+  if (porDefecto) ss.deleteSheet(porDefecto);
   return ss;
+}
+
+function getOrCreateSheet_(ss, name) {
+  let sh = ss.getSheetByName(name);
+  if (!sh) {
+    sh = ss.insertSheet(name);
+    sh.getRange(1, 1, 1, HEADERS[name].length).setValues([HEADERS[name]]);
+    sh.setFrozenRows(1);
+  }
+  return sh;
 }
 
 function doPost(e) {
@@ -49,6 +56,7 @@ function doPost(e) {
     const tipo = (e.parameter.Tipo || '').trim();
     if (tipo === 'Evento') return handleEvento_(ss, e);
     if (tipo === 'Join') return handleJoin_(ss, e);
+    if (tipo === 'Propuesta') return handlePropuesta_(ss, e);
     return respond_({ ok: false, error: 'Tipo desconocido' });
   } catch (err) {
     return respond_({ ok: false, error: String(err) });
@@ -56,7 +64,7 @@ function doPost(e) {
 }
 
 function handleEvento_(ss, e) {
-  const sheet = ss.getSheetByName(SHEET_NAMES.EVENTOS);
+  const sheet = getOrCreateSheet_(ss, SHEET_NAMES.EVENTOS);
   const adjuntos = [];
   if (e.files) {
     Object.keys(e.files).forEach(key => {
@@ -85,13 +93,24 @@ function handleEvento_(ss, e) {
 function handleJoin_(ss, e) {
   const plan = (e.parameter.Plan || 'General').trim();
   const sheetName = plan === 'Cafecito' ? SHEET_NAMES.CAFECITO : SHEET_NAMES.TRIBU_PASS;
-  const sheet = ss.getSheetByName(sheetName);
+  const sheet = getOrCreateSheet_(ss, sheetName);
   const row = [
     new Date(), e.parameter.Nombre || '', e.parameter.Rubro || '',
     e.parameter.Perfil || '', plan, e.parameter.Contacto || '', e.parameter.Detalles || ''
   ];
   sheet.appendRow(row);
   notify_('Nuevo registro en "' + sheetName + '": ' + (e.parameter.Nombre || '(sin nombre)'), HEADERS[sheetName], row);
+  return respond_({ ok: true });
+}
+
+function handlePropuesta_(ss, e) {
+  const sheet = getOrCreateSheet_(ss, SHEET_NAMES.PROPUESTAS);
+  const row = [
+    new Date(), e.parameter.Nombre || '', e.parameter.Marca_Evento || '',
+    e.parameter.Contacto || '', e.parameter.Detalles || ''
+  ];
+  sheet.appendRow(row);
+  notify_('Nueva propuesta a medida: ' + (e.parameter.Nombre || '(sin nombre)'), HEADERS[SHEET_NAMES.PROPUESTAS], row);
   return respond_({ ok: true });
 }
 
