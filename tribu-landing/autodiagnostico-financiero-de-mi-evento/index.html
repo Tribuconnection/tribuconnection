@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Punto de Equilibrio · Tribu Connection</title>
+<title>Auto-diagnóstico financiero de tu evento · Tribu Connection</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -46,10 +46,13 @@ body{
 header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:8px}
 .brand img{height:64px;width:auto;display:block}
-body.oscuro .brand img{filter:drop-shadow(0 0 1px rgba(255,255,255,.4)) brightness(1.05)}
+.brand .logo-oscuro{display:none}
+body.oscuro .brand .logo-claro{display:none}
+body.oscuro .brand .logo-oscuro{display:block}
 .toggle-tema{font-family:'Poppins',sans-serif;font-size:.75rem;font-weight:600;padding:8px 14px;border-radius:999px;border:1.5px solid var(--borde);background:var(--tarjeta);color:var(--gris);cursor:pointer;transition:all .15s}
 .toggle-tema:hover{color:var(--tinta);border-color:var(--tinta)}
 h1{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(1.3rem,3.2vw,1.85rem);line-height:1.15;margin-bottom:6px}
+.subtitulo{font-family:'Poppins',sans-serif;font-weight:600;font-size:clamp(.95rem,1.6vw,1.1rem);color:var(--gris);margin-bottom:12px}
 .intro{color:var(--gris);margin:0 0 24px;max-width:660px;font-size:.96rem}
 
 /* Presets */
@@ -151,13 +154,15 @@ footer b{color:var(--tinta)}
 <div class="wrap">
 <header>
   <div class="brand">
-    <img src="/assets/isotipo.png" alt="Tribu Connection">
+    <img class="logo-claro" src="/assets/isotipo.png" alt="Tribu Connection">
+    <img class="logo-oscuro" src="/assets/logo_white.png" alt="Tribu Connection">
   </div>
   <button class="toggle-tema" id="toggleTema">🌙 Modo oscuro</button>
 </header>
 
-<h1>Punto de equilibrio para tu evento</h1>
-<p class="intro">Mové las barritas o escribí los números para descubrir cuántas personas necesitás para no perder plata — y cuánto ganás con cada persona extra que se suma a la tribu.</p>
+<h1>Auto-diagnóstico financiero de tu evento</h1>
+<p class="subtitulo">Encontrá el punto de equilibrio y ganancia para tu evento</p>
+<p class="intro">Mové las barritas o escribí los números para descubrir cuántas personas necesitás para no perder plata —<br>y cuánto ganás con cada persona extra que se suma a la tribu.</p>
 
 <div class="preset-row" role="group" aria-label="Plantillas rápidas">
   <button class="preset p-fest" data-preset="festival">🎪 Festival</button>
