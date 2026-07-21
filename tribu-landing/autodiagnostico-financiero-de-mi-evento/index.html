@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Punto de Equilibrio · Tribu Connection</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --verde:#9AC343;
+  --naranja:#F3A600;
+  --celeste:#44B5C3;
+  --rojo:#C5475D;
+  --violeta:#8A75AD;
+  --tinta:#20242E;
+  --gris:#6E7480;
+  --fondo:#FFFFFF;
+  --fondo-suave:#F6F7F5;
+  --tarjeta:#FFFFFF;
+  --borde:#E9EAE6;
+  --radius:18px;
+  --sombra:0 2px 14px rgba(32,36,46,.06);
+}
+body.oscuro{
+  --tinta:#F2F3F6;
+  --gris:#9AA1AE;
+  --fondo:#171B26;
+  --fondo-suave:#1F2432;
+  --tarjeta:#1F2432;
+  --borde:#2C3242;
+  --sombra:0 2px 14px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--fondo);
+  color:var(--tinta);
+  min-height:100vh;
+  padding:24px 16px 64px;
+  transition:background .25s,color .25s;
+}
+.wrap{max-width:1100px;margin:0 auto}
+
+/* Header */
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:8px}
+.brand img{height:64px;width:auto;display:block}
+body.oscuro .brand img{filter:drop-shadow(0 0 1px rgba(255,255,255,.4)) brightness(1.05)}
+.toggle-tema{font-family:'Poppins',sans-serif;font-size:.75rem;font-weight:600;padding:8px 14px;border-radius:999px;border:1.5px solid var(--borde);background:var(--tarjeta);color:var(--gris);cursor:pointer;transition:all .15s}
+.toggle-tema:hover{color:var(--tinta);border-color:var(--tinta)}
+h1{font-family:'Poppins',sans-serif;font-weight:800;font-size:clamp(1.3rem,3.2vw,1.85rem);line-height:1.15;margin-bottom:6px}
+.intro{color:var(--gris);margin:0 0 24px;max-width:660px;font-size:.96rem}
+
+/* Presets */
+.preset-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px}
+.preset{font-family:'Poppins',sans-serif;font-size:.78rem;font-weight:600;padding:8px 15px;border-radius:999px;border:1.5px solid var(--borde);background:var(--tarjeta);cursor:pointer;transition:all .15s;color:var(--gris)}
+.preset:hover{border-color:var(--tinta);color:var(--tinta)}
+.preset.activo{color:#fff;border-color:transparent}
+.preset.activo.p-fest{background:var(--rojo)}
+.preset.activo.p-ret{background:var(--verde)}
+.preset.activo.p-taller{background:var(--celeste)}
+.preset.activo.p-fiesta{background:var(--violeta)}
+
+/* Layout */
+.grid{display:grid;grid-template-columns:400px 1fr;gap:24px}
+@media(max-width:920px){.grid{grid-template-columns:1fr}}
+
+/* Panel de inputs */
+.panel{background:var(--tarjeta);border:1px solid var(--borde);border-radius:var(--radius);padding:24px;box-shadow:var(--sombra)}
+.panel h2{font-family:'Poppins',sans-serif;font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0}
+.campo{margin-bottom:20px}
+.campo-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
+.campo label{font-size:.84rem;font-weight:800}
+.campo small{display:block;font-size:.72rem;color:var(--gris);font-weight:400;margin-top:5px}
+.valor-editable{display:flex;align-items:center;background:var(--fondo-suave);border:1.5px solid var(--borde);border-radius:10px;overflow:hidden;transition:border-color .15s;flex-shrink:0}
+.valor-editable:focus-within{border-color:var(--acento,var(--celeste))}
+.valor-editable .prefix{padding-left:9px;color:var(--gris);font-weight:700;font-size:.82rem}
+.valor-editable input[type=number]{width:110px;border:none;background:transparent;padding:7px 9px;font:inherit;font-weight:800;font-size:.88rem;color:var(--tinta);outline:none;text-align:right}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}
+
+/* Sliders */
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:8px;border-radius:999px;outline:none;cursor:pointer;
+  background:linear-gradient(to right,var(--acento,var(--celeste)) 0%,var(--acento,var(--celeste)) var(--pct,50%),var(--borde) var(--pct,50%),var(--borde) 100%);
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;appearance:none;
+  width:22px;height:22px;border-radius:50%;
+  background:var(--acento,var(--celeste));
+  border:3.5px solid var(--tarjeta);
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+  transition:transform .1s;
+}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.12)}
+input[type=range]::-moz-range-thumb{
+  width:15px;height:15px;border-radius:50%;
+  background:var(--acento,var(--celeste));
+  border:3.5px solid var(--tarjeta);
+  box-shadow:0 1px 5px rgba(0,0,0,.25);
+}
+input[type=range]:focus-visible{box-shadow:0 0 0 3px color-mix(in srgb,var(--acento,var(--celeste)) 35%, transparent)}
+.seccion{border-top:1px dashed var(--borde);margin-top:22px;padding-top:22px}
+
+/* Resultados */
+.resultados{display:flex;flex-direction:column;gap:20px}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:560px){.kpis{grid-template-columns:1fr}}
+.kpi{background:var(--tarjeta);border:1px solid var(--borde);border-radius:var(--radius);padding:18px 18px 16px;position:relative;overflow:hidden;box-shadow:var(--sombra)}
+.kpi::before{content:"";position:absolute;top:0;left:0;right:0;height:5px;background:var(--kpi-color,var(--celeste))}
+.kpi .titulo{font-size:.7rem;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--gris)}
+.kpi .valor{font-family:'Poppins',sans-serif;font-weight:800;font-size:1.65rem;margin-top:4px;line-height:1.1}
+.kpi .detalle{font-size:.75rem;color:var(--gris);margin-top:4px}
+
+.estado{border-radius:var(--radius);padding:14px 18px;font-weight:700;font-size:.92rem;line-height:1.45}
+.estado.ok{background:color-mix(in srgb,var(--verde) 14%,var(--tarjeta));color:var(--verde);border:1px solid color-mix(in srgb,var(--verde) 40%,transparent)}
+.estado.alerta{background:color-mix(in srgb,var(--rojo) 12%,var(--tarjeta));color:var(--rojo);border:1px solid color-mix(in srgb,var(--rojo) 40%,transparent)}
+.estado.imposible{background:color-mix(in srgb,var(--naranja) 14%,var(--tarjeta));color:var(--naranja);border:1px solid color-mix(in srgb,var(--naranja) 45%,transparent)}
+body:not(.oscuro) .estado.ok{color:#5D8317}
+body:not(.oscuro) .estado.alerta{color:#A2314A}
+body:not(.oscuro) .estado.imposible{color:#9A6C00}
+
+/* Grafico */
+.chart-card{background:var(--tarjeta);border:1px solid var(--borde);border-radius:var(--radius);padding:22px;box-shadow:var(--sombra)}
+.chart-card h2{font-family:'Poppins',sans-serif;font-size:.95rem;font-weight:700;margin-bottom:2px}
+.chart-card p.sub{font-size:.8rem;color:var(--gris);margin-bottom:22px}
+.chart{display:flex;align-items:stretch;gap:6px;height:290px;position:relative}
+.barra-col{flex:1;position:relative;min-width:0}
+.barra{position:absolute;left:50%;transform:translateX(-50%);width:70%;max-width:46px;border-radius:8px;transition:top .3s ease,height .3s ease,background .25s}
+.barra.perdida{background:linear-gradient(180deg,#D96A7E,var(--rojo))}
+.barra.ganancia{background:linear-gradient(180deg,var(--verde),#7CA82E)}
+.barra.equilibrio{background:linear-gradient(180deg,#FFC53D,var(--naranja))}
+.monto{position:absolute;left:50%;transform:translateX(-50%);font-size:.68rem;font-weight:800;white-space:nowrap}
+.eje{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:.72rem;font-weight:800;color:var(--gris);white-space:nowrap}
+.eje small{display:block;font-size:.6rem;font-weight:600;opacity:.8}
+.linea-cero{position:absolute;left:0;right:0;border-top:2px dashed var(--borde);z-index:0}
+.linea-cero span{position:absolute;right:0;top:-18px;font-size:.65rem;font-weight:800;color:var(--gris)}
+.leyenda{display:flex;gap:18px;margin-top:14px;flex-wrap:wrap;font-size:.78rem;font-weight:700;color:var(--gris)}
+.leyenda span{display:flex;align-items:center;gap:6px}
+.leyenda i{width:12px;height:12px;border-radius:4px;display:inline-block}
+
+footer{margin-top:36px;text-align:center;font-size:.78rem;color:var(--gris)}
+footer b{color:var(--tinta)}
+@media(prefers-reduced-motion:reduce){.barra{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <div class="brand">
+    <img src="/assets/isotipo.png" alt="Tribu Connection">
+  </div>
+  <button class="toggle-tema" id="toggleTema">🌙 Modo oscuro</button>
+</header>
+
+<h1>Punto de equilibrio para tu evento</h1>
+<p class="intro">Mové las barritas o escribí los números para descubrir cuántas personas necesitás para no perder plata — y cuánto ganás con cada persona extra que se suma a la tribu.</p>
+
+<div class="preset-row" role="group" aria-label="Plantillas rápidas">
+  <button class="preset p-fest" data-preset="festival">🎪 Festival</button>
+  <button class="preset p-ret" data-preset="retiro">🌿 Retiro</button>
+  <button class="preset p-taller" data-preset="taller">🎨 Taller</button>
+  <button class="preset p-fiesta" data-preset="fiesta">🎉 Fiesta</button>
+</div>
+
+<div class="grid">
+  <div class="panel">
+    <h2><span class="dot" style="background:var(--rojo)"></span>Costos fijos</h2>
+    <div id="camposFijos"></div>
+
+    <div class="seccion">
+      <h2><span class="dot" style="background:var(--violeta)"></span>Por persona y capacidad</h2>
+      <div id="camposVar"></div>
+    </div>
+  </div>
+
+  <div class="resultados">
+    <div class="kpis">
+      <div class="kpi" style="--kpi-color:var(--naranja)">
+        <div class="titulo">Punto de equilibrio</div>
+        <div class="valor" id="kpiBE">—</div>
+        <div class="detalle" id="kpiBEdet">personas para cubrir costos</div>
+      </div>
+      <div class="kpi" style="--kpi-color:var(--celeste)">
+        <div class="titulo">Margen por persona</div>
+        <div class="valor" id="kpiMargen">—</div>
+        <div class="detalle">entrada − costo variable</div>
+      </div>
+      <div class="kpi" style="--kpi-color:var(--verde)">
+        <div class="titulo">Ganancia a sala llena</div>
+        <div class="valor" id="kpiMax">—</div>
+        <div class="detalle" id="kpiMaxdet">con capacidad completa</div>
+      </div>
+    </div>
+
+    <div class="estado ok" id="estado">—</div>
+
+    <div class="chart-card">
+      <h2>Ganancia o pérdida según asistentes</h2>
+      <p class="sub">Cada barra muestra el resultado neto para ese nivel de asistencia.</p>
+      <div class="chart" id="chart" role="img" aria-label="Gráfico de barras de ganancia o pérdida según cantidad de asistentes"></div>
+      <div class="leyenda">
+        <span><i style="background:var(--rojo)"></i>Pérdida</span>
+        <span><i style="background:var(--naranja)"></i>Zona de equilibrio</span>
+        <span><i style="background:var(--verde)"></i>Ganancia</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>Hecho con 🧡 para la comunidad · <b>tribu connection</b> · www.tribuconnection.com</footer>
+</div>
+
+<script>
+/* -- Definicion de campos: cada uno con slider + input numerico -- */
+const CAMPOS = [
+  {id:'venue',      grupo:'fijos', label:'Lugar / venue',            hint:null, min:0, max:5000000, step:10000, val:800000, dinero:true, color:'var(--rojo)'},
+  {id:'produccion', grupo:'fijos', label:'Producción',               hint:'Sonido, luces, escenografía, artistas, facilitadores', min:0, max:5000000, step:10000, val:500000, dinero:true, color:'var(--naranja)'},
+  {id:'marketing',  grupo:'fijos', label:'Difusión y marketing',     hint:null, min:0, max:2000000, step:10000, val:200000, dinero:true, color:'var(--celeste)'},
+  {id:'staff',      grupo:'fijos', label:'Equipo / staff',           hint:null, min:0, max:2000000, step:10000, val:300000, dinero:true, color:'var(--verde)'},
+  {id:'precio',     grupo:'var',   label:'Precio de la entrada',     hint:null, min:0, max:300000, step:1000, val:25000, dinero:true, color:'var(--violeta)'},
+  {id:'varUnit',    grupo:'var',   label:'Costo variable por persona', hint:'Comida, pulsera, kit, seguro, comisiones de ticketera', min:0, max:150000, step:500, val:7000, dinero:true, color:'var(--rojo)'},
+  {id:'capacidad',  grupo:'var',   label:'Capacidad máxima',         hint:'Cupo del lugar o límite de entradas', min:1, max:2000, step:1, val:200, dinero:false, color:'var(--celeste)'},
+];
+
+const presets = {
+  festival: {venue:1500000, produccion:2500000, marketing:600000, staff:900000, precio:30000, varUnit:6000, capacidad:800},
+  retiro:   {venue:900000,  produccion:400000,  marketing:150000, staff:350000, precio:120000, varUnit:45000, capacidad:40},
+  taller:   {venue:150000,  produccion:100000,  marketing:60000,  staff:80000,  precio:20000,  varUnit:4000,  capacidad:35},
+  fiesta:   {venue:600000,  produccion:450000,  marketing:200000, staff:250000, precio:15000,  varUnit:3000,  capacidad:300},
+};
+
+const $ = id => document.getElementById(id);
+const fmt = n => '$' + Math.round(n).toLocaleString('es-AR');
+const fmtCorto = n => {
+  const abs = Math.abs(n), s = n < 0 ? '−' : '+';
+  if (abs >= 1000000) return s + '$' + (abs/1000000).toFixed(1).replace('.0','') + 'M';
+  if (abs >= 1000) return s + '$' + Math.round(abs/1000) + 'k';
+  return s + '$' + Math.round(abs);
+};
+
+/* -- Construir campos con slider -- */
+function crearCampo(c){
+  const div = document.createElement('div');
+  div.className = 'campo';
+  div.style.setProperty('--acento', c.color);
+  div.innerHTML = `
+    <div class="campo-top">
+      <label for="num_${c.id}">${c.label}</label>
+      <div class="valor-editable">
+        ${c.dinero ? '<span class="prefix">$</span>' : ''}
+        <input type="number" id="num_${c.id}" min="${c.min}" step="${c.step}" value="${c.val}" aria-label="${c.label}">
+      </div>
+    </div>
+    <input type="range" id="rng_${c.id}" min="${c.min}" max="${c.max}" step="${c.step}" value="${c.val}" aria-label="${c.label} (barrita)">
+    ${c.hint ? `<small>${c.hint}</small>` : ''}
+  `;
+  return div;
+}
+
+const contFijos = $('camposFijos'), contVar = $('camposVar');
+CAMPOS.forEach(c => (c.grupo === 'fijos' ? contFijos : contVar).appendChild(crearCampo(c)));
+
+function pintarSlider(rng){
+  const pct = (rng.value - rng.min) / (rng.max - rng.min) * 100;
+  rng.style.setProperty('--pct', pct + '%');
+}
+
+CAMPOS.forEach(c => {
+  const num = $('num_' + c.id), rng = $('rng_' + c.id);
+  rng.addEventListener('input', () => { num.value = rng.value; pintarSlider(rng); calc(); });
+  num.addEventListener('input', () => {
+    let v = Number(num.value) || 0;
+    if (v > Number(rng.max)) rng.max = v;   // el slider se estira si escribís más
+    rng.value = v; pintarSlider(rng); calc();
+  });
+  pintarSlider(rng);
+});
+
+function setValor(id, v){
+  const num = $('num_' + id), rng = $('rng_' + id);
+  const c = CAMPOS.find(x => x.id === id);
+  rng.max = Math.max(c.max, v);
+  num.value = v; rng.value = v; pintarSlider(rng);
+}
+
+/* -- Calculo -- */
+function leer(id){ return Math.max(0, Number($('num_' + id).value) || 0); }
+
+function calc(){
+  const fijos = leer('venue') + leer('produccion') + leer('marketing') + leer('staff');
+  const precio = leer('precio'), varU = leer('varUnit');
+  const cap = Math.max(1, leer('capacidad'));
+  const margen = precio - varU;
+  const be = margen > 0 ? Math.ceil(fijos / margen) : Infinity;
+  const gananciaMax = margen * cap - fijos;
+
+  $('kpiMargen').textContent = (margen < 0 ? '−' : '') + fmt(Math.abs(margen));
+  $('kpiMax').textContent = (gananciaMax < 0 ? '−' : '') + fmt(Math.abs(gananciaMax));
+  $('kpiMaxdet').textContent = 'con ' + cap.toLocaleString('es-AR') + ' personas';
+
+  const estado = $('estado');
+  if (margen <= 0){
+    $('kpiBE').textContent = '∞';
+    $('kpiBEdet').textContent = 'imposible con este margen';
+    estado.className = 'estado imposible';
+    estado.textContent = '⚠️ El costo variable por persona es igual o mayor que la entrada. Con estos números nunca llegás al equilibrio: subí el precio o bajá el costo por persona.';
+  } else if (be > cap){
+    $('kpiBE').textContent = be.toLocaleString('es-AR');
+    $('kpiBEdet').textContent = 'personas (¡supera tu capacidad!)';
+    estado.className = 'estado alerta';
+    estado.textContent = '🚨 Necesitás ' + be.toLocaleString('es-AR') + ' personas para cubrir costos, pero tu capacidad es ' + cap.toLocaleString('es-AR') + '. Ajustá precio, costos o buscá un lugar más grande.';
+  } else {
+    $('kpiBE').textContent = be.toLocaleString('es-AR');
+    $('kpiBEdet').textContent = 'personas para cubrir costos';
+    const pct = Math.round(be / cap * 100);
+    estado.className = 'estado ok';
+    estado.textContent = '✅ Cubrís costos vendiendo ' + be.toLocaleString('es-AR') + ' entradas (' + pct + '% de la capacidad). A partir de ahí, cada persona extra suma ' + fmt(margen) + ' de ganancia.';
+  }
+
+  dibujar(fijos, margen, cap, be);
+}
+
+/* -- Grafico de barras -- */
+function dibujar(fijos, margen, cap, be){
+  const chart = $('chart');
+  chart.innerHTML = '';
+  const N = 8;
+  const niveles = [...new Set(Array.from({length:N}, (_,i) => Math.max(1, Math.round(cap * (i+1) / N))))];
+  const datos = niveles.map(a => ({a, r: margen * a - fijos}));
+
+  const maxPos = Math.max(...datos.map(d => d.r), 0);
+  const maxNeg = Math.max(...datos.map(d => -d.r), 0);
+  const total = (maxPos + maxNeg) || 1;
+  const TOP = 26, EJE = 34;
+  const H = chart.clientHeight - TOP - EJE;
+  const ceroY = TOP + maxPos / total * H;
+
+  const linea = document.createElement('div');
+  linea.className = 'linea-cero';
+  linea.style.top = ceroY + 'px';
+  linea.innerHTML = '<span>$0</span>';
+  chart.appendChild(linea);
+
+  let beMarcado = false;
+  datos.forEach(d => {
+    const col = document.createElement('div');
+    col.className = 'barra-col';
+
+    const esBE = !beMarcado && isFinite(be) && d.r >= 0 && margen > 0;
+    if (esBE) beMarcado = true;
+
+    const h = Math.max(6, Math.abs(d.r) / total * H);
+    const bar = document.createElement('div');
+    bar.className = 'barra ' + (d.r < 0 ? 'perdida' : (esBE ? 'equilibrio' : 'ganancia'));
+    bar.style.height = h + 'px';
+    bar.style.top = (d.r >= 0 ? ceroY - h : ceroY) + 'px';
+    bar.title = d.a.toLocaleString('es-AR') + ' personas — ' + (d.r >= 0 ? 'ganancia de ' : 'pérdida de ') + fmt(Math.abs(d.r));
+
+    const monto = document.createElement('span');
+    monto.className = 'monto';
+    monto.textContent = fmtCorto(d.r);
+    monto.style.color = d.r < 0 ? 'var(--rojo)' : (esBE ? 'var(--naranja)' : 'var(--verde)');
+    monto.style.top = (d.r >= 0 ? ceroY - h - 20 : ceroY + h + 4) + 'px';
+
+    const eje = document.createElement('div');
+    eje.className = 'eje';
+    eje.innerHTML = d.a.toLocaleString('es-AR') + (esBE ? '<small>⭐ equilibrio</small>' : '');
+    if (esBE) eje.style.color = 'var(--naranja)';
+
+    col.appendChild(bar); col.appendChild(monto); col.appendChild(eje);
+    chart.appendChild(col);
+  });
+}
+
+/* -- Presets -- */
+document.querySelectorAll('.preset').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.preset').forEach(b => b.classList.remove('activo'));
+    btn.classList.add('activo');
+    Object.entries(presets[btn.dataset.preset]).forEach(([k, v]) => setValor(k, v));
+    calc();
+  });
+});
+
+/* -- Tema claro/oscuro -- */
+$('toggleTema').addEventListener('click', () => {
+  document.body.classList.toggle('oscuro');
+  $('toggleTema').textContent = document.body.classList.contains('oscuro') ? '☀️ Modo claro' : '🌙 Modo oscuro';
+  calc();
+});
+
+window.addEventListener('resize', calc);
+calc();
+</script>
+</body>
+</html>
