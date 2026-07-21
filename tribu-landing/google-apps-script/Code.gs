@@ -57,6 +57,7 @@ function doPost(e) {
     if (tipo === 'Evento') return handleEvento_(ss, e);
     if (tipo === 'Join') return handleJoin_(ss, e);
     if (tipo === 'Propuesta') return handlePropuesta_(ss, e);
+    if (tipo === 'Admin') return handleAdmin_(ss, e);
     return respond_({ ok: false, error: 'Tipo desconocido' });
   } catch (err) {
     return respond_({ ok: false, error: String(err) });
@@ -112,6 +113,75 @@ function handlePropuesta_(ss, e) {
   sheet.appendRow(row);
   notify_('Nueva propuesta a medida: ' + (e.parameter.Nombre || '(sin nombre)'), HEADERS[SHEET_NAMES.PROPUESTAS], row);
   return respond_({ ok: true });
+}
+
+/* ===================== ADMINISTRACIÓN =====================
+   Permite leer y corregir la planilla de forma remota (mantenimiento).
+   La clave NO va en este archivo: se guarda en Configuración del proyecto →
+   Propiedades del script → ADMIN_TOKEN. Si esa propiedad no existe, todas
+   estas acciones quedan deshabilitadas. */
+function handleAdmin_(ss, e) {
+  const esperado = PropertiesService.getScriptProperties().getProperty('ADMIN_TOKEN');
+  if (!esperado) return respond_({ ok: false, error: 'Administración deshabilitada (falta ADMIN_TOKEN)' });
+  if (!tokenValido_(e.parameter.Token || '', esperado)) return respond_({ ok: false, error: 'No autorizado' });
+
+  const accion = (e.parameter.Accion || '').trim();
+  const hoja = (e.parameter.Hoja || '').trim();
+
+  if (accion === 'hojas') {
+    return respond_({ ok: true, hojas: ss.getSheets().map(s => s.getName()) });
+  }
+
+  if (accion === 'leer') {
+    const sh = ss.getSheetByName(hoja);
+    if (!sh) return respond_({ ok: false, error: 'No existe la hoja: ' + hoja });
+    return respond_({ ok: true, filas: sh.getDataRange().getDisplayValues() });
+  }
+
+  if (accion === 'borrarFilas') {
+    const sh = ss.getSheetByName(hoja);
+    if (!sh) return respond_({ ok: false, error: 'No existe la hoja: ' + hoja });
+    // De mayor a menor para que borrar una fila no corra el número de las siguientes.
+    const filas = String(e.parameter.Filas || '').split(',')
+      .map(n => parseInt(n.trim(), 10))
+      .filter(n => n > 1) // la fila 1 son los encabezados
+      .sort((a, b) => b - a);
+    filas.forEach(n => { if (n <= sh.getLastRow()) sh.deleteRow(n); });
+    return respond_({ ok: true, borradas: filas.length });
+  }
+
+  if (accion === 'editarCelda') {
+    const sh = ss.getSheetByName(hoja);
+    if (!sh) return respond_({ ok: false, error: 'No existe la hoja: ' + hoja });
+    const fila = parseInt(e.parameter.Fila, 10);
+    const col = parseInt(e.parameter.Columna, 10);
+    if (!(fila > 0 && col > 0)) return respond_({ ok: false, error: 'Fila/Columna inválidas' });
+    sh.getRange(fila, col).setValue(e.parameter.Valor || '');
+    return respond_({ ok: true });
+  }
+
+  if (accion === 'limpiarPruebas') {
+    const marcas = ['Prueba Claude', 'CORS check', 'E2E ', 'Test Propuesta', 'Evento Test', 'ACENTOS'];
+    let total = 0;
+    ss.getSheets().forEach(sh => {
+      const datos = sh.getDataRange().getDisplayValues();
+      for (let i = datos.length - 1; i >= 1; i--) { // salteamos encabezados
+        const texto = datos[i].join(' ');
+        if (marcas.some(m => texto.indexOf(m) !== -1)) { sh.deleteRow(i + 1); total++; }
+      }
+    });
+    return respond_({ ok: true, borradas: total });
+  }
+
+  return respond_({ ok: false, error: 'Acción desconocida' });
+}
+
+/** Comparación a tiempo constante: no revela la clave carácter por carácter. */
+function tokenValido_(recibido, esperado) {
+  if (recibido.length !== esperado.length) return false;
+  let dif = 0;
+  for (let i = 0; i < esperado.length; i++) dif |= recibido.charCodeAt(i) ^ esperado.charCodeAt(i);
+  return dif === 0;
 }
 
 function getAttachmentsFolder_() {

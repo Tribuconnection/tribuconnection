@@ -44,6 +44,18 @@ automático por mail a contacto@tribuconnection.com en cada envío.
      "Nueva versión" → "Implementar"
    - La URL /exec se mantiene igual, no hace falta tocar la web de nuevo
 
+ADMINISTRACIÓN REMOTA (opcional)
+   El script permite leer y corregir la planilla a distancia (borrar filas,
+   editar celdas) para tareas de mantenimiento. Está apagado por defecto.
+   Para activarlo:
+     - En el editor: Configuración del proyecto (engranaje) → Propiedades
+       del script → Agregar propiedad → nombre ADMIN_TOKEN, valor una clave
+       larga y aleatoria.
+   Si esa propiedad no existe, las acciones de administración se rechazan.
+   La clave NO se guarda en este repositorio (es público): vive solo en las
+   propiedades del script. Si alguna vez se filtra, alcanza con cambiar el
+   valor de ADMIN_TOKEN para invalidarla.
+
 NOTAS
    - Los adjuntos (fotos/video) del formulario de eventos se guardan en una
      carpeta de Drive llamada "Tribu Connection - Adjuntos de eventos"
