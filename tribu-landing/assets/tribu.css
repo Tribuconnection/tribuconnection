@@ -704,6 +704,40 @@ body[data-accent] .eyebrow::before{ background:var(--spectrum); }
 .faq details[open] summary::after{ transform:rotate(45deg); }
 .faq .faq-a{ padding:0 1.2rem 1.1rem; color:var(--soft); font-size:.92rem; line-height:1.55; }
 
+/* ===== Quienes confían en nosotros (círculo de logos, Nosotros) ===== */
+.trust-wrap{ display:flex; flex-direction:column; align-items:center; gap:1.5rem; padding-top:.4rem; }
+.trust-label{ font-family:var(--font-hand); font-size:1.2rem; font-weight:600; color:var(--muted); text-align:center; }
+.trust-circle{ --d:clamp(270px,29vw,410px); --chip:clamp(56px,6.8vw,76px); position:relative; width:var(--d); height:var(--d); }
+.trust-circle-center{ position:absolute; inset:0; display:grid; place-items:center; pointer-events:none; }
+.trust-circle-center img{ width:20%; opacity:.35; }
+.trust-ring{ position:absolute; inset:0; animation:trust-spin 90s linear infinite; }
+.trust-chip{
+  position:absolute; top:50%; left:50%; width:var(--chip); height:var(--chip);
+  margin-top:calc(var(--chip) / -2); margin-left:calc(var(--chip) / -2);
+  /* posición fija en el círculo: no depende de animación, así que queda bien con animaciones apagadas */
+  transform:rotate(calc(var(--i) * 36deg)) translateY(calc((var(--d) - var(--chip)) / -2));
+}
+.trust-chip-counter{
+  width:100%; height:100%;
+  /* contrarresta el rotate() de .trust-chip (estático, no animado) para que el logo arranque derecho */
+  transform:rotate(calc(var(--i) * -36deg));
+}
+.trust-chip-inner{
+  width:100%; height:100%; border-radius:50%; background:var(--ink-1); border:1px solid var(--line);
+  display:grid; place-items:center; padding:15%;
+  /* contrarresta el giro animado del anillo; si prefers-reduced-motion la apaga, no pasa nada:
+     ya queda derecho por .trust-chip-counter, solo deja de orbitar */
+  animation:trust-spin-rev 90s linear infinite;
+  transition:border-color .3s ease;
+}
+.trust-chip:hover .trust-chip-inner{ border-color:var(--line-2); }
+.trust-circle:hover .trust-ring, .trust-circle:hover .trust-chip-inner{ animation-play-state:paused; }
+.trust-chip img{ max-width:100%; max-height:100%; object-fit:contain; }
+.trust-chip-text{ font-family:var(--font-display); font-weight:700; font-size:.6rem; letter-spacing:-.01em; text-align:center; line-height:1.15; color:var(--soft); }
+@keyframes trust-spin{ to{ transform:rotate(360deg); } }
+@keyframes trust-spin-rev{ to{ transform:rotate(-360deg); } }
+@media (max-width:640px){ .trust-circle{ --d:min(80vw,300px); --chip:54px; } }
+
 /* ===== Volver a la Home (breadcrumb landing) ===== */
 .backhome{ display:inline-flex; align-items:center; gap:.5em; color:var(--muted); font-size:.85rem; font-weight:500; text-decoration:none; transition:color .2s; }
 .backhome:hover{ color:var(--cream); }
