@@ -229,8 +229,9 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
    del texto. En mobile todo se apila en el orden natural del HTML —la
    lista queda alineada a la izquierda ahí, como el resto del texto—;
    desde 900px ambas filas pasan a 2 columnas. */
+.qes{padding-top:clamp(20px,2.5vw,40px)}
 .qes__row{display:grid;gap:clamp(28px,4vw,56px);align-items:start}
-.qes__row + .qes__row{margin-top:clamp(40px,5vw,72px)}
+.qes__row--flip{margin-top:clamp(40px,5vw,72px)}
 .epigrafe{
   font-family:var(--display);font-style:italic;font-size:clamp(21px,2.7vw,30px);
   line-height:1.45;color:var(--crema);
@@ -244,8 +245,11 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 }
 .noes{margin-top:2.4em;border-top:1px solid var(--madera);padding-top:1.6em}
 /* Sello ornamental: el mismo "eclipse que respira" del hero, en miniatura.
-   Sólo aparece en escritorio. */
-.qes__sello{display:none;position:relative;width:118px;aspect-ratio:1;margin-top:2em;pointer-events:none}
+   Centrado, como un divisor entre las dos filas. Sólo aparece en escritorio. */
+.qes__sello{
+  display:none;position:relative;width:100px;aspect-ratio:1;
+  margin:clamp(24px,4vw,48px) auto;pointer-events:none;
+}
 .qes__sello .aliento__luz{width:52px;height:52px;filter:blur(5px)}
 .qes__sello .aliento__anillo{box-shadow:0 0 26px rgba(192,124,58,.10), inset 0 0 30px rgba(192,124,58,.06)}
 /* Foto del círculo: proporción horizontal */
@@ -616,16 +620,6 @@ html.anim .rev.on{opacity:1;transform:none}
     <div class="qes__row rev">
       <div class="qes__izq">
         <p class="epigrafe">¿Cuánto hace que los días <br class="corte">te pasan sin que los <br class="corte">estés viviendo?</p>
-
-        <!-- Sello ornamental: el mismo "eclipse que respira" del hero, en miniatura. Sólo visible en escritorio. -->
-        <div class="qes__sello" aria-hidden="true">
-          <div class="aliento__nucleo">
-            <span class="aliento__halo"></span>
-            <span class="aliento__anillo"></span>
-            <span class="aliento__anillo aliento__anillo--in"></span>
-            <span class="aliento__orbita"><i class="aliento__luz"></i></span>
-          </div>
-        </div>
       </div>
 
       <!-- DEV: los tres "No es…" en tipografía distinta, más chica y espaciada -->
@@ -633,6 +627,17 @@ html.anim .rev.on{opacity:1;transform:none}
         <span>No es una práctica corporal</span>
         <span>No es un taller</span>
         <span>No es un simple concierto</span>
+      </div>
+    </div>
+
+    <!-- Sello ornamental: el mismo "eclipse que respira" del hero, en miniatura,
+         centrado como divisor entre las dos filas. Sólo visible en escritorio. -->
+    <div class="qes__sello" aria-hidden="true">
+      <div class="aliento__nucleo">
+        <span class="aliento__halo"></span>
+        <span class="aliento__anillo"></span>
+        <span class="aliento__anillo aliento__anillo--in"></span>
+        <span class="aliento__orbita"><i class="aliento__luz"></i></span>
       </div>
     </div>
 
