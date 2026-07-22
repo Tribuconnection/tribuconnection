@@ -224,9 +224,11 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 
 
 /* ─── QUÉ ES ────────────────────────────────────────────────────────────── */
-/* Primera fila: pregunta + "no es", sola (sin foto). Segunda fila: foto del
-   círculo junto al resto del texto. En mobile todo se apila en el orden
-   natural del HTML; desde 900px la segunda fila pasa a 2 columnas. */
+/* Primera fila: pregunta a la izquierda, lista "no es" a la derecha
+   (alineada a la derecha). Segunda fila: foto del círculo junto al resto
+   del texto. En mobile todo se apila en el orden natural del HTML —la
+   lista queda alineada a la izquierda ahí, como el resto del texto—;
+   desde 900px ambas filas pasan a 2 columnas. */
 .qes__row{display:grid;gap:clamp(28px,4vw,56px);align-items:start}
 .qes__row + .qes__row{margin-top:clamp(40px,5vw,72px)}
 .epigrafe{
@@ -547,8 +549,8 @@ html.anim .rev.on{opacity:1;transform:none}
   .hero__copy{order:2}
   .video{order:1}
   .qes__row{grid-template-columns:1fr 1fr}
-  .qes__row--solo{grid-template-columns:1fr}
   .qes__sello{display:block}
+  .noes{margin-top:0;text-align:right}
   .donde__grid{grid-template-columns:1.4fr .6fr}
   .video{max-width:390px;margin:0 auto 0 0}
 }
@@ -611,16 +613,9 @@ html.anim .rev.on{opacity:1;transform:none}
 <!-- ═══ 2 · QUÉ ES EL EVENTO ════════════════════════════════════════════ -->
 <section class="qes" id="que-es">
   <div class="env">
-    <div class="qes__row qes__row--solo rev">
+    <div class="qes__row rev">
       <div class="qes__izq">
         <p class="epigrafe">¿Cuánto hace que los días <br class="corte">te pasan sin que los <br class="corte">estés viviendo?</p>
-
-        <!-- DEV: los tres "No es…" en tipografía distinta, más chica y espaciada -->
-        <div class="noes">
-          <span>No es una práctica corporal</span>
-          <span>No es un taller</span>
-          <span>No es un simple concierto</span>
-        </div>
 
         <!-- Sello ornamental: el mismo "eclipse que respira" del hero, en miniatura. Sólo visible en escritorio. -->
         <div class="qes__sello" aria-hidden="true">
@@ -631,6 +626,13 @@ html.anim .rev.on{opacity:1;transform:none}
             <span class="aliento__orbita"><i class="aliento__luz"></i></span>
           </div>
         </div>
+      </div>
+
+      <!-- DEV: los tres "No es…" en tipografía distinta, más chica y espaciada -->
+      <div class="noes">
+        <span>No es una práctica corporal</span>
+        <span>No es un taller</span>
+        <span>No es un simple concierto</span>
       </div>
     </div>
 
@@ -836,7 +838,7 @@ html.anim .rev.on{opacity:1;transform:none}
   <div class="env rev">
     <div class="zoom" id="zoom-block">
       <p class="zoom__k">¿Preferís conocernos primero?</p>
-      <p class="zoom__txt">Sumate sin cargo a un encuentro especial por Zoom donde vas a conocer el espíritu de “Un Instante Eterno” y descubrir si resuena con vos.</p>
+      <p class="zoom__txt">Sumate sin cargo a un encuentro especial por Zoom<br class="corte"> donde vas a conocer el espíritu de “Un Instante Eterno”<br class="corte"> y descubrir si resuena con vos.</p>
       <a class="btn btn--zoom" id="zoom" href="#" target="_blank" rel="noopener">Sumarme al encuentro previo</a>
     </div>
   </div>
