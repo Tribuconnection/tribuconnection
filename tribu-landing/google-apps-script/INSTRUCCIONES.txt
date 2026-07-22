@@ -1,11 +1,15 @@
 INTEGRACIÓN CON GOOGLE SHEETS — PASO A PASO
 ============================================
 
-Esto conecta los formularios de la web (Solicitar evento, Sumarme a la
-Tribu / Tribu Plus / Cafecito, Conectarme a la Tribu, Propuesta a medida)
-a UNA SOLA pestaña de una planilla de Google Sheets ("Formularios"), en
-orden cronológico, con aviso automático por mail a
-contacto@tribuconnection.com en cada envío.
+Esto conecta los formularios de la web a una planilla de Google Sheets,
+con aviso automático por mail a contacto@tribuconnection.com en cada
+envío. Cada formulario deja su información en SU PROPIA pestaña, con el
+nombre de dónde viene:
+
+   - "Solicitar agregar evento"  -> pestaña "Eventos"
+   - "Sumate a la Tribu" / Club   -> pestaña "Sumate a la Tribu"
+   - "Conectarme a la Tribu"      -> pestaña "Conectarme a la Tribu"
+   - "Propuesta a medida"         -> pestaña "Propuestas"
 
 1) CREAR EL PROYECTO DE APPS SCRIPT
    - Entrá a https://script.google.com con la cuenta info.tribuconnection@gmail.com
@@ -14,25 +18,23 @@ contacto@tribuconnection.com en cada envío.
      archivo Code.gs (el que está en esta carpeta)
    - Nombrá el proyecto, por ejemplo "Tribu Connection - Formularios"
 
-2) CREAR LA PLANILLA (una sola vez)
+2) CREAR / ACTUALIZAR LAS PESTAÑAS (una sola vez)
    - Arriba, en el selector de funciones, elegí "setup" y tocá "Ejecutar" (▶)
    - Google va a pedir autorización (primera vez): "Avanzado" → "Ir a
      [nombre del proyecto] (no seguro)" → "Permitir". Es tu propio script,
      es seguro autorizarlo.
-   - En "Ejecuciones" (ícono de reloj a la izquierda) vas a ver el log con
-     la URL de la planilla creada: "Tribu Connection - Formularios", con
-     una sola pestaña: "Formularios".
-   - No hace falta volver a correr "setup" nunca más (el script se acuerda
-     de la planilla).
+   - Esto crea (si faltan) las 4 pestañas: "Eventos", "Sumate a la Tribu",
+     "Conectarme a la Tribu" y "Propuestas". Las que ya existían con ese
+     nombre se reusan, no se pisan.
 
-2.b) SI YA TENÍAS DATOS EN LAS PESTAÑAS VIEJAS (Eventos, Tribu Pass,
-     Cafecito, Propuestas)
-   - En el selector de funciones, elegí "migrarHojasViejas" y tocá "Ejecutar"
-   - Esto copia todo lo que ya habías recibido a la pestaña única
-     "Formularios", ordenado por fecha. Las pestañas viejas NO se borran:
-     quedan renombradas con "(archivo)" y ocultas, por si hace falta
-     revisarlas.
-   - Se corre una sola vez. Si la volvés a correr, vas a duplicar filas.
+2.b) LIMPIAR LAS PRUEBAS Y LAS PESTAÑAS VIEJAS (opcional, recomendado)
+   - En el selector de funciones, elegí "limpiarPruebas" y "Ejecutar":
+     borra de todas las pestañas las filas de prueba (Prueba Claude, E2E,
+     CORS check, ACENTOS, QA...).
+   - Después, elegí "limpiarPestanasObsoletas" y "Ejecutar": borra las
+     pestañas que quedaron de esquemas anteriores ("Formularios",
+     "Tribu Pass", "Cafecito"), pero SÓLO si están vacías. Si alguna tiene
+     datos reales, no la toca (revisala y movés los datos a mano).
 
 3) DESPLEGAR COMO WEB APP
    - Arriba a la derecha: "Implementar" → "Nueva implementación"
@@ -71,13 +73,10 @@ NOTAS
    - Los adjuntos (fotos/video) del formulario de eventos se guardan en una
      carpeta de Drive llamada "Tribu Connection - Adjuntos de eventos"
      (se crea sola la primera vez), y el link queda en la columna
-     "Adjuntos" de la hoja "Formularios".
-   - Los 4 formularios del sitio (Solicitar evento, Sumarme a la Tribu,
-     Conectarme a la Tribu y Propuesta a medida) van todos a la misma
-     pestaña "Formularios", una fila por envío, con una columna "Tipo"
-     para filtrar por cuál formulario vino cada uno. No todas las columnas
-     aplican a todos los tipos (ej: "Fecha del evento" solo se usa en
-     Tipo=Evento) — quedan vacías para el resto, es esperado.
+     "Adjuntos" de la pestaña "Eventos".
+   - Cada formulario tiene su propia pestaña, con sólo las columnas que le
+     corresponden (ej: "Eventos" tiene Fecha del evento / Ubicación /
+     Adjuntos; "Propuestas" no). Una fila por envío.
    - Si un envío falla, el sitio ya NO muestra "¡Recibido!": abre un mail
      prellenado a contacto@tribuconnection.com como respaldo, así no se
      pierde el contacto.

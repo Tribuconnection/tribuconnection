@@ -1,28 +1,35 @@
 /**
- * Backend de Google Sheets para los formularios de tribuconnection.com:
- * - Solicitar evento (calendario)
- * - Sumarme a la Tribu / Tribu Plus / Cafecito (home + club-tribu-connection)
- * - Conectarme a la Tribu (creador o marca)
- * - Propuesta a medida
+ * Backend de Google Sheets para los formularios de tribuconnection.com.
  *
- * Todos los formularios escriben en UNA sola hoja ("Formularios"), en orden
- * cronológico, con una columna "Tipo" para distinguir de cuál vinieron.
+ * Cada formulario deja su información en SU PROPIA pestaña, nombrada según
+ * de dónde viene:
+ *   - "Solicitar agregar evento"  -> pestaña "Eventos"
+ *   - "Sumate a la Tribu" / Club   -> pestaña "Sumate a la Tribu"
+ *   - "Conectarme a la Tribu"      -> pestaña "Conectarme a la Tribu"
+ *   - "Propuesta a medida"         -> pestaña "Propuestas"
+ *
+ * Cada envío avisa por mail a contacto@tribuconnection.com.
  *
  * Ver INSTRUCCIONES.txt para el paso a paso de despliegue.
  */
 
-const SHEET_NAME = 'Formularios';
 const NOTIFY_EMAIL = 'contacto@tribuconnection.com';
 
-const HEADERS = [
-  'Fecha de envío', 'Tipo', 'Nombre', 'Contacto', 'Perfil', 'Rubro',
-  'Marca / Evento / Proyecto', 'Plan', 'Detalles',
-  'Fecha del evento', 'Ubicación', 'Lat', 'Lng', 'Etiquetas', 'Link fotos/video', 'Adjuntos'
-];
+/* Una pestaña por formulario, con el nombre de dónde viene la info y sus propias columnas. */
+const TABS = {
+  Evento:    { name: 'Eventos',               headers: ['Fecha de envío', 'Evento', 'Rubro', 'Fecha del evento', 'Ubicación', 'Lat', 'Lng', 'Etiquetas', 'Descripción', 'Link fotos/video', 'Adjuntos'] },
+  Join:      { name: 'Sumate a la Tribu',      headers: ['Fecha de envío', 'Nombre', 'Rubro', 'Perfil', 'Plan', 'Contacto', 'Detalles'] },
+  Conectar:  { name: 'Conectarme a la Tribu',  headers: ['Fecha de envío', 'Nombre', 'Perfil', 'Marca / Proyecto / Evento', 'Contacto', 'Detalles'] },
+  Propuesta: { name: 'Propuestas',             headers: ['Fecha de envío', 'Nombre', 'Marca / Evento', 'Contacto', 'Detalles'] }
+};
 
-/** Ejecutar una sola vez desde el editor de Apps Script para crear la planilla. */
+/* Pestañas que quedaron de esquemas anteriores y ya no se usan. */
+const PESTANAS_OBSOLETAS = ['Formularios', 'Tribu Pass', 'Cafecito'];
+
+/** Ejecutar una sola vez desde el editor para crear la planilla y sus pestañas. */
 function setup() {
   const ss = getSheet_();
+  Object.keys(TABS).forEach(k => getTab_(ss, k));
   Logger.log('Planilla lista: ' + ss.getUrl());
 }
 
@@ -39,16 +46,18 @@ function getSheet_() {
     props.setProperty('SHEET_ID', ss.getId());
   }
   const porDefecto = esNueva ? ss.getSheets()[0] : null;
-  const sh = getOrCreateSheet_(ss);
-  if (porDefecto && porDefecto.getSheetId() !== sh.getSheetId()) ss.deleteSheet(porDefecto);
+  const primera = getTab_(ss, Object.keys(TABS)[0]);
+  if (porDefecto && porDefecto.getSheetId() !== primera.getSheetId()) ss.deleteSheet(porDefecto);
   return ss;
 }
 
-function getOrCreateSheet_(ss) {
-  let sh = ss.getSheetByName(SHEET_NAME);
+/** Devuelve (creándola si hace falta) la pestaña del tipo de formulario dado. */
+function getTab_(ss, key) {
+  const conf = TABS[key];
+  let sh = ss.getSheetByName(conf.name);
   if (!sh) {
-    sh = ss.insertSheet(SHEET_NAME);
-    sh.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+    sh = ss.insertSheet(conf.name);
+    sh.getRange(1, 1, 1, conf.headers.length).setValues([conf.headers]);
     sh.setFrozenRows(1);
   }
   return sh;
@@ -69,27 +78,17 @@ function doPost(e) {
   }
 }
 
-/** Arma una fila completa (16 columnas) a partir de un objeto parcial { columna: valor }. */
-function armarFila_(tipo, datos) {
-  const porNombre = Object.assign({
-    'Fecha de envío': new Date(),
-    'Tipo': tipo
-  }, datos);
-  return HEADERS.map(h => porNombre[h] !== undefined ? porNombre[h] : '');
-}
-
-function agregarFila_(ss, tipo, datos, asuntoLog) {
-  const sheet = getOrCreateSheet_(ss);
-  const row = armarFila_(tipo, datos);
-  sheet.appendRow(row);
-  notify_(asuntoLog, row);
+function agregarFila_(ss, key, row, asunto) {
+  const sh = getTab_(ss, key);
+  sh.appendRow(row);
+  notify_(asunto, TABS[key].headers, row);
 }
 
 function handleEvento_(ss, e) {
   const adjuntos = [];
   if (e.files) {
-    Object.keys(e.files).forEach(key => {
-      const arr = Array.isArray(e.files[key]) ? e.files[key] : [e.files[key]];
+    Object.keys(e.files).forEach(k => {
+      const arr = Array.isArray(e.files[k]) ? e.files[k] : [e.files[k]];
       arr.forEach(file => {
         if (file && file.getBytes && file.getBytes().length) {
           const folder = getAttachmentsFolder_();
@@ -100,119 +99,83 @@ function handleEvento_(ss, e) {
       });
     });
   }
-  agregarFila_(ss, 'Evento', {
-    'Marca / Evento / Proyecto': e.parameter.Evento || '',
-    'Rubro': e.parameter.Rubro || '',
-    'Fecha del evento': e.parameter.Fecha || '',
-    'Ubicación': e.parameter.Ubicacion || '',
-    'Lat': e.parameter.Ubicacion_lat || '',
-    'Lng': e.parameter.Ubicacion_lng || '',
-    'Etiquetas': e.parameter.Etiquetas || '',
-    'Detalles': e.parameter.Descripcion || '',
-    'Link fotos/video': e.parameter.Link_media || '',
-    'Adjuntos': adjuntos.join(', ')
-  }, 'Nueva solicitud de evento: ' + (e.parameter.Evento || '(sin nombre)'));
+  const row = [
+    new Date(), e.parameter.Evento || '', e.parameter.Rubro || '', e.parameter.Fecha || '',
+    e.parameter.Ubicacion || '', e.parameter.Ubicacion_lat || '', e.parameter.Ubicacion_lng || '',
+    e.parameter.Etiquetas || '', e.parameter.Descripcion || '', e.parameter.Link_media || '',
+    adjuntos.join(', ')
+  ];
+  agregarFila_(ss, 'Evento', row, 'Nueva solicitud de evento: ' + (e.parameter.Evento || '(sin nombre)'));
   return respond_({ ok: true });
 }
 
 function handleJoin_(ss, e) {
   const plan = (e.parameter.Plan || 'General').trim();
-  agregarFila_(ss, 'Join', {
-    'Nombre': e.parameter.Nombre || '',
-    'Contacto': e.parameter.Contacto || '',
-    'Perfil': e.parameter.Perfil || '',
-    'Rubro': e.parameter.Rubro || '',
-    'Plan': plan,
-    'Detalles': e.parameter.Detalles || ''
-  }, 'Nuevo registro "Sumarme a la Tribu" (' + plan + '): ' + (e.parameter.Nombre || '(sin nombre)'));
+  const row = [
+    new Date(), e.parameter.Nombre || '', e.parameter.Rubro || '',
+    e.parameter.Perfil || '', plan, e.parameter.Contacto || '', e.parameter.Detalles || ''
+  ];
+  agregarFila_(ss, 'Join', row, 'Nuevo "Sumate a la Tribu" (' + plan + '): ' + (e.parameter.Nombre || '(sin nombre)'));
   return respond_({ ok: true });
 }
 
 function handleConectar_(ss, e) {
-  agregarFila_(ss, 'Conectar', {
-    'Nombre': e.parameter.Nombre || '',
-    'Contacto': e.parameter.Contacto || '',
-    'Perfil': e.parameter.Perfil || '',
-    'Marca / Evento / Proyecto': e.parameter.Marca_Evento || '',
-    'Detalles': e.parameter.Detalles || ''
-  }, 'Nuevo "Conectarme a la Tribu": ' + (e.parameter.Nombre || '(sin nombre)'));
+  const row = [
+    new Date(), e.parameter.Nombre || '', e.parameter.Perfil || '',
+    e.parameter.Marca_Evento || '', e.parameter.Contacto || '', e.parameter.Detalles || ''
+  ];
+  agregarFila_(ss, 'Conectar', row, 'Nuevo "Conectarme a la Tribu": ' + (e.parameter.Nombre || '(sin nombre)'));
   return respond_({ ok: true });
 }
 
 function handlePropuesta_(ss, e) {
-  agregarFila_(ss, 'Propuesta', {
-    'Nombre': e.parameter.Nombre || '',
-    'Contacto': e.parameter.Contacto || '',
-    'Marca / Evento / Proyecto': e.parameter.Marca_Evento || '',
-    'Detalles': e.parameter.Detalles || ''
-  }, 'Nueva propuesta a medida: ' + (e.parameter.Nombre || '(sin nombre)'));
+  const row = [
+    new Date(), e.parameter.Nombre || '', e.parameter.Marca_Evento || '',
+    e.parameter.Contacto || '', e.parameter.Detalles || ''
+  ];
+  agregarFila_(ss, 'Propuesta', row, 'Nueva propuesta a medida: ' + (e.parameter.Nombre || '(sin nombre)'));
   return respond_({ ok: true });
 }
 
-/* ===================== MIGRACIÓN (una sola vez) =====================
-   Si ya tenías datos en las pestañas viejas (Eventos, Tribu Pass, Cafecito,
-   Propuestas), corré esta función UNA VEZ desde el editor ("migrarHojasViejas")
-   para volcarlos a la hoja única "Formularios". Las pestañas viejas no se
-   borran: quedan renombradas como archivo y ocultas, por las dudas. */
-function migrarHojasViejas() {
+/* ===================== MANTENIMIENTO (correr a mano desde el editor) =====================
+   Estas funciones se ejecutan una vez desde el editor de Apps Script, NO por la web. */
+
+/** Borra de TODAS las pestañas las filas de prueba (por marcadores conocidos). */
+function limpiarPruebas() {
   const ss = getSheet_();
-  const destino = getOrCreateSheet_(ss);
-  let migradas = 0;
-
-  const mapas = [
-    { nombre: 'Eventos', tipo: 'Evento', mapear: r => ({
-        'Fecha de envío': r[0], 'Marca / Evento / Proyecto': r[1], 'Rubro': r[2],
-        'Fecha del evento': r[3], 'Ubicación': r[4], 'Lat': r[5], 'Lng': r[6],
-        'Etiquetas': r[7], 'Detalles': r[8], 'Link fotos/video': r[9], 'Adjuntos': r[10]
-      }) },
-    { nombre: 'Tribu Pass', tipo: 'Join', mapear: r => ({
-        'Fecha de envío': r[0], 'Nombre': r[1], 'Rubro': r[2], 'Perfil': r[3],
-        'Plan': r[4], 'Contacto': r[5], 'Detalles': r[6]
-      }) },
-    { nombre: 'Cafecito', tipo: 'Join', mapear: r => ({
-        'Fecha de envío': r[0], 'Nombre': r[1], 'Rubro': r[2], 'Perfil': r[3],
-        'Plan': r[4], 'Contacto': r[5], 'Detalles': r[6]
-      }) },
-    { nombre: 'Propuestas', tipo: 'Propuesta', mapear: r => ({
-        'Fecha de envío': r[0], 'Nombre': r[1], 'Marca / Evento / Proyecto': r[2],
-        'Contacto': r[3], 'Detalles': r[4]
-      }) }
-  ];
-
-  mapas.forEach(({ nombre, tipo, mapear }) => {
-    const sh = ss.getSheetByName(nombre);
-    if (!sh || sh.getSheetId() === destino.getSheetId()) return;
-    const datos = sh.getDataRange().getValues();
-    for (let i = 1; i < datos.length; i++) { // salteamos encabezados
-      if (datos[i].join('') === '') continue; // fila vacía
-      destino.appendRow(armarFila_(tipo, mapear(datos[i])));
-      migradas++;
+  const marcas = ['Prueba Claude', 'CORS check', 'E2E ', 'Test Propuesta', 'Evento Test', 'ACENTOS', 'QA verificacion', 'Marca QA'];
+  let total = 0;
+  ss.getSheets().forEach(sh => {
+    const datos = sh.getDataRange().getDisplayValues();
+    for (let i = datos.length - 1; i >= 1; i--) { // salteamos encabezados
+      const texto = datos[i].join(' ');
+      if (marcas.some(m => texto.indexOf(m) !== -1)) { sh.deleteRow(i + 1); total++; }
     }
-    sh.hideSheet();
-    if (!nombre.includes('(archivo)')) sh.setName(nombre + ' (archivo)');
   });
-
-  // Reordena todo por fecha de envío para que quede cronológico.
-  const ultimaFila = destino.getLastRow();
-  if (ultimaFila > 2) {
-    destino.getRange(2, 1, ultimaFila - 1, HEADERS.length).sort({ column: 1, ascending: true });
-  }
-
-  Logger.log('Migradas ' + migradas + ' filas a "' + SHEET_NAME + '".');
+  Logger.log('Filas de prueba borradas: ' + total);
 }
 
-/* ===================== ADMINISTRACIÓN =====================
-   Permite leer y corregir la planilla de forma remota (mantenimiento).
-   La clave NO va en este archivo: se guarda en Configuración del proyecto →
-   Propiedades del script → ADMIN_TOKEN. Si esa propiedad no existe, todas
-   estas acciones quedan deshabilitadas. */
+/** Borra las pestañas obsoletas SÓLO si están vacías (por seguridad, no toca las que tengan datos). */
+function limpiarPestanasObsoletas() {
+  const ss = getSheet_();
+  let borradas = 0;
+  PESTANAS_OBSOLETAS.forEach(nombre => {
+    const sh = ss.getSheetByName(nombre);
+    if (sh && sh.getLastRow() <= 1) { ss.deleteSheet(sh); borradas++; }
+  });
+  Logger.log('Pestañas obsoletas vacías borradas: ' + borradas + ' (las que tenían datos NO se tocaron)');
+}
+
+/* ===================== ADMINISTRACIÓN (remota, opcional) =====================
+   Requiere la propiedad ADMIN_TOKEN en Configuración del proyecto → Propiedades
+   del script. Si no existe, todas estas acciones quedan deshabilitadas. */
 function handleAdmin_(ss, e) {
   const esperado = PropertiesService.getScriptProperties().getProperty('ADMIN_TOKEN');
   if (!esperado) return respond_({ ok: false, error: 'Administración deshabilitada (falta ADMIN_TOKEN)' });
   if (!tokenValido_(e.parameter.Token || '', esperado)) return respond_({ ok: false, error: 'No autorizado' });
 
   const accion = (e.parameter.Accion || '').trim();
-  const hoja = (e.parameter.Hoja || SHEET_NAME).trim();
+  const hoja = (e.parameter.Hoja || '').trim();
 
   if (accion === 'hojas') {
     return respond_({ ok: true, hojas: ss.getSheets().map(s => s.getName()) });
@@ -247,16 +210,8 @@ function handleAdmin_(ss, e) {
   }
 
   if (accion === 'limpiarPruebas') {
-    const marcas = ['Prueba Claude', 'CORS check', 'E2E ', 'Test Propuesta', 'Evento Test', 'ACENTOS'];
-    let total = 0;
-    ss.getSheets().forEach(sh => {
-      const datos = sh.getDataRange().getDisplayValues();
-      for (let i = datos.length - 1; i >= 1; i--) { // salteamos encabezados
-        const texto = datos[i].join(' ');
-        if (marcas.some(m => texto.indexOf(m) !== -1)) { sh.deleteRow(i + 1); total++; }
-      }
-    });
-    return respond_({ ok: true, borradas: total });
+    limpiarPruebas();
+    return respond_({ ok: true });
   }
 
   return respond_({ ok: false, error: 'Acción desconocida' });
@@ -279,8 +234,8 @@ function getAttachmentsFolder_() {
   return folder;
 }
 
-function notify_(subject, row) {
-  const body = HEADERS.map((h, i) => h + ': ' + row[i]).join('\n');
+function notify_(subject, headers, row) {
+  const body = headers.map((h, i) => h + ': ' + row[i]).join('\n');
   MailApp.sendEmail(NOTIFY_EMAIL, subject, body);
 }
 
