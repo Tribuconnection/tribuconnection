@@ -1,9 +1,11 @@
 INTEGRACIÓN CON GOOGLE SHEETS — PASO A PASO
 ============================================
 
-Esto conecta 2 formularios de la web (Solicitar evento, y Sumarme a la
-Tribu / Tribu Plus / Cafecito) a una planilla de Google Sheets, con aviso
-automático por mail a contacto@tribuconnection.com en cada envío.
+Esto conecta los formularios de la web (Solicitar evento, Sumarme a la
+Tribu / Tribu Plus / Cafecito, Conectarme a la Tribu, Propuesta a medida)
+a UNA SOLA pestaña de una planilla de Google Sheets ("Formularios"), en
+orden cronológico, con aviso automático por mail a
+contacto@tribuconnection.com en cada envío.
 
 1) CREAR EL PROYECTO DE APPS SCRIPT
    - Entrá a https://script.google.com con la cuenta info.tribuconnection@gmail.com
@@ -19,9 +21,18 @@ automático por mail a contacto@tribuconnection.com en cada envío.
      es seguro autorizarlo.
    - En "Ejecuciones" (ícono de reloj a la izquierda) vas a ver el log con
      la URL de la planilla creada: "Tribu Connection - Formularios", con
-     3 pestañas: Eventos, Tribu Pass, Cafecito.
+     una sola pestaña: "Formularios".
    - No hace falta volver a correr "setup" nunca más (el script se acuerda
      de la planilla).
+
+2.b) SI YA TENÍAS DATOS EN LAS PESTAÑAS VIEJAS (Eventos, Tribu Pass,
+     Cafecito, Propuestas)
+   - En el selector de funciones, elegí "migrarHojasViejas" y tocá "Ejecutar"
+   - Esto copia todo lo que ya habías recibido a la pestaña única
+     "Formularios", ordenado por fecha. Las pestañas viejas NO se borran:
+     quedan renombradas con "(archivo)" y ocultas, por si hace falta
+     revisarlas.
+   - Se corre una sola vez. Si la volvés a correr, vas a duplicar filas.
 
 3) DESPLEGAR COMO WEB APP
    - Arriba a la derecha: "Implementar" → "Nueva implementación"
@@ -60,10 +71,13 @@ NOTAS
    - Los adjuntos (fotos/video) del formulario de eventos se guardan en una
      carpeta de Drive llamada "Tribu Connection - Adjuntos de eventos"
      (se crea sola la primera vez), y el link queda en la columna
-     "Adjuntos" de la hoja Eventos.
-   - Los 3 formularios del sitio (Solicitar evento, Sumarme a la Tribu y
-     Propuesta a medida) van a la planilla. Las hojas que falten se crean
-     solas: la primera propuesta que llegue genera la hoja "Propuestas".
+     "Adjuntos" de la hoja "Formularios".
+   - Los 4 formularios del sitio (Solicitar evento, Sumarme a la Tribu,
+     Conectarme a la Tribu y Propuesta a medida) van todos a la misma
+     pestaña "Formularios", una fila por envío, con una columna "Tipo"
+     para filtrar por cuál formulario vino cada uno. No todas las columnas
+     aplican a todos los tipos (ej: "Fecha del evento" solo se usa en
+     Tipo=Evento) — quedan vacías para el resto, es esperado.
    - Si un envío falla, el sitio ya NO muestra "¡Recibido!": abre un mail
      prellenado a contacto@tribuconnection.com como respaldo, así no se
      pierde el contacto.
