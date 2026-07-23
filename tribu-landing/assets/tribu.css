@@ -596,6 +596,10 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .chip span{ display:inline-block; padding:.55rem 1rem; border:1px solid var(--line-2); border-radius:999px; font-size:.9rem; color:var(--soft); cursor:pointer; transition:.2s; user-select:none; }
 .chip input:checked + span{ background:var(--cream); color:var(--ink); border-color:var(--cream); font-weight:600; }
 .chip span:hover{ border-color:var(--cream); }
+/* Mensaje de error de campo (ej: elegir una opción antes de enviar) */
+.field-error{ display:none; margin-top:.55rem; font-size:.82rem; font-weight:500; color:var(--red); }
+.field-error.show{ display:block; }
+.chips.is-invalid .chip span{ border-color:color-mix(in srgb, var(--red) 60%, var(--line-2)); }
 .modal .btn{ width:100%; justify-content:center; margin-top:.5rem; }
 .modal-msg{ text-align:center; padding:1.5rem 0; color:var(--cream); font-size:1.05rem; line-height:1.5; display:none; }
 .modal-note{ font-size:.8rem; color:var(--muted); text-align:center; margin-top:1rem; line-height:1.5; }
