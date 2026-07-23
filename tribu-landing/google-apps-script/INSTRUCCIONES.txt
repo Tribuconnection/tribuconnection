@@ -6,10 +6,16 @@ con aviso automático por mail a contacto@tribuconnection.com en cada
 envío. Cada formulario deja su información en SU PROPIA pestaña, con el
 nombre de dónde viene:
 
-   - "Solicitar agregar evento"  -> pestaña "Eventos"
-   - "Sumate a la Tribu" / Club   -> pestaña "Sumate a la Tribu"
-   - "Conectarme a la Tribu"      -> pestaña "Conectarme a la Tribu"
-   - "Propuesta a medida"         -> pestaña "Propuestas"
+   - "Solicitar agregar evento"       -> pestaña "Eventos"
+   - "Sumate a la Tribu" · Cafecito    -> pestaña "Cafecito"
+   - "Sumate a la Tribu" · Tribu Plus  -> pestaña "Tribu Plus"
+   - "Conectarme a la Tribu"           -> pestaña "Conectarme a la Tribu"
+   - "Propuesta a medida"              -> pestaña "Propuestas"
+
+   (El formulario de sumarse es uno solo; se separa por el plan elegido.
+    Cualquier plan que no sea Cafecito —incluido el "General" de los botones
+    genéricos "Quiero sumarme a la Tribu"— cae en "Tribu Plus"; la columna
+    "Plan" de esa pestaña aclara cuál fue exactamente.)
 
 1) CREAR EL PROYECTO DE APPS SCRIPT
    - Entrá a https://script.google.com con la cuenta info.tribuconnection@gmail.com
@@ -23,9 +29,9 @@ nombre de dónde viene:
    - Google va a pedir autorización (primera vez): "Avanzado" → "Ir a
      [nombre del proyecto] (no seguro)" → "Permitir". Es tu propio script,
      es seguro autorizarlo.
-   - Esto crea (si faltan) las 4 pestañas: "Eventos", "Sumate a la Tribu",
-     "Conectarme a la Tribu" y "Propuestas". Las que ya existían con ese
-     nombre se reusan, no se pisan.
+   - Esto crea (si faltan) las 5 pestañas: "Eventos", "Cafecito",
+     "Tribu Plus", "Conectarme a la Tribu" y "Propuestas". Las que ya
+     existían con ese nombre se reusan, no se pisan.
 
 2.b) LIMPIAR LAS PRUEBAS Y LAS PESTAÑAS VIEJAS (opcional, recomendado)
    - En el selector de funciones, elegí "limpiarPruebas" y "Ejecutar":
@@ -33,8 +39,10 @@ nombre de dónde viene:
      CORS check, ACENTOS, QA...).
    - Después, elegí "limpiarPestanasObsoletas" y "Ejecutar": borra las
      pestañas que quedaron de esquemas anteriores ("Formularios",
-     "Tribu Pass", "Cafecito"), pero SÓLO si están vacías. Si alguna tiene
-     datos reales, no la toca (revisala y movés los datos a mano).
+     "Tribu Pass", "Sumate a la Tribu"), pero SÓLO si están vacías. Si
+     alguna tiene datos reales, no la toca (revisala y movés los datos a
+     mano). OJO: la pestaña vieja "Tribu Pass" (nombre viejo) es distinta
+     de la nueva "Tribu Plus" — la vieja se borra, la nueva se usa.
 
 3) DESPLEGAR COMO WEB APP
    - Arriba a la derecha: "Implementar" → "Nueva implementación"
