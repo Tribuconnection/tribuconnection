@@ -201,6 +201,11 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
    blanco, así que anulamos la caja oscura 9:16 y dejamos que el embed respire. */
 .video--reel{aspect-ratio:auto;max-height:none;background:transparent;border:0;overflow:visible;cursor:default}
 .video--reel .instagram-media{margin:0 auto!important}
+/* IMPORTANTE: la regla base «.video iframe{position:absolute;height:100%}» estaba
+   colapsando el iframe del reel (se salía del flujo y el contenedor quedaba en 0).
+   Misma especificidad + declarada después = gana sin !important, así el height en
+   px que embed.js le pone inline al iframe sigue mandando. */
+.video--reel iframe{position:static;inset:auto;width:100%;height:auto}
 
 /* ─── EL ESPEJO ─────────────────────────────────────────────────────────
    Bloque centrado y compuesto: los renglones están donde los pidió el
