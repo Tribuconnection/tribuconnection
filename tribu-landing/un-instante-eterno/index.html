@@ -85,6 +85,9 @@ section{padding:var(--gap) 0;position:relative}
 h1,h2{font-family:var(--display);font-weight:400;line-height:1.06;letter-spacing:.06em}
 h1{font-size:clamp(38px,6.6vw,74px);text-transform:uppercase}
 h2{font-size:clamp(26px,3.4vw,40px);text-transform:uppercase;letter-spacing:.1em}
+/* "Date este momento" (sección de reserva) va en la serif legible cursiva en caja
+   baja, como el resto de los títulos delicados —no la display en mayúsculas. */
+.precio h2{font-family:var(--serif-legible);font-style:italic;text-transform:none;letter-spacing:.01em}
 p{max-width:62ch}
 p + p{margin-top:1.35em}
 /* Cortes de línea pedidos por el cliente. Se aplican de 720px para arriba;
@@ -246,7 +249,7 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 .qes__row{display:grid;gap:clamp(28px,4vw,56px);align-items:start}
 .qes__row--flip{margin-top:clamp(40px,5vw,72px)}
 .epigrafe{
-  font-family:var(--display);font-style:italic;font-size:clamp(21px,2.7vw,30px);
+  font-family:var(--serif-legible);font-style:italic;font-size:clamp(21px,2.7vw,30px);
   line-height:1.45;color:var(--crema);
 }
 .qes__cuerpo p{color:#B8A895;font-weight:300}
@@ -293,7 +296,7 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
   letter-spacing:.2em;margin-bottom:16px;
 }
 .hito__t{
-  font-family:var(--display);font-size:22px;letter-spacing:.04em;
+  font-family:var(--serif-legible);font-style:italic;font-size:22px;letter-spacing:.04em;
   color:var(--crema);margin-bottom:12px;
 }
 .hito p{font-size:15px;color:var(--tenue);line-height:1.7}
@@ -317,7 +320,7 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
   padding:16px 0;border-bottom:1px solid var(--madera);
 }
 .datos dt{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--tenue)}
-.datos dd{font-family:var(--display);font-size:17px;color:var(--crema);text-align:right}
+.datos dd{font-family:var(--serif-legible);font-style:italic;font-size:17px;color:var(--crema);text-align:right}
 
 /* ─── PRUEBA SOCIAL ─────────────────────────────────────────────────────── */
 /* Menos aire abajo: la cita de cierre ya funciona como remate visual,
@@ -328,7 +331,7 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
   margin-bottom:clamp(48px,6vw,72px);
 }
 .social__intro{
-  font-family:var(--display);font-size:clamp(19px,2.3vw,26px);font-style:italic;
+  font-family:var(--serif-legible);font-size:clamp(19px,2.3vw,26px);font-style:italic;
   line-height:1.6;max-width:24ch;
 }
 .social__foto{overflow:hidden;background:var(--brasa);aspect-ratio:4/3}
@@ -352,7 +355,7 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 .bio__foto img{width:100%;height:100%;object-fit:cover;filter:saturate(.8) brightness(.88);transition:filter 1s}
 .bio__card:hover .bio__foto img{filter:saturate(1) brightness(1)}
 .bio__n{
-  font-family:var(--display);font-size:22px;letter-spacing:.05em;margin-bottom:14px;
+  font-family:var(--serif-legible);font-style:italic;font-size:22px;letter-spacing:.05em;margin-bottom:14px;
   display:flex;align-items:center;gap:12px;
 }
 .bio__ig{
@@ -363,7 +366,7 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 .bio__ig svg{width:17px;height:17px}
 .bio__card p{font-size:15px;color:var(--tenue);line-height:1.75;text-align:justify;text-justify:inter-word}
 .bio__firma{margin-top:clamp(36px,4.5vw,48px);text-align:center}
-.bio__firma em{display:block;font-size:clamp(18px,2.2vw,24px);color:var(--crema);margin-bottom:14px}
+.bio__firma em{font-family:var(--serif-legible);display:block;font-size:clamp(18px,2.2vw,24px);color:var(--crema);margin-bottom:14px}
 .bio__firma span{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--tenue)}
 
 /* ─── NEWSLETTER ────────────────────────────────────────────────────────── */
@@ -371,7 +374,7 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 .news .eyebrow{margin-left:auto;margin-right:auto;font-size:13px}
 .news .env{max-width:900px}
 .news__txt{
-  font-family:var(--serif-legible);font-size:clamp(18px,2.1vw,22px);line-height:1.65;
+  font-family:var(--serif-legible);font-style:italic;font-size:clamp(18px,2.1vw,22px);line-height:1.65;
   color:var(--crema);margin:0 auto 40px;
 }
 .news__txt b{color:var(--ambar);font-weight:400;font-style:italic}
@@ -489,7 +492,7 @@ em{font-style:italic;font-family:var(--display);font-size:1.06em}
 
 /* ─── COMPARTIR ─────────────────────────────────────────────────────────── */
 .compartir{background:var(--brasa);border-top:1px solid var(--madera);text-align:center}
-.compartir__t{font-family:var(--display);font-size:clamp(22px,2.8vw,30px);color:var(--crema);margin:0 auto 12px}
+.compartir__t{font-family:var(--serif-legible);font-style:italic;font-size:clamp(22px,2.8vw,30px);color:var(--crema);margin:0 auto 12px}
 .compartir__s{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--tenue);margin:0 auto 36px}
 .compartir__btns{display:flex;flex-wrap:wrap;justify-content:center;gap:12px}
 .share{
