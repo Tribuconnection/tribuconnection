@@ -30,11 +30,9 @@
   Desarrollado por Tribu Connection
 
   ▸ PENDIENTES A CARGAR (buscar la palabra PENDIENTE en este archivo):
-      1. WHATSAPP   → constante CONFIG.whatsapp (número con código país, sin +)
-      2. ZOOM       → constante CONFIG.zoomUrl  (landing de inscripción)
+      1. ZOOM       → constante CONFIG.zoomUrl  (landing de inscripción)
                       Si el Zoom no está activo: borrar el bloque #bloque-zoom
-      4. FOTOS "DÓNDE" → 3 archivos de Gabriel (living / parque / cocina).
-                      Reemplazar los <img> de la sección DÓNDE.
+  ▸ Fotos "DÓNDE": Gabriel confirmó que por ahora quedan las actuales.
   ▸ Las imágenes van embebidas en base64 para que este archivo sea
     autocontenido y se pueda previsualizar de una. Para producción,
     extraerlas a /img y referenciarlas por ruta (mejor caché y peso).
@@ -913,10 +911,10 @@ html.anim .rev.on{opacity:1;transform:none}
 
 <script>
 /* ═══ CONFIGURACIÓN ═══════════════════════════════════════════════════
-   Datos confirmados en el brief v2. Sólo faltan 3 PENDIENTES. */
+   Datos confirmados en el brief v2. Sólo falta el link de Zoom. */
 var CONFIG = {
   zoomUrl       : '',                    // PENDIENTE · link de inscripción al Zoom (resuelve Gabriel)
-  newsletterUrl : '/newsletter',         // mini-landing del Anexo A (ruta interna a maquetar/conectar)
+  newsletterUrl : 'https://el-beso-del-arbol-un-instante-eterno.subscribepage.io/', // confirmado · automatización de bienvenida con el cupón
   whatsapp      : '541155929759',        // confirmado
   alias         : 'semilla.arbol.cielo', // confirmado
   cupon         : 'INSTANTE322',         // confirmado · validación en el front
