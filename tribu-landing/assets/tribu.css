@@ -784,3 +784,16 @@ body[data-accent] .eyebrow::before{ background:var(--spectrum); }
 
 /* ===== Botones largos en mobile: permitir wrap para que no se corten ===== */
 @media (max-width:480px){ .btn{ white-space:normal; text-align:center; } }
+
+/* ===== Cards de caso clickeables ("Ver historia" — sección Marcas) ===== */
+.case--link{ text-decoration:none; color:inherit; }
+.case--link p{ margin-bottom:0; }
+.case-go{ margin-top:auto; padding-top:1rem; font-size:.86rem; font-weight:600; color:var(--accent-c,var(--teal)); display:inline-flex; align-items:center; gap:.4em; }
+.case-go .arr{ transition:transform .25s ease; }
+.case--link:hover .case-go .arr{ transform:translateX(3px); }
+
+/* ===== Cards de servicio con bajada + CTA propio (sección Marcas) ===== */
+.svc-lead{ font-size:.9rem; color:var(--soft); line-height:1.5; margin-bottom:1rem; }
+.svc-cta{ margin-top:auto; padding-top:1.1rem; font-size:.86rem; font-weight:600; text-decoration:none; color:var(--c,var(--teal)); display:inline-flex; align-items:center; gap:.4em; }
+.svc-cta .arr{ transition:transform .25s ease; }
+.svc-cta:hover .arr{ transform:translateX(3px); }
