@@ -797,3 +797,15 @@ body[data-accent] .eyebrow::before{ background:var(--spectrum); }
 .svc-cta{ margin-top:auto; padding-top:1.1rem; font-size:.86rem; font-weight:600; text-decoration:none; color:var(--c,var(--teal)); display:inline-flex; align-items:center; gap:.4em; }
 .svc-cta .arr{ transition:transform .25s ease; }
 .svc-cta:hover .arr{ transform:translateX(3px); }
+
+/* ===== Saltos de línea manuales solo en desktop (en mobile molestan) ===== */
+br.br-desk{ display:none; }
+@media (min-width:760px){ br.br-desk{ display:inline; } }
+
+/* ===== Desafíos: títulos de distinta cantidad de líneas → alinear los párrafos ===== */
+.challenges--eq .challenge b{ line-height:1.25; min-height:2.5em; }
+@media (max-width:640px){ .challenges--eq .challenge b{ min-height:0; } }
+
+/* ===== CTA de cada card de servicio: siempre en un renglón y a la misma altura ===== */
+.svc-grid--4 .svc-cta{ white-space:nowrap; font-size:clamp(.72rem,.95vw,.78rem); letter-spacing:-.01em; }
+@media (min-width:861px) and (max-width:1180px){ .svc-grid--4 .svc{ padding:1.2rem 1rem; } }
