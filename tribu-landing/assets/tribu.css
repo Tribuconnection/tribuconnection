@@ -83,7 +83,7 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 /* Titular con quiebres manuales: el renglon mas largo mide ~13.8em, o sea 928px al
    tope de 4.2rem. Se libera el ancho del hero (hasta 1052px) para que los
    <br class="br-desk"> sean los unicos quiebres y no se cuele un wrap extra. */
-.display--3l{ text-wrap:normal; }
+.display--3l{ text-wrap:wrap; }
 .hero-inner:has(.display--3l){ max-width:none; }
 .h2{ font-family:var(--font-accent); font-weight:400; letter-spacing:normal; text-wrap:balance; font-size:clamp(1.7rem, 3.6vw, 2.6rem); }
 .cal-title{ font-size:clamp(1.15rem, 2vw, 1.6rem); }
