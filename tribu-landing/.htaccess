@@ -17,6 +17,18 @@
   Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.basemaps.cartocdn.com https://unpkg.com https://*.cdninstagram.com https://*.fbcdn.net; connect-src 'self' https://nominatim.openstreetmap.org https://formsubmit.co https://*.basemaps.cartocdn.com https://script.google.com https://script.googleusercontent.com https://www.instagram.com; frame-src 'self' https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formsubmit.co; frame-ancestors 'self'"
 </IfModule>
 
+# Cache: el HTML se revalida siempre (si no, el navegador se queda con una copia
+# vieja y los cambios no se ven). Los assets van versionados con ?v=N en la URL,
+# asi que pueden cachearse fuerte sin riesgo.
+<IfModule mod_headers.c>
+  <FilesMatch "\.html$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
+  <FilesMatch "\.(css|js|png|jpg|jpeg|webp|woff2|mp4)$">
+    Header set Cache-Control "public, max-age=31536000"
+  </FilesMatch>
+</IfModule>
+
 # Evitar listado de directorios
 Options -Indexes
 
