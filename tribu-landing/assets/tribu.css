@@ -244,6 +244,10 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
    pantalla vacía a la derecha. */
 .about-grid--single .about-copy{ text-align:center; max-width:860px; margin-inline:auto; }
 .about-grid--single .about-copy p{ max-width:62ch; margin-inline:auto; }
+/* Párrafo con quiebre manual (<br>): tiene que entrar en 2 renglones exactos, así que no lo
+   limita el max-width de lectura — el ancho del .wrap alcanza para el renglón más largo.
+   Abajo de ~820px de viewport vuelve a envolver solo, que es lo deseado en mobile. */
+.about-grid--single .about-copy p.p-2lines{ max-width:none; }
 .about-copy p{ color:var(--soft); font-size:1.06rem; margin-bottom:1.2rem; max-width:46ch; }
 .about-copy p .hl{ color:var(--cream); font-weight:500; }
 .about-copy .bridge{ font-family:var(--font-display); font-style:italic; font-size:1.4rem; color:var(--cream); margin-top:1.8rem; }
