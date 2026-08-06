@@ -868,7 +868,7 @@ br.br-desk{ display:none; }
 /* Apagado en reposo, encendido al pasar por encima */
 .tc-fab img{ width:32px; height:32px; object-fit:contain; opacity:.62; transition:opacity .25s ease, transform .25s ease; }
 .tc-fab:hover{ transform:scale(1.09); border-color:transparent; box-shadow:0 0 0 2px rgba(54,183,196,.35), 0 14px 38px -8px rgba(54,183,196,.55); }
-.tc-fab:hover img, .tc-fab.is-open img{ opacity:1; }
+.tc-fab:hover img, .tc-fab.is-open img, .tc-fab.tc-pendiente img{ opacity:1; }
 .tc-fab.is-open{ transform:scale(.94); }
 .tc-fab::after{
   content:""; position:absolute; inset:-1px; border-radius:50%; padding:1px;
@@ -877,6 +877,8 @@ br.br-desk{ display:none; }
   -webkit-mask-composite:xor; mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite:exclude;
 }
 .tc-fab:hover::after, .tc-fab.is-open::after{ opacity:1; }
+/* Charla minimizada: el circulo queda encendido para invitar a retomarla */
+.tc-fab.tc-pendiente::after{ opacity:.55; }
 .tc-dot{
   position:absolute; top:2px; right:2px; width:12px; height:12px; border-radius:50%;
   background:var(--green); border:2px solid var(--ink);

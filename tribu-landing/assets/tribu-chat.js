@@ -369,11 +369,13 @@
      manda a otra sección se perdería todo lo conversado. */
   const CLAVE = 'tc-chat-v1';
   let listo = false;
+  let scrollGuardado = 0;   // dónde estaba leyendo la persona al minimizar
   function guardar() {
     if (!listo) return;
     try {
       sessionStorage.setItem(CLAVE, JSON.stringify({
-        abierto: abierto, html: msgs.innerHTML, chips: chipsActuales
+        abierto: abierto, html: msgs.innerHTML, chips: chipsActuales,
+        scroll: abierto ? msgs.scrollTop : scrollGuardado
       }));
     } catch (e) { /* modo privado / storage lleno: seguimos sin memoria */ }
   }
@@ -482,27 +484,49 @@
   let abierto = false;
 
   function abrir(foco) {
+    const retoma = msgs.children.length > 0;
     abierto = true;
     panel.hidden = false;
     fab.classList.add('is-open');
+    fab.classList.remove('tc-pendiente');
     fab.setAttribute('aria-expanded', 'true');
-    if (!msgs.children.length) {
+    if (!retoma) {
       setTimeout(() => {
         addMsg('<p>¡Hola! Soy <strong>' + BOT_NOMBRE + '</strong>, el asistente de <strong>Tribu Connection</strong> 👋</p><p>¿Sobre qué te puedo contar?</p>', 'bot');
         setChips(CHIPS_INICIALES);
       }, 250);
     }
-    alFinal();
+    /* Si vuelve a una charla que ya existía, la retomamos en el mismo punto
+       en el que la dejó, no al final. */
+    if (retoma) {
+      /* Dos pasadas: al restaurar la charla en otra página el alto real recién
+         existe cuando terminaron de acomodarse tipografías e imágenes, y una
+         sola asignación se recorta a 0. */
+      const volverAlPunto = () => { msgs.scrollTop = scrollGuardado; marcarSiHayMas(); };
+      requestAnimationFrame(volverAlPunto);
+      setTimeout(volverAlPunto, 220);
+    } else alFinal();
     guardar();
     if (foco !== false) setTimeout(() => input.focus({ preventScroll: true }), 300);
   }
 
   function cerrar() {
+    if (abierto) scrollGuardado = msgs.scrollTop;
     abierto = false;
     panel.hidden = true;
     fab.classList.remove('is-open');
     fab.setAttribute('aria-expanded', 'false');
+    marcarPendiente();
     guardar();
+  }
+
+  /* Con una charla minimizada el círculo queda encendido: avisa que ahí atrás
+     hay algo empezado y que el click lo retoma. */
+  function marcarPendiente() {
+    fab.classList.toggle('tc-pendiente', !abierto && msgs.children.length > 0);
+    fab.setAttribute('aria-label', (!abierto && msgs.children.length)
+      ? 'Retomar la charla con el asistente de la Tribu'
+      : 'Abrir el asistente de la Tribu');
   }
 
   fab.addEventListener('click', () => abierto ? cerrar() : abrir());
@@ -519,14 +543,26 @@
   });
   msgs.addEventListener('scroll', marcarSiHayMas, { passive: true });
 
+  /* Si la persona vuelve a usar la web con el chat abierto (toca un link, una
+     tarjeta, el menú), lo minimizamos solo para no taparle la pantalla. La charla
+     queda intacta: al tocar el círculo vuelve tal cual estaba, en el mismo punto.
+     Va en captura y con pointerdown para alcanzar a guardar el estado incluso
+     cuando ese click dispara una navegación. */
+  document.addEventListener('pointerdown', e => {
+    if (!abierto) return;
+    if (e.target.closest('.tc-dock') || e.target.closest('.tc-wa')) return;
+    cerrar();
+  }, true);
+
   /* ── Restaurar la charla anterior (si la hay) ───────────── */
   const previo = recordado();
   listo = true;
   if (previo && previo.html) {
     msgs.innerHTML = previo.html;
     msgs.querySelectorAll('.tc-typing-wrap').forEach(n => n.remove());
+    scrollGuardado = previo.scroll || 0;
     setChips(previo.chips);
-    if (previo.abierto) abrir(false);
+    if (previo.abierto) abrir(false); else marcarPendiente();
   }
 
   /* La barra de cookies ocupa el pie de la pantalla: mientras esté visible,
