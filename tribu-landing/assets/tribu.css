@@ -131,6 +131,12 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .nav.scrolled{ background:rgba(10,11,14,.72); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border-bottom-color:var(--line); padding-block:11px; }
 .brand{ display:flex; align-items:center; gap:.65rem; text-decoration:none; color:var(--cream); }
 .brand img{ width:38px; height:38px; object-fit:contain; }
+/* Logo completo (manos + palabra) en un solo archivo, blanco sobre el fondo
+   oscuro del nav. Manda el alto: el ancho lo resuelve la proporción del PNG,
+   que viene recortado a su caja real. */
+.brand .brand-full{ width:auto; height:42px; }
+@media (max-width:900px){ .brand .brand-full{ height:34px; } }
+@media (max-width:400px){ .brand .brand-full{ height:30px; } }
 .brand b{ font-family:var(--font-sans); font-weight:800; font-size:1.18rem; letter-spacing:-.02em; line-height:1; }
 .brand b span{ display:block; font-weight:500; font-size:.66rem; letter-spacing:.34em; color:var(--muted); text-transform:uppercase; margin-top:3px; }
 .nav-links{ display:flex; align-items:center; gap:1.3rem; }
