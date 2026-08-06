@@ -240,7 +240,10 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .about{ background:linear-gradient(180deg, transparent, rgba(255,255,255,.018) 50%, transparent); }
 .about-grid{ display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(2.5rem,6vw,5rem); align-items:start; }
 .about-grid--single{ grid-template-columns:1fr; }
-.about-grid--single .about-copy p{ max-width:62ch; }
+/* Sin el círculo de marcas al costado, el texto se centra y respira en vez de dejar media
+   pantalla vacía a la derecha. */
+.about-grid--single .about-copy{ text-align:center; max-width:860px; margin-inline:auto; }
+.about-grid--single .about-copy p{ max-width:62ch; margin-inline:auto; }
 .about-copy p{ color:var(--soft); font-size:1.06rem; margin-bottom:1.2rem; max-width:46ch; }
 .about-copy p .hl{ color:var(--cream); font-weight:500; }
 .about-copy .bridge{ font-family:var(--font-display); font-style:italic; font-size:1.4rem; color:var(--cream); margin-top:1.8rem; }
