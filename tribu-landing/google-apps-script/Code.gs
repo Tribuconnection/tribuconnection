@@ -26,7 +26,7 @@ const TABS = {
   Evento:    { name: 'Eventos',               headers: ['Fecha de envío', 'Evento', 'Rubro', 'Fecha del evento', 'Ubicación', 'Lat', 'Lng', 'Etiquetas', 'Descripción', 'Link fotos/video', 'Adjuntos'] },
   Cafecito:  { name: 'Cafecito',              headers: JOIN_HEADERS },
   TribuPlus: { name: 'Tribu Plus',            headers: JOIN_HEADERS },
-  Conectar:  { name: 'Conectarme a la Tribu',  headers: ['Fecha de envío', 'Nombre', 'Perfil', 'Marca / Proyecto / Evento', 'Contacto', 'Detalles'] },
+  Conectar:  { name: 'Conectarme a la Tribu',  headers: ['Fecha de envío', 'Nombre', 'Perfil', 'Marca / Proyecto / Evento', 'Contacto', 'Detalles', 'Fecha de nacimiento', 'Provincia', 'Ciudad'] },
   Propuesta: { name: 'Propuestas',             headers: ['Fecha de envío', 'Nombre', 'Marca / Evento', 'Contacto', 'Detalles'] }
 };
 
@@ -130,7 +130,8 @@ function handleJoin_(ss, e) {
 function handleConectar_(ss, e) {
   const row = [
     new Date(), e.parameter.Nombre || '', e.parameter.Perfil || '',
-    e.parameter.Marca_Evento || '', e.parameter.Contacto || '', e.parameter.Detalles || ''
+    e.parameter.Marca_Evento || '', e.parameter.Contacto || '', e.parameter.Detalles || '',
+    e.parameter.Fecha_Nacimiento || '', e.parameter.Provincia || '', e.parameter.Ciudad || ''
   ];
   agregarFila_(ss, 'Conectar', row, 'Nuevo "Conectarme a la Tribu": ' + (e.parameter.Nombre || '(sin nombre)'));
   return respond_({ ok: true });

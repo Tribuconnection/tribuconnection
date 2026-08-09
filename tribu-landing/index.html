@@ -351,6 +351,24 @@
         <label for="cDetails">Contanos un poco más</label>
         <textarea id="cDetails" name="Detalles" placeholder="Contanos sobre tu proyecto, marca o idea"></textarea>
       </div>
+      <div class="field">
+        <label for="cBirth">Fecha de nacimiento</label>
+        <input id="cBirth" name="Fecha_Nacimiento" type="date">
+        <p class="modal-note" style="margin-top:.5rem">🎂 Así te avisamos con beneficios especiales el día de tu cumpleaños.</p>
+      </div>
+      <div class="field">
+        <label>Ubicación (opcional)</label>
+        <div class="row2">
+          <select id="cProvincia" name="Provincia">
+            <option value="">Elegí tu provincia</option>
+          </select>
+          <select id="cCiudad" name="Ciudad" disabled>
+            <option value="">Elegí tu provincia primero</option>
+          </select>
+        </div>
+        <input id="cCiudadOtra" name="Ciudad_Otra" type="text" placeholder="Escribí tu localidad" style="display:none; margin-top:.6rem">
+        <p class="modal-note" style="margin-top:.5rem">📍 Nos sirve para mostrarte eventos cercanos a vos, y si organizás experiencias o representás una marca, mostrarte gente cercana que podría estar interesada.</p>
+      </div>
       <button type="submit" class="btn btn--spectrum" id="connectSubmit">Enviar</button>
       <p class="modal-note">Te respondemos en 24–48 hs con una propuesta. También podés escribirnos a contacto@tribuconnection.com</p>
     </form>
@@ -501,7 +519,7 @@
       <h3>Quiénes somos</h3>
       <p>Tribu Connection ("nosotros") es responsable del tratamiento de los datos personales que nos compartís a través de <b style="color:var(--cream)">tribuconnection.com</b>. Ante cualquier consulta sobre tus datos, escribinos a <a href="mailto:contacto@tribuconnection.com" style="color:var(--teal)">contacto@tribuconnection.com</a>.</p>
       <h3>Qué datos recopilamos</h3>
-      <p>Solo los que nos compartís voluntariamente al completar alguno de nuestros formularios (Conectarme a la Tribu, Solicitar evento, Propuesta a medida): nombre, rubro, WhatsApp o email, y los detalles que quieras contarnos. No recopilamos datos de navegación con fines publicitarios.</p>
+      <p>Solo los que nos compartís voluntariamente al completar alguno de nuestros formularios (Conectarme a la Tribu, Solicitar evento, Propuesta a medida): nombre, rubro, WhatsApp o email, y los detalles que quieras contarnos. En el formulario "Conectarme a la Tribu" también podés compartirnos, de forma opcional, tu fecha de nacimiento y tu provincia/ciudad, para avisarte de beneficios por tu cumpleaños y mostrarte eventos o personas cercanas a vos. No recopilamos datos de navegación con fines publicitarios.</p>
       <h3>Para qué los usamos</h3>
       <ul>
         <li>Responder tu consulta y contactarte por WhatsApp o email.</li>
@@ -869,6 +887,34 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   renderFilters(); render(); renderList();
 })();
 
+/* ============ PROVINCIAS Y CIUDADES (Argentina) ============ */
+const PROVINCIAS_AR = {
+  'Ciudad Autónoma de Buenos Aires': ['Ciudad Autónoma de Buenos Aires'],
+  'Buenos Aires': ['La Plata','Mar del Plata','Bahía Blanca','Tandil','San Isidro','Vicente López','Quilmes','Lanús','Avellaneda','Morón','Tigre','Pilar','Escobar','San Nicolás de los Arroyos','Necochea','Olavarría','Junín','Villa Gesell','Pinamar'],
+  'Catamarca': ['San Fernando del Valle de Catamarca','Andalgalá','Belén','Recreo','Tinogasta'],
+  'Chaco': ['Resistencia','Presidencia Roque Sáenz Peña','Villa Ángela','Charata'],
+  'Chubut': ['Comodoro Rivadavia','Trelew','Puerto Madryn','Rawson','Esquel'],
+  'Córdoba': ['Córdoba Capital','Río Cuarto','Villa María','San Francisco','Alta Gracia','Villa Carlos Paz','Jesús María','Bell Ville'],
+  'Corrientes': ['Corrientes Capital','Goya','Mercedes','Paso de los Libres'],
+  'Entre Ríos': ['Paraná','Concordia','Gualeguaychú','Concepción del Uruguay','Colón','Villaguay'],
+  'Formosa': ['Formosa Capital','Clorinda','Pirané'],
+  'Jujuy': ['San Salvador de Jujuy','Palpalá','Perico','Libertador General San Martín','Tilcara','Humahuaca'],
+  'La Pampa': ['Santa Rosa','General Pico','Realicó'],
+  'La Rioja': ['La Rioja Capital','Chilecito','Chamical'],
+  'Mendoza': ['Mendoza Capital','San Rafael','Godoy Cruz','Maipú','Luján de Cuyo','Guaymallén','Tunuyán','Malargüe'],
+  'Misiones': ['Posadas','Oberá','Puerto Iguazú','Eldorado'],
+  'Neuquén': ['Neuquén Capital','San Martín de los Andes','Villa La Angostura','Cutral Có','Zapala'],
+  'Río Negro': ['Viedma','San Carlos de Bariloche','General Roca','Cipolletti','El Bolsón'],
+  'Salta': ['Salta Capital','San Ramón de la Nueva Orán','Tartagal','Cafayate','Rosario de la Frontera'],
+  'San Juan': ['San Juan Capital','Rawson','Chimbas','Rivadavia'],
+  'San Luis': ['San Luis Capital','Villa Mercedes','Merlo'],
+  'Santa Cruz': ['Río Gallegos','Caleta Olivia','El Calafate','Puerto Deseado'],
+  'Santa Fe': ['Santa Fe Capital','Rosario','Rafaela','Venado Tuerto','Reconquista','San Lorenzo','Casilda'],
+  'Santiago del Estero': ['Santiago del Estero Capital','La Banda','Termas de Río Hondo','Añatuya'],
+  'Tierra del Fuego': ['Ushuaia','Río Grande','Tolhuin'],
+  'Tucumán': ['San Miguel de Tucumán','Yerba Buena','Tafí Viejo','Concepción','Tafí del Valle']
+};
+
 /* ============ MODAL CONECTARME A LA TRIBU ============ */
 (function(){
   const overlay = document.getElementById('connectModal');
@@ -877,6 +923,32 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   const msg = document.getElementById('connectMsg');
   const chips = document.getElementById('connectChips');
   const perfilError = document.getElementById('connectPerfilError');
+
+  /* Provincia -> Ciudad en cascada, con opción "Otra localidad" a texto libre */
+  const provSel = document.getElementById('cProvincia');
+  const ciudadSel = document.getElementById('cCiudad');
+  const ciudadOtra = document.getElementById('cCiudadOtra');
+  Object.keys(PROVINCIAS_AR).forEach(p=>{
+    const o = document.createElement('option'); o.value = p; o.textContent = p;
+    provSel.appendChild(o);
+  });
+  provSel.addEventListener('change', ()=>{
+    const ciudades = PROVINCIAS_AR[provSel.value] || [];
+    ciudadOtra.style.display = 'none'; ciudadOtra.value = '';
+    if(!ciudades.length){
+      ciudadSel.innerHTML = '<option value="">Elegí tu provincia primero</option>';
+      ciudadSel.disabled = true;
+      return;
+    }
+    ciudadSel.disabled = false;
+    ciudadSel.innerHTML = '<option value="">Elegí tu ciudad</option>'
+      + ciudades.map(c => '<option value="'+c+'">'+c+'</option>').join('')
+      + '<option value="Otra">Otra localidad</option>';
+  });
+  ciudadSel.addEventListener('change', ()=>{
+    ciudadOtra.style.display = ciudadSel.value === 'Otra' ? 'block' : 'none';
+    if(ciudadSel.value !== 'Otra') ciudadOtra.value = '';
+  });
   const open = (e)=>{
     if(e) e.preventDefault();
     perfilError.classList.remove('show'); chips.classList.remove('is-invalid');
@@ -913,11 +985,13 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(form);
     fd.set('Perfil', fd.getAll('Perfil').join(', '));
+    if(fd.get('Ciudad') === 'Otra') fd.set('Ciudad', fd.get('Ciudad_Otra') || '');
+    fd.delete('Ciudad_Otra');
     try{
       await enviarASheets(fd, 'Conectar');
       form.style.display='none'; msg.style.display='block';
     }catch(err){
-      const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nPerfil: '+fd.getAll('Perfil').join(', ')+'\nMarca/Proyecto: '+(fd.get('Marca_Evento')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nDetalles: '+(fd.get('Detalles')||''));
+      const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nPerfil: '+fd.getAll('Perfil').join(', ')+'\nMarca/Proyecto: '+(fd.get('Marca_Evento')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nDetalles: '+(fd.get('Detalles')||'')+'\nFecha de nacimiento: '+(fd.get('Fecha_Nacimiento')||'')+'\nProvincia: '+(fd.get('Provincia')||'')+'\nCiudad: '+(fd.get('Ciudad')||''));
       window.location.href='mailto:contacto@tribuconnection.com?subject=Quiero%20conectarme%20a%20la%20Tribu&body='+body;
     }finally{ btn.textContent='Enviar'; btn.disabled=false; }
   });
