@@ -924,6 +924,13 @@ const PROVINCIAS_AR = {
   const chips = document.getElementById('connectChips');
   const perfilError = document.getElementById('connectPerfilError');
 
+  /* El input de fecha nativo solo abre el calendario si el click cae justo sobre
+     su ícono; con showPicker() se abre desde cualquier punto de la barra. */
+  const birthInput = document.getElementById('cBirth');
+  if(birthInput && birthInput.showPicker){
+    birthInput.addEventListener('click', ()=>{ try{ birthInput.showPicker(); }catch(err){} });
+  }
+
   /* Provincia -> Ciudad en cascada, con opción "Otra localidad" a texto libre */
   const provSel = document.getElementById('cProvincia');
   const ciudadSel = document.getElementById('cCiudad');
