@@ -32,7 +32,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 
-<link rel="stylesheet" href="/assets/tribu.css?v=18">
+<link rel="stylesheet" href="/assets/tribu.css?v=19">
 </head>
 <body>
 
@@ -74,17 +74,30 @@
   <div class="wrap hero2-grid">
     <div class="hero2-copy">
       <p class="eyebrow reveal">Un puente de encuentros</p>
-      <h1 class="display reveal d1" style="text-align:left">Descubrí experiencias que te <span class="grad">conectan</span>.</h1>
+      <h1 class="display reveal d1" style="text-align:left">Descubrí experiencias que te <span class="grad">conectan</span></h1>
       <p class="lead reveal d2">Agenda, comunidad y beneficios para vivir más de lo que te hace bien.</p>
       <div class="hero2-actions reveal d2">
         <a href="#calendario" class="btn btn--spectrum">Ver agenda <span class="arr">→</span></a>
-        <a href="/club-tribu-connection/" class="btn btn--ghost">Sumarme al Club Tribu</a>
+        <a href="/club-tribu-connection/" class="btn btn--ghost">Sumarme al Club Tribu 👑</a>
       </div>
     </div>
     <div class="hero2-collage reveal d3" aria-hidden="true">
-      <img class="c1" src="/assets/stories/musica-en-vivo.jpg?v=2" alt="" loading="lazy">
-      <img class="c2" src="/assets/stories/resonar-2026.jpg?v=2" alt="" loading="lazy">
-      <img class="c3" src="/assets/stories/conciencia-festival.jpg?v=2" alt="" loading="lazy">
+      <svg class="collage-ring" viewBox="0 0 100 100" fill="none">
+        <defs>
+          <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="var(--red)"/>
+            <stop offset="27%" stop-color="var(--amber)"/>
+            <stop offset="52%" stop-color="var(--green)"/>
+            <stop offset="76%" stop-color="var(--teal)"/>
+            <stop offset="100%" stop-color="var(--purple)"/>
+          </linearGradient>
+        </defs>
+        <path d="M50 6 C74 6 92 24 92 48 C92 66 80 76 62 78 C48 79.5 44 90 30 92 C14 94 6 78 8 62 C10 46 4 34 14 20 C22 9 38 6 50 6 Z"
+          stroke="url(#ringGrad)" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <div class="collage-main"><img src="/assets/stories/musica-en-vivo.jpg?v=2" alt="" loading="lazy"></div>
+      <div class="collage-2"><img src="/assets/stories/resonar-2026.jpg?v=2" alt="" loading="lazy"></div>
+      <div class="collage-3"><img src="/assets/stories/conciencia-festival.jpg?v=2" alt="" loading="lazy"></div>
     </div>
   </div>
   <div class="pillrow reveal d3">
@@ -126,67 +139,36 @@
 </section>
 
 
-<!-- ===================== ELEGIDOS POR TRIBU (curaduría) ===================== -->
-<section class="section section--tight" id="elegidos">
-  <div class="wrap">
-    <div class="sec-row reveal">
-      <div>
-        <p class="eyebrow">Curaduría</p>
-        <h2 class="h2" style="margin-top:.6rem">Elegidos por Tribu</h2>
-      </div>
-      <a href="#calendario" class="sec-more">Ver más experiencias <span class="arr">→</span></a>
-    </div>
-    <div class="curated-grid">
-      <a class="curated-card reveal" style="--c:var(--amber)" href="#calendario">
-        <p class="curated-eyebrow">Selección Tribu</p>
-        <h4>Festivales para vivir en comunidad</h4>
-        <p>Encuentros pensados para reconectar con vos y con otros.</p>
-      </a>
-      <a class="curated-card reveal d1" style="--c:var(--teal)" href="#calendario">
-        <p class="curated-eyebrow">Impedibles del mes</p>
-        <h4>Ferias y expos conscientes</h4>
-        <p>Propuestas y productos de nuestra comunidad, en un solo lugar.</p>
-      </a>
-      <a class="curated-card reveal d2" style="--c:var(--green)" href="#calendario">
-        <p class="curated-eyebrow">Experiencia especial</p>
-        <h4>Holístico &amp; Bienestar</h4>
-        <p>Retiros, prácticas y espacios para respirar y soltar.</p>
-      </a>
-    </div>
-  </div>
-</section>
-
-
-<!-- ===================== CLUB TRIBU (banner, contenido real de Tribu Pass) ===================== -->
+<!-- ===================== CLUB TRIBU (banner) ===================== -->
+<!-- 🔧 EDITABLE: los 4 perks y el copy siguen el layout del mockup del cliente. No hay cifra de "miembros" porque todavía no tenemos ese dato real — agregarla acá cuando exista. -->
 <section class="section section--tight" id="club-tribu-banner">
   <div class="wrap">
     <div class="club-banner reveal">
       <div class="club-banner-copy">
-        <p class="eyebrow">Club Tribu</p>
-        <h3>Más que beneficios, una comunidad que impulsa lo mejor de vivir más.</h3>
-        <p>Sumate al Tribu Pass y accedé a descuentos, eventos exclusivos y una comunidad que crece con vos.</p>
-        <a href="/club-tribu-connection/" class="btn btn--spectrum">Quiero ser parte <span class="arr">→</span></a>
+        <h3>Club Tribu 👑</h3>
+        <p>Más que beneficios, una comunidad que impulsa lo mejor de vivir más.</p>
+        <a href="/club-tribu-connection/" class="btn btn--spectrum">Quiero ser parte 👑</a>
       </div>
       <div class="club-perks">
         <div class="club-perk">
           <div class="club-perk-ic">🏷️</div>
-          <b>Descuentos</b>
-          <p>Con feriantes y festivales aliados de la comunidad.</p>
+          <b>Descuentos exclusivos</b>
+          <p>En eventos y experiencias seleccionadas.</p>
         </div>
         <div class="club-perk">
-          <div class="club-perk-ic">🎉</div>
-          <b>Eventos exclusivos</b>
-          <p>Encuentros solo para miembros del Club Tribu.</p>
+          <div class="club-perk-ic">🎟️</div>
+          <b>Preventas especiales</b>
+          <p>Accedé antes a los mejores eventos, retiros y vivencias.</p>
         </div>
         <div class="club-perk">
-          <div class="club-perk-ic">📣</div>
-          <b>Difusión</b>
-          <p>Tu evento en el calendario y en nuestras redes.</p>
+          <div class="club-perk-ic">🎁</div>
+          <b>Sorteos y experiencias</b>
+          <p>Participá por sorteos y experiencias únicas.</p>
         </div>
         <div class="club-perk">
-          <div class="club-perk-ic">💬</div>
-          <b>Comunidad</b>
-          <p>Sumate al grupo de WhatsApp de la Tribu.</p>
+          <div class="club-perk-ic">👥</div>
+          <b>Comunidad que inspira</b>
+          <p>Conectá con personas afines y creá juntas.</p>
         </div>
       </div>
     </div>
@@ -254,28 +236,6 @@
   </div>
 </section>
 
-
-
-<!-- ===================== EXPLORÁ POR MAPA ===================== -->
-<!-- 🔧 EDITABLE: el mapa real (Leaflet) ya existe en #calendario → vista Mapa. Esta sección es una entrada visual que lleva ahí. -->
-<section class="section section--tight" id="mapa">
-  <div class="wrap">
-    <div class="map-teaser reveal">
-      <div class="map-teaser-copy">
-        <h3>Explorá por mapa</h3>
-        <p>Mirá dónde están pasando las próximas experiencias y encontrá algo cerca tuyo.</p>
-        <a href="#calendario" class="btn btn--ghost">Abrir mapa <span class="arr">→</span></a>
-      </div>
-      <div class="map-teaser-cats" aria-hidden="true">
-        <span class="map-cat" style="--c:var(--green)">🌿</span>
-        <span class="map-cat" style="--c:var(--red)">🎵</span>
-        <span class="map-cat" style="--c:var(--purple)">💜</span>
-        <span class="map-cat" style="--c:var(--amber)">🎪</span>
-        <span class="map-cat" style="--c:var(--teal)">🧘</span>
-      </div>
-    </div>
-  </div>
-</section>
 
 
 <!-- ===================== NEWSLETTER ===================== -->
@@ -783,7 +743,7 @@
         <p class="footer-col-title">Agenda</p>
         <a href="#calendario">Toda la agenda</a>
         <a href="#finde">Lo que se viene</a>
-        <a href="#mapa">Por categoría</a>
+        <a href="#calendario">Ver mapa</a>
         <a href="#calendario">Sumá tu evento</a>
       </div>
       <div class="footer-col">
@@ -905,6 +865,16 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     holistico:  { label:'Holístico & Bienestar', color:'#9BCB46' },
     musica:     { label:'Música & Danza', color:'#D24B62' },
     talleres:   { label:'Talleres', color:'#67C08A' }
+  };
+  // 🔧 EDITABLE: foto de fondo de las cards de "Lo que se viene en Tribu" por rubro — son fotos reales
+  // de assets/stories (mismas de Historias/hero). Cuando haya fotos propias por evento, reemplazar acá.
+  const RUBRO_IMG = {
+    festivales: '/assets/stories/resonar-2026.jpg?v=2',
+    ferias:     '/assets/stories/conciencia-festival.jpg?v=2',
+    artisticos: '/assets/stories/musica-en-vivo.jpg?v=2',
+    holistico:  '/assets/stories/entrevistas-en-vivo.jpg?v=2',
+    musica:     '/assets/stories/musica-en-vivo.jpg?v=2',
+    talleres:   '/assets/stories/entrevistas-en-vivo.jpg?v=2'
   };
   // 🔧 EDITABLE: agregá o modificá eventos acá. rubro: festivales | ferias | artisticos | holistico | congresos · status: Confirmado | Pendiente
   const EVENTS = [
@@ -1073,17 +1043,20 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   document.getElementById('calNext').addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); render(); });
   document.getElementById('calToday').addEventListener('click', ()=>{ view=new Date(today.getFullYear(),today.getMonth(),1); selected=null; render(); renderList(); });
 
-  /* "Este finde en Tribu": las 4 próximas propuestas (sin repetir título por sus varias fechas) */
+  /* "Lo que se viene en Tribu": las 4 próximas propuestas (sin repetir título por sus varias fechas) */
   function findeCard(e){
     const d = new Date(e.date+'T00:00');
     const tag = e.url ? 'a' : 'div';
     const href = e.url ? ' href="'+esc(e.url)+'" target="_blank" rel="noopener"' : '';
+    const img = RUBRO_IMG[e.rubro] || RUBRO_IMG.festivales;
     return '<'+tag+' class="finde-card"'+href+' style="--c:'+color(e.rubro)+'">'+
-      '<div class="finde-card-top">'+
-        '<span class="finde-tag"><i></i>'+esc((RUBROS[e.rubro]||{}).label||e.rubro)+'</span>'+
+      '<img src="'+img+'" alt="" loading="lazy">'+
+      '<div class="finde-top-row">'+
         '<div class="finde-date"><b>'+d.getDate()+'</b><span>'+MES_ABR[d.getMonth()]+'</span></div>'+
+        '<span class="finde-bookmark" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4-7 4V4.5a1 1 0 0 1 1-1z"/></svg></span>'+
       '</div>'+
       '<div class="finde-body">'+
+        '<span class="finde-tag">'+esc((RUBROS[e.rubro]||{}).label||e.rubro)+'</span>'+
         '<h4>'+esc(e.title)+'</h4>'+
         '<div class="finde-loc">📍 '+esc(e.place||'')+'</div>'+
       '</div></'+tag+'>';
