@@ -1,0 +1,62 @@
+{
+  "resonar": {
+    "query": "ecstatic dance festival night",
+    "photographer": "Daniel Nouri",
+    "pexels_url": "https://www.pexels.com/photo/people-having-fun-at-the-concert-8448551/",
+    "file": "c:\\Users\\rodri\\Downloads\\tribu-landing\\tribu-landing\\assets\\partners-photos\\resonar.jpg"
+  },
+  "bioferia": {
+    "query": "organic farmers market vegetables",
+    "photographer": "Mark Stebnicki",
+    "pexels_url": "https://www.pexels.com/photo/assorted-peppers-on-display-2383314/",
+    "file": "c:\\Users\\rodri\\Downloads\\tribu-landing\\tribu-landing\\assets\\partners-photos\\bioferia.jpg"
+  },
+  "expo-holistica": {
+    "query": "yoga meditation wellness studio",
+    "photographer": "Yan Krukau",
+    "pexels_url": "https://www.pexels.com/photo/women-in-sportswear-sitting-on-yoga-mat-meditating-8436948/",
+    "file": "c:\\Users\\rodri\\Downloads\\tribu-landing\\tribu-landing\\assets\\partners-photos\\expo-holistica.jpg"
+  },
+  "amanita": {
+    "query": "festival crowd night lights",
+    "photographer": "Ludvig Hedenborg",
+    "pexels_url": "https://www.pexels.com/photo/black-and-white-photography-of-people-on-a-concert-20993079/",
+    "file": "c:\\Users\\rodri\\Downloads\\tribu-landing\\tribu-landing\\assets\\partners-photos\\amanita.jpg"
+  },
+  "sagrada-madre": {
+    "query": "incense smoke burning",
+    "photographer": "Atlantic Ambience",
+    "pexels_url": "https://www.pexels.com/photo/close-up-of-burning-incense-sticks-11465621/",
+    "file": "c:\\Users\\rodri\\Downloads\\tribu-landing\\tribu-landing\\assets\\partners-photos\\sagrada-madre.jpg"
+  },
+  "unifungi": {
+    "query": "mushrooms forest closeup",
+    "photographer": "Aliaksei Semirski",
+    "pexels_url": "https://www.pexels.com/photo/colorful-amanita-mushroom-in-forest-setting-28892573/",
+    "file": "c:\\Users\\rodri\\Downloads\\tribu-landing\\tribu-landing\\assets\\partners-photos\\unifungi.jpg"
+  },
+  "sudanta": {
+    "query": "meditation candles ceremony",
+    "photographer": "Joel Zar",
+    "pexels_url": "https://www.pexels.com/photo/serene-candlelight-with-soft-bokeh-effect-37118728/",
+    "file": "c:\\Users\\rodri\\Downloads\\tribu-landing\\tribu-landing\\assets\\partners-photos\\sudanta.jpg"
+  },
+  "conciencia-festival": {
+    "query": "festival community bonfire",
+    "photographer": "Mimi Fitz",
+    "pexels_url": "https://www.pexels.com/photo/people-watching-the-bonfires-of-saint-john-at-alicante-spain-6813679/",
+    "file": "c:\\Users\\rodri\\Downloads\\tribu-landing\\tribu-landing\\assets\\partners-photos\\conciencia-festival.jpg"
+  },
+  "fiesta-clapper": {
+    "query": "film clapperboard set",
+    "photographer": "Martin Lopez",
+    "pexels_url": "https://www.pexels.com/photo/man-holding-clapper-board-1117132/",
+    "file": "c:\\Users\\rodri\\Downloads\\tribu-landing\\tribu-landing\\assets\\partners-photos\\fiesta-clapper.jpg"
+  },
+  "comunidad-micelio": {
+    "query": "mushroom mycelium forest",
+    "photographer": "Vladimir Srajber",
+    "pexels_url": "https://www.pexels.com/photo/cluster-of-wild-mushrooms-on-tree-stump-28846649/",
+    "file": "c:\\Users\\rodri\\Downloads\\tribu-landing\\tribu-landing\\assets\\partners-photos\\comunidad-micelio.jpg"
+  }
+}
