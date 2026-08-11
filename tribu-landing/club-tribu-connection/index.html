@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=17">
+<link rel="stylesheet" href="/assets/tribu.css?v=18">
 </head>
 <body data-accent="amber">
 
@@ -31,10 +31,11 @@
     <img class="brand-full" src="/assets/logo-blanco.png?v=1" alt="Tribu Connection">
   </a>
   <div class="nav-links">
-    <a href="/">Inicio</a>
-    <a href="/#historias">Historias</a>
-    <a href="#beneficios">Beneficios</a>
     <a href="/#calendario">Agenda</a>
+    <a href="/club-tribu-connection/" class="is-active">Club Tribu</a>
+    <a href="/#caminos">Descubrir</a>
+    <a href="/#historias">Historias</a>
+    <a href="/#mapa">Mapa</a>
   </div>
   <div class="nav-cta">
     <a href="#" class="btn btn--spectrum" data-join data-plan="General">Sumarme a la Tribu</a>
@@ -42,10 +43,11 @@
   </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
-  <a href="/">Inicio</a>
-  <a href="/#historias">Historias</a>
-  <a href="#beneficios">Beneficios</a>
   <a href="/#calendario">Agenda</a>
+  <a href="/club-tribu-connection/">Club Tribu</a>
+  <a href="/#caminos">Descubrir</a>
+  <a href="/#historias">Historias</a>
+  <a href="/#mapa">Mapa</a>
   <a href="#" class="btn btn--spectrum" data-join data-plan="General">Sumarme a la Tribu</a>
 </div>
 
@@ -53,15 +55,43 @@
 <header class="hero" id="top" style="min-height:auto;padding-top:140px;padding-bottom:48px">
   <div class="wrap hero-inner">
     <a href="/#caminos" class="backhome reveal" style="margin-bottom:1.2rem">← Volver a los 3 caminos</a>
-    <p class="eyebrow reveal">Para quienes buscan, descubren y participan</p>
-    <h1 class="display display--3l reveal d1">Descubrí experiencias,<br class="br-desk">conectá con personas<br class="br-desk">y accedé a <span class="grad">beneficios exclusivos</span>.</h1>
-    <p class="lead reveal d2">Una sola membresía mensual con beneficios en todo el ecosistema consciente: descuentos en festivales aliados, biblioteca de contenido y acceso a la comunidad. El movimiento como forma de pertenecer.</p>
+    <p class="eyebrow reveal">Club Tribu</p>
+    <h1 class="display display--3l reveal d1">Beneficios para vivir<br class="br-desk">más de lo que <span class="grad">te hace bien</span>.</h1>
+    <p class="lead reveal d2">Una sola membresía con beneficios en todo el ecosistema consciente: descuentos con feriantes y festivales aliados, eventos exclusivos y acceso a la comunidad. El movimiento como forma de pertenecer.</p>
     <div class="hero-actions reveal d3">
-      <a href="#" class="btn btn--spectrum" data-join data-plan="General">Quiero sumarme a la Tribu</a>
-      <a href="#beneficios" class="btn btn--ghost">Ver los beneficios <span class="arr">→</span></a>
+      <a href="#" class="btn btn--spectrum" data-join data-plan="General">Sumarme al Club <span class="arr">→</span></a>
+      <a href="#planes" class="btn btn--ghost">Ver planes <span class="arr">→</span></a>
     </div>
   </div>
 </header>
+
+<!-- ===================== DESTACADOS (resumen de lo que trae el Club) ===================== -->
+<section class="section section--tight" id="destacados">
+  <div class="wrap">
+    <div class="club-perks reveal" style="border:1px solid var(--line);border-radius:var(--r);padding:clamp(1.4rem,3vw,2rem);background:var(--ink-2)">
+      <div class="club-perk">
+        <div class="club-perk-ic">🏷️</div>
+        <b>Descuentos</b>
+        <p>Con feriantes y festivales aliados de la comunidad.</p>
+      </div>
+      <div class="club-perk">
+        <div class="club-perk-ic">🎉</div>
+        <b>Eventos exclusivos</b>
+        <p>Encuentros solo para miembros del Club Tribu.</p>
+      </div>
+      <div class="club-perk">
+        <div class="club-perk-ic">📣</div>
+        <b>Difusión</b>
+        <p>Tu evento en el calendario y en nuestras redes.</p>
+      </div>
+      <div class="club-perk">
+        <div class="club-perk-ic">💬</div>
+        <b>Comunidad</b>
+        <p>Sumate al grupo de WhatsApp de la Tribu.</p>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ===================== PLANES ===================== -->
 <section class="section" id="planes">
@@ -193,25 +223,38 @@
 <!-- ===================== FOOTER ===================== -->
 <footer class="footer">
   <div class="wrap">
-    <div class="footer-grid">
+    <div class="footer-cols">
       <div class="footer-logo">
         <img src="/assets/logo_white.png" alt="Tribu Connection">
         <p class="footer-tag">Historias que conectan. <br>Comunidades que crecen.</p>
       </div>
-      <div class="footer-right">
-        <div>
-          <p class="col-cap">Seguinos</p>
-          <div class="socials">
-            <a class="soc ig" href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg> Instagram</a>
-            <a class="soc tt" href="https://www.tiktok.com/@tribu.connection" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.6 3.7 3.9v2.4c-1.3.1-2.6-.3-3.7-1v6.1c0 3.5-2.6 5.6-5.6 5.6A5.4 5.4 0 0 1 5.5 14c0-3.4 3.1-5.9 6.6-5.1v2.6a2.9 2.9 0 0 0-3.8 2.6c0 1.5 1.2 2.6 2.6 2.6 1.5 0 2.7-1.1 2.7-3V3h2.4z"/></svg> TikTok</a>
-          </div>
-        </div>
-        <div>
-          <p class="col-cap">Hablemos</p>
-          <div class="socials">
-            <a class="soc mail" href="mailto:contacto@tribuconnection.com"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6l9 6 9-6"/></svg> contacto@tribuconnection.com</a>
-          </div>
-        </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Agenda</p>
+        <a href="/#calendario">Toda la agenda</a>
+        <a href="/#finde">Lo que se viene</a>
+        <a href="/#mapa">Por categoría</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Club Tribu</p>
+        <a href="#destacados">Beneficios</a>
+        <a href="#planes">Planes</a>
+        <a href="#" data-join data-plan="General">Sumate al club</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Historias</p>
+        <a href="/#historias">Historias reales</a>
+        <a href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Comunidad</p>
+        <a href="/#nosotros">Sobre Tribu</a>
+        <a href="/#caminos">Trabajemos juntos</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Contacto</p>
+        <a href="mailto:contacto@tribuconnection.com">contacto@tribuconnection.com</a>
+        <a href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.tiktok.com/@tribu.connection" target="_blank" rel="noopener">TikTok</a>
       </div>
     </div>
     <div class="foot-bottom">

@@ -32,7 +32,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 
-<link rel="stylesheet" href="/assets/tribu.css?v=17">
+<link rel="stylesheet" href="/assets/tribu.css?v=18">
 </head>
 <body>
 
@@ -47,15 +47,14 @@
     <img class="brand-full" src="/assets/logo-blanco.png?v=1" alt="Tribu Connection">
   </a>
   <div class="nav-links">
-    <a href="#top">Inicio</a>
-    <a href="#historias">Historias</a>
-    <a href="/club-tribu-connection/">Sumate a la Tribu</a>
     <a href="#calendario">Agenda</a>
-    <a href="/organizas-experiencias/">Tribu de Creadores</a>
-    <a href="#contacto">Contacto</a>
+    <a href="/club-tribu-connection/">Club Tribu</a>
+    <a href="#caminos">Descubrir</a>
+    <a href="#historias">Historias</a>
+    <a href="#mapa">Mapa</a>
   </div>
   <div class="nav-cta">
-    <a href="#" class="btn btn--spectrum" data-connect>Conectarme a la Tribu</a>
+    <a href="#" class="btn btn--spectrum" data-connect>Sumate</a>
     <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -64,87 +63,136 @@
 
 <!-- Menú mobile -->
 <div class="mobile-menu" id="mobileMenu">
-  <a href="#top">Inicio</a>
-  <a href="#historias">Historias</a>
-  <a href="/club-tribu-connection/">Sumate a la Tribu</a>
   <a href="#calendario">Agenda</a>
-  <a href="/organizas-experiencias/">Tribu de Creadores</a>
-  <a href="#contacto">Contacto</a>
-  <a href="#" class="btn btn--spectrum" data-connect>Conectarme a la Tribu</a>
+  <a href="/club-tribu-connection/">Club Tribu</a>
+  <a href="#caminos">Descubrir</a>
+  <a href="#historias">Historias</a>
+  <a href="#mapa">Mapa</a>
+  <a href="#" class="btn btn--spectrum" data-connect>Sumate</a>
 </div>
 
 <!-- ============================ HERO ============================ -->
+<!-- 🔧 EDITABLE: rediseño 2026 — collage con las mismas fotos reales de la sección Historias.
+     Versión anterior del hero (con hero-star) queda comentada abajo por si hay que volver atrás. -->
+<header class="hero hero2" id="top">
+  <div class="wrap hero2-grid">
+    <div class="hero2-copy">
+      <p class="eyebrow reveal">Un puente de encuentros</p>
+      <h1 class="display reveal d1" style="text-align:left">Descubrí experiencias que te <span class="grad">conectan</span>.</h1>
+      <p class="lead reveal d2">Agenda, comunidad y beneficios para vivir más de lo que te hace bien.</p>
+      <div class="hero2-actions reveal d2">
+        <a href="#calendario" class="btn btn--spectrum">Ver agenda <span class="arr">→</span></a>
+        <a href="/club-tribu-connection/" class="btn btn--ghost">Sumarme al Club Tribu</a>
+      </div>
+    </div>
+    <div class="hero2-collage reveal d3" aria-hidden="true">
+      <img class="c1" src="/assets/stories/musica-en-vivo.jpg?v=2" alt="" loading="lazy">
+      <img class="c2" src="/assets/stories/resonar-2026.jpg?v=2" alt="" loading="lazy">
+      <img class="c3" src="/assets/stories/conciencia-festival.jpg?v=2" alt="" loading="lazy">
+    </div>
+  </div>
+  <div class="pillrow reveal d3">
+    <a href="#caminos" class="pill" style="--c:var(--red)"><i></i>Conectar</a>
+    <a href="#calendario" class="pill" style="--c:var(--purple)"><i></i>Bailar</a>
+    <a href="#calendario" class="pill" style="--c:var(--green)"><i></i>Naturaleza</a>
+    <a href="#calendario" class="pill" style="--c:var(--red)"><i></i>Música</a>
+    <a href="/club-tribu-connection/" class="pill" style="--c:var(--teal)"><i></i>Bienestar</a>
+    <a href="#caminos" class="pill" style="--c:var(--amber)"><i></i>Aprender</a>
+    <a href="#historias" class="pill" style="--c:var(--purple)"><i></i>Conocer gente</a>
+  </div>
+</header>
+<!--
 <header class="hero" id="top">
   <div class="hero-star" aria-hidden="true"><img src="/assets/isotipo.png?v=2" alt=""></div>
   <div class="wrap hero-inner">
     <p class="eyebrow reveal">Un punto de encuentro</p>
     <h1 class="display reveal d1">Conectamos personas con <span class="grad">comunidades que transforman</span>.</h1>
     <p class="lead reveal d2">Descubrimos experiencias, contamos historias reales y acompañamos proyectos para que conecten con más personas y hagan crecer su comunidad.</p>
-    <!-- 🔧 EDITABLE: reemplazar hero-star por el Video Hero cuando lo tengamos -->
   </div>
   <div class="scrollcue" aria-hidden="true"><i></i> Deslizá</div>
 </header>
+-->
 
-<!-- ===================== EL PROBLEMA (El camino) ===================== -->
-<section class="section" id="problema" style="padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(28px,4vw,52px)">
+
+<!-- ===================== ESTE FINDE EN TRIBU (agenda destacada) ===================== -->
+<!-- 🔧 EDITABLE: las cards se arman solas con los próximos eventos reales de EVENTS (ver script del Calendario más abajo). No hay que tocar nada acá a mano. -->
+<section class="section section--tight" id="finde">
   <div class="wrap">
-    <div class="sec-head reveal" style="max-width:900px">
-      <p class="eyebrow">El camino</p>
-      <h2 class="h2">Si estás llevando adelante un proyecto, probablemente conozcas estos desafíos.</h2>
+    <div class="sec-row reveal">
+      <div>
+        <p class="eyebrow">Agenda</p>
+        <h2 class="h2" style="margin-top:.6rem">Lo que se viene en Tribu</h2>
+      </div>
+      <a href="#calendario" class="sec-more">Ver toda la agenda <span class="arr">→</span></a>
     </div>
-    <div class="challenges challenges--3">
-      <div class="challenge is-red reveal">
-        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
-        <b>Visibilidad</b>
-        <p>Muchas veces el desafío no es la calidad de tu proyecto, sino que las personas que podrían disfrutarlo simplemente todavía no saben que existe.</p>
+    <div class="finde-grid reveal d1" id="findeGrid"></div>
+  </div>
+</section>
+
+
+<!-- ===================== ELEGIDOS POR TRIBU (curaduría) ===================== -->
+<section class="section section--tight" id="elegidos">
+  <div class="wrap">
+    <div class="sec-row reveal">
+      <div>
+        <p class="eyebrow">Curaduría</p>
+        <h2 class="h2" style="margin-top:.6rem">Elegidos por Tribu</h2>
       </div>
-      <div class="challenge is-amber reveal d1">
-        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1 1"/><path d="M14 11a5 5 0 0 0-7.07 0l-2 2a5 5 0 0 0 7.07 7.07l1-1"/></svg></div>
-        <b>Conexión</b>
-        <p>En un mundo lleno de información, no alcanza con mostrarse. Las personas necesitan conectar con tu historia y sentir por qué tu proyecto es diferente.</p>
-      </div>
-      <div class="challenge is-green reveal d2">
-        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21v-8"/><path d="M12 13c0-3.5-3-5-7-5 0 4 2 6.5 7 5z"/><path d="M12 13c0-4 3-6.5 7-6.5 0 4.5-2.5 7-7 6.5z"/></svg></div>
-        <b>Comunidad</b>
-        <p>Cuando las personas encuentran un propósito compartido, dejan de mirar desde afuera y empiezan a construir la historia junto a vos.</p>
-      </div>
+      <a href="#calendario" class="sec-more">Ver más experiencias <span class="arr">→</span></a>
+    </div>
+    <div class="curated-grid">
+      <a class="curated-card reveal" style="--c:var(--amber)" href="#calendario">
+        <p class="curated-eyebrow">Selección Tribu</p>
+        <h4>Festivales para vivir en comunidad</h4>
+        <p>Encuentros pensados para reconectar con vos y con otros.</p>
+      </a>
+      <a class="curated-card reveal d1" style="--c:var(--teal)" href="#calendario">
+        <p class="curated-eyebrow">Impedibles del mes</p>
+        <h4>Ferias y expos conscientes</h4>
+        <p>Propuestas y productos de nuestra comunidad, en un solo lugar.</p>
+      </a>
+      <a class="curated-card reveal d2" style="--c:var(--green)" href="#calendario">
+        <p class="curated-eyebrow">Experiencia especial</p>
+        <h4>Holístico &amp; Bienestar</h4>
+        <p>Retiros, prácticas y espacios para respirar y soltar.</p>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- ===================== NOSOTROS ===================== -->
-<section class="section about" id="nosotros" style="padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(28px,4vw,52px)">
+
+<!-- ===================== CLUB TRIBU (banner, contenido real de Tribu Pass) ===================== -->
+<section class="section section--tight" id="club-tribu-banner">
   <div class="wrap">
-    <div class="about-grid about-grid--single">
-      <div class="about-copy">
-        <p class="eyebrow reveal">Lo que nos guía</p>
-        <h2 class="h2 reveal d1" style="margin:1.2rem 0 1.8rem">¿Qué es <span class="grad">Tribu Connection</span>?</h2>
-        <p class="reveal d1">Somos un <span class="hl">punto de encuentro</span> entre personas que buscan experiencias significativas y comunidades que tienen algo valioso para compartir.</p>
-        <p class="reveal d2 p-2lines">Creemos que cuando las personas se reúnen alrededor de un propósito<br>y sus historias se cuentan con autenticidad, pueden nacer <span class="hl">vínculos capaces de transformar</span>.</p>
+    <div class="club-banner reveal">
+      <div class="club-banner-copy">
+        <p class="eyebrow">Club Tribu</p>
+        <h3>Más que beneficios, una comunidad que impulsa lo mejor de vivir más.</h3>
+        <p>Sumate al Tribu Pass y accedé a descuentos, eventos exclusivos y una comunidad que crece con vos.</p>
+        <a href="/club-tribu-connection/" class="btn btn--spectrum">Quiero ser parte <span class="arr">→</span></a>
       </div>
-      <!-- 🔧 GUARDADO (2026-08-05): el círculo "Quienes confían en nosotros" sale de la home
-           por pedido del cliente. Se reserva para la sección de marcas — para reactivarlo,
-           descomentá este bloque y sacale la clase `about-grid--single` al .about-grid de arriba.
-           El CSS (.trust-wrap / .trust-circle / .trust-chip…) sigue vivo en assets/tribu.css.
-      <div class="trust-wrap reveal d2">
-        <p class="trust-label">Quienes confían en nosotros</p>
-        <div class="trust-circle">
-          <div class="trust-circle-center"><img src="/assets/isotipo.png?v=2" alt=""></div>
-          <div class="trust-ring">
-            <div class="trust-chip" style="--i:0"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/bioferia.png" alt="Bioferia" width="60" loading="lazy"></div></div></div>
-            <div class="trust-chip" style="--i:1"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/expo-holistica.png" alt="Expo Holística &amp; Bienestar" width="60" loading="lazy"></div></div></div>
-            <div class="trust-chip" style="--i:2"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/resonar-festival.png" alt="Resonar Festival" width="60" loading="lazy"></div></div></div>
-            <div class="trust-chip" style="--i:3"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Conciencia<br>Festival</span></div></div></div>
-            <div class="trust-chip" style="--i:4"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/unifungi.png" alt="Unifungi" width="60" loading="lazy"></div></div></div>
-            <div class="trust-chip" style="--i:5"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Sudanta</span></div></div></div>
-            <div class="trust-chip" style="--i:6"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/sagrada-madre.png" alt="Sagrada Madre" width="60" loading="lazy"></div></div></div>
-            <div class="trust-chip" style="--i:7"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Fiesta<br>Clapper</span></div></div></div>
-            <div class="trust-chip" style="--i:8"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/amanita-festival.png" alt="Amanita Festival" width="60" loading="lazy"></div></div></div>
-            <div class="trust-chip" style="--i:9"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Comunidad<br>Micelio</span></div></div></div>
-          </div>
+      <div class="club-perks">
+        <div class="club-perk">
+          <div class="club-perk-ic">🏷️</div>
+          <b>Descuentos</b>
+          <p>Con feriantes y festivales aliados de la comunidad.</p>
+        </div>
+        <div class="club-perk">
+          <div class="club-perk-ic">🎉</div>
+          <b>Eventos exclusivos</b>
+          <p>Encuentros solo para miembros del Club Tribu.</p>
+        </div>
+        <div class="club-perk">
+          <div class="club-perk-ic">📣</div>
+          <b>Difusión</b>
+          <p>Tu evento en el calendario y en nuestras redes.</p>
+        </div>
+        <div class="club-perk">
+          <div class="club-perk-ic">💬</div>
+          <b>Comunidad</b>
+          <p>Sumate al grupo de WhatsApp de la Tribu.</p>
         </div>
       </div>
-      -->
     </div>
   </div>
 </section>
@@ -210,6 +258,117 @@
   </div>
 </section>
 
+
+
+<!-- ===================== EXPLORÁ POR MAPA ===================== -->
+<!-- 🔧 EDITABLE: el mapa real (Leaflet) ya existe en #calendario → vista Mapa. Esta sección es una entrada visual que lleva ahí. -->
+<section class="section section--tight" id="mapa">
+  <div class="wrap">
+    <div class="map-teaser reveal">
+      <div class="map-teaser-copy">
+        <h3>Explorá por mapa</h3>
+        <p>Mirá dónde están pasando las próximas experiencias y encontrá algo cerca tuyo.</p>
+        <a href="#calendario" class="btn btn--ghost">Abrir mapa <span class="arr">→</span></a>
+      </div>
+      <div class="map-teaser-cats" aria-hidden="true">
+        <span class="map-cat" style="--c:var(--green)">🌿</span>
+        <span class="map-cat" style="--c:var(--red)">🎵</span>
+        <span class="map-cat" style="--c:var(--purple)">💜</span>
+        <span class="map-cat" style="--c:var(--amber)">🎪</span>
+        <span class="map-cat" style="--c:var(--teal)">🧘</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== NEWSLETTER ===================== -->
+<section class="section section--tight" id="newsletter">
+  <div class="wrap">
+    <div class="newsletter reveal">
+      <div class="newsletter-copy">
+        <p class="eyebrow">¿Qué te mueve?</p>
+        <h3 style="margin-top:.6rem">Recibí planes según tus intereses</h3>
+        <p>Contenidos y recomendaciones pensados para vos. Sin spam, solo inspiración.</p>
+      </div>
+      <form id="newsletterForm">
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+        <div class="newsletter-row">
+          <input type="email" id="nlEmail" name="Contacto" required placeholder="Tu correo electrónico">
+          <button type="submit" class="btn btn--spectrum" id="nlSubmit">Quiero recibir ideas</button>
+        </div>
+        <p class="newsletter-msg" id="nlMsg">¡Gracias! Ya sos parte de la lista 🌟</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EL PROBLEMA (El camino) ===================== -->
+<section class="section" id="problema" style="padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(28px,4vw,52px)">
+  <div class="wrap">
+    <div class="sec-head reveal" style="max-width:900px">
+      <p class="eyebrow">El camino</p>
+      <h2 class="h2">Si estás llevando adelante un proyecto, probablemente conozcas estos desafíos.</h2>
+    </div>
+    <div class="challenges challenges--3">
+      <div class="challenge is-red reveal">
+        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <b>Visibilidad</b>
+        <p>Muchas veces el desafío no es la calidad de tu proyecto, sino que las personas que podrían disfrutarlo simplemente todavía no saben que existe.</p>
+      </div>
+      <div class="challenge is-amber reveal d1">
+        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1 1"/><path d="M14 11a5 5 0 0 0-7.07 0l-2 2a5 5 0 0 0 7.07 7.07l1-1"/></svg></div>
+        <b>Conexión</b>
+        <p>En un mundo lleno de información, no alcanza con mostrarse. Las personas necesitan conectar con tu historia y sentir por qué tu proyecto es diferente.</p>
+      </div>
+      <div class="challenge is-green reveal d2">
+        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21v-8"/><path d="M12 13c0-3.5-3-5-7-5 0 4 2 6.5 7 5z"/><path d="M12 13c0-4 3-6.5 7-6.5 0 4.5-2.5 7-7 6.5z"/></svg></div>
+        <b>Comunidad</b>
+        <p>Cuando las personas encuentran un propósito compartido, dejan de mirar desde afuera y empiezan a construir la historia junto a vos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===================== NOSOTROS ===================== -->
+<section class="section about" id="nosotros" style="padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(28px,4vw,52px)">
+  <div class="wrap">
+    <div class="about-grid about-grid--single">
+      <div class="about-copy">
+        <p class="eyebrow reveal">Lo que nos guía</p>
+        <h2 class="h2 reveal d1" style="margin:1.2rem 0 1.8rem">¿Qué es <span class="grad">Tribu Connection</span>?</h2>
+        <p class="reveal d1">Somos un <span class="hl">punto de encuentro</span> entre personas que buscan experiencias significativas y comunidades que tienen algo valioso para compartir.</p>
+        <p class="reveal d2 p-2lines">Creemos que cuando las personas se reúnen alrededor de un propósito<br>y sus historias se cuentan con autenticidad, pueden nacer <span class="hl">vínculos capaces de transformar</span>.</p>
+      </div>
+      <!-- 🔧 GUARDADO (2026-08-05): el círculo "Quienes confían en nosotros" sale de la home
+           por pedido del cliente. Se reserva para la sección de marcas — para reactivarlo,
+           descomentá este bloque y sacale la clase `about-grid--single` al .about-grid de arriba.
+           El CSS (.trust-wrap / .trust-circle / .trust-chip…) sigue vivo en assets/tribu.css.
+      <div class="trust-wrap reveal d2">
+        <p class="trust-label">Quienes confían en nosotros</p>
+        <div class="trust-circle">
+          <div class="trust-circle-center"><img src="/assets/isotipo.png?v=2" alt=""></div>
+          <div class="trust-ring">
+            <div class="trust-chip" style="--i:0"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/bioferia.png" alt="Bioferia" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:1"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/expo-holistica.png" alt="Expo Holística &amp; Bienestar" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:2"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/resonar-festival.png" alt="Resonar Festival" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:3"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Conciencia<br>Festival</span></div></div></div>
+            <div class="trust-chip" style="--i:4"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/unifungi.png" alt="Unifungi" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:5"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Sudanta</span></div></div></div>
+            <div class="trust-chip" style="--i:6"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/sagrada-madre.png" alt="Sagrada Madre" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:7"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Fiesta<br>Clapper</span></div></div></div>
+            <div class="trust-chip" style="--i:8"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/amanita-festival.png" alt="Amanita Festival" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:9"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Comunidad<br>Micelio</span></div></div></div>
+          </div>
+        </div>
+      </div>
+      -->
+    </div>
+  </div>
+</section>
+
+
 <!-- ===================== LAS SEÑALES (stats) ===================== -->
 <section class="section section--tight" id="senales">
   <div class="wrap">
@@ -236,6 +395,7 @@
     </div>
   </div>
 </section>
+
 
 <!-- ===================== CAMINOS (Trabajemos juntos) ===================== -->
 <section class="section" id="caminos" style="padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(28px,4vw,52px)">
@@ -277,6 +437,7 @@
   </div>
 </section>
 
+
 <!-- ===================== CALENDARIO ===================== -->
 <section class="section section--tight" id="calendario">
   <div class="wrap">
@@ -317,6 +478,7 @@
     </div>
   </div>
 </section>
+
 
 <!-- ===================== MODAL CONECTARME A LA TRIBU ===================== -->
 <div class="modal-overlay" id="connectModal" aria-hidden="true">
@@ -598,55 +760,60 @@
   </div>
 </div>
 
-<!-- ===================== CTA FINAL (Demos el primer paso) ===================== -->
-<section class="section cta" id="contacto">
+<!-- ===================== BANNER B2B (organizás / marca / espacio) ===================== -->
+<section class="section section--tight" id="contacto">
   <div class="wrap">
-    <div class="cta-box reveal">
-      <p class="eyebrow">Demos el primer paso</p>
-      <h2 class="h2" style="max-width:34ch">Es momento de que más personas<br> descubran lo que hacés.</h2>
-      <p class="lead" style="max-width:65ch">Contanos tu idea, proyecto o comunidad y pensemos juntos<br> cómo amplificarlo y llegar más lejos en tribu.</p>
-      <div class="cta-actions">
-        <a href="#" class="btn btn--spectrum" data-connect>Quiero conversar con Tribu Connection <span class="arr">→</span></a>
+    <div class="b2b-banner reveal">
+      <div class="b2b-copy">
+        <div class="b2b-ic">🏠</div>
+        <div>
+          <h3>¿Organizás experiencias, tenés un espacio o una marca?</h3>
+          <p>Sumate a Tribu Connection y llegá a una comunidad que va a tus eventos.</p>
+        </div>
       </div>
+      <a href="#" class="btn btn--spectrum" data-connect>Conocé cómo trabajar con Tribu <span class="arr">→</span></a>
     </div>
   </div>
 </section>
 
 <footer class="footer">
   <div class="wrap">
-    <div class="footer-grid">
+    <div class="footer-cols">
       <div class="footer-logo">
         <img src="/assets/logo_white.png" alt="Tribu Connection">
         <p class="footer-tag">Historias que conectan. <br>Comunidades que crecen.</p>
       </div>
-      <div class="footer-right">
-        <div>
-          <p class="col-cap">Seguinos</p>
-          <div class="socials">
-            <!-- 🔧 EDITABLE: confirmá/actualizá los usuarios de TikTok y YouTube -->
-            <a class="soc ig" href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-              Instagram
-            </a>
-            <a class="soc tt" href="https://www.tiktok.com/@tribu.connection" target="_blank" rel="noopener">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.6 3.7 3.9v2.4c-1.3.1-2.6-.3-3.7-1v6.1c0 3.5-2.6 5.6-5.6 5.6A5.4 5.4 0 0 1 5.5 14c0-3.4 3.1-5.9 6.6-5.1v2.6a2.9 2.9 0 0 0-3.8 2.6c0 1.5 1.2 2.6 2.6 2.6 1.5 0 2.7-1.1 2.7-3V3h2.4z"/></svg>
-              TikTok
-            </a>
-            <a class="soc yt" href="https://www.youtube.com/@tribuconnection" target="_blank" rel="noopener">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10 9.2l5 2.8-5 2.8z" fill="currentColor" stroke="none"/></svg>
-              YouTube
-            </a>
-          </div>
-        </div>
-        <div>
-          <p class="col-cap">Hablemos</p>
-          <div class="socials">
-            <a class="soc mail" href="mailto:contacto@tribuconnection.com">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6l9 6 9-6"/></svg>
-              contacto@tribuconnection.com
-            </a>
-          </div>
-        </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Agenda</p>
+        <a href="#calendario">Toda la agenda</a>
+        <a href="#finde">Lo que se viene</a>
+        <a href="#mapa">Por categoría</a>
+        <a href="#calendario">Sumá tu evento</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Club Tribu</p>
+        <a href="/club-tribu-connection/">Beneficios</a>
+        <a href="/club-tribu-connection/">Cómo funciona</a>
+        <a href="/club-tribu-connection/">Planes</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Historias</p>
+        <a href="#historias">Historias reales</a>
+        <a href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener">Reels</a>
+        <a href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Comunidad</p>
+        <a href="#nosotros">Sobre Tribu</a>
+        <a href="#problema">El camino</a>
+        <a href="#caminos">Trabajemos juntos</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Contacto</p>
+        <a href="mailto:contacto@tribuconnection.com">contacto@tribuconnection.com</a>
+        <a href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener">Instagram</a>
+        <a href="https://www.tiktok.com/@tribu.connection" target="_blank" rel="noopener">TikTok</a>
+        <a href="https://www.youtube.com/@tribuconnection" target="_blank" rel="noopener">YouTube</a>
       </div>
     </div>
     <div class="foot-bottom">
@@ -909,7 +1076,54 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   document.getElementById('calPrev').addEventListener('click', ()=>{ view.setMonth(view.getMonth()-1); render(); });
   document.getElementById('calNext').addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); render(); });
   document.getElementById('calToday').addEventListener('click', ()=>{ view=new Date(today.getFullYear(),today.getMonth(),1); selected=null; render(); renderList(); });
-  renderFilters(); render(); renderList();
+
+  /* "Este finde en Tribu": las 4 próximas propuestas (sin repetir título por sus varias fechas) */
+  function findeCard(e){
+    const d = new Date(e.date+'T00:00');
+    const tag = e.url ? 'a' : 'div';
+    const href = e.url ? ' href="'+esc(e.url)+'" target="_blank" rel="noopener"' : '';
+    return '<'+tag+' class="finde-card"'+href+' style="--c:'+color(e.rubro)+'">'+
+      '<div class="finde-card-top">'+
+        '<span class="finde-tag"><i></i>'+esc((RUBROS[e.rubro]||{}).label||e.rubro)+'</span>'+
+        '<div class="finde-date"><b>'+d.getDate()+'</b><span>'+MES_ABR[d.getMonth()]+'</span></div>'+
+      '</div>'+
+      '<div class="finde-body">'+
+        '<h4>'+esc(e.title)+'</h4>'+
+        '<div class="finde-loc">📍 '+esc(e.place||'')+'</div>'+
+      '</div></'+tag+'>';
+  }
+  function renderFinde(){
+    const grid = document.getElementById('findeGrid');
+    if(!grid) return;
+    const seen = new Set();
+    const picks = EVENTS.filter(e=> new Date(e.date+'T00:00') >= today).sort((a,b)=>a.date.localeCompare(b.date))
+      .filter(e=>{ if(seen.has(e.title)) return false; seen.add(e.title); return true; }).slice(0,4);
+    grid.innerHTML = picks.length ? picks.map(findeCard).join('') : '<p class="cal-empty">Muy pronto sumamos nuevas fechas.</p>';
+  }
+
+  renderFilters(); render(); renderList(); renderFinde();
+})();
+
+/* ============ NEWSLETTER ============ */
+(function(){
+  const form = document.getElementById('newsletterForm');
+  if(!form) return;
+  const msg = document.getElementById('nlMsg');
+  form.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const fdCheck = new FormData(form);
+    if(fdCheck.get('_honey')){ form.reset(); return; }
+    const btn = document.getElementById('nlSubmit');
+    btn.textContent='Enviando...'; btn.disabled=true;
+    const fd = new FormData(form);
+    try{
+      await enviarASheets(fd, 'Newsletter');
+      msg.classList.add('show');
+      form.reset();
+    }catch(err){
+      window.location.href='mailto:contacto@tribuconnection.com?subject=Quiero%20recibir%20novedades&body='+encodeURIComponent('Email: '+(fd.get('Contacto')||''));
+    }finally{ btn.textContent='Quiero recibir ideas'; btn.disabled=false; }
+  });
 })();
 
 /* ============ PROVINCIAS Y CIUDADES (Argentina) ============ */
