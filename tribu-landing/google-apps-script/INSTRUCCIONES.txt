@@ -11,6 +11,7 @@ nombre de dónde viene:
    - "Sumate a la Tribu" · Tribu Plus  -> pestaña "Tribu Plus"
    - "Conectarme a la Tribu"           -> pestaña "Conectarme a la Tribu"
    - "Propuesta a medida"              -> pestaña "Propuestas"
+  - "Formulario externo"              -> pestaña "Formulario externo"
 
    (El formulario de sumarse es uno solo; se separa por el plan elegido.
     Cualquier plan que no sea Cafecito —incluido el "General" de los botones
@@ -29,8 +30,8 @@ nombre de dónde viene:
    - Google va a pedir autorización (primera vez): "Avanzado" → "Ir a
      [nombre del proyecto] (no seguro)" → "Permitir". Es tu propio script,
      es seguro autorizarlo.
-   - Esto crea (si faltan) las 5 pestañas: "Eventos", "Cafecito",
-     "Tribu Plus", "Conectarme a la Tribu" y "Propuestas". Las que ya
+   - Esto crea (si faltan) las 6 pestañas: "Eventos", "Cafecito",
+     "Tribu Plus", "Conectarme a la Tribu", "Propuestas" y "Formulario externo". Las que ya
      existían con ese nombre se reusan, no se pisan.
 
 2.b) LIMPIAR LAS PRUEBAS Y LAS PESTAÑAS VIEJAS (opcional, recomendado)

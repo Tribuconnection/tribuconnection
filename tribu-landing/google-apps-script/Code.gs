@@ -27,7 +27,8 @@ const TABS = {
   Cafecito:  { name: 'Cafecito',              headers: JOIN_HEADERS },
   TribuPlus: { name: 'Tribu Plus',            headers: JOIN_HEADERS },
   Conectar:  { name: 'Conectarme a la Tribu',  headers: ['Fecha de envío', 'Nombre', 'Perfil', 'Marca / Proyecto / Evento', 'Contacto', 'Detalles', 'Fecha de nacimiento', 'Provincia', 'Ciudad'] },
-  Propuesta: { name: 'Propuestas',             headers: ['Fecha de envío', 'Nombre', 'Marca / Evento', 'Contacto', 'Detalles'] }
+  Propuesta: { name: 'Propuestas',             headers: ['Fecha de envío', 'Nombre', 'Marca / Evento', 'Contacto', 'Detalles'] },
+  Externo:   { name: 'Formulario externo',     headers: ['Fecha de envío', 'Nombre completo', 'Correo electrónico', 'Instagram', 'WhatsApp', 'Propuesta', 'Fecha y lugar del evento', 'Ayuda'] }
 };
 
 /* Pestañas que quedaron de esquemas anteriores y ya no se usan. */
@@ -78,6 +79,7 @@ function doPost(e) {
     if (tipo === 'Join') return handleJoin_(ss, e);
     if (tipo === 'Conectar') return handleConectar_(ss, e);
     if (tipo === 'Propuesta') return handlePropuesta_(ss, e);
+    if (tipo === 'Externo') return handleExterno_(ss, e);
     if (tipo === 'Admin') return handleAdmin_(ss, e);
     return respond_({ ok: false, error: 'Tipo desconocido' });
   } catch (err) {
@@ -143,6 +145,16 @@ function handlePropuesta_(ss, e) {
     e.parameter.Contacto || '', e.parameter.Detalles || ''
   ];
   agregarFila_(ss, 'Propuesta', row, 'Nueva propuesta a medida: ' + (e.parameter.Nombre || '(sin nombre)'));
+  return respond_({ ok: true });
+}
+
+function handleExterno_(ss, e) {
+  const row = [
+    new Date(), e.parameter.Nombre || '', e.parameter.Email || '',
+    e.parameter.Instagram || '', e.parameter.WhatsApp || '',
+    e.parameter.Propuesta || '', e.parameter.Fecha_Lugar || '', e.parameter.Ayuda || ''
+  ];
+  agregarFila_(ss, 'Externo', row, 'Nuevo formulario externo: ' + (e.parameter.Nombre || '(sin nombre)'));
   return respond_({ ok: true });
 }
 
