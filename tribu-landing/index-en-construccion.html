@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tribu Connection · Conectores de tribus</title>
+<meta name="description" content="Conectamos personas con comunidades que transforman. Descubrimos experiencias, contamos historias reales y acompañamos proyectos, marcas y comunidades para que crezcan.">
+
+<!-- Open Graph / WhatsApp / Facebook -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://tribuconnection.com/">
+<meta property="og:site_name" content="Tribu Connection">
+<meta property="og:title" content="Tribu Connection · Conectores de tribus">
+<meta property="og:description" content="Conectamos personas con comunidades que transforman. Descubrimos experiencias, contamos historias reales y acompañamos proyectos, marcas y comunidades para que crezcan.">
+<meta property="og:image" content="https://tribuconnection.com/assets/og-image.png?v=3">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_AR">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Tribu Connection · Conectores de tribus">
+<meta name="twitter:description" content="Conectamos personas con comunidades que transforman. Descubrimos experiencias, contamos historias reales y acompañamos proyectos, marcas y comunidades para que crezcan.">
+<meta name="twitter:image" content="https://tribuconnection.com/assets/og-image.png?v=3">
+
+<!-- Favicon: el isotipo de las manos -->
+<link rel="icon" type="image/png" href="/assets/isotipo.png?v=2">
+
+<!-- Tipografías: Protest Strike (títulos grandes) + Caveat (eyebrows) + Poppins (todo lo demás) -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+<link rel="stylesheet" href="/assets/tribu.css?v=17">
+</head>
+<body>
+
+<!-- Fondo aurora -->
+<div class="aurora" aria-hidden="true">
+  <span class="a1"></span><span class="a2"></span><span class="a3"></span>
+</div>
+
+<!-- ============================ NAV ============================ -->
+<nav class="nav" id="nav">
+  <a href="#top" class="brand" aria-label="Tribu Connection — inicio">
+    <img class="brand-full" src="/assets/logo-blanco.png?v=1" alt="Tribu Connection">
+  </a>
+  <div class="nav-links">
+    <a href="#top">Inicio</a>
+    <a href="#historias">Historias</a>
+    <a href="/club-tribu-connection/">Sumate a la Tribu</a>
+    <a href="#calendario">Agenda</a>
+    <a href="/organizas-experiencias/">Tribu de Creadores</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" class="btn btn--spectrum" data-connect>Conectarme a la Tribu</a>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Menú mobile -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#top">Inicio</a>
+  <a href="#historias">Historias</a>
+  <a href="/club-tribu-connection/">Sumate a la Tribu</a>
+  <a href="#calendario">Agenda</a>
+  <a href="/organizas-experiencias/">Tribu de Creadores</a>
+  <a href="#contacto">Contacto</a>
+  <a href="#" class="btn btn--spectrum" data-connect>Conectarme a la Tribu</a>
+</div>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero" id="top">
+  <div class="hero-star" aria-hidden="true"><img src="/assets/isotipo.png?v=2" alt=""></div>
+  <div class="wrap hero-inner">
+    <p class="eyebrow reveal">Un punto de encuentro</p>
+    <h1 class="display reveal d1">Conectamos personas con <span class="grad">comunidades que transforman</span>.</h1>
+    <p class="lead reveal d2">Descubrimos experiencias, contamos historias reales y acompañamos proyectos para que conecten con más personas y hagan crecer su comunidad.</p>
+    <!-- 🔧 EDITABLE: reemplazar hero-star por el Video Hero cuando lo tengamos -->
+  </div>
+  <div class="scrollcue" aria-hidden="true"><i></i> Deslizá</div>
+</header>
+
+<!-- ===================== EL PROBLEMA (El camino) ===================== -->
+<section class="section" id="problema" style="padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(28px,4vw,52px)">
+  <div class="wrap">
+    <div class="sec-head reveal" style="max-width:900px">
+      <p class="eyebrow">El camino</p>
+      <h2 class="h2">Si estás llevando adelante un proyecto, probablemente conozcas estos desafíos.</h2>
+    </div>
+    <div class="challenges challenges--3">
+      <div class="challenge is-red reveal">
+        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <b>Visibilidad</b>
+        <p>Muchas veces el desafío no es la calidad de tu proyecto, sino que las personas que podrían disfrutarlo simplemente todavía no saben que existe.</p>
+      </div>
+      <div class="challenge is-amber reveal d1">
+        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.07 0l2-2a5 5 0 0 0-7.07-7.07l-1 1"/><path d="M14 11a5 5 0 0 0-7.07 0l-2 2a5 5 0 0 0 7.07 7.07l1-1"/></svg></div>
+        <b>Conexión</b>
+        <p>En un mundo lleno de información, no alcanza con mostrarse. Las personas necesitan conectar con tu historia y sentir por qué tu proyecto es diferente.</p>
+      </div>
+      <div class="challenge is-green reveal d2">
+        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21v-8"/><path d="M12 13c0-3.5-3-5-7-5 0 4 2 6.5 7 5z"/><path d="M12 13c0-4 3-6.5 7-6.5 0 4.5-2.5 7-7 6.5z"/></svg></div>
+        <b>Comunidad</b>
+        <p>Cuando las personas encuentran un propósito compartido, dejan de mirar desde afuera y empiezan a construir la historia junto a vos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== NOSOTROS ===================== -->
+<section class="section about" id="nosotros" style="padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(28px,4vw,52px)">
+  <div class="wrap">
+    <div class="about-grid about-grid--single">
+      <div class="about-copy">
+        <p class="eyebrow reveal">Lo que nos guía</p>
+        <h2 class="h2 reveal d1" style="margin:1.2rem 0 1.8rem">¿Qué es <span class="grad">Tribu Connection</span>?</h2>
+        <p class="reveal d1">Somos un <span class="hl">punto de encuentro</span> entre personas que buscan experiencias significativas y comunidades que tienen algo valioso para compartir.</p>
+        <p class="reveal d2 p-2lines">Creemos que cuando las personas se reúnen alrededor de un propósito<br>y sus historias se cuentan con autenticidad, pueden nacer <span class="hl">vínculos capaces de transformar</span>.</p>
+      </div>
+      <!-- 🔧 GUARDADO (2026-08-05): el círculo "Quienes confían en nosotros" sale de la home
+           por pedido del cliente. Se reserva para la sección de marcas — para reactivarlo,
+           descomentá este bloque y sacale la clase `about-grid--single` al .about-grid de arriba.
+           El CSS (.trust-wrap / .trust-circle / .trust-chip…) sigue vivo en assets/tribu.css.
+      <div class="trust-wrap reveal d2">
+        <p class="trust-label">Quienes confían en nosotros</p>
+        <div class="trust-circle">
+          <div class="trust-circle-center"><img src="/assets/isotipo.png?v=2" alt=""></div>
+          <div class="trust-ring">
+            <div class="trust-chip" style="--i:0"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/bioferia.png" alt="Bioferia" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:1"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/expo-holistica.png" alt="Expo Holística &amp; Bienestar" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:2"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/resonar-festival.png" alt="Resonar Festival" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:3"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Conciencia<br>Festival</span></div></div></div>
+            <div class="trust-chip" style="--i:4"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/unifungi.png" alt="Unifungi" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:5"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Sudanta</span></div></div></div>
+            <div class="trust-chip" style="--i:6"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/sagrada-madre.png" alt="Sagrada Madre" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:7"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Fiesta<br>Clapper</span></div></div></div>
+            <div class="trust-chip" style="--i:8"><div class="trust-chip-counter"><div class="trust-chip-inner"><img src="/assets/partners/amanita-festival.png" alt="Amanita Festival" width="60" loading="lazy"></div></div></div>
+            <div class="trust-chip" style="--i:9"><div class="trust-chip-counter"><div class="trust-chip-inner"><span class="trust-chip-text">Comunidad<br>Micelio</span></div></div></div>
+          </div>
+        </div>
+      </div>
+      -->
+    </div>
+  </div>
+</section>
+
+<!-- ===================== HISTORIAS REALES (Casos de éxito) ===================== -->
+<section class="section" id="historias" style="padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(28px,4vw,52px)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Lo que sucede al encontrarnos</p>
+      <h2 class="h2">Historias reales.</h2>
+    </div>
+    <!-- 🔧 EDITABLE: agregá más <a class="story"> acá para sumar videos — la fila scrollea sola. Ajustá tag/titulo/parrafo por card. El click abre el reel en Instagram (embed in-page no es viable: Instagram bloquea el iframe para dominios no registrados en Meta for Developers). -->
+    <div class="stories">
+      <a class="story reveal" style="--c:var(--red)" href="https://www.instagram.com/tribuconnection/reel/DbEf9UNAU2L/" target="_blank" rel="noopener">
+        <div class="story-cover" style="background-image:url(/assets/stories/resonar-2026.jpg?v=2);background-position:100% center" aria-label="Reproducir: Resonar 2026">
+          <span class="story-tag">Festival</span>
+          <span class="story-play"><svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><path d="M0 0l14 8-14 8z"/></svg></span>
+          <div class="story-body">
+            <h4>Resonar 2026</h4>
+            <p>Un repaso del festival, con la energía y los momentos que se vivieron in situ.</p>
+            <span class="story-link">Ver en Instagram <span class="arr">→</span></span>
+          </div>
+        </div>
+      </a>
+      <a class="story reveal d1" style="--c:var(--amber)" href="https://www.instagram.com/tribuconnection/reel/DXuro13gLj7/" target="_blank" rel="noopener">
+        <div class="story-cover" style="background-image:url(/assets/stories/conciencia-festival.jpg?v=2)" aria-label="Reproducir: Conciencia Festival">
+          <span class="story-tag">Campaña</span>
+          <span class="story-play"><svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><path d="M0 0l14 8-14 8z"/></svg></span>
+          <div class="story-body">
+            <h4>Conciencia Festival</h4>
+            <p>Cobertura de la campaña junto a la comunidad, sumando voces y participación real.</p>
+            <span class="story-link">Ver en Instagram <span class="arr">→</span></span>
+          </div>
+        </div>
+      </a>
+      <a class="story reveal d2" style="--c:var(--teal)" href="https://www.instagram.com/tribuconnection/reel/DZV13kpg4_h/" target="_blank" rel="noopener">
+        <div class="story-cover" style="background-image:url(/assets/stories/entrevistas-en-vivo.jpg?v=2);background-position:100% center" aria-label="Reproducir: Entrevistas en vivo">
+          <span class="story-tag">Entrevista</span>
+          <span class="story-play"><svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><path d="M0 0l14 8-14 8z"/></svg></span>
+          <div class="story-body">
+            <h4>Entrevistas en vivo</h4>
+            <p>Conversaciones espontáneas con la gente que hace posible cada evento.</p>
+            <span class="story-link">Ver en Instagram <span class="arr">→</span></span>
+          </div>
+        </div>
+      </a>
+      <a class="story reveal d3" style="--c:var(--purple)" href="https://www.instagram.com/tribuconnection/reel/DaBiKXnglol/" target="_blank" rel="noopener">
+        <div class="story-cover" style="background-image:url(/assets/stories/musica-en-vivo.jpg?v=2);background-position:100% center" aria-label="Reproducir: Música en vivo">
+          <span class="story-tag">Experiencia</span>
+          <span class="story-play"><svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><path d="M0 0l14 8-14 8z"/></svg></span>
+          <div class="story-body">
+            <h4>Música en vivo</h4>
+            <p>La música en vivo que acompaña y conecta a la comunidad en cada encuentro.</p>
+            <span class="story-link">Ver en Instagram <span class="arr">→</span></span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="reveal" style="margin-top:2rem;text-align:center">
+      <a href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener" class="btn btn--ghost">Ver más historias <span class="arr">→</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== LAS SEÑALES (stats) ===================== -->
+<section class="section section--tight" id="senales">
+  <div class="wrap">
+    <p class="eyebrow reveal" style="justify-content:center;display:flex;margin-bottom:1.4rem">Las señales</p>
+  </div>
+</section>
+<section class="stats" aria-label="Resultados">
+  <div class="wrap">
+    <div class="stat reveal">
+      <span class="num" data-target="205200">0</span>
+      <span class="lbl">cuentas alcanzadas · Instagram</span>
+    </div>
+    <div class="stat reveal d1">
+      <span class="num" data-target="288" data-suffix="K">0</span>
+      <span class="lbl">vistas en Reels</span>
+    </div>
+    <div class="stat reveal d2">
+      <span class="num" data-target="4123">0</span>
+      <span class="lbl">seguidores en Instagram (+28,7% este mes)</span>
+    </div>
+    <div class="stat reveal d3">
+      <span class="num" data-target="2219">0</span>
+      <span class="lbl">visitas al perfil · último mes</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CAMINOS (Trabajemos juntos) ===================== -->
+<section class="section" id="caminos" style="padding-top:clamp(24px,3vw,44px);padding-bottom:clamp(28px,4vw,52px)">
+  <div class="wrap">
+    <div class="sec-head sec-head--wide reveal" style="max-width:820px">
+      <p class="eyebrow">Elegí tu recorrido</p>
+      <h2 class="h2" style="margin:1.1rem 0 1rem">Distintos caminos. Un mismo <span class="grad">propósito</span>.</h2>
+      <p class="lead">La Tribu se construye desde distintos lugares. Contanos desde dónde venís y te mostramos, en detalle, cómo podemos acompañarte —sin mezclar mensajes.</p>
+    </div>
+
+    <div class="paths">
+      <!-- 🔧 Estas 3 tarjetas abren el formulario "Conectarme a la Tribu" con el perfil ya elegido
+           (antes iban a /organizas-experiencias/, /representas-marca/ y /club-tribu-connection/;
+           se vuelve a esos links cambiando el href y sacando data-connect/data-perfil). -->
+      <a class="path is-red reveal" href="#" data-connect data-perfil="Creador/a de experiencias">
+        <div class="path-ic">🎪</div>
+        <span class="path-kicker">Creás</span>
+        <h3>Experiencias, eventos, arte, encuentros.</h3>
+        <p>Si estás dando vida a una propuesta que reúne personas, te ayudamos a hacerla crecer, conectar con más gente y generar un impacto que perdure.</p>
+        <span class="path-go">Contanos de tu proyecto <span class="arr">→</span></span>
+      </a>
+
+      <a class="path is-teal reveal d1" href="#" data-connect data-perfil="Marca / emprendimiento">
+        <div class="path-ic">📣</div>
+        <span class="path-kicker">Impulsás</span>
+        <h3>Una marca, un emprendimiento o una organización.</h3>
+        <p>Creamos conexiones genuinas entre tu marca y comunidades afines, desarrollando estrategias y acciones de colaboración y beneficio mutuo.</p>
+        <span class="path-go">Contanos de tu marca <span class="arr">→</span></span>
+      </a>
+
+      <a class="path is-amber reveal d2" href="#" data-connect data-perfil="Busco experiencias y beneficios">
+        <div class="path-ic">🧭</div>
+        <span class="path-kicker">Buscás</span>
+        <h3>Descubrir experiencias, conectar con personas y acceder a beneficios.</h3>
+        <p>Encontrá nuevas comunidades, inspirate con historias reales y disfrutá beneficios exclusivos a través de nuestros canales y del Club Tribu Connection.</p>
+        <span class="path-go">Quiero sumarme <span class="arr">→</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CALENDARIO ===================== -->
+<section class="section section--tight" id="calendario">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-bottom:.8rem">
+      <p class="eyebrow">Próximos destinos</p>
+      <h2 class="h2 cal-title">Descubrí nuevas experiencias.</h2>
+      <p class="lead" style="margin-top:.8rem;max-width:640px">Encontrá festivales, encuentros y propuestas con propósito cerca tuyo o sumá la tuya para que más personas puedan descubrirla.</p>
+    </div>
+    <div class="cal-toolbar reveal d1">
+      <div class="cal-filters" id="calFilters"></div>
+      <div class="cal-toolbar-right">
+        <div class="cal-viewtoggle" id="calViewToggle">
+          <button type="button" class="active" data-view="list">📅 Calendario</button>
+          <button type="button" data-view="map">🗺️ Mapa</button>
+        </div>
+        <button class="btn btn--ghost cal-add" id="calAdd" type="button"><span>＋</span> Solicitar agregar evento</button>
+      </div>
+    </div>
+    <div class="cal-grid-wrap reveal d1" id="calViewList">
+      <div class="cal-card">
+        <div class="cal-nav">
+          <button class="cal-arrow" id="calPrev" aria-label="Mes anterior">‹</button>
+          <span class="cal-month" id="calMonth">—</span>
+          <button class="cal-arrow" id="calNext" aria-label="Mes siguiente">›</button>
+          <button class="cal-today-btn" id="calToday">Hoy</button>
+        </div>
+        <div class="cal-weekdays"><span>Dom</span><span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span></div>
+        <div class="cal-days" id="calDays"></div>
+      </div>
+      <div class="cal-list-wrap">
+        <div class="cal-agenda-title">Próxima agenda <span class="cal-count" id="calCount"></span></div>
+        <div class="cal-list" id="calList"></div>
+      </div>
+    </div>
+    <div class="cal-map-wrap reveal d1" id="calViewMap" style="display:none">
+      <div id="calMap"></div>
+      <p class="cal-map-note">📍 Ubicaciones aproximadas a nivel de ciudad/localidad — confirmá la dirección exacta con la organización de cada evento.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MODAL CONECTARME A LA TRIBU ===================== -->
+<div class="modal-overlay" id="connectModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="connectTitle">
+    <button class="modal-close" id="connectClose" aria-label="Cerrar">✕</button>
+    <h2 id="connectTitle">Conectarme a la Tribu</h2>
+    <p class="modal-sub">Contanos quién sos y te escribimos con una propuesta pensada para vos.</p>
+    <form id="connectForm">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <div class="field">
+        <label>¿Cómo te querés conectar?</label>
+        <div class="chips" id="connectChips">
+          <label class="chip"><input type="radio" name="Perfil" value="Creador/a de experiencias"><span>Creo experiencias, eventos o proyectos</span></label>
+          <label class="chip"><input type="radio" name="Perfil" value="Marca / emprendimiento"><span>Represento una marca o emprendimiento</span></label>
+          <label class="chip"><input type="radio" name="Perfil" value="Busco experiencias y beneficios"><span>Busco experiencias, comunidad y beneficios</span></label>
+        </div>
+        <p class="field-error" id="connectPerfilError">Elegí una opción para continuar.</p>
+      </div>
+      <div class="field">
+        <label for="cName">Nombre</label>
+        <input id="cName" name="Nombre" type="text" required placeholder="Tu nombre">
+      </div>
+      <div class="field">
+        <label for="cBrand">Marca / Proyecto / Evento</label>
+        <input id="cBrand" name="Marca_Evento" type="text" placeholder="¿Cómo se llama?">
+      </div>
+      <div class="field">
+        <label for="cContact">WhatsApp / Email</label>
+        <input id="cContact" name="Contacto" type="text" required placeholder="¿Cómo te contactamos?">
+      </div>
+      <div class="field">
+        <label for="cDetails">Contanos un poco más</label>
+        <textarea id="cDetails" name="Detalles" placeholder="Contanos sobre tu proyecto, marca o idea"></textarea>
+      </div>
+      <div class="field">
+        <label>Fecha de nacimiento</label>
+        <div class="cdate" id="birthDateSel">
+          <button type="button" class="cselect-btn" aria-haspopup="dialog" aria-expanded="false">
+            <span class="cselect-val is-ph" id="birthDateDisplay">dd/mm/aaaa</span>
+            <svg class="cselect-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/></svg>
+          </button>
+          <div class="cdate-pop">
+            <div class="cdate-nav cdate-nav--split">
+              <div class="cdate-nav-row">
+                <button type="button" class="cal-arrow" data-nav-month="-1" aria-label="Mes anterior">‹</button>
+                <select class="cdate-month-sel" aria-label="Mes"></select>
+                <button type="button" class="cal-arrow" data-nav-month="1" aria-label="Mes siguiente">›</button>
+              </div>
+              <div class="cdate-nav-row">
+                <button type="button" class="cal-arrow" data-nav-year="-1" aria-label="Año anterior">‹</button>
+                <select class="cdate-year-sel" aria-label="Año"></select>
+                <button type="button" class="cal-arrow" data-nav-year="1" aria-label="Año siguiente">›</button>
+              </div>
+            </div>
+            <div class="cdate-week"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span><span>Do</span></div>
+            <div class="cdate-days"></div>
+            <div class="cdate-actions">
+              <button type="button" data-clear>Borrar</button>
+            </div>
+          </div>
+          <input type="hidden" name="Fecha_Nacimiento" id="cBirth">
+        </div>
+        <p class="modal-note" style="margin-top:.5rem">🎂 Así te avisamos con beneficios especiales el día de tu cumpleaños.</p>
+      </div>
+      <div class="field">
+        <label>Ubicación (opcional)</label>
+        <div class="row2">
+          <select id="cProvincia" name="Provincia">
+            <option value="">Elegí tu provincia</option>
+          </select>
+          <select id="cCiudad" name="Ciudad" disabled>
+            <option value="">Elegí tu provincia primero</option>
+          </select>
+        </div>
+        <input id="cCiudadOtra" name="Ciudad_Otra" type="text" placeholder="Escribí tu localidad" style="display:none; margin-top:.6rem">
+        <p class="modal-note" style="margin-top:.5rem">📍 Nos sirve para mostrarte eventos cercanos a vos, y si organizás experiencias o representás una marca, mostrarte gente cercana que podría estar interesada.</p>
+      </div>
+      <button type="submit" class="btn btn--spectrum" id="connectSubmit">Enviar</button>
+      <p class="modal-note">Te respondemos en 24–48 hs con una propuesta. También podés escribirnos a contacto@tribuconnection.com</p>
+    </form>
+    <div class="modal-msg" id="connectMsg">¡Recibido! Gracias 🌟<br>Te vamos a escribir con una propuesta pensada para vos.</div>
+  </div>
+</div>
+
+<!-- ===================== MODAL PROPUESTA A MEDIDA ===================== -->
+<div class="modal-overlay" id="propuestaModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="propTitle">
+    <button class="modal-close" id="propClose" aria-label="Cerrar">✕</button>
+    <h2 id="propTitle">Quiero una propuesta a medida</h2>
+    <p class="modal-sub">Contanos sobre tu evento o marca y diseñamos una propuesta pensada para vos.</p>
+    <form id="propForm">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <div class="field">
+        <label for="pName">Nombre</label>
+        <input id="pName" name="Nombre" type="text" required placeholder="Tu nombre">
+      </div>
+      <div class="field">
+        <label for="pBrand">Marca / Evento / Proyecto</label>
+        <input id="pBrand" name="Marca_Evento" type="text" placeholder="¿Cómo se llama?">
+      </div>
+      <div class="field">
+        <label for="pContact">WhatsApp / Email</label>
+        <input id="pContact" name="Contacto" type="text" required placeholder="¿Cómo te contactamos?">
+      </div>
+      <div class="field">
+        <label for="pMsg">Contanos sobre tu evento o marca</label>
+        <textarea id="pMsg" name="Detalles" placeholder="Fecha aproximada, tipo de evento, qué buscás lograr…"></textarea>
+      </div>
+      <button type="submit" class="btn btn--spectrum" id="propSubmit">Enviar</button>
+      <p class="modal-note">Te respondemos en 24–48 hs. También podés escribirnos a contacto@tribuconnection.com</p>
+    </form>
+    <div class="modal-msg" id="propMsg">¡Recibido! Gracias 🌟<br>Te vamos a escribir con una propuesta a medida.</div>
+  </div>
+</div>
+
+<!-- ===================== MODAL SOLICITAR EVENTO ===================== -->
+<div class="modal-overlay" id="eventModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="evTitle">
+    <button class="modal-close" id="eventClose" aria-label="Cerrar">✕</button>
+    <h2 id="evTitle">Solicitar agregar evento</h2>
+    <p class="modal-sub">Contanos sobre tu evento y lo sumamos al calendario de la Tribu.</p>
+    <form id="eventForm">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <div class="field">
+        <label for="evName">Nombre del evento</label>
+        <input id="evName" name="Evento" type="text" required placeholder="Nombre del evento">
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label>Rubro</label>
+          <div class="cselect" id="rubroSel">
+            <button type="button" class="cselect-btn" aria-haspopup="listbox" aria-expanded="false">
+              <span class="cselect-val is-ph">Elegí un rubro</span>
+              <svg class="cselect-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="cselect-list" role="listbox">
+              <button type="button" role="option" data-val="Festivales">Festivales</button>
+              <button type="button" role="option" data-val="Ferias / exposiciones">Ferias / exposiciones</button>
+              <button type="button" role="option" data-val="Eventos artísticos">Eventos artísticos</button>
+              <button type="button" role="option" data-val="Holístico &amp; Bienestar">Holístico &amp; Bienestar</button>
+            </div>
+            <input type="hidden" name="Rubro" id="evRubro">
+          </div>
+        </div>
+        <div class="field">
+          <label>Fecha</label>
+          <div class="cdate" id="dateSel">
+            <button type="button" class="cselect-btn" aria-haspopup="dialog" aria-expanded="false">
+              <span class="cselect-val is-ph" id="dateDisplay">dd/mm/aaaa</span>
+              <svg class="cselect-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/></svg>
+            </button>
+            <div class="cdate-pop">
+              <div class="cdate-nav">
+                <button type="button" class="cal-arrow" data-nav="-1" aria-label="Mes anterior">‹</button>
+                <span class="cdate-month">—</span>
+                <button type="button" class="cal-arrow" data-nav="1" aria-label="Mes siguiente">›</button>
+              </div>
+              <div class="cdate-week"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span><span>Do</span></div>
+              <div class="cdate-days"></div>
+              <div class="cdate-actions">
+                <button type="button" data-clear>Borrar</button>
+                <button type="button" data-today>Hoy</button>
+              </div>
+            </div>
+            <input type="hidden" name="Fecha" id="evDate">
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label for="evLoc">Ubicación</label>
+        <div class="geo-field">
+          <input id="evLoc" name="Ubicacion" type="text" placeholder="Empezá a escribir la dirección…" autocomplete="off">
+          <div class="geo-suggest" id="evLocSuggest"></div>
+        </div>
+        <input type="hidden" id="evLat" name="Ubicacion_lat">
+        <input type="hidden" id="evLng" name="Ubicacion_lng">
+        <div id="evLocMap" class="geo-preview"></div>
+      </div>
+      <div class="field">
+        <label for="evTags">Etiquetas</label>
+        <input id="evTags" name="Etiquetas" type="text" placeholder="Ej: música, meditación, feria">
+      </div>
+      <div class="field">
+        <label for="evDesc">Descripción</label>
+        <textarea id="evDesc" name="Descripcion" placeholder="Contanos de qué se trata"></textarea>
+      </div>
+      <div class="field">
+        <label>Fotos / Video</label>
+        <label class="file-label" for="evFiles">📎 Subí fotos o video (opcional)</label>
+        <div class="file-in"><input id="evFiles" name="Adjunto" type="file" accept="image/*,video/*" multiple></div>
+        <div class="file-name" id="evFileName"></div>
+      </div>
+      <div class="field">
+        <label for="evLink">Link a fotos/video (opcional)</label>
+        <input id="evLink" name="Link_media" type="url" placeholder="Drive, WeTransfer, IG… (para archivos grandes)">
+      </div>
+      <button type="submit" class="btn btn--spectrum" id="evSubmit">Enviar solicitud</button>
+      <p class="modal-note">Para videos pesados, mejor pegá un link. Te confirmamos por WhatsApp o mail.</p>
+    </form>
+    <div class="modal-msg" id="evMsg">¡Recibido! Gracias por sumar tu evento 🌟<br>Lo revisamos y te confirmamos por WhatsApp o mail.</div>
+  </div>
+</div>
+
+<!-- ===================== COOKIE BAR ===================== -->
+<div class="cookie-bar" id="cookieBar">
+  <div class="cookie-bar-inner">
+    <p class="cookie-bar-text">🍪 Usamos <b>cookies esenciales</b> para que el sitio funcione correctamente.<br>No usamos cookies de publicidad ni de seguimiento. <a href="#" data-legal="cookies">Ver política de cookies</a>.</p>
+    <button class="btn btn--spectrum" id="cookieAccept" type="button">Aceptar</button>
+  </div>
+</div>
+
+<!-- ===================== MODAL LEGAL ===================== -->
+<div class="modal-overlay" id="legalModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+    <button class="modal-close" id="legalClose" aria-label="Cerrar">✕</button>
+    <h2 id="legalTitle">Información legal</h2>
+    <div class="legal-tabs">
+      <button type="button" data-tab="privacidad">Política de privacidad</button>
+      <button type="button" data-tab="cookies">Cookies</button>
+      <button type="button" data-tab="terminos">Términos y condiciones</button>
+    </div>
+
+    <div class="legal-body" id="legal-privacidad" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Quiénes somos</h3>
+      <p>Tribu Connection ("nosotros") es responsable del tratamiento de los datos personales que nos compartís a través de <b style="color:var(--cream)">tribuconnection.com</b>. Ante cualquier consulta sobre tus datos, escribinos a <a href="mailto:contacto@tribuconnection.com" style="color:var(--teal)">contacto@tribuconnection.com</a>.</p>
+      <h3>Qué datos recopilamos</h3>
+      <p>Solo los que nos compartís voluntariamente al completar alguno de nuestros formularios (Conectarme a la Tribu, Solicitar evento, Propuesta a medida): nombre, rubro, WhatsApp o email, y los detalles que quieras contarnos. En el formulario "Conectarme a la Tribu" también podés compartirnos, de forma opcional, tu fecha de nacimiento y tu provincia/ciudad, para avisarte de beneficios por tu cumpleaños y mostrarte eventos o personas cercanas a vos. No recopilamos datos de navegación con fines publicitarios.</p>
+      <h3>Para qué los usamos</h3>
+      <ul>
+        <li>Responder tu consulta y contactarte por WhatsApp o email.</li>
+        <li>Gestionar tu membresía Tribu Pass, si te sumás.</li>
+        <li>Evaluar solicitudes para sumar un evento al calendario.</li>
+        <li>Evaluar propuestas de cobertura para marcas y festivales.</li>
+      </ul>
+      <h3>Con quién los compartimos</h3>
+      <p>No vendemos ni cedemos tus datos a terceros con fines comerciales. Usamos un proveedor técnico de envío de formularios (FormSubmit) únicamente para que tu mensaje nos llegue por email; no lo usamos para publicidad.</p>
+      <h3>Tus derechos</h3>
+      <p>De acuerdo con la Ley N.° 25.326 de Protección de Datos Personales de Argentina, tenés derecho a acceder, rectificar, actualizar y solicitar la supresión de tus datos. Podés ejercerlos escribiendo a <a href="mailto:contacto@tribuconnection.com" style="color:var(--teal)">contacto@tribuconnection.com</a>. La Agencia de Acceso a la Información Pública, en su carácter de Órgano de Control de la Ley N.° 25.326, tiene la atribución de atender denuncias y reclamos que interpongan quienes resulten afectados en sus derechos.</p>
+      <h3>Cambios en esta política</h3>
+      <p>Podemos actualizar esta política ocasionalmente. La fecha de la última actualización figura arriba.</p>
+    </div>
+
+    <div class="legal-body" id="legal-cookies" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Qué cookies usamos</h3>
+      <p>Este sitio <b style="color:var(--cream)">no usa cookies de publicidad, seguimiento ni analítica de terceros</b>. Solo guardamos una preferencia en el almacenamiento local de tu navegador (localStorage) para recordar que ya viste este aviso y no mostrártelo de nuevo en cada visita.</p>
+      <h3>Mapas y contenido embebido</h3>
+      <p>La sección de Calendario usa mapas de OpenStreetMap para mostrar la ubicación de los eventos. Este servicio puede cargar recursos desde sus propios servidores al mostrar el mapa, según su propia política de privacidad.</p>
+      <h3>Formularios</h3>
+      <p>Los formularios del sitio (Conectarme a la Tribu, Solicitar evento, Propuesta a medida) envían la información directamente por email a través de un proveedor externo (FormSubmit), sin instalar cookies de seguimiento en tu navegador.</p>
+      <h3>Si sumamos analítica en el futuro</h3>
+      <p>Si en algún momento incorporamos herramientas de estadísticas o analítica, actualizaremos esta política y te pediremos tu consentimiento antes de activarlas.</p>
+      <h3>Cómo borrar tu preferencia</h3>
+      <p>Podés eliminar la preferencia guardada borrando los datos de navegación (cookies y datos de sitio) de tu navegador para este sitio.</p>
+    </div>
+
+    <div class="legal-body" id="legal-terminos" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Aceptación</h3>
+      <p>Al usar <b style="color:var(--cream)">tribuconnection.com</b> aceptás estos términos y condiciones. Si no estás de acuerdo, te pedimos que no uses el sitio.</p>
+      <h3>Sobre Tribu Connection</h3>
+      <p>Somos una agencia de contenido y experiencias para festivales, ferias y marcas del mundo consciente. Generamos cobertura, contenido y conectamos comunidades.</p>
+      <h3>Calendario de eventos</h3>
+      <p>Las fechas, sedes y horarios publicados en nuestro calendario son informativos, provistos por las organizaciones de cada evento o recopilados de fuentes públicas, y pueden cambiar sin previo aviso. Te recomendamos confirmar los detalles directamente con la organización de cada evento antes de asistir.</p>
+      <h3>Tribu Pass (membresía)</h3>
+      <p>Los beneficios descriptos para cada plan son informativos y están sujetos a disponibilidad. El programa se encuentra en lanzamiento y los beneficios y festivales aliados se suman de forma continua, como se indica en la sección correspondiente del sitio.</p>
+      <h3>Solicitudes y propuestas</h3>
+      <p>El envío de un formulario (para sumar un evento al calendario, sumarte a la Tribu, o solicitar una propuesta a medida) no garantiza su aceptación o publicación. Nos reservamos el derecho de admisión de contenido de acuerdo con nuestra línea editorial.</p>
+      <h3>Propiedad intelectual</h3>
+      <p>Los textos, el diseño, la marca y el logo de Tribu Connection nos pertenecen. El contenido audiovisual de coberturas puede pertenecer también a los eventos, artistas o marcas originales retratados.</p>
+      <h3>Enlaces a terceros</h3>
+      <p>El sitio incluye enlaces a redes sociales (Instagram, TikTok, YouTube) y servicios externos. No nos responsabilizamos por el contenido, disponibilidad o políticas de privacidad de sitios de terceros.</p>
+      <h3>Limitación de responsabilidad</h3>
+      <p>El sitio se ofrece "tal cual". No garantizamos su disponibilidad ininterrumpida ni la ausencia total de errores.</p>
+      <h3>Legislación aplicable</h3>
+      <p>Estos términos se rigen por las leyes de la República Argentina. Cualquier consulta, escribinos a <a href="mailto:contacto@tribuconnection.com" style="color:var(--teal)">contacto@tribuconnection.com</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== CTA FINAL (Demos el primer paso) ===================== -->
+<section class="section cta" id="contacto">
+  <div class="wrap">
+    <div class="cta-box reveal">
+      <p class="eyebrow">Demos el primer paso</p>
+      <h2 class="h2" style="max-width:34ch">Es momento de que más personas<br> descubran lo que hacés.</h2>
+      <p class="lead" style="max-width:65ch">Contanos tu idea, proyecto o comunidad y pensemos juntos<br> cómo amplificarlo y llegar más lejos en tribu.</p>
+      <div class="cta-actions">
+        <a href="#" class="btn btn--spectrum" data-connect>Quiero conversar con Tribu Connection <span class="arr">→</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-logo">
+        <img src="/assets/logo_white.png" alt="Tribu Connection">
+        <p class="footer-tag">Historias que conectan. <br>Comunidades que crecen.</p>
+      </div>
+      <div class="footer-right">
+        <div>
+          <p class="col-cap">Seguinos</p>
+          <div class="socials">
+            <!-- 🔧 EDITABLE: confirmá/actualizá los usuarios de TikTok y YouTube -->
+            <a class="soc ig" href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+              Instagram
+            </a>
+            <a class="soc tt" href="https://www.tiktok.com/@tribu.connection" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.6 3.7 3.9v2.4c-1.3.1-2.6-.3-3.7-1v6.1c0 3.5-2.6 5.6-5.6 5.6A5.4 5.4 0 0 1 5.5 14c0-3.4 3.1-5.9 6.6-5.1v2.6a2.9 2.9 0 0 0-3.8 2.6c0 1.5 1.2 2.6 2.6 2.6 1.5 0 2.7-1.1 2.7-3V3h2.4z"/></svg>
+              TikTok
+            </a>
+            <a class="soc yt" href="https://www.youtube.com/@tribuconnection" target="_blank" rel="noopener">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10 9.2l5 2.8-5 2.8z" fill="currentColor" stroke="none"/></svg>
+              YouTube
+            </a>
+          </div>
+        </div>
+        <div>
+          <p class="col-cap">Hablemos</p>
+          <div class="socials">
+            <a class="soc mail" href="mailto:contacto@tribuconnection.com">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6l9 6 9-6"/></svg>
+              contacto@tribuconnection.com
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Tribu Connection · Conectores de tribus</span>
+      <span class="foot-legal">
+        <a href="#" data-legal="privacidad">Política de privacidad</a> ·
+        <a href="#" data-legal="cookies">Cookies</a> ·
+        <a href="#" data-legal="terminos">Términos y condiciones</a>
+      </span>
+      <span class="dots">
+        <i style="background:var(--red)"></i><i style="background:var(--amber)"></i><i style="background:var(--green)"></i><i style="background:var(--teal)"></i><i style="background:var(--purple)"></i>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+/* Google Sheets: URL del Web App de Apps Script (ver google-apps-script/INSTRUCCIONES.txt) */
+const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwyaT9_K7Y2RXFbr8X_9vPGwRfrbmncEOV1Gcsa907VSx4bMcjxiIqHwx4DbJahMVRS/exec';
+
+/* Envia el formulario a la planilla. Lanza excepcion si no se pudo guardar,
+   para que quien llama muestre el respaldo por mail en vez de un falso "Recibido". */
+async function enviarASheets(fd, tipo){
+  fd.set('Tipo', tipo);
+  const res = await fetch(SHEETS_ENDPOINT, { method:'POST', body: fd });
+  const data = await res.json();
+  if(!data.ok) throw new Error(data.error || 'No se pudo guardar');
+}
+
+/* Nav: fondo al scrollear */
+const nav = document.getElementById('nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
+onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
+
+/* Menú mobile */
+const burger = document.getElementById('burger');
+const menu = document.getElementById('mobileMenu');
+let menuOpenScrollY = 0;
+const toggleMenu = (open) => {
+  menu.classList.toggle('open', open);
+  burger.setAttribute('aria-expanded', open);
+  if(open) menuOpenScrollY = window.scrollY;
+};
+burger.addEventListener('click', () => toggleMenu(!menu.classList.contains('open')));
+menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+/* Cerrar el menú suavemente si se scrollea la página detrás */
+window.addEventListener('scroll', () => {
+  if(menu.classList.contains('open') && Math.abs(window.scrollY - menuOpenScrollY) > 4){
+    toggleMenu(false);
+  }
+}, {passive:true});
+
+/* Reveal al scrollear */
+const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reveals = document.querySelectorAll('.reveal');
+if(reduce){
+  reveals.forEach(el => el.classList.add('in'));
+}else{
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:.14, rootMargin:'0px 0px -8% 0px'});
+  reveals.forEach(el => io.observe(el));
+}
+
+/* Contador animado de stats */
+const fmt = new Intl.NumberFormat('es-AR');
+function animateNum(el){
+  const target = +el.dataset.target;
+  const prefix = el.dataset.prefix || '';
+  const suffix = el.dataset.suffix || '';
+  if(reduce){ el.textContent = prefix + fmt.format(target) + suffix; return; }
+  const dur = 1600; const t0 = performance.now();
+  function tick(now){
+    const p = Math.min((now - t0)/dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = prefix + fmt.format(Math.round(target * eased)) + suffix;
+    if(p < 1) requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+const statIO = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ animateNum(e.target); statIO.unobserve(e.target); } });
+}, {threshold:.6});
+document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
+
+/* ============ CALENDARIO ============ */
+(function(){
+  const RUBROS = {
+    festivales: { label:'Festivales', color:'#F4A623' },
+    ferias:     { label:'Ferias & Expos', color:'#36B7C4' },
+    artisticos: { label:'Eventos artísticos', color:'#9B7CB8' },
+    holistico:  { label:'Holístico & Bienestar', color:'#9BCB46' },
+    musica:     { label:'Música & Danza', color:'#D24B62' },
+    talleres:   { label:'Talleres', color:'#67C08A' }
+  };
+  // 🔧 EDITABLE: agregá o modificá eventos acá. rubro: festivales | ferias | artisticos | holistico | congresos · status: Confirmado | Pendiente
+  const EVENTS = [
+    { date:'2026-07-25', title:'Festival Holístico MAYA – Día Fuera del Tiempo', place:'Sierra de los Padres, Buenos Aires (sede y horario pendientes)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-37.9500, lng:-57.7333 },
+    { date:'2026-08-08', title:'Encuentro Holístico Villa Gesell', place:'Hotel Royal, Villa Gesell (programación pendiente)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-37.2633, lng:-56.9730 },
+    { date:'2026-08-09', title:'Encuentro Holístico Villa Gesell', place:'Hotel Royal, Villa Gesell (programación pendiente)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-37.2633, lng:-56.9730 },
+    { date:'2026-08-09', title:'Buenos Aires Zen', place:'Moreno, Buenos Aires (sede a reconfirmar)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-34.6444, lng:-58.7897 },
+    { date:'2026-08-20', title:'Expotécnica 2026', place:'Golden Center, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5755, lng:-58.4338 },
+    { date:'2026-08-21', title:'Expotécnica 2026', place:'Golden Center, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5755, lng:-58.4338 },
+    { date:'2026-09-09', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5885, lng:-58.4173 },
+    { date:'2026-09-10', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5885, lng:-58.4173 },
+    { date:'2026-09-11', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5885, lng:-58.4173 },
+    { date:'2026-10-05', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
+    { date:'2026-10-06', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
+    { date:'2026-10-07', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
+    { date:'2026-10-08', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
+    { date:'2026-10-09', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
+    { date:'2026-10-27', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
+    { date:'2026-10-28', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
+    { date:'2026-10-29', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
+    { date:'2026-10-30', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
+    { date:'2026-11-19', title:'Primer Congreso Argentino de Sustentabilidad', place:'Hotel 13 de Julio, Mar del Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-37.9950, lng:-57.5533 },
+    { date:'2026-11-20', title:'Primer Congreso Argentino de Sustentabilidad', place:'Hotel 13 de Julio, Mar del Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-37.9950, lng:-57.5533 },
+    { date:'2026-11-20', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
+    { date:'2026-11-21', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
+    { date:'2026-11-22', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
+    { date:'2026-11-23', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
+    { date:'2026-11-24', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 }
+  ];
+  const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+  const MES_ABR = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const daysEl = document.getElementById('calDays');
+  const listEl = document.getElementById('calList');
+  const monthEl = document.getElementById('calMonth');
+  const filtersEl = document.getElementById('calFilters');
+  const countEl = document.getElementById('calCount');
+  const agendaTitle = document.querySelector('.cal-agenda-title');
+  if(!daysEl) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  let view = new Date(today.getFullYear(), today.getMonth(), 1);
+  let filter = 'all';
+  let selected = null;
+  const iso = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const color = r => (RUBROS[r]||{}).color || '#8A8D98';
+  const pass = e => filter==='all' || e.rubro===filter;
+  const evByDate = ds => EVENTS.filter(e => e.date===ds && pass(e)).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+
+  function renderFilters(){
+    let html = '<button class="cal-filter'+(filter==='all'?' active':'')+'" data-f="all">Todos</button>';
+    Object.keys(RUBROS).forEach(k=>{
+      html += '<button class="cal-filter'+(filter===k?' active':'')+'" data-f="'+k+'"><i style="background:'+RUBROS[k].color+'"></i>'+esc(RUBROS[k].label)+'</button>';
+    });
+    filtersEl.innerHTML = html;
+    filtersEl.querySelectorAll('.cal-filter').forEach(b=> b.addEventListener('click', ()=>{ filter=b.dataset.f; selected=null; renderFilters(); render(); renderList(); renderMap(); }));
+  }
+
+  /* ============ MAPA DE EVENTOS (Leaflet + OpenStreetMap) ============ */
+  let calMap = null, calMarkers = [];
+  function renderMap(){
+    if(!calMap) return; // el mapa se inicializa recién al abrir la vista Mapa
+    calMarkers.forEach(m => calMap.removeLayer(m));
+    calMarkers = [];
+    const seen = new Set();
+    const pts = [];
+    EVENTS.filter(pass).forEach(e=>{
+      if(e.lat==null || e.lng==null || seen.has(e.title)) return;
+      seen.add(e.title);
+      const dIni = EVENTS.filter(x=>x.title===e.title).map(x=>x.date).sort()[0];
+      const d = new Date(dIni+'T00:00');
+      const icon = L.divIcon({ className:'', html:'<div class="cal-pin-badge" style="background:'+color(e.rubro)+'"></div>', iconSize:[26,26], iconAnchor:[13,26], popupAnchor:[0,-24] });
+      const marker = L.marker([e.lat, e.lng], { icon }).addTo(calMap);
+      marker.bindPopup(
+        '<div class="map-pop-cat"><i style="background:'+color(e.rubro)+'"></i>'+esc((RUBROS[e.rubro]||{}).label||e.rubro)+'</div>'+
+        '<div class="map-pop-title">'+esc(e.title)+'</div>'+
+        '<div class="map-pop-meta">'+d.getDate()+' de '+MESES[d.getMonth()]+' · 📍 '+esc(e.place||'')+'</div>'
+      );
+      calMarkers.push(marker);
+      pts.push([e.lat, e.lng]);
+    });
+    if(pts.length) calMap.fitBounds(pts, { padding:[36,36], maxZoom:9 });
+  }
+  function initMap(){
+    if(calMap) return;
+    calMap = L.map('calMap', { scrollWheelZoom:true }).setView([-38.4, -63.6], 4);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>',
+      subdomains: 'abcd', maxZoom: 19
+    }).addTo(calMap);
+    renderMap();
+  }
+  const viewToggle = document.getElementById('calViewToggle');
+  const viewList = document.getElementById('calViewList');
+  const viewMap = document.getElementById('calViewMap');
+  if(viewToggle){
+    viewToggle.querySelectorAll('button').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        viewToggle.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        const isMap = btn.dataset.view === 'map';
+        viewList.style.display = isMap ? 'none' : '';
+        viewMap.style.display = isMap ? '' : 'none';
+        if(isMap){ initMap(); setTimeout(()=>{ calMap.invalidateSize(); renderMap(); }, 60); }
+      });
+    });
+  }
+
+  function evCard(e){
+    const d = new Date(e.date+'T00:00');
+    const tag = e.url ? 'a' : 'div';
+    const href = e.url ? ' href="'+esc(e.url)+'" target="_blank" rel="noopener"' : '';
+    const st = e.status==='Pendiente' ? '<span class="ev-status st-pend">Pendiente</span>'
+            : (e.status ? '<span class="ev-status st-conf">Confirmado</span>' : '');
+    return '<'+tag+' class="ev"'+href+'>'+
+      '<div class="ev-date"><b>'+d.getDate()+'</b><span>'+MES_ABR[d.getMonth()]+'</span></div>'+
+      '<div class="ev-body">'+
+        '<div class="ev-head"><span class="ev-cat"><i style="background:'+color(e.rubro)+'"></i>'+esc((RUBROS[e.rubro]||{}).label||e.rubro)+'</span>'+st+'</div>'+
+        '<div class="ev-title">'+esc(e.title)+'</div>'+
+        '<div class="ev-meta">'+ (e.time?esc(e.time)+' · ':'') + '<span class="ev-loc">📍 '+esc(e.place||'')+'</span></div>'+
+      '</div></'+tag+'>';
+  }
+
+  function renderList(dateStr, heading){
+    let evs, title;
+    if(dateStr){ evs = evByDate(dateStr); title = heading; }
+    else { evs = EVENTS.filter(e=> pass(e) && new Date(e.date+'T00:00') >= today).sort((a,b)=>a.date.localeCompare(b.date)); title='Próxima agenda'; }
+    if(agendaTitle) agendaTitle.firstChild.textContent = title+' ';
+    countEl.textContent = evs.length ? evs.length+(evs.length===1?' evento':' eventos') : '';
+    if(!evs.length){ listEl.innerHTML = '<p class="cal-empty">No hay eventos'+(dateStr?' para este día':'')+'. Probá con otro filtro o mes.</p>'; return; }
+    listEl.innerHTML = evs.map(evCard).join('');
+  }
+
+  function render(){
+    monthEl.textContent = MESES[view.getMonth()] + ' ' + view.getFullYear();
+    daysEl.innerHTML = '';
+    const start = new Date(view.getFullYear(), view.getMonth(), 1).getDay(); // domingo = 0
+    const total = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
+    const prevTotal = new Date(view.getFullYear(), view.getMonth(), 0).getDate();
+    for(let i=0;i<start;i++){ const c=document.createElement('div'); c.className='cal-day other'; c.textContent=prevTotal-start+1+i; daysEl.appendChild(c); }
+    for(let day=1; day<=total; day++){
+      const dObj = new Date(view.getFullYear(), view.getMonth(), day);
+      const ds = iso(dObj);
+      const evs = evByDate(ds);
+      const cell = document.createElement('button');
+      cell.type='button'; cell.className='cal-day';
+      if(iso(today)===ds) cell.classList.add('today');
+      if(selected===ds) cell.classList.add('sel');
+      let dots='';
+      [...new Set(evs.map(e=>e.rubro))].slice(0,4).forEach(r=> dots+='<i style="background:'+color(r)+'"></i>');
+      cell.innerHTML = '<span>'+day+'</span>'+(dots?'<span class="cal-dots">'+dots+'</span>':'');
+      if(evs.length){
+        cell.classList.add('has-ev');
+        cell.addEventListener('click', ()=>{
+          selected=ds;
+          document.querySelectorAll('.cal-day.sel').forEach(x=>x.classList.remove('sel'));
+          cell.classList.add('sel');
+          renderList(ds, dObj.getDate()+' de '+MESES[dObj.getMonth()]);
+        });
+      }
+      daysEl.appendChild(cell);
+    }
+    const trailing=(7-((start+total)%7))%7;
+    for(let i=1;i<=trailing;i++){ const c=document.createElement('div'); c.className='cal-day other'; c.textContent=i; daysEl.appendChild(c); }
+  }
+  document.getElementById('calPrev').addEventListener('click', ()=>{ view.setMonth(view.getMonth()-1); render(); });
+  document.getElementById('calNext').addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); render(); });
+  document.getElementById('calToday').addEventListener('click', ()=>{ view=new Date(today.getFullYear(),today.getMonth(),1); selected=null; render(); renderList(); });
+  renderFilters(); render(); renderList();
+})();
+
+/* ============ PROVINCIAS Y CIUDADES (Argentina) ============ */
+const PROVINCIAS_AR = {
+  'Ciudad Autónoma de Buenos Aires': ['Ciudad Autónoma de Buenos Aires'],
+  'Buenos Aires': ['La Plata','Mar del Plata','Bahía Blanca','Tandil','San Isidro','Vicente López','Quilmes','Lanús','Avellaneda','Morón','Tigre','Pilar','Escobar','San Nicolás de los Arroyos','Necochea','Olavarría','Junín','Villa Gesell','Pinamar'],
+  'Catamarca': ['San Fernando del Valle de Catamarca','Andalgalá','Belén','Recreo','Tinogasta'],
+  'Chaco': ['Resistencia','Presidencia Roque Sáenz Peña','Villa Ángela','Charata'],
+  'Chubut': ['Comodoro Rivadavia','Trelew','Puerto Madryn','Rawson','Esquel'],
+  'Córdoba': ['Córdoba Capital','Río Cuarto','Villa María','San Francisco','Alta Gracia','Villa Carlos Paz','Jesús María','Bell Ville'],
+  'Corrientes': ['Corrientes Capital','Goya','Mercedes','Paso de los Libres'],
+  'Entre Ríos': ['Paraná','Concordia','Gualeguaychú','Concepción del Uruguay','Colón','Villaguay'],
+  'Formosa': ['Formosa Capital','Clorinda','Pirané'],
+  'Jujuy': ['San Salvador de Jujuy','Palpalá','Perico','Libertador General San Martín','Tilcara','Humahuaca'],
+  'La Pampa': ['Santa Rosa','General Pico','Realicó'],
+  'La Rioja': ['La Rioja Capital','Chilecito','Chamical'],
+  'Mendoza': ['Mendoza Capital','San Rafael','Godoy Cruz','Maipú','Luján de Cuyo','Guaymallén','Tunuyán','Malargüe'],
+  'Misiones': ['Posadas','Oberá','Puerto Iguazú','Eldorado'],
+  'Neuquén': ['Neuquén Capital','San Martín de los Andes','Villa La Angostura','Cutral Có','Zapala'],
+  'Río Negro': ['Viedma','San Carlos de Bariloche','General Roca','Cipolletti','El Bolsón'],
+  'Salta': ['Salta Capital','San Ramón de la Nueva Orán','Tartagal','Cafayate','Rosario de la Frontera'],
+  'San Juan': ['San Juan Capital','Rawson','Chimbas','Rivadavia'],
+  'San Luis': ['San Luis Capital','Villa Mercedes','Merlo'],
+  'Santa Cruz': ['Río Gallegos','Caleta Olivia','El Calafate','Puerto Deseado'],
+  'Santa Fe': ['Santa Fe Capital','Rosario','Rafaela','Venado Tuerto','Reconquista','San Lorenzo','Casilda'],
+  'Santiago del Estero': ['Santiago del Estero Capital','La Banda','Termas de Río Hondo','Añatuya'],
+  'Tierra del Fuego': ['Ushuaia','Río Grande','Tolhuin'],
+  'Tucumán': ['San Miguel de Tucumán','Yerba Buena','Tafí Viejo','Concepción','Tafí del Valle']
+};
+
+/* ============ MODAL CONECTARME A LA TRIBU ============ */
+(function(){
+  const overlay = document.getElementById('connectModal');
+  if(!overlay) return;
+  const form = document.getElementById('connectForm');
+  const msg = document.getElementById('connectMsg');
+  const chips = document.getElementById('connectChips');
+  const perfilError = document.getElementById('connectPerfilError');
+
+  /* Provincia -> Ciudad en cascada, con opción "Otra localidad" a texto libre */
+  const provSel = document.getElementById('cProvincia');
+  const ciudadSel = document.getElementById('cCiudad');
+  const ciudadOtra = document.getElementById('cCiudadOtra');
+  Object.keys(PROVINCIAS_AR).forEach(p=>{
+    const o = document.createElement('option'); o.value = p; o.textContent = p;
+    provSel.appendChild(o);
+  });
+  provSel.addEventListener('change', ()=>{
+    const ciudades = PROVINCIAS_AR[provSel.value] || [];
+    ciudadOtra.style.display = 'none'; ciudadOtra.value = '';
+    if(!ciudades.length){
+      ciudadSel.innerHTML = '<option value="">Elegí tu provincia primero</option>';
+      ciudadSel.disabled = true;
+      return;
+    }
+    ciudadSel.disabled = false;
+    ciudadSel.innerHTML = '<option value="">Elegí tu ciudad</option>'
+      + ciudades.map(c => '<option value="'+c+'">'+c+'</option>').join('')
+      + '<option value="Otra">Otra localidad</option>';
+  });
+  ciudadSel.addEventListener('change', ()=>{
+    ciudadOtra.style.display = ciudadSel.value === 'Otra' ? 'block' : 'none';
+    if(ciudadSel.value !== 'Otra') ciudadOtra.value = '';
+  });
+  const open = (e)=>{
+    if(e) e.preventDefault();
+    perfilError.classList.remove('show'); chips.classList.remove('is-invalid');
+    /* Si el disparador trae data-perfil (las tarjetas de "Distintos caminos"), dejamos ese
+       chip ya marcado para que la persona no repita lo que acaba de elegir. */
+    const perfil = e && e.currentTarget && e.currentTarget.dataset ? e.currentTarget.dataset.perfil : '';
+    if(perfil){
+      const radio = form.querySelector('input[name="Perfil"][value="'+perfil+'"]');
+      if(radio) radio.checked = true;
+    }
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
+  };
+  const close = ()=>{ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
+  document.querySelectorAll('[data-connect]').forEach(b => b.addEventListener('click', open));
+  document.getElementById('connectClose').addEventListener('click', close);
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) close(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) close(); });
+
+  /* La opción "¿Cómo te querés conectar?" son radios ocultos (chips): el cartel
+     nativo de "elegí una opción" queda pegado a un input invisible y no se ve.
+     Validamos a mano y mostramos un mensaje visible dentro del modal. */
+  chips.addEventListener('change', ()=>{ perfilError.classList.remove('show'); chips.classList.remove('is-invalid'); });
+
+  form.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const fdCheck = new FormData(form);
+    if(fdCheck.get('_honey')){ form.style.display='none'; msg.style.display='block'; return; }
+    if(!form.querySelector('input[name="Perfil"]:checked')){
+      perfilError.classList.add('show'); chips.classList.add('is-invalid');
+      chips.scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    const btn = document.getElementById('connectSubmit');
+    btn.textContent='Enviando...'; btn.disabled=true;
+    const fd = new FormData(form);
+    fd.set('Perfil', fd.getAll('Perfil').join(', '));
+    if(fd.get('Ciudad') === 'Otra') fd.set('Ciudad', fd.get('Ciudad_Otra') || '');
+    fd.delete('Ciudad_Otra');
+    try{
+      await enviarASheets(fd, 'Conectar');
+      form.style.display='none'; msg.style.display='block';
+    }catch(err){
+      const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nPerfil: '+fd.getAll('Perfil').join(', ')+'\nMarca/Proyecto: '+(fd.get('Marca_Evento')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nDetalles: '+(fd.get('Detalles')||'')+'\nFecha de nacimiento: '+(fd.get('Fecha_Nacimiento')||'')+'\nProvincia: '+(fd.get('Provincia')||'')+'\nCiudad: '+(fd.get('Ciudad')||''));
+      window.location.href='mailto:contacto@tribuconnection.com?subject=Quiero%20conectarme%20a%20la%20Tribu&body='+body;
+    }finally{ btn.textContent='Enviar'; btn.disabled=false; }
+  });
+})();
+
+/* ============ MODAL PROPUESTA A MEDIDA ============ */
+(function(){
+  const overlay = document.getElementById('propuestaModal');
+  if(!overlay) return;
+  const form = document.getElementById('propForm');
+  const msg = document.getElementById('propMsg');
+  const open = (e)=>{ if(e) e.preventDefault(); overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
+  const close = ()=>{ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
+  document.querySelectorAll('[data-propuesta]').forEach(b => b.addEventListener('click', open));
+  document.getElementById('propClose').addEventListener('click', close);
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) close(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) close(); });
+
+  form.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const fdCheck = new FormData(form);
+    if(fdCheck.get('_honey')){ form.style.display='none'; msg.style.display='block'; return; }
+    const btn = document.getElementById('propSubmit');
+    btn.textContent='Enviando...'; btn.disabled=true;
+    const fd = new FormData(form);
+    try{
+      await enviarASheets(fd, 'Propuesta');
+      form.style.display='none'; msg.style.display='block';
+    }catch(err){
+      const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nMarca/Evento: '+(fd.get('Marca_Evento')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nDetalles: '+(fd.get('Detalles')||''));
+      window.location.href='mailto:contacto@tribuconnection.com?subject=Quiero%20una%20propuesta%20a%20medida&body='+body;
+    }finally{ btn.textContent='Enviar'; btn.disabled=false; }
+  });
+})();
+
+/* ============ MODAL SOLICITAR EVENTO ============ */
+(function(){
+  const overlay = document.getElementById('eventModal');
+  if(!overlay) return;
+  const openBtn = document.getElementById('calAdd');
+  const open = ()=>{ overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
+  const close = ()=>{ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
+  if(openBtn) openBtn.addEventListener('click', open);
+  document.getElementById('eventClose').addEventListener('click', close);
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) close(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) close(); });
+
+  const evForm = document.getElementById('eventForm');
+  const evMsg = document.getElementById('evMsg');
+  evForm.addEventListener('submit', async e=>{
+    e.preventDefault();
+    const rubroInput = document.getElementById('evRubro');
+    if(!rubroInput.value){
+      const rubroBtn = document.getElementById('rubroSel').querySelector('.cselect-btn');
+      rubroBtn.style.borderColor='var(--red)';
+      document.getElementById('rubroSel').scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+    const fdCheck = new FormData(evForm);
+    if(fdCheck.get('_honey')){ evForm.style.display='none'; evMsg.style.display='block'; return; }
+    const btn = document.getElementById('evSubmit');
+    btn.textContent='Enviando...'; btn.disabled=true;
+    const fd = new FormData(evForm);
+    try{
+      await enviarASheets(fd, 'Evento');
+      evForm.style.display='none'; evMsg.style.display='block';
+    }catch(err){
+      const body = encodeURIComponent('Evento: '+(fd.get('Evento')||'')+'\nRubro: '+(fd.get('Rubro')||'')+'\nFecha: '+(fd.get('Fecha')||'')+'\nUbicación: '+(fd.get('Ubicacion')||'')+'\nEtiquetas: '+(fd.get('Etiquetas')||'')+'\nDescripción: '+(fd.get('Descripcion')||'')+'\nLink fotos/video: '+(fd.get('Link_media')||''));
+      window.location.href='mailto:contacto@tribuconnection.com?subject=Solicitud%20para%20agregar%20evento%20al%20calendario&body='+body;
+    }finally{ btn.textContent='Enviar solicitud'; btn.disabled=false; }
+  });
+
+  const fileIn = document.getElementById('evFiles'), fileName = document.getElementById('evFileName');
+  if(fileIn) fileIn.addEventListener('change', ()=>{ fileName.textContent = fileIn.files.length ? [...fileIn.files].map(f=>f.name).join(', ') : ''; });
+
+  /* Autocompletado de dirección (Nominatim/OpenStreetMap) + mini-mapa de confirmación */
+  const locInput = document.getElementById('evLoc');
+  const suggestBox = document.getElementById('evLocSuggest');
+  const latInput = document.getElementById('evLat');
+  const lngInput = document.getElementById('evLng');
+  const previewEl = document.getElementById('evLocMap');
+  let geoTimer = null, geoMap = null, geoMarker = null, lastQuery = '';
+  const escHtml = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  function showPreview(lat, lng, label){
+    previewEl.classList.add('on');
+    setTimeout(()=>{
+      if(!geoMap){
+        geoMap = L.map('evLocMap', { zoomControl:false, attributionControl:false, scrollWheelZoom:false }).setView([lat,lng], 13);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { subdomains:'abcd', maxZoom:19 }).addTo(geoMap);
+      }
+      geoMap.invalidateSize();
+      geoMap.setView([lat,lng], 14);
+      if(geoMarker) geoMap.removeLayer(geoMarker);
+      geoMarker = L.marker([lat,lng]).addTo(geoMap);
+      if(label) geoMarker.bindPopup(escHtml(label));
+    }, 50);
+  }
+
+  function selectPlace(item){
+    locInput.value = item.display_name;
+    latInput.value = item.lat;
+    lngInput.value = item.lon;
+    suggestBox.classList.remove('open');
+    suggestBox.innerHTML = '';
+    showPreview(+item.lat, +item.lon, item.display_name);
+  }
+
+  locInput.addEventListener('input', ()=>{
+    latInput.value = ''; lngInput.value = '';
+    const q = locInput.value.trim();
+    clearTimeout(geoTimer);
+    if(q.length < 3){ suggestBox.classList.remove('open'); return; }
+    suggestBox.innerHTML = '<div class="geo-loading">Buscando…</div>';
+    suggestBox.classList.add('open');
+    geoTimer = setTimeout(async ()=>{
+      lastQuery = q;
+      try{
+        const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&addressdetails=0&limit=5&countrycodes=ar&q='+encodeURIComponent(q));
+        const data = await res.json();
+        if(q !== lastQuery) return; // llegó tarde, ya hay una búsqueda más nueva
+        if(!data.length){ suggestBox.innerHTML = '<div class="geo-loading">Sin resultados. Probá con más detalle.</div>'; return; }
+        suggestBox.innerHTML = '';
+        data.forEach(item=>{
+          const b = document.createElement('button');
+          b.type = 'button';
+          b.textContent = item.display_name;
+          b.addEventListener('click', ()=> selectPlace(item));
+          suggestBox.appendChild(b);
+        });
+      }catch(err){
+        suggestBox.innerHTML = '<div class="geo-loading">No se pudo buscar. Escribí la dirección igual, la confirmamos por WhatsApp.</div>';
+      }
+    }, 450);
+  });
+  document.addEventListener('click', (e)=>{ if(!e.target.closest('.geo-field')) suggestBox.classList.remove('open'); });
+})();
+
+/* ============ SELECT Y FECHA PERSONALIZADOS (modal evento + fecha de nacimiento) ============ */
+(function(){
+  const cs = document.getElementById('rubroSel');
+  const dp = document.getElementById('dateSel');
+  const bp = document.getElementById('birthDateSel');
+  const openPickers = [cs, dp, bp].filter(Boolean);
+  const closeAll = (except)=> openPickers.forEach(p => { if(p!==except) p.classList.remove('open'); });
+  const pad = n => String(n).padStart(2,'0');
+  const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+  if(cs){
+    const btn = cs.querySelector('.cselect-btn');
+    const val = cs.querySelector('.cselect-val');
+    const hidden = document.getElementById('evRubro');
+    btn.addEventListener('click', e=>{ e.stopPropagation(); const willOpen=!cs.classList.contains('open'); closeAll(cs); cs.classList.toggle('open', willOpen); btn.setAttribute('aria-expanded', willOpen); btn.style.borderColor=''; });
+    cs.querySelectorAll('.cselect-list button').forEach(o=>{
+      o.addEventListener('click', ()=>{
+        hidden.value = o.dataset.val;
+        val.textContent = o.textContent;
+        val.classList.remove('is-ph');
+        cs.querySelectorAll('.cselect-list button').forEach(x=>x.classList.remove('sel'));
+        o.classList.add('sel');
+        cs.classList.remove('open');
+      });
+    });
+  }
+
+  /* Picker de fecha genérico: sirve tanto para la fecha del evento (arrows, cerca de hoy)
+     como para la fecha de nacimiento (selects de mes/año para saltar décadas rápido, sin futuro). */
+  function setupDatePicker(dp, cfg){
+    if(!dp) return;
+    const btn = dp.querySelector('.cselect-btn');
+    const disp = dp.querySelector('.cselect-val');
+    const hidden = document.getElementById(cfg.hiddenId);
+    const monthEl = dp.querySelector('.cdate-month');
+    const monthSel = dp.querySelector('.cdate-month-sel');
+    const yearSel = dp.querySelector('.cdate-year-sel');
+    const daysEl = dp.querySelector('.cdate-days');
+    const today = new Date(); today.setHours(0,0,0,0);
+    const isoToday = today.getFullYear()+'-'+pad(today.getMonth()+1)+'-'+pad(today.getDate());
+    let view = new Date(today.getFullYear(), today.getMonth(), 1);
+    let selected = null;
+    const maxY = cfg.maxYear || today.getFullYear();
+    const minY = cfg.minYear || (today.getFullYear()-90);
+
+    if(monthSel){
+      const MES_ABR = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+      monthSel.innerHTML = MES_ABR.map((m,i)=> '<option value="'+i+'">'+m+'</option>').join('');
+      monthSel.addEventListener('click', e=> e.stopPropagation());
+      monthSel.addEventListener('change', ()=>{ view.setMonth(+monthSel.value); render(); });
+    }
+    if(yearSel){
+      let opts=''; for(let y=maxY; y>=minY; y--) opts += '<option value="'+y+'">'+y+'</option>';
+      yearSel.innerHTML = opts;
+      yearSel.addEventListener('click', e=> e.stopPropagation());
+      yearSel.addEventListener('change', ()=>{ view.setFullYear(+yearSel.value); render(); });
+    }
+
+    function clampView(){
+      if(yearSel && view.getFullYear() < minY) view = new Date(minY, view.getMonth(), 1);
+      if(yearSel && view.getFullYear() > maxY) view = new Date(maxY, view.getMonth(), 1);
+      if(cfg.noFuture && view > today && (view.getFullYear()>today.getFullYear() || (view.getFullYear()===today.getFullYear() && view.getMonth()>today.getMonth()))){
+        view = new Date(today.getFullYear(), today.getMonth(), 1);
+      }
+    }
+
+    function pick(ds, d, m, y){ selected=ds; hidden.value=ds; disp.textContent=pad(d)+'/'+pad(m+1)+'/'+y; disp.classList.remove('is-ph'); dp.classList.remove('open'); }
+    function render(){
+      clampView();
+      if(monthEl) monthEl.textContent = MESES[view.getMonth()] + ' ' + view.getFullYear();
+      if(monthSel) monthSel.value = view.getMonth();
+      if(yearSel) yearSel.value = view.getFullYear();
+      daysEl.innerHTML='';
+      const start = (new Date(view.getFullYear(), view.getMonth(), 1).getDay()+6)%7;
+      const total = new Date(view.getFullYear(), view.getMonth()+1, 0).getDate();
+      for(let i=0;i<start;i++){ const s=document.createElement('span'); s.className='empty'; daysEl.appendChild(s); }
+      for(let d=1; d<=total; d++){
+        const b=document.createElement('button'); b.type='button'; b.textContent=d;
+        const ds = view.getFullYear()+'-'+pad(view.getMonth()+1)+'-'+pad(d);
+        if(cfg.noFuture && ds>isoToday){ b.disabled=true; b.classList.add('disabled'); daysEl.appendChild(b); continue; }
+        if(ds===isoToday) b.classList.add('today');
+        if(ds===selected) b.classList.add('sel');
+        b.addEventListener('click', e=>{ e.stopPropagation(); pick(ds, d, view.getMonth(), view.getFullYear()); });
+        daysEl.appendChild(b);
+      }
+    }
+    btn.addEventListener('click', e=>{ e.stopPropagation(); const willOpen=!dp.classList.contains('open'); closeAll(dp); dp.classList.toggle('open', willOpen); if(willOpen) render(); });
+    dp.querySelector('.cdate-pop').addEventListener('click', e=> e.stopPropagation());
+    dp.querySelectorAll('[data-nav]').forEach(nb=> nb.addEventListener('click', e=>{ e.stopPropagation(); view.setMonth(view.getMonth()+parseInt(nb.dataset.nav,10)); render(); }));
+    dp.querySelectorAll('[data-nav-month]').forEach(nb=> nb.addEventListener('click', e=>{ e.stopPropagation(); view.setMonth(view.getMonth()+parseInt(nb.dataset.navMonth,10)); render(); }));
+    dp.querySelectorAll('[data-nav-year]').forEach(nb=> nb.addEventListener('click', e=>{ e.stopPropagation(); view.setFullYear(view.getFullYear()+parseInt(nb.dataset.navYear,10)); render(); }));
+    const todayBtn = dp.querySelector('[data-today]');
+    if(todayBtn) todayBtn.addEventListener('click', e=>{ e.stopPropagation(); view=new Date(today.getFullYear(),today.getMonth(),1); pick(isoToday, today.getDate(), today.getMonth(), today.getFullYear()); });
+    dp.querySelector('[data-clear]').addEventListener('click', e=>{ e.stopPropagation(); selected=null; hidden.value=''; disp.textContent='dd/mm/aaaa'; disp.classList.add('is-ph'); render(); });
+  }
+
+  setupDatePicker(dp, { hiddenId:'evDate' });
+  setupDatePicker(bp, { hiddenId:'cBirth', noFuture:true, minYear: new Date().getFullYear()-90, maxYear: new Date().getFullYear() });
+
+  document.addEventListener('click', ()=> closeAll(null));
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAll(null); });
+})();
+
+/* ============ COOKIE BAR + MODAL LEGAL ============ */
+(function(){
+  const bar = document.getElementById('cookieBar');
+  const KEY = 'tribu_cookies_ok';
+  if(bar && !localStorage.getItem(KEY)){
+    setTimeout(()=> bar.classList.add('show'), 600);
+  }
+  const acceptBtn = document.getElementById('cookieAccept');
+  if(acceptBtn) acceptBtn.addEventListener('click', ()=>{
+    localStorage.setItem(KEY, '1');
+    bar.classList.remove('show');
+  });
+
+  const legalOverlay = document.getElementById('legalModal');
+  if(!legalOverlay) return;
+  const legalClose = document.getElementById('legalClose');
+  const tabs = legalOverlay.querySelectorAll('.legal-tabs button');
+  const bodies = legalOverlay.querySelectorAll('.legal-body');
+
+  function openLegal(tabName){
+    tabs.forEach(t=> t.classList.toggle('active', t.dataset.tab===tabName));
+    bodies.forEach(b=> b.style.display = (b.id==='legal-'+tabName) ? '' : 'none');
+    legalOverlay.classList.add('open'); legalOverlay.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+  }
+  function closeLegal(){
+    legalOverlay.classList.remove('open'); legalOverlay.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+  document.querySelectorAll('[data-legal]').forEach(link=>{
+    link.addEventListener('click', (e)=>{ e.preventDefault(); openLegal(link.dataset.legal); });
+  });
+  tabs.forEach(t=> t.addEventListener('click', ()=> openLegal(t.dataset.tab)));
+  legalClose.addEventListener('click', closeLegal);
+  legalOverlay.addEventListener('click', e=>{ if(e.target===legalOverlay) closeLegal(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape' && legalOverlay.classList.contains('open')) closeLegal(); });
+})();
+</script>
+<script defer src="/assets/tribu-chat.js?v=2"></script>
+</body>
+</html>
