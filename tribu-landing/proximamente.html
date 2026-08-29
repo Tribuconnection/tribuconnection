@@ -81,13 +81,13 @@
     display:flex; align-items:center; justify-content:center;
     padding:clamp(14px,2.4vh,26px) 20px;
   }
-  header.top img{ height:clamp(24px,3.4vh,34px); width:auto; }
-  footer.foot img{ height:clamp(30px,4vh,40px); width:auto; }
+  header.top img{ height:clamp(40px,6.2vh,64px); width:auto; }
+  footer.foot img{ height:clamp(48px,7.4vh,76px); width:auto; }
 
   main{
     position:relative; z-index:2; flex:1; min-height:0;
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; padding:0 24px; gap:clamp(1.1rem,2.6vh,1.8rem);
+    text-align:center; padding:0 24px; gap:clamp(1.4rem,3.4vh,2.2rem);
   }
 
   h1{
@@ -101,9 +101,7 @@
     -webkit-text-fill-color:transparent; color:transparent;
   }
 
-  .lead{ font-size:clamp(.92rem,1.9vw,1.1rem); color:var(--soft); max-width:42ch; line-height:1.55; }
-
-  .socials{ display:flex; justify-content:center; gap:clamp(.7rem,2vw,1.1rem); }
+  .socials{ position:relative; display:flex; justify-content:center; gap:clamp(.7rem,2vw,1.1rem); }
   .soc{
     width:clamp(42px,6vh,50px); height:clamp(42px,6vh,50px);
     display:inline-flex; align-items:center; justify-content:center;
@@ -116,10 +114,19 @@
   .soc.ig:hover{ border-color:var(--red); background:rgba(210,75,98,.12); color:var(--red); }
   .soc.wa:hover{ border-color:var(--green); background:rgba(155,203,70,.12); color:var(--green); }
   .soc.mail:hover{ border-color:var(--teal); background:rgba(54,183,196,.12); color:var(--teal); }
+  .soc.mail{ cursor:pointer; }
+
+  .copy-tip{
+    position:absolute; bottom:calc(100% + 10px); left:50%; translate:-50% 0;
+    background:var(--cream); color:var(--ink); font-size:.78rem; font-weight:600;
+    padding:.4rem .75rem; border-radius:999px; white-space:nowrap;
+    opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease;
+    transform:translate(-50%,4px);
+  }
+  .copy-tip.show{ opacity:1; transform:translate(-50%,0); }
 
   @media (max-height:560px){
-    main{ gap:.8rem; }
-    .lead{ display:none; }
+    main{ gap:1rem; }
   }
 </style>
 </head>
@@ -136,7 +143,6 @@
 
 <main>
   <h1><span>Algo genial</span><span>está a punto de nacer.</span></h1>
-  <p class="lead">Estamos renovando Tribu Connection para seguir conectando personas, experiencias y comunidades que transforman.</p>
   <div class="socials">
     <a class="soc ig" href="https://instagram.com/tribuconnection" target="_blank" rel="noopener" aria-label="Instagram">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg>
@@ -144,11 +150,34 @@
     <a class="soc wa" href="https://wa.me/5491155031180" target="_blank" rel="noopener" aria-label="WhatsApp">
       <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.39 1.26 4.81L2 22l5.42-1.34a9.9 9.9 0 0 0 4.62 1.14h.01c5.46 0 9.9-4.45 9.9-9.91C21.95 6.45 17.5 2 12.04 2Zm0 18.06h-.01a8.2 8.2 0 0 1-4.18-1.15l-.3-.18-3.11.77.83-3.04-.2-.31a8.17 8.17 0 0 1-1.26-4.34c0-4.53 3.7-8.22 8.24-8.22 2.2 0 4.27.86 5.82 2.42a8.15 8.15 0 0 1 2.41 5.82c0 4.53-3.7 8.23-8.24 8.23Zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.16.24-.64.81-.78.98-.15.16-.29.18-.54.06-.25-.12-1.04-.38-1.99-1.22-.73-.66-1.23-1.46-1.37-1.71-.15-.24-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.24.24-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.65.31-.23.24-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.19 1.11.16 1.53.1.47-.07 1.47-.6 1.67-1.18.21-.58.21-1.08.15-1.18-.06-.1-.22-.16-.47-.28Z"/></svg>
     </a>
-    <a class="soc mail" href="mailto:hola@tribuconnection.com" aria-label="Email">
+    <button type="button" class="soc mail" id="mailBtn" aria-label="Copiar email">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
-    </a>
+      <span class="copy-tip" id="mailTip">Copiado ✓</span>
+    </button>
   </div>
 </main>
+
+<script>
+  document.getElementById('mailBtn').addEventListener('click', function(){
+    var email = 'hola@tribuconnection.com';
+    var tip = document.getElementById('mailTip');
+    function showTip(){
+      tip.classList.add('show');
+      clearTimeout(showTip._t);
+      showTip._t = setTimeout(function(){ tip.classList.remove('show'); }, 1600);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(email).then(showTip).catch(showTip);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = email; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try{ document.execCommand('copy'); } catch(e){}
+      document.body.removeChild(ta);
+      showTip();
+    }
+  });
+</script>
 
 <footer class="foot">
   <img src="/assets/logo-color-horizontal.png" alt="Tribu Connection">
