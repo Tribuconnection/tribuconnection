@@ -81,8 +81,8 @@
     display:flex; align-items:center; justify-content:center;
     padding:clamp(14px,2.4vh,26px) 20px;
   }
-  header.top img{ height:clamp(40px,6.2vh,64px); width:auto; }
-  footer.foot img{ height:clamp(48px,7.4vh,76px); width:auto; }
+  header.top img{ height:clamp(80px,12.4vh,128px); width:auto; }
+  footer.foot img{ height:clamp(96px,14.8vh,152px); width:auto; }
 
   main{
     position:relative; z-index:2; flex:1; min-height:0;
@@ -127,6 +127,8 @@
 
   @media (max-height:560px){
     main{ gap:1rem; }
+    header.top img{ height:clamp(50px,9vh,80px); }
+    footer.foot img{ height:clamp(56px,10vh,88px); }
   }
 </style>
 </head>
