@@ -3,23 +3,24 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Club Tribu Connection · Tribu Connection</title>
-<meta name="description" content="Sumate al Club Tribu Connection: descubrí experiencias, conectá con personas y accedé a beneficios exclusivos en festivales, ferias y espacios aliados.">
+<title>Club Tribu · Tribu Connection</title>
+<meta name="description" content="Sumate al Club Tribu: sorteos, descuentos exclusivos, canal de WhatsApp y beneficio de cumpleaños en festivales, ferias y espacios aliados.">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://tribuconnection.com/club-tribu-connection/">
 <meta property="og:site_name" content="Tribu Connection">
-<meta property="og:title" content="Club Tribu Connection · Tribu Connection">
-<meta property="og:description" content="Descubrí experiencias, conectá con personas y accedé a beneficios exclusivos en festivales, ferias y espacios aliados.">
+<meta property="og:title" content="Club Tribu · Tribu Connection">
+<meta property="og:description" content="Sorteos, descuentos exclusivos, canal de WhatsApp y beneficio de cumpleaños. Sumate al Club Tribu.">
 <meta property="og:image" content="https://tribuconnection.com/assets/og-image.png?v=3">
 <meta property="og:locale" content="es_AR">
 <link rel="canonical" href="https://tribuconnection.com/club-tribu-connection/">
 
-<link rel="icon" href="/assets/isotipo.png?v=2">
+<link rel="icon" type="image/png" href="/assets/isotipo.png?v=2">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/tribu.css?v=17">
+<link rel="stylesheet" href="/assets/home.css?v=1">
 </head>
 <body data-accent="amber">
 
@@ -32,100 +33,140 @@
   </a>
   <div class="nav-links">
     <a href="/">Inicio</a>
+    <a href="/agenda/">Agenda</a>
+    <a href="/red-tribu/">Red Tribu</a>
     <a href="/#historias">Historias</a>
-    <a href="#beneficios">Beneficios</a>
-    <a href="/#calendario">Agenda</a>
+    <a href="/club-tribu-connection/" class="is-active">Club Tribu</a>
+    <a href="#" data-connect>Sumá tu propuesta</a>
   </div>
   <div class="nav-cta">
-    <a href="#" class="btn btn--spectrum" data-join data-plan="General">Sumarme a la Tribu</a>
+    <label class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" placeholder="Buscar en Tribu" aria-label="Buscar en Tribu">
+    </label>
+    <a href="#" class="btn btn--spectrum btn--icon" data-join data-plan="General">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/></svg>
+      Sumate
+    </a>
     <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </nav>
 <div class="mobile-menu" id="mobileMenu">
   <a href="/">Inicio</a>
+  <a href="/agenda/">Agenda</a>
+  <a href="/red-tribu/">Red Tribu</a>
   <a href="/#historias">Historias</a>
-  <a href="#beneficios">Beneficios</a>
-  <a href="/#calendario">Agenda</a>
-  <a href="#" class="btn btn--spectrum" data-join data-plan="General">Sumarme a la Tribu</a>
+  <a href="/club-tribu-connection/">Club Tribu</a>
+  <a href="#" data-connect>Sumá tu propuesta</a>
+  <a href="#" class="btn btn--spectrum" data-join data-plan="General">Sumate a Tribu</a>
 </div>
 
 <!-- ============================ HERO ============================ -->
-<header class="hero" id="top" style="min-height:auto;padding-top:140px;padding-bottom:48px">
-  <div class="wrap hero-inner">
-    <a href="/#caminos" class="backhome reveal" style="margin-bottom:1.2rem">← Volver a los 3 caminos</a>
-    <p class="eyebrow reveal">Para quienes buscan, descubren y participan</p>
-    <h1 class="display display--3l reveal d1">Descubrí experiencias,<br class="br-desk">conectá con personas<br class="br-desk">y accedé a <span class="grad">beneficios exclusivos</span>.</h1>
-    <p class="lead reveal d2">Una sola membresía mensual con beneficios en todo el ecosistema consciente: descuentos en festivales aliados, biblioteca de contenido y acceso a la comunidad. El movimiento como forma de pertenecer.</p>
-    <div class="hero-actions reveal d3">
-      <a href="#" class="btn btn--spectrum" data-join data-plan="General">Quiero sumarme a la Tribu</a>
+<header class="hero" id="top" style="min-height:auto;padding-top:140px;padding-bottom:40px">
+  <div class="wrap hero-inner club-hero">
+    <p class="eyebrow reveal">Una comunidad que crece</p>
+    <h1 class="h2 reveal d1" style="margin:1rem 0">Club Tribu <span aria-hidden="true">🤚</span></h1>
+    <p class="lead reveal d2">Más que beneficios, una comunidad que impulsa lo mejor de vivir más. Sumate y accedé a sorteos, descuentos y experiencias pensadas para quienes forman parte de la Tribu.</p>
+    <div class="hero-actions reveal d3" style="justify-content:center">
+      <a href="#" class="btn btn--spectrum" data-join data-plan="General">Quiero ser parte <span aria-hidden="true">🤚</span></a>
       <a href="#beneficios" class="btn btn--ghost">Ver los beneficios <span class="arr">→</span></a>
+    </div>
+    <div class="club-members reveal d3">
+      <span class="avatar-stack"><span></span><span></span><span></span><span></span></span>
+      +12.500 miembros ya forman parte
     </div>
   </div>
 </header>
 
-<!-- ===================== PLANES ===================== -->
-<section class="section" id="planes">
+<!-- ===================== BENEFICIOS ===================== -->
+<section class="section" id="beneficios">
   <div class="wrap">
-    <div class="pass-intro">
-      <div>
-        <p class="eyebrow reveal">Membresía</p>
-        <h2 class="h2 reveal d1" style="margin-top:1.2rem">Tribu Pass</h2>
-      </div>
-      <p class="reveal d2 pass-copy">Elegí cómo querés participar del Club: desde un aporte puntual<br>hasta la experiencia completa, todo el año.</p>
+    <div class="sec-head reveal" style="text-align:center;max-width:640px;margin-inline:auto">
+      <p class="eyebrow" style="justify-content:center;display:flex">¿Qué es el Club?</p>
+      <h2 class="h2" style="margin-top:1rem">Beneficios pensados para quienes eligen vivir más en comunidad.</h2>
     </div>
-
-    <div class="plans">
-      <div class="plan reveal d1">
-        <div class="tier">Cafecito</div>
-        <div class="tier-sub">Por pedido particular · aporte a voluntad</div>
-        <div class="price"><b>Desde $5.000</b><span style="color:var(--muted)">/ pedido</span></div>
-        <div class="tier-note">Pequeños aportes, a tu medida.</div>
-        <ul>
-          <li><svg class="check-green" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Sumás tu evento al calendario de Tribu Connection</li>
-          <li><svg class="check-green" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Difusión de tu propuesta en nuestras redes</li>
-          <li><svg class="check-green" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Tu aporte sostiene a la comunidad consciente</li>
-        </ul>
-        <a href="#" class="btn btn--ghost" data-join data-plan="Cafecito">Contribuir</a>
+    <div class="perks-grid-lg reveal d1">
+      <div class="perk-lg">
+        <div class="club-perk-ic" style="background:color-mix(in srgb, var(--amber) 25%, transparent); color:var(--amber)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-6"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M12 22V7"/><path d="M12 7C9 7 8 4 10 2.5 12 1 12 7 12 7z"/><path d="M12 7c3 0 4-3 2-4.5C12 1 12 7 12 7z"/></svg></div>
+        <h4>Sorteos</h4>
+        <p>Participá por experiencias y beneficios exclusivos para la comunidad.</p>
       </div>
-
-      <div class="plan plan--plus reveal d2">
-        <span class="badge">Recomendado</span>
-        <div class="tier">Tribu Plus</div>
-        <div class="tier-sub">La experiencia completa, todo el año</div>
-        <div class="price"><b>$20.000</b><span style="color:var(--muted)">/ mes</span></div>
-        <div class="tier-note">Plan anual, abonado mes a mes.</div>
-        <ul>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <span><strong style="color:var(--cream)">1 landing page para tu evento</strong> cada 6 meses</span></li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Sumás tu evento al calendario de la web de Tribu</li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <span><strong style="color:var(--cream);white-space:nowrap">40% off</strong> en sesión mensual de 30 min de análisis de tu proyecto/emprendimiento</span></li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Te sumamos a la comunidad de WhatsApp</li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Participación anual en el streaming (a partir del 3er mes de miembro)</li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Una nota periodística cada seis meses (que quedará alojada en nuestra web)</li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Una publicación de sorteo semestral</li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> <span><strong style="color:var(--cream)">20% off</strong> en productos de feriantes de la comunidad</span></li>
-          <li><svg class="check-amber" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 9.5l3.5 3.5L14 5.5"/></svg> Eventos exclusivos solo para miembros</li>
-        </ul>
-        <a href="#" class="btn btn--spectrum" data-join data-plan="Tribu Plus">Quiero sumarme a la Tribu</a>
+      <div class="perk-lg">
+        <div class="club-perk-ic" style="background:color-mix(in srgb, var(--red) 25%, transparent); color:var(--red)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.6 12l-8-8H4v8.6l8 8z"/><circle cx="8" cy="8" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+        <h4>Descuentos exclusivos</h4>
+        <p>Beneficios en eventos, marcas y experiencias aliadas.</p>
+      </div>
+      <div class="perk-lg">
+        <div class="club-perk-ic" style="background:color-mix(in srgb, var(--green) 25%, transparent); color:var(--green)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h4>Canal de WhatsApp</h4>
+        <p>Información y espacio de participación de la comunidad.</p>
+      </div>
+      <div class="perk-lg">
+        <div class="club-perk-ic" style="background:color-mix(in srgb, var(--teal) 25%, transparent); color:var(--teal)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7C9.5 7 7 5.5 7 3.5A2.5 2.5 0 0 1 9.5 1C12 1 12 7 12 7z"/><path d="M12 7c2.5 0 5-1.5 5-3.5A2.5 2.5 0 0 0 14.5 1C12 1 12 7 12 7z"/></svg></div>
+        <h4>Beneficio de cumpleaños</h4>
+        <p>Un regalo especial de la Tribu en tu mes.</p>
       </div>
     </div>
-    <p class="pass-note reveal"><span class="pip"></span> Programa en lanzamiento. Los beneficios y los festivales aliados se suman de forma continua.</p>
+    <p class="pass-note reveal" style="justify-content:center;display:flex"><span class="pip"></span> Programa en lanzamiento. Los beneficios y las marcas aliadas se suman de forma continua.</p>
+  </div>
+</section>
 
-    <div class="profile-benefits reveal" id="beneficios">
-      <p class="profile-benefits-title">Los beneficios se adaptan a cómo participás en la Tribu:</p>
-      <div class="profile-grid">
-        <div class="profile-card">
-          <b>Facilitador/a</b>
-          <p>Prioridad para ofrecer tu sesión o taller en el espacio de análisis mensual, y difusión de tus actividades en la comunidad de WhatsApp y el calendario.</p>
-        </div>
-        <div class="profile-card">
-          <b>Público general</b>
-          <p>Todos los descuentos (feriantes y festivales aliados) y acceso a los eventos exclusivos para miembros, sin necesidad de organizar nada.</p>
-        </div>
-        <div class="profile-card">
-          <b>Organizador/a de eventos</b>
-          <p>Tu evento sumado al calendario de la web, landing page cada 6 meses, y la sesión mensual enfocada en la difusión de tu propuesta.</p>
-        </div>
-      </div>
+<!-- ===================== DIRECTORIO DE BENEFICIOS ===================== -->
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="sec-head reveal" style="text-align:center;max-width:640px;margin-inline:auto">
+      <p class="eyebrow" style="justify-content:center;display:flex">Directorio</p>
+      <h2 class="h2" style="margin-top:1rem">Marcas y espacios aliados.</h2>
+      <p class="lead" style="margin-top:.8rem">Descuentos y beneficios en la red de marcas, festivales y espacios que forman parte de la Tribu.</p>
+    </div>
+    <div class="directory-grid reveal d1">
+      <a class="directory-card" href="#" data-connect>
+        <div class="directory-card-logo"><img src="/assets/partners/bioferia.png" alt="Bioferia Argentina"></div>
+        <span class="directory-card-type">Marca aliada</span>
+        <h3>Bioferia Argentina</h3>
+        <p>Beneficios para socios del Club en la feria de productos orgánicos.</p>
+      </a>
+      <a class="directory-card" href="#" data-connect>
+        <div class="directory-card-logo"><img src="/assets/partners/expo-holistica.png" alt="Expo Holística & Bienestar"></div>
+        <span class="directory-card-type">Marca aliada</span>
+        <h3>Expo Holística & Bienestar</h3>
+        <p>Descuentos exclusivos para miembros del Club Tribu.</p>
+      </a>
+      <a class="directory-card" href="#" data-connect>
+        <div class="directory-card-logo"><img src="/assets/partners/resonar-festival.png" alt="Resonar Festival"></div>
+        <span class="directory-card-type">Marca aliada</span>
+        <h3>Resonar Festival</h3>
+        <p>Beneficios y preventas para la comunidad del Club.</p>
+      </a>
+      <a class="directory-card" href="#" data-connect>
+        <div class="directory-card-logo"><img src="/assets/partners/sagrada-madre.png" alt="Sagrada Madre"></div>
+        <span class="directory-card-type">Marca aliada</span>
+        <h3>Sagrada Madre</h3>
+        <p>Beneficios en rituales y encuentros de conexión con la naturaleza.</p>
+      </a>
+      <a class="directory-card" href="#" data-connect>
+        <div class="directory-card-logo"><img src="/assets/partners/unifungi.png" alt="Unifungi"></div>
+        <span class="directory-card-type">Marca aliada</span>
+        <h3>Unifungi</h3>
+        <p>Descuentos para la comunidad del Club Tribu.</p>
+      </a>
+      <a class="directory-card" href="#" data-connect>
+        <div class="directory-card-logo"><img src="/assets/partners/amanita-festival.png" alt="Amanita Festival"></div>
+        <span class="directory-card-type">Marca aliada</span>
+        <h3>Amanita Festival</h3>
+        <p>Beneficios exclusivos para socios del Club Tribu.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SORTEOS ===================== -->
+<section class="section section--tight">
+  <div class="wrap">
+    <div class="sorteo-box reveal">
+      <h3>🎁 Sorteos del Club</h3>
+      <p>Muy pronto vas a poder participar de sorteos exclusivos para socios del Club Tribu. Mientras tanto, seguinos en Instagram para no perderte ninguno.</p>
+      <a href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener" class="btn btn--ghost">Seguir en Instagram <span class="arr">→</span></a>
     </div>
   </div>
 </section>
@@ -150,12 +191,12 @@
   </div>
 </section>
 
-<!-- ===================== MODAL SUMARSE ===================== -->
+<!-- ===================== MODAL SUMARSE (Club Tribu) ===================== -->
 <div class="modal-overlay" id="joinModal" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="joinTitle">
     <button class="modal-close" id="joinClose" aria-label="Cerrar">✕</button>
-    <h2 id="joinTitle">Sumate a la Tribu</h2>
-    <p class="modal-sub">Dejanos tus datos y te escribimos para pasarte el alias y sumarte a la comunidad.</p>
+    <h2 id="joinTitle">Ser parte del Club Tribu</h2>
+    <p class="modal-sub">Dejanos tus datos y te escribimos para sumarte a la comunidad.</p>
     <form id="joinForm">
       <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <input type="hidden" name="Plan" id="joinPlan" value="General">
@@ -164,24 +205,18 @@
         <input id="jName" name="Nombre" type="text" required placeholder="Tu nombre">
       </div>
       <div class="field">
-        <label for="jRubro">Rubro</label>
-        <input id="jRubro" name="Rubro" type="text" placeholder="¿A qué te dedicás?">
-      </div>
-      <div class="field">
-        <label>¿Cómo te querés sumar a la Tribu?</label>
-        <div class="chips">
-          <label class="chip"><input type="radio" name="Perfil" value="Facilitador/a" required><span>Facilitador/a</span></label>
-          <label class="chip"><input type="radio" name="Perfil" value="Público general" required><span>Público general</span></label>
-          <label class="chip"><input type="radio" name="Perfil" value="Organizador/a de eventos" required><span>Organizador/a de eventos</span></label>
-        </div>
+        <label for="jCiudad">Ciudad / Barrio</label>
+        <input id="jCiudad" name="Ciudad_Barrio" type="text" placeholder="¿Desde dónde nos escribís?">
       </div>
       <div class="field">
         <label for="jContact">WhatsApp / Email</label>
         <input id="jContact" name="Contacto" type="text" required placeholder="¿Cómo te contactamos?">
       </div>
       <div class="field">
-        <label for="jDetails">Detalles</label>
-        <textarea id="jDetails" name="Detalles" placeholder="Contanos un poco sobre vos, tu proyecto o evento"></textarea>
+        <label class="chip" style="width:100%">
+          <input type="checkbox" name="Newsletter" value="Sí" checked>
+          <span>¿Querés recibir nuestro newsletter?</span>
+        </label>
       </div>
       <button type="submit" class="btn btn--spectrum" id="joinSubmit">Enviar</button>
       <p class="modal-note">Te respondemos a la brevedad. También podés escribirnos a contacto@tribuconnection.com</p>
@@ -190,51 +225,178 @@
   </div>
 </div>
 
-<!-- ===================== FOOTER ===================== -->
-<footer class="footer">
-  <div class="wrap">
-    <div class="footer-grid">
-      <div class="footer-logo">
-        <img src="/assets/logo_white.png" alt="Tribu Connection">
-        <p class="footer-tag">Historias que conectan. <br>Comunidades que crecen.</p>
+<!-- ===================== MODAL CONECTARME A LA TRIBU (Sumá tu propuesta) ===================== -->
+<div class="modal-overlay" id="connectModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="connectTitle">
+    <button class="modal-close" id="connectClose" aria-label="Cerrar">✕</button>
+    <h2 id="connectTitle">Conectarme a la Tribu</h2>
+    <p class="modal-sub">Contanos quién sos y te escribimos con una propuesta pensada para vos.</p>
+    <form id="connectForm">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <div class="field">
+        <label>¿Cómo te querés conectar?</label>
+        <div class="chips" id="connectChips">
+          <label class="chip"><input type="radio" name="Perfil" value="Creador/a de experiencias"><span>Creás experiencias, eventos o proyectos</span></label>
+          <label class="chip"><input type="radio" name="Perfil" value="Marca / emprendimiento"><span>Impulsás una marca, espacio u organización</span></label>
+        </div>
+        <p class="field-error" id="connectPerfilError">Elegí una opción para continuar.</p>
       </div>
-      <div class="footer-right">
-        <div>
-          <p class="col-cap">Seguinos</p>
-          <div class="socials">
-            <a class="soc ig" href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg> Instagram</a>
-            <a class="soc tt" href="https://www.tiktok.com/@tribu.connection" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.6 3.7 3.9v2.4c-1.3.1-2.6-.3-3.7-1v6.1c0 3.5-2.6 5.6-5.6 5.6A5.4 5.4 0 0 1 5.5 14c0-3.4 3.1-5.9 6.6-5.1v2.6a2.9 2.9 0 0 0-3.8 2.6c0 1.5 1.2 2.6 2.6 2.6 1.5 0 2.7-1.1 2.7-3V3h2.4z"/></svg> TikTok</a>
+      <div class="field">
+        <label for="cName">Nombre</label>
+        <input id="cName" name="Nombre" type="text" required placeholder="Tu nombre">
+      </div>
+      <div class="field">
+        <label for="cBrand">Marca / Proyecto / Evento</label>
+        <input id="cBrand" name="Marca_Evento" type="text" placeholder="¿Cómo se llama?">
+      </div>
+      <div class="field">
+        <label for="cContact">WhatsApp / Email</label>
+        <input id="cContact" name="Contacto" type="text" required placeholder="¿Cómo te contactamos?">
+      </div>
+      <div class="field">
+        <label for="cDetails">Contanos un poco más</label>
+        <textarea id="cDetails" name="Detalles" placeholder="Contanos sobre tu proyecto, marca o idea"></textarea>
+      </div>
+      <div class="field">
+        <label>Fecha de nacimiento</label>
+        <div class="cdate" id="birthDateSel">
+          <button type="button" class="cselect-btn" aria-haspopup="dialog" aria-expanded="false">
+            <span class="cselect-val is-ph" id="birthDateDisplay">dd/mm/aaaa</span>
+            <svg class="cselect-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/></svg>
+          </button>
+          <div class="cdate-pop">
+            <div class="cdate-nav cdate-nav--split">
+              <div class="cdate-nav-row">
+                <button type="button" class="cal-arrow" data-nav-month="-1" aria-label="Mes anterior">‹</button>
+                <select class="cdate-month-sel" aria-label="Mes"></select>
+                <button type="button" class="cal-arrow" data-nav-month="1" aria-label="Mes siguiente">›</button>
+              </div>
+              <div class="cdate-nav-row">
+                <button type="button" class="cal-arrow" data-nav-year="-1" aria-label="Año anterior">‹</button>
+                <select class="cdate-year-sel" aria-label="Año"></select>
+                <button type="button" class="cal-arrow" data-nav-year="1" aria-label="Año siguiente">›</button>
+              </div>
+            </div>
+            <div class="cdate-week"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span><span>Do</span></div>
+            <div class="cdate-days"></div>
+            <div class="cdate-actions">
+              <button type="button" data-clear>Borrar</button>
+            </div>
           </div>
+          <input type="hidden" name="Fecha_Nacimiento" id="cBirth">
         </div>
-        <div>
-          <p class="col-cap">Hablemos</p>
-          <div class="socials">
-            <a class="soc mail" href="mailto:contacto@tribuconnection.com"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="4.5" width="19" height="15" rx="2.5"/><path d="M3 6l9 6 9-6"/></svg> contacto@tribuconnection.com</a>
-          </div>
+      </div>
+      <div class="field">
+        <label>Ubicación (opcional)</label>
+        <div class="row2">
+          <select id="cProvincia" name="Provincia">
+            <option value="">Elegí tu provincia</option>
+          </select>
+          <select id="cCiudad" name="Ciudad" disabled>
+            <option value="">Elegí tu provincia primero</option>
+          </select>
         </div>
+        <input id="cCiudadOtra" name="Ciudad_Otra" type="text" placeholder="Escribí tu localidad" style="display:none; margin-top:.6rem">
+      </div>
+      <button type="submit" class="btn btn--spectrum" id="connectSubmit">Enviar</button>
+      <p class="modal-note">Te respondemos en 24–48 hs con una propuesta. También podés escribirnos a contacto@tribuconnection.com</p>
+    </form>
+    <div class="modal-msg" id="connectMsg">¡Recibido! Gracias 🌟<br>Te vamos a escribir con una propuesta pensada para vos.</div>
+  </div>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer" id="contacto">
+  <div class="wrap">
+    <div class="footer-cols">
+      <div class="footer-logo">
+        <img src="/assets/logo-white-horizontal.png?v=1" alt="Tribu Connection" style="height:34px;width:auto">
+        <p class="footer-tag">Historias que conectan.<br>Comunidades que crecen.</p>
+        <div class="socials" style="margin-top:1.1rem">
+          <a class="soc ig" href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="soc yt" href="https://www.youtube.com/@tribuconnection" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10 9.2l5 2.8-5 2.8z" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a class="soc tt" href="https://www.tiktok.com/@tribu.connection" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.6 3.7 3.9v2.4c-1.3.1-2.6-.3-3.7-1v6.1c0 3.5-2.6 5.6-5.6 5.6A5.4 5.4 0 0 1 5.5 14c0-3.4 3.1-5.9 6.6-5.1v2.6a2.9 2.9 0 0 0-3.8 2.6c0 1.5 1.2 2.6 2.6 2.6 1.5 0 2.7-1.1 2.7-3V3h2.4z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Agenda</p>
+        <a href="/agenda/">Todos los eventos</a>
+        <a href="/agenda/#calendario">Calendario</a>
+        <a href="#" data-connect>Sumá tu evento</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Red Tribu</p>
+        <a href="/red-tribu/">Creadores</a>
+        <a href="/red-tribu/">Marcas</a>
+        <a href="/red-tribu/">Lugares</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Club Tribu</p>
+        <a href="#beneficios">Beneficios</a>
+        <a href="#" data-legal="terminos">Términos y condiciones</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Contacto</p>
+        <a href="mailto:contacto@tribuconnection.com">contacto@tribuconnection.com</a>
+        <a href="#" data-join data-plan="General">Sumate a Tribu</a>
       </div>
     </div>
     <div class="foot-bottom">
-      <span>© 2026 Tribu Connection · Conectores de tribus</span>
-      <span class="foot-legal"><a href="/">Inicio</a> · <a href="/#caminos">Trabajemos juntos</a> · <a href="/#calendario">Agenda</a></span>
-      <span class="dots"><i style="background:var(--red)"></i><i style="background:var(--amber)"></i><i style="background:var(--green)"></i><i style="background:var(--teal)"></i><i style="background:var(--purple)"></i></span>
+      <span>© 2026 Tribu Connection. Todos los derechos reservados.</span>
+      <span class="foot-legal">
+        <a href="#" data-legal="privacidad">Privacidad</a> ·
+        <a href="#" data-legal="terminos">Términos</a>
+      </span>
+      <span class="dots">
+        <i style="background:var(--red)"></i><i style="background:var(--amber)"></i><i style="background:var(--green)"></i><i style="background:var(--teal)"></i><i style="background:var(--purple)"></i>
+      </span>
     </div>
   </div>
 </footer>
 
-<script src="/assets/landing.js"></script>
+<!-- ===================== COOKIE BAR + LEGAL ===================== -->
+<div class="cookie-bar" id="cookieBar">
+  <div class="cookie-bar-inner">
+    <p class="cookie-bar-text">🍪 Usamos <b>cookies esenciales</b> para que el sitio funcione correctamente.<br>No usamos cookies de publicidad ni de seguimiento. <a href="#" data-legal="cookies">Ver política de cookies</a>.</p>
+    <button class="btn btn--spectrum" id="cookieAccept" type="button">Aceptar</button>
+  </div>
+</div>
+<div class="modal-overlay" id="legalModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+    <button class="modal-close" id="legalClose" aria-label="Cerrar">✕</button>
+    <h2 id="legalTitle">Información legal</h2>
+    <div class="legal-tabs">
+      <button type="button" data-tab="privacidad">Política de privacidad</button>
+      <button type="button" data-tab="cookies">Cookies</button>
+      <button type="button" data-tab="terminos">Términos y condiciones</button>
+    </div>
+    <div class="legal-body" id="legal-privacidad" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Quiénes somos</h3>
+      <p>Tribu Connection ("nosotros") es responsable del tratamiento de los datos personales que nos compartís a través de <b style="color:var(--cream)">tribuconnection.com</b>.</p>
+    </div>
+    <div class="legal-body" id="legal-cookies" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Qué cookies usamos</h3>
+      <p>Este sitio <b style="color:var(--cream)">no usa cookies de publicidad, seguimiento ni analítica de terceros</b>.</p>
+    </div>
+    <div class="legal-body" id="legal-terminos" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Tribu Pass / Club Tribu</h3>
+      <p>Los beneficios descriptos son informativos y están sujetos a disponibilidad. El programa se encuentra en lanzamiento y los beneficios y marcas aliadas se suman de forma continua.</p>
+    </div>
+  </div>
+</div>
+
+<script src="/assets/site.js?v=1"></script>
 <script>
-/* Google Sheets: URL del Web App de Apps Script (ver google-apps-script/INSTRUCCIONES.txt) */
-const SHEETS_ENDPOINT = 'https://script.google.com/macros/s/AKfycbwyaT9_K7Y2RXFbr8X_9vPGwRfrbmncEOV1Gcsa907VSx4bMcjxiIqHwx4DbJahMVRS/exec';
-
-async function enviarASheets(fd, tipo){
-  fd.set('Tipo', tipo);
-  const res = await fetch(SHEETS_ENDPOINT, { method:'POST', body: fd });
-  const data = await res.json();
-  if(!data.ok) throw new Error(data.error || 'No se pudo guardar');
-}
-
-/* ============ MODAL SUMARSE ============ */
+/* ============ MODAL SUMARSE AL CLUB TRIBU (propio de esta página) ============ */
 (function(){
   const overlay = document.getElementById('joinModal');
   if(!overlay) return;
@@ -258,13 +420,12 @@ async function enviarASheets(fd, tipo){
     const btn = document.getElementById('joinSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(form);
-    fd.set('Perfil', fd.getAll('Perfil').join(', '));
     try{
-      await enviarASheets(fd, 'Join');
+      await enviarASheets(fd, 'Club');
       form.style.display='none'; msg.style.display='block';
     }catch(err){
-      const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nRubro: '+(fd.get('Rubro')||'')+'\nPerfil: '+fd.getAll('Perfil').join(', ')+'\nPlan: '+(fd.get('Plan')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nDetalles: '+(fd.get('Detalles')||''));
-      window.location.href='mailto:contacto@tribuconnection.com?subject=Quiero%20sumarme%20a%20la%20Tribu&body='+body;
+      const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nCiudad/Barrio: '+(fd.get('Ciudad_Barrio')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nNewsletter: '+(fd.get('Newsletter')||'No'));
+      window.location.href='mailto:contacto@tribuconnection.com?subject=Quiero%20ser%20parte%20del%20Club%20Tribu&body='+body;
     }finally{ btn.textContent='Enviar'; btn.disabled=false; }
   });
 })();
