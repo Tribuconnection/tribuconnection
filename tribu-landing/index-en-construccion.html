@@ -125,56 +125,10 @@
       <h2>Este finde en Tribu <span aria-hidden="true">🔥</span></h2>
       <a class="row-link" href="/agenda/">Ver toda la agenda <span class="arr">→</span></a>
     </div>
-    <div class="agenda-row">
-      <a class="ev-card reveal" href="#">
-        <div class="ev-card-media" style="background-image:url(/assets/reels/reel1.jpg)">
-          <span class="ev-card-date"><b>25</b><span>Jul</span></span>
-          <span class="ev-card-save" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg></span>
-          <span class="ev-card-cat" style="background:var(--green)">Holístico</span>
-        </div>
-        <div class="ev-card-body">
-          <h3>Festival Holístico MAYA</h3>
-          <p class="ev-card-loc">📍 Sierra de los Padres, Bs. As.</p>
-          <span class="ev-card-going"><span class="avatar-stack"><span></span><span></span><span></span></span> comunidad interesada</span>
-        </div>
-      </a>
-      <a class="ev-card reveal d1" href="#">
-        <div class="ev-card-media" style="background-image:url(/assets/stories/musica-en-vivo.jpg)">
-          <span class="ev-card-date"><b>08-09</b><span>Ago</span></span>
-          <span class="ev-card-save" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg></span>
-          <span class="ev-card-cat" style="background:var(--green)">Holístico</span>
-        </div>
-        <div class="ev-card-body">
-          <h3>Encuentro Holístico Villa Gesell</h3>
-          <p class="ev-card-loc">📍 Villa Gesell, Buenos Aires</p>
-          <span class="ev-card-going"><span class="avatar-stack"><span></span><span></span><span></span></span> comunidad interesada</span>
-        </div>
-      </a>
-      <a class="ev-card reveal d2" href="#">
-        <div class="ev-card-media" style="background-image:url(/assets/reels/reel3.jpg)">
-          <span class="ev-card-date"><b>09</b><span>Ago</span></span>
-          <span class="ev-card-save" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg></span>
-          <span class="ev-card-cat" style="background:var(--green)">Holístico</span>
-        </div>
-        <div class="ev-card-body">
-          <h3>Buenos Aires Zen</h3>
-          <p class="ev-card-loc">📍 Moreno, Buenos Aires</p>
-          <span class="ev-card-going"><span class="avatar-stack"><span></span><span></span><span></span></span> comunidad interesada</span>
-        </div>
-      </a>
-      <a class="ev-card reveal d3" href="#">
-        <div class="ev-card-media" style="background-image:url(/assets/stories/conciencia-festival.jpg)">
-          <span class="ev-card-date"><b>20-21</b><span>Ago</span></span>
-          <span class="ev-card-save" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 3h12v18l-6-4-6 4z"/></svg></span>
-          <span class="ev-card-cat" style="background:var(--teal)">Ferias</span>
-        </div>
-        <div class="ev-card-body">
-          <h3>Expotécnica 2026</h3>
-          <p class="ev-card-loc">📍 Golden Center, CABA</p>
-          <span class="ev-card-going"><span class="avatar-stack"><span></span><span></span><span></span></span> comunidad interesada</span>
-        </div>
-      </a>
-    </div>
+    <!-- Se completa con JS (assets/site.js) a partir de la misma data real del
+         calendario de /agenda/ — así nunca queda desactualizada respecto a la
+         agenda real cuando se agregan o sacan eventos. -->
+    <div class="agenda-row" id="homeAgendaRow"></div>
   </div>
 </section>
 
@@ -668,7 +622,7 @@
   </div>
 </footer>
 
-<script src="/assets/site.js?v=2"></script>
+<script src="/assets/site.js?v=4"></script>
 <script defer src="/assets/tribu-chat.js?v=2"></script>
 </body>
 </html>

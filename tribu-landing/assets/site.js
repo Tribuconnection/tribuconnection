@@ -763,3 +763,57 @@ const PROVINCIAS_AR = {
     });
   });
 })();
+
+/* ============ "ESTE FINDE EN TRIBU" (home) ============ */
+(function(){
+  const row = document.getElementById('homeAgendaRow');
+  if(!row) return;
+  const EVENTS = window.TRIBU_EVENTS || [];
+  const RUBROS = window.TRIBU_RUBROS || {};
+  const slug = window.TRIBU_SLUG || (s => String(s));
+  const MES_ABR = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  const grupos = {};
+  EVENTS.forEach(e=>{
+    const g = grupos[e.title];
+    if(!g) grupos[e.title] = { start:e.date, end:e.date, ev:e };
+    else { if(e.date < g.start) g.start = e.date; if(e.date > g.end) g.end = e.date; }
+  });
+  const proximos = Object.values(grupos)
+    .filter(g => new Date(g.end+'T00:00') >= today)
+    .sort((a,b) => a.start.localeCompare(b.start))
+    .slice(0, 4);
+
+  if(!proximos.length){
+    const section = row.closest('section');
+    if(section) section.style.display = 'none';
+    return;
+  }
+
+  /* No tenemos foto propia por evento todavía: rotamos fotos reales de la Tribu
+     ya usadas en el resto del sitio, en vez de inventar datos. */
+  const IMAGENES = ['/assets/reels/reel1.jpg', '/assets/stories/musica-en-vivo.jpg', '/assets/reels/reel3.jpg', '/assets/stories/conciencia-festival.jpg'];
+
+  row.innerHTML = proximos.map((g, i) => {
+    const e = g.ev;
+    const rubro = RUBROS[e.rubro] || { label: e.rubro, color: '#8A8D98' };
+    const d = new Date(g.start+'T00:00');
+    const dEnd = new Date(g.end+'T00:00');
+    const multi = g.start !== g.end;
+    /* Sin clase "reveal": se agregan al DOM después de que el observer de
+       animaciones de entrada ya corrió, así que quedarían en opacity:0 para
+       siempre si dependieran de esa clase. */
+    return '<a class="ev-card" href="/agenda/evento/?id='+encodeURIComponent(slug(e.title))+'">'+
+      '<div class="ev-card-media" style="background-image:url('+IMAGENES[i % IMAGENES.length]+')">'+
+        '<span class="ev-card-date"><b>'+d.getDate()+(multi?'–'+dEnd.getDate():'')+'</b><span>'+MES_ABR[d.getMonth()]+'</span></span>'+
+        '<span class="ev-card-cat" style="background:'+rubro.color+'">'+esc(rubro.label)+'</span>'+
+      '</div>'+
+      '<div class="ev-card-body">'+
+        '<h3>'+esc(e.title)+'</h3>'+
+        '<p class="ev-card-loc">📍 '+esc(e.place||'')+'</p>'+
+      '</div>'+
+    '</a>';
+  }).join('');
+})();
