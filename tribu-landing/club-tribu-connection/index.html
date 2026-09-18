@@ -42,9 +42,10 @@
   <div class="nav-cta">
     <label class="nav-search">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input type="text" placeholder="Buscar en Tribu" aria-label="Buscar en Tribu">
+      <input type="text" placeholder="Buscar en Tribu" aria-label="Buscar en Tribu" class="nav-search-input">
+      <div class="nav-search-results"></div>
     </label>
-    <a href="#" class="btn btn--spectrum btn--icon" data-join data-plan="General">
+    <a href="#" class="btn btn--spectrum btn--icon" data-join data-plan="Club Tribu">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/></svg>
       Sumate
     </a>
@@ -58,7 +59,7 @@
   <a href="/#historias">Historias</a>
   <a href="/club-tribu-connection/">Club Tribu</a>
   <a href="#" data-connect>Sumá tu propuesta</a>
-  <a href="#" class="btn btn--spectrum" data-join data-plan="General">Sumate a Tribu</a>
+  <a href="#" class="btn btn--spectrum" data-join data-plan="Club Tribu">Sumate a Tribu</a>
 </div>
 
 <!-- ============================ HERO ============================ -->
@@ -68,7 +69,7 @@
     <h1 class="h2 reveal d1" style="margin:1rem 0">Club Tribu <span aria-hidden="true">🤚</span></h1>
     <p class="lead reveal d2">Más que beneficios, una comunidad que impulsa lo mejor de vivir más. Sumate y accedé a sorteos, descuentos y experiencias pensadas para quienes forman parte de la Tribu.</p>
     <div class="hero-actions reveal d3" style="justify-content:center">
-      <a href="#" class="btn btn--spectrum" data-join data-plan="General">Quiero ser parte <span aria-hidden="true">🤚</span></a>
+      <a href="#" class="btn btn--spectrum" data-join data-plan="Club Tribu">Quiero ser parte <span aria-hidden="true">🤚</span></a>
       <a href="#beneficios" class="btn btn--ghost">Ver los beneficios <span class="arr">→</span></a>
     </div>
     <div class="club-members reveal d3">
@@ -178,7 +179,7 @@
       <p class="eyebrow">Sumate al Club</p>
       <h2 class="h2" style="max-width:36ch;white-space:normal">¿Listo para descubrir, conectar<br> y disfrutar de los beneficios?</h2>
       <div class="cta-actions">
-        <a href="#" class="btn btn--light" data-join data-plan="General">Quiero sumarme a la Tribu <span class="arr">→</span></a>
+        <a href="#" class="btn btn--light" data-join data-plan="Club Tribu">Quiero sumarme a la Tribu <span class="arr">→</span></a>
         <span class="note">Te respondemos a la brevedad.</span>
       </div>
     </div>
@@ -344,7 +345,7 @@
       <div class="footer-col">
         <p class="footer-col-title">Contacto</p>
         <a href="mailto:contacto@tribuconnection.com">contacto@tribuconnection.com</a>
-        <a href="#" data-join data-plan="General">Sumate a Tribu</a>
+        <a href="#" data-join data-plan="Club Tribu">Sumate a Tribu</a>
       </div>
     </div>
     <div class="foot-bottom">
@@ -404,11 +405,17 @@
   const msg = document.getElementById('joinMsg');
   const planInput = document.getElementById('joinPlan');
   const open = (e)=>{
-    if(e){ e.preventDefault(); planInput.value = e.currentTarget.dataset.plan || 'General'; }
+    if(e){ e.preventDefault(); planInput.value = (e.currentTarget && e.currentTarget.dataset && e.currentTarget.dataset.plan) || 'Club Tribu'; }
     overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden';
   };
   const close = ()=>{ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
-  document.querySelectorAll('[data-join]').forEach(b => b.addEventListener('click', open));
+  /* Delegado (no querySelectorAll+forEach), igual que en site.js, para que también
+     funcione con cualquier botón [data-join] agregado dinámicamente más adelante. */
+  document.addEventListener('click', e=>{
+    const trigger = e.target.closest('[data-join]');
+    if(!trigger) return;
+    open(e);
+  });
   document.getElementById('joinClose').addEventListener('click', close);
   overlay.addEventListener('click', e=>{ if(e.target===overlay) close(); });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) close(); });
@@ -420,11 +427,18 @@
     const btn = document.getElementById('joinSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(form);
+    /* El backend (Code.gs) todavía no tiene una pestaña dedicada a "Club Tribu":
+       reusamos el tipo "Join" que ya está desplegado y funcionando (cae en la
+       pestaña "Tribu Plus", con Plan="Club Tribu" para identificarlo), y metemos
+       Ciudad/Barrio y Newsletter dentro de "Detalles" para no perder esos datos
+       hasta que se actualice el Apps Script con columnas propias. */
+    const detalles = 'Ciudad/Barrio: '+(fd.get('Ciudad_Barrio')||'—')+' · Newsletter: '+(fd.get('Newsletter')?'Sí':'No');
+    fd.set('Detalles', detalles);
     try{
-      await enviarASheets(fd, 'Club');
+      await enviarASheets(fd, 'Join');
       form.style.display='none'; msg.style.display='block';
     }catch(err){
-      const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nCiudad/Barrio: '+(fd.get('Ciudad_Barrio')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nNewsletter: '+(fd.get('Newsletter')||'No'));
+      const body = encodeURIComponent('Nombre: '+(fd.get('Nombre')||'')+'\nCiudad/Barrio: '+(fd.get('Ciudad_Barrio')||'')+'\nContacto: '+(fd.get('Contacto')||'')+'\nNewsletter: '+(fd.get('Newsletter')?'Sí':'No'));
       window.location.href='mailto:contacto@tribuconnection.com?subject=Quiero%20ser%20parte%20del%20Club%20Tribu&body='+body;
     }finally{ btn.textContent='Enviar'; btn.disabled=false; }
   });

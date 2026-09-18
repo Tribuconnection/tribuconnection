@@ -530,8 +530,21 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .map-pop-cat i{ width:7px; height:7px; border-radius:50%; }
 .map-pop-title{ font-family:var(--font-display); font-size:1rem; margin-bottom:.2rem; }
 .map-pop-meta{ font-size:.8rem; color:var(--soft); }
-.leaflet-control-attribution{ background:rgba(12,13,16,.75) !important; color:var(--muted) !important; }
+.leaflet-control-attribution{ background:rgba(12,13,16,.75) !important; color:var(--muted) !important; border-radius:8px 0 0 0 !important; }
 .leaflet-control-attribution a{ color:var(--soft) !important; }
+
+/* Controles de zoom (+/-): por defecto Leaflet los dibuja cuadrados y blancos —
+   los redondeamos y oscurecemos para que sigan el mismo lenguaje visual que el
+   resto del sitio (botones, popups, tarjetas, todo con esquinas curvas). */
+.leaflet-control-zoom{ border:1px solid var(--line-2) !important; border-radius:12px !important; overflow:hidden; box-shadow:0 6px 20px -6px rgba(0,0,0,.6) !important; }
+.leaflet-control-zoom a{
+  background:var(--ink-1) !important; color:var(--cream) !important; border:0 !important;
+  width:32px !important; height:32px !important; line-height:32px !important;
+}
+.leaflet-control-zoom a:hover{ background:var(--ink-2) !important; }
+.leaflet-control-zoom-in{ border-radius:11px 11px 0 0 !important; }
+.leaflet-control-zoom-out{ border-radius:0 0 11px 11px !important; border-top:1px solid var(--line) !important; }
+.leaflet-bar{ border:0 !important; }
 @media (max-width:640px){ #calMap{ height:400px; } }
 .mobile-br{ display:none; }
 @media (max-width:640px){

@@ -10,6 +10,21 @@ async function enviarASheets(fd, tipo){
   if(!data.ok) throw new Error(data.error || 'No se pudo guardar');
 }
 
+/* Capa de mapa compartida: Esri "Dark Gray Canvas" (gratis, sin API key), con la
+   estética oscura de Tribu. CARTO dejó de servir sus tiles gratis sin key en 2026,
+   por eso el cambio — Esri no pide key y su tope de zoom (16) alcanza para lo que
+   usamos acá (barrio/ciudad, nunca calle a calle). */
+function tribuDarkTiles(){
+  const base = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 16,
+    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+  });
+  const labels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 16
+  });
+  return L.layerGroup([base, labels]);
+}
+
 /* Nav: fondo al scrollear */
 const nav = document.getElementById('nav');
 const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
@@ -78,31 +93,19 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   };
   // 🔧 EDITABLE: agregá o modificá eventos acá. rubro: festivales | ferias | artisticos | holistico | musica | talleres · status: Confirmado | Pendiente
   const EVENTS = [
-    { date:'2026-07-25', title:'Festival Holístico MAYA – Día Fuera del Tiempo', place:'Sierra de los Padres, Buenos Aires (sede y horario pendientes)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-37.9500, lng:-57.7333 },
-    { date:'2026-08-08', title:'Encuentro Holístico Villa Gesell', place:'Hotel Royal, Villa Gesell (programación pendiente)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-37.2633, lng:-56.9730 },
-    { date:'2026-08-09', title:'Encuentro Holístico Villa Gesell', place:'Hotel Royal, Villa Gesell (programación pendiente)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-37.2633, lng:-56.9730 },
-    { date:'2026-08-09', title:'Buenos Aires Zen', place:'Moreno, Buenos Aires (sede a reconfirmar)', time:'', rubro:'holistico', status:'Pendiente', url:'', lat:-34.6444, lng:-58.7897 },
-    { date:'2026-08-20', title:'Expotécnica 2026', place:'Golden Center, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5755, lng:-58.4338 },
-    { date:'2026-08-21', title:'Expotécnica 2026', place:'Golden Center, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5755, lng:-58.4338 },
-    { date:'2026-09-09', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5885, lng:-58.4173 },
-    { date:'2026-09-10', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5885, lng:-58.4173 },
-    { date:'2026-09-11', title:'Expo Eficiencia Energética', place:'BA Ferial, CABA', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.5885, lng:-58.4173 },
-    { date:'2026-10-05', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
-    { date:'2026-10-06', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
-    { date:'2026-10-07', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
-    { date:'2026-10-08', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
-    { date:'2026-10-09', title:'IX CONEBIOS', place:'Maimará, Jujuy', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-23.6167, lng:-65.5833 },
-    { date:'2026-10-27', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
-    { date:'2026-10-28', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
-    { date:'2026-10-29', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
-    { date:'2026-10-30', title:'X Congreso SETAC Argentina', place:'Centro Karakachoff, La Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-34.9011, lng:-57.9545 },
-    { date:'2026-11-19', title:'Primer Congreso Argentino de Sustentabilidad', place:'Hotel 13 de Julio, Mar del Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-37.9950, lng:-57.5533 },
-    { date:'2026-11-20', title:'Primer Congreso Argentino de Sustentabilidad', place:'Hotel 13 de Julio, Mar del Plata', time:'', rubro:'ferias', status:'Confirmado', url:'', lat:-37.9950, lng:-57.5533 },
-    { date:'2026-11-20', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
-    { date:'2026-11-21', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
-    { date:'2026-11-22', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
-    { date:'2026-11-23', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 },
-    { date:'2026-11-24', title:'Amanita Festival – tercera edición', place:'El Portal, provincia de Buenos Aires (localidad exacta pendiente)', time:'', rubro:'festivales', status:'Pendiente', url:'', lat:-34.0000, lng:-59.0000 }
+    /* 🔎 18/09/2026: se sacaron del calendario todos los eventos que no se pudieron
+       confirmar en el Instagram @tribuconnection (Festival Holístico MAYA, Encuentro
+       Holístico Villa Gesell, Buenos Aires Zen, Expotécnica, Expo Eficiencia
+       Energética, IX CONEBIOS, X Congreso SETAC, Primer Congreso Argentino de
+       Sustentabilidad). Solo queda lo verificado ahí. */
+    { date:'2026-11-20', title:'Amanita Festival — El Portal', place:'Mercedes, Buenos Aires (90 min de CABA)', time:'', rubro:'festivales', status:'Confirmado', url:'https://www.amanitafestival.com/', lat:-34.6497, lng:-59.4317 },
+    { date:'2026-11-21', title:'Amanita Festival — El Portal', place:'Mercedes, Buenos Aires (90 min de CABA)', time:'', rubro:'festivales', status:'Confirmado', url:'https://www.amanitafestival.com/', lat:-34.6497, lng:-59.4317 },
+    { date:'2026-11-22', title:'Amanita Festival — El Portal', place:'Mercedes, Buenos Aires (90 min de CABA)', time:'', rubro:'festivales', status:'Confirmado', url:'https://www.amanitafestival.com/', lat:-34.6497, lng:-59.4317 },
+    { date:'2026-11-23', title:'Amanita Festival — El Portal', place:'Mercedes, Buenos Aires (90 min de CABA)', time:'', rubro:'festivales', status:'Confirmado', url:'https://www.amanitafestival.com/', lat:-34.6497, lng:-59.4317 },
+    { date:'2026-11-24', title:'Amanita Festival — El Portal', place:'Mercedes, Buenos Aires (90 min de CABA)', time:'', rubro:'festivales', status:'Confirmado', url:'https://www.amanitafestival.com/', lat:-34.6497, lng:-59.4317 },
+    /* 🔎 Sumados a partir de una revisión del Instagram @tribuconnection (18/09/2026) */
+    { date:'2026-09-27', title:'Cacao Dance — Pulsar Orgánico', place:'Fuel Club, Palermo, CABA', time:'', rubro:'musica', status:'Confirmado', url:'https://www.instagram.com/pulsarorganico/', lat:-34.5875, lng:-58.4306 },
+    { date:'2026-10-24', title:'Fiesta Sana', place:'Casa Temple, Palermo, CABA', time:'', rubro:'musica', status:'Confirmado', url:'https://www.instagram.com/la.fiesta.sana/', lat:-34.5825, lng:-58.4368 }
   ];
   const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
   const MES_ABR = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
@@ -175,10 +178,7 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   function initMap(){
     if(calMap) return;
     calMap = L.map('calMap', { scrollWheelZoom:true }).setView([-38.4, -63.6], 4);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions" target="_blank" rel="noopener">CARTO</a>',
-      subdomains: 'abcd', maxZoom: 19
-    }).addTo(calMap);
+    tribuDarkTiles().addTo(calMap);
     renderMap();
   }
   const viewToggle = document.getElementById('calViewToggle');
@@ -465,7 +465,7 @@ const PROVINCIAS_AR = {
     setTimeout(()=>{
       if(!geoMap){
         geoMap = L.map('evLocMap', { zoomControl:false, attributionControl:false, scrollWheelZoom:false }).setView([lat,lng], 13);
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { subdomains:'abcd', maxZoom:19 }).addTo(geoMap);
+        tribuDarkTiles().addTo(geoMap);
       }
       geoMap.invalidateSize();
       geoMap.setView([lat,lng], 14);
@@ -653,4 +653,84 @@ const PROVINCIAS_AR = {
   legalClose.addEventListener('click', closeLegal);
   legalOverlay.addEventListener('click', e=>{ if(e.target===legalOverlay) closeLegal(); });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape' && legalOverlay.classList.contains('open')) closeLegal(); });
+})();
+
+/* ============ BUSCADOR (nav) ============ */
+(function(){
+  const boxes = document.querySelectorAll('.nav-search');
+  if(!boxes.length) return;
+
+  /* Páginas fijas del sitio: siempre entran en los resultados si el texto matchea. */
+  const PAGES = [
+    { title:'Inicio', sub:'Home', url:'/' },
+    { title:'Agenda', sub:'Calendario de eventos', url:'/agenda/' },
+    { title:'Red Tribu', sub:'Creadores, marcas y lugares', url:'/red-tribu/' },
+    { title:'Historias que inspiran', sub:'Entrevistas y reels', url:'/#historias' },
+    { title:'Club Tribu', sub:'Sorteos, descuentos y beneficios', url:'/club-tribu-connection/' },
+  ];
+
+  const norm = s => String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const MESES_ABR = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+
+  function eventResults(q){
+    const events = window.TRIBU_EVENTS || [];
+    const slugFn = window.TRIBU_SLUG || (s=>norm(s));
+    const seen = new Set();
+    const out = [];
+    events.forEach(e=>{
+      const slug = slugFn(e.title);
+      if(seen.has(slug)) return;
+      if(!norm(e.title).includes(q) && !norm(e.place).includes(q)) return;
+      seen.add(slug);
+      const d = new Date(e.date+'T00:00');
+      out.push({
+        title: e.title,
+        sub: d.getDate()+' '+MESES_ABR[d.getMonth()]+' · '+(e.place||'Agenda'),
+        url: '/agenda/evento/?id='+encodeURIComponent(slug)
+      });
+    });
+    return out.slice(0,5);
+  }
+
+  function pageResults(q){
+    return PAGES.filter(p => norm(p.title).includes(q) || norm(p.sub).includes(q));
+  }
+
+  boxes.forEach(box=>{
+    const input = box.querySelector('.nav-search-input');
+    const results = box.querySelector('.nav-search-results');
+    if(!input || !results) return;
+
+    function render(q){
+      const items = [...pageResults(q), ...eventResults(q)];
+      if(!items.length){
+        results.innerHTML = '<div class="nav-search-empty">Sin resultados para "'+esc(q)+'"</div>';
+        results.classList.add('open');
+        return;
+      }
+      results.innerHTML = items.map(it=>
+        '<a href="'+esc(it.url)+'">'+esc(it.title)+'<small>'+esc(it.sub)+'</small></a>'
+      ).join('');
+      results.classList.add('open');
+    }
+
+    input.addEventListener('input', ()=>{
+      const q = norm(input.value.trim());
+      if(!q){ results.classList.remove('open'); results.innerHTML=''; return; }
+      render(q);
+    });
+    input.addEventListener('focus', ()=>{ if(input.value.trim()) render(norm(input.value.trim())); });
+    input.addEventListener('keydown', e=>{
+      if(e.key==='Enter'){
+        e.preventDefault();
+        const first = results.querySelector('a');
+        if(first) window.location.href = first.getAttribute('href');
+      }
+      if(e.key==='Escape'){ results.classList.remove('open'); input.blur(); }
+    });
+    document.addEventListener('click', e=>{
+      if(!box.contains(e.target)) results.classList.remove('open');
+    });
+  });
 })();
