@@ -464,7 +464,7 @@ const PROVINCIAS_AR = {
     previewEl.classList.add('on');
     setTimeout(()=>{
       if(!geoMap){
-        geoMap = L.map('evLocMap', { zoomControl:false, attributionControl:false, scrollWheelZoom:false }).setView([lat,lng], 13);
+        geoMap = L.map('evLocMap', { zoomControl:false, attributionControl:false, scrollWheelZoom:true }).setView([lat,lng], 13);
         tribuDarkTiles().addTo(geoMap);
       }
       geoMap.invalidateSize();

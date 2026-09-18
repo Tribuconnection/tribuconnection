@@ -321,7 +321,7 @@
     '</div>';
 
   if(hasCoords){
-    const map = L.map('evpMap', { zoomControl:true, scrollWheelZoom:false }).setView([first.lat, first.lng], 11);
+    const map = L.map('evpMap', { zoomControl:true, scrollWheelZoom:true }).setView([first.lat, first.lng], 11);
     tribuDarkTiles().addTo(map);
     L.marker([first.lat, first.lng]).addTo(map);
   }

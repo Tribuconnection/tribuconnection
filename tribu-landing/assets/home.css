@@ -190,7 +190,7 @@
 .mini-cta p{ font-size:.85rem; color:var(--soft); }
 
 /* ---------- Footer (v4 columnas) ---------- */
-.footer-cols{ display:grid; grid-template-columns:1.3fr repeat(4,1fr); gap:1.6rem; }
+.footer-cols{ display:grid; grid-template-columns:1.7fr repeat(4,1fr); gap:1.6rem; }
 .footer-col-title{ font-size:.85rem; font-weight:700; color:var(--cream); margin-bottom:.9rem; }
 .footer-col a{ display:block; font-size:.85rem; color:var(--soft); text-decoration:none; margin-bottom:.65rem; }
 .footer-col a:hover{ color:var(--cream); }
@@ -209,7 +209,7 @@
 @media (max-width:640px){
   .agenda-row{ grid-template-columns:1fr 1fr; }
   .club-perks{ grid-template-columns:1fr 1fr; }
-  .footer-cols{ grid-template-columns:1fr 1fr; }
+  .footer-cols{ grid-template-columns:1fr; }
 }
 
 /* ============================================================
