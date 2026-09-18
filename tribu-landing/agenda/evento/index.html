@@ -12,8 +12,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="/assets/tribu.css?v=17">
-<link rel="stylesheet" href="/assets/home.css?v=1">
+<link rel="stylesheet" href="/assets/tribu.css?v=18">
+<link rel="stylesheet" href="/assets/home.css?v=2">
 </head>
 <body>
 
@@ -252,7 +252,7 @@
 </footer>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script src="/assets/site.js?v=1"></script>
+<script src="/assets/site.js?v=2"></script>
 <script>
 /* ============ FICHA DE EVENTO: arma el detalle con la misma data del calendario ============ */
 (function(){
@@ -282,11 +282,24 @@
   const rubro = RUBROS[first.rubro] || { label: first.rubro, color:'#8A8D98' };
   document.title = first.title + ' · Agenda · Tribu Connection';
 
-  /* Fechas: si son varios días consecutivos del mismo evento, las mostramos todas */
-  const fechasHtml = rows.map(r=>{
+  /* Fechas: si el evento dura varios días, mostramos "del X al Y" en vez de
+     listar cada fecha suelta. */
+  const last = rows[rows.length - 1];
+  function fmtFecha(r){
     const d = new Date(r.date+'T00:00');
     return d.getDate()+' de '+MESES[d.getMonth()]+' de '+d.getFullYear();
-  }).join(' · ');
+  }
+  let fechasHtml;
+  if(rows.length === 1){
+    fechasHtml = fmtFecha(first);
+  } else {
+    const d1 = new Date(first.date+'T00:00'), d2 = new Date(last.date+'T00:00');
+    if(d1.getFullYear()===d2.getFullYear() && d1.getMonth()===d2.getMonth()){
+      fechasHtml = 'Del ' + d1.getDate() + ' al ' + d2.getDate() + ' de ' + MESES[d1.getMonth()] + ' de ' + d1.getFullYear();
+    } else {
+      fechasHtml = 'Del ' + fmtFecha(first) + ' al ' + fmtFecha(last);
+    }
+  }
 
   const statusBadge = first.status==='Pendiente'
     ? '<span class="ev-status st-pend">Pendiente de confirmar</span>'

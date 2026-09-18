@@ -138,7 +138,33 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const color = r => (RUBROS[r]||{}).color || '#8A8D98';
   const pass = e => filter==='all' || e.rubro===filter;
-  const evByDate = ds => EVENTS.filter(e => e.date===ds && pass(e)).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
+
+  /* Eventos de varios días (ej. Amanita 20 al 24/11) están cargados como una fila
+     por día. Acá agrupamos por título para saber, de cada uno, cuál es el primer
+     día (el único que se muestra/clickea en el calendario) y el último (para
+     mostrar "hasta el ..."), en vez de listarlo repetido día por día. */
+  const RANGO = {};
+  EVENTS.forEach(e=>{
+    const g = RANGO[e.title];
+    if(!g) RANGO[e.title] = { start:e.date, end:e.date };
+    else { if(e.date < g.start) g.start = e.date; if(e.date > g.end) g.end = e.date; }
+  });
+  const esInicio = e => e.date === RANGO[e.title].start;
+  function fmtRango(e){
+    const { start, end } = RANGO[e.title];
+    const d1 = new Date(start+'T00:00'), d2 = new Date(end+'T00:00');
+    if(start === end) return d1.getDate()+' de '+MESES[d1.getMonth()]+' de '+d1.getFullYear();
+    if(d1.getFullYear()===d2.getFullYear() && d1.getMonth()===d2.getMonth()){
+      return d1.getDate()+' al '+d2.getDate()+' de '+MESES[d1.getMonth()]+' de '+d1.getFullYear();
+    }
+    if(d1.getFullYear()===d2.getFullYear()){
+      return d1.getDate()+' de '+MESES[d1.getMonth()]+' al '+d2.getDate()+' de '+MESES[d2.getMonth()]+' de '+d1.getFullYear();
+    }
+    return d1.getDate()+' de '+MESES[d1.getMonth()]+' de '+d1.getFullYear()+' al '+d2.getDate()+' de '+MESES[d2.getMonth()]+' de '+d2.getFullYear();
+  }
+  /* Solo el primer día de cada evento cuenta para los puntitos/click del calendario
+     y para las tarjetas — así un evento de 5 días no se repite 5 veces. */
+  const evByDate = ds => EVENTS.filter(e => e.date===ds && esInicio(e) && pass(e)).sort((a,b)=>(a.time||'').localeCompare(b.time||''));
 
   function renderFilters(){
     let html = '<button class="cal-filter'+(filter==='all'?' active':'')+'" data-f="all">Todos</button>';
@@ -198,23 +224,26 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   }
 
   function evCard(e){
-    const d = new Date(e.date+'T00:00');
+    const g = RANGO[e.title];
+    const d = new Date(g.start+'T00:00');
+    const dEnd = new Date(g.end+'T00:00');
+    const multiDia = g.start !== g.end;
     const href = ' href="/agenda/evento/?id='+encodeURIComponent(slugEvent(e.title))+'"';
     const st = e.status==='Pendiente' ? '<span class="ev-status st-pend">Pendiente</span>'
             : (e.status ? '<span class="ev-status st-conf">Confirmado</span>' : '');
     return '<a class="ev"'+href+'>'+
-      '<div class="ev-date"><b>'+d.getDate()+'</b><span>'+MES_ABR[d.getMonth()]+'</span></div>'+
+      '<div class="ev-date"><b>'+d.getDate()+(multiDia?'–'+dEnd.getDate():'')+'</b><span>'+MES_ABR[d.getMonth()]+'</span></div>'+
       '<div class="ev-body">'+
         '<div class="ev-head"><span class="ev-cat"><i style="background:'+color(e.rubro)+'"></i>'+esc((RUBROS[e.rubro]||{}).label||e.rubro)+'</span>'+st+'</div>'+
         '<div class="ev-title">'+esc(e.title)+'</div>'+
-        '<div class="ev-meta">'+ (e.time?esc(e.time)+' · ':'') + '<span class="ev-loc">📍 '+esc(e.place||'')+'</span></div>'+
+        '<div class="ev-meta">'+ (multiDia ? 'Hasta el '+dEnd.getDate()+' de '+MESES[dEnd.getMonth()]+' · ' : (e.time?esc(e.time)+' · ':'')) + '<span class="ev-loc">📍 '+esc(e.place||'')+'</span></div>'+
       '</div></a>';
   }
 
   function renderList(dateStr, heading){
     let evs, title;
     if(dateStr){ evs = evByDate(dateStr); title = heading; }
-    else { evs = EVENTS.filter(e=> pass(e) && new Date(e.date+'T00:00') >= today).sort((a,b)=>a.date.localeCompare(b.date)); title='Próxima agenda'; }
+    else { evs = EVENTS.filter(e=> pass(e) && esInicio(e) && new Date(RANGO[e.title].end+'T00:00') >= today).sort((a,b)=>a.date.localeCompare(b.date)); title='Próxima agenda'; }
     if(agendaTitle) agendaTitle.firstChild.textContent = title+' ';
     countEl.textContent = evs.length ? evs.length+(evs.length===1?' evento':' eventos') : '';
     if(!evs.length){ listEl.innerHTML = '<p class="cal-empty">No hay eventos'+(dateStr?' para este día':'')+'. Probá con otro filtro o mes.</p>'; return; }
