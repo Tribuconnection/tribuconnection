@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=19">
+<link rel="stylesheet" href="/assets/tribu.css?v=20">
 <link rel="stylesheet" href="/assets/home.css?v=4">
 </head>
 <body>
@@ -394,23 +394,42 @@
   const emptyLugares = document.getElementById('emptyLugares');
   let activeTab = 'todos';
 
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  /* Los perfiles los escribe cualquier usuario logueado (nombre, bio, foto, sitio
+     web...): nunca son datos de confianza. Se escapan antes de ir a innerHTML y
+     se valida que los links sean http(s) reales, para que nadie pueda meter
+     HTML/JS o un link "javascript:" en su perfil y afectar a otros visitantes. */
+  function sanitizeUrl(url){
+    if(!url) return '#';
+    try{
+      const u = new URL(url, location.origin);
+      if(u.protocol === 'http:' || u.protocol === 'https:') return u.href;
+    }catch(e){}
+    return '#';
+  }
+
   function perfilCard(p){
     const tipo = p.tipo === 'marca' ? 'marcas' : 'creadores';
     const nombre = p.tipo === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre;
-    const foto = p.foto_url || '/assets/isotipo.png?v=2';
+    const fotoUrl = sanitizeUrl(p.foto_url);
+    const foto = fotoUrl !== '#' ? fotoUrl : '/assets/isotipo.png?v=2';
     const rubro = (p.categorias && p.categorias.length) ? p.categorias.slice(0, 2).join(' · ') : (p.tipo === 'marca' ? 'Marca aliada' : 'Creador/a');
     const bio = p.mini_bio ? p.mini_bio.slice(0, 110) + (p.mini_bio.length > 110 ? '…' : '') : '';
-    const href = p.instagram ? 'https://instagram.com/' + p.instagram.replace(/^@/, '') : (p.sitio_web || '#');
+    const igHandle = p.instagram ? p.instagram.replace(/^@/, '').trim() : '';
+    const hrefRaw = igHandle ? 'https://instagram.com/' + encodeURIComponent(igHandle) : (p.sitio_web || '#');
+    const href = sanitizeUrl(hrefRaw);
     const el = document.createElement('a');
     el.className = 'directory-card';
     el.dataset.tipo = tipo;
     el.dataset.name = nombre;
     el.href = href;
     if(href !== '#'){ el.target = '_blank'; el.rel = 'noopener'; }
-    el.innerHTML = '<div class="directory-card-logo"><img src="'+foto+'" alt="'+nombre+'" style="object-fit:cover"></div>'+
-      '<span class="directory-card-type">'+(p.tipo === 'marca' ? 'Marca aliada' : rubro)+'</span>'+
-      '<h3>'+nombre+'</h3>'+
-      '<p>'+(bio || (p.ciudad || ''))+'</p>';
+    el.innerHTML = '<div class="directory-card-logo"><img src="'+escapeHtml(foto)+'" alt="'+escapeHtml(nombre)+'" style="object-fit:cover"></div>'+
+      '<span class="directory-card-type">'+escapeHtml(p.tipo === 'marca' ? 'Marca aliada' : rubro)+'</span>'+
+      '<h3>'+escapeHtml(nombre)+'</h3>'+
+      '<p>'+escapeHtml(bio || (p.ciudad || ''))+'</p>';
     return el;
   }
 

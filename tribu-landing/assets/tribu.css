@@ -55,6 +55,11 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 
+/* Evita que quede una sola palabra huérfana al final de un párrafo (ej: un
+   punto seguido de una palabra sola que salta de renglón). Los navegadores
+   que todavía no soportan text-wrap:pretty simplemente lo ignoran. */
+p, li, .lead, .modal-sub, .field-error{ text-wrap:pretty; }
+
 /* Aurora ambiental de fondo (manchas de color muy tenues) */
 .aurora{
   position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
