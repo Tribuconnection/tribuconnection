@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi cuenta · Tribu Connection</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/assets/isotipo.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/tribu.css?v=19">
+<link rel="stylesheet" href="/assets/home.css?v=3">
+</head>
+<body>
+
+<div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+
+<nav class="nav" id="nav">
+  <a href="/" class="brand" aria-label="Tribu Connection — inicio">
+    <img class="brand-full" src="/assets/logo-blanco.png?v=1" alt="Tribu Connection">
+  </a>
+  <div class="nav-links">
+    <a href="/">Inicio</a>
+    <a href="/agenda/">Agenda</a>
+    <a href="/red-tribu/">Red Tribu</a>
+    <a href="/#historias">Historias</a>
+    <a href="/club-tribu-connection/">Club Tribu</a>
+  </div>
+  <div class="nav-cta">
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Inicio</a>
+  <a href="/agenda/">Agenda</a>
+  <a href="/red-tribu/">Red Tribu</a>
+  <a href="/#historias">Historias</a>
+  <a href="/club-tribu-connection/">Club Tribu</a>
+</div>
+
+<section class="section" style="padding-top:clamp(110px,14vw,140px);min-height:80vh">
+  <div class="wrap" style="max-width:460px">
+    <div class="tribu-card reveal">
+      <div class="tab-row" id="authTabs" style="margin:0 0 1.4rem">
+        <button type="button" class="tab-btn active" data-tab="crear">Crear cuenta</button>
+        <button type="button" class="tab-btn" data-tab="ingresar">Ya tengo cuenta</button>
+      </div>
+
+      <div id="panelCrear">
+        <h1 class="h2" style="font-size:1.5rem;margin-bottom:.4rem">Ser parte de la Tribu</h1>
+        <p style="color:var(--soft);margin-bottom:1.4rem">Creá tu cuenta para armar tu perfil de creador/a o marca y publicar tus experiencias.</p>
+        <form id="formCrear">
+          <div class="field">
+            <label for="crEmail">Correo electrónico</label>
+            <input id="crEmail" type="email" required placeholder="tu@email.com">
+          </div>
+          <div class="field">
+            <label for="crPass">Contraseña</label>
+            <input id="crPass" type="password" required minlength="6" placeholder="Mínimo 6 caracteres">
+          </div>
+          <p class="field-error" id="crError" style="display:none"></p>
+          <button type="submit" class="btn btn--spectrum" style="width:100%;justify-content:center" id="crBtn">Crear cuenta</button>
+        </form>
+        <div class="modal-msg" id="crMsg" style="display:none">¡Listo! Revisá tu correo para confirmar la cuenta y después iniciá sesión.</div>
+      </div>
+
+      <div id="panelIngresar" style="display:none">
+        <h1 class="h2" style="font-size:1.5rem;margin-bottom:.4rem">Ingresar</h1>
+        <p style="color:var(--soft);margin-bottom:1.4rem">Entrá con tu cuenta para editar tu perfil o publicar una experiencia.</p>
+        <form id="formIngresar">
+          <div class="field">
+            <label for="inEmail">Correo electrónico</label>
+            <input id="inEmail" type="email" required placeholder="tu@email.com">
+          </div>
+          <div class="field">
+            <label for="inPass">Contraseña</label>
+            <input id="inPass" type="password" required placeholder="Tu contraseña">
+          </div>
+          <p class="field-error" id="inError" style="display:none"></p>
+          <button type="submit" class="btn btn--spectrum" style="width:100%;justify-content:center" id="inBtn">Ingresar</button>
+        </form>
+      </div>
+
+      <p style="color:var(--muted);font-size:.82rem;margin-top:1.4rem;text-align:center">¿Sos una marca o festival aliado y ya tenés un acuerdo con nosotros? Escribinos a <a href="mailto:contacto@tribuconnection.com" style="color:var(--teal)">contacto@tribuconnection.com</a></p>
+    </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="/assets/supabase-client.js"></script>
+<script src="/assets/site.js?v=5"></script>
+<script>
+(function(){
+  const tabs = document.querySelectorAll('#authTabs .tab-btn');
+  const panelCrear = document.getElementById('panelCrear');
+  const panelIngresar = document.getElementById('panelIngresar');
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    const esCrear = t.dataset.tab === 'crear';
+    panelCrear.style.display = esCrear ? '' : 'none';
+    panelIngresar.style.display = esCrear ? 'none' : '';
+  }));
+
+  if(new URLSearchParams(location.search).get('modo') === 'ingresar'){
+    tabs[1].click();
+  }
+
+  const destino = () => {
+    const volver = new URLSearchParams(location.search).get('volver');
+    return volver && volver.startsWith('/') ? volver : '/cuenta/perfil/';
+  };
+
+  document.getElementById('formCrear').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = document.getElementById('crError'); err.style.display = 'none';
+    const btn = document.getElementById('crBtn'); btn.textContent = 'Creando...'; btn.disabled = true;
+    const email = document.getElementById('crEmail').value.trim();
+    const password = document.getElementById('crPass').value;
+    const { data, error } = await sb.auth.signUp({ email, password });
+    btn.textContent = 'Crear cuenta'; btn.disabled = false;
+    if(error){ err.textContent = error.message; err.style.display = 'block'; return; }
+    if(data.session){
+      window.location.href = destino();
+    } else {
+      document.getElementById('formCrear').style.display = 'none';
+      document.getElementById('crMsg').style.display = 'block';
+    }
+  });
+
+  document.getElementById('formIngresar').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = document.getElementById('inError'); err.style.display = 'none';
+    const btn = document.getElementById('inBtn'); btn.textContent = 'Ingresando...'; btn.disabled = true;
+    const email = document.getElementById('inEmail').value.trim();
+    const password = document.getElementById('inPass').value;
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    btn.textContent = 'Ingresar'; btn.disabled = false;
+    if(error){ err.textContent = 'Email o contraseña incorrectos.'; err.style.display = 'block'; return; }
+    window.location.href = destino();
+  });
+
+  (async () => {
+    const session = await tribuSesionActual();
+    if(session) window.location.href = destino();
+  })();
+})();
+</script>
+</body>
+</html>
