@@ -7,16 +7,10 @@ envío. Cada formulario deja su información en SU PROPIA pestaña, con el
 nombre de dónde viene:
 
    - "Solicitar agregar evento"       -> pestaña "Eventos"
-   - "Sumate a la Tribu" · Cafecito    -> pestaña "Cafecito"
-   - "Sumate a la Tribu" · Tribu Plus  -> pestaña "Tribu Plus"
+   - "Ser parte del Club Tribu"        -> pestaña "Club Tribu"
    - "Conectarme a la Tribu"           -> pestaña "Conectarme a la Tribu"
    - "Propuesta a medida"              -> pestaña "Propuestas"
-  - "Formulario externo"              -> pestaña "Formulario externo"
-
-   (El formulario de sumarse es uno solo; se separa por el plan elegido.
-    Cualquier plan que no sea Cafecito —incluido el "General" de los botones
-    genéricos "Quiero sumarme a la Tribu"— cae en "Tribu Plus"; la columna
-    "Plan" de esa pestaña aclara cuál fue exactamente.)
+   - "Formulario externo"              -> pestaña "Formulario externo"
 
 1) CREAR EL PROYECTO DE APPS SCRIPT
    - Entrá a https://script.google.com con la cuenta info.tribuconnection@gmail.com
@@ -30,8 +24,8 @@ nombre de dónde viene:
    - Google va a pedir autorización (primera vez): "Avanzado" → "Ir a
      [nombre del proyecto] (no seguro)" → "Permitir". Es tu propio script,
      es seguro autorizarlo.
-   - Esto crea (si faltan) las 6 pestañas: "Eventos", "Cafecito",
-     "Tribu Plus", "Conectarme a la Tribu", "Propuestas" y "Formulario externo". Las que ya
+   - Esto crea (si faltan) las 5 pestañas: "Eventos", "Club Tribu",
+     "Conectarme a la Tribu", "Propuestas" y "Formulario externo". Las que ya
      existían con ese nombre se reusan, no se pisan.
 
 2.b) LIMPIAR LAS PRUEBAS Y LAS PESTAÑAS VIEJAS (opcional, recomendado)
@@ -40,10 +34,11 @@ nombre de dónde viene:
      CORS check, ACENTOS, QA...).
    - Después, elegí "limpiarPestanasObsoletas" y "Ejecutar": borra las
      pestañas que quedaron de esquemas anteriores ("Formularios",
-     "Tribu Pass", "Sumate a la Tribu"), pero SÓLO si están vacías. Si
-     alguna tiene datos reales, no la toca (revisala y movés los datos a
-     mano). OJO: la pestaña vieja "Tribu Pass" (nombre viejo) es distinta
-     de la nueva "Tribu Plus" — la vieja se borra, la nueva se usa.
+     "Tribu Pass", "Sumate a la Tribu", "Cafecito", "Tribu Plus" — estos
+     dos últimos eran los planes pagos viejos, reemplazados por el único
+     "Club Tribu" actual), pero SÓLO si están vacías. Si alguna tiene datos
+     reales, no la toca — en ese caso te conviene renombrarla a mano a
+     "Club Tribu" en vez de borrarla, para no perder ese historial.
 
 3) DESPLEGAR COMO WEB APP
    - Arriba a la derecha: "Implementar" → "Nueva implementación"
