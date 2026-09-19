@@ -83,6 +83,8 @@
 }
 .ev-card-date b{ display:block; font-size:.95rem; }
 .ev-card-date span{ display:block; font-size:.6rem; text-transform:uppercase; color:var(--muted); }
+.ev-card-date b.ev-date-range{ font-size:.8rem; line-height:1.15; }
+.ev-card-date b.ev-date-range i{ display:block; font-style:normal; font-size:.55rem; font-weight:400; color:var(--muted); text-transform:lowercase; line-height:1.4; }
 .ev-card-save{
   position:absolute; top:.7rem; right:.7rem; z-index:1; width:30px; height:30px; border-radius:50%;
   background:rgba(15,16,20,.7); display:flex; align-items:center; justify-content:center; color:var(--cream);

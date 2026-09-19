@@ -232,7 +232,9 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     const st = e.status==='Pendiente' ? '<span class="ev-status st-pend">Pendiente</span>'
             : (e.status ? '<span class="ev-status st-conf">Confirmado</span>' : '');
     return '<a class="ev"'+href+'>'+
-      '<div class="ev-date"><b>'+d.getDate()+(multiDia?'–'+dEnd.getDate():'')+'</b><span>'+MES_ABR[d.getMonth()]+'</span></div>'+
+      '<div class="ev-date">'+(multiDia
+        ? '<b class="ev-date-range">'+d.getDate()+'<i>al</i>'+dEnd.getDate()+'</b>'
+        : '<b>'+d.getDate()+'</b>')+'<span>'+MES_ABR[d.getMonth()]+'</span></div>'+
       '<div class="ev-body">'+
         '<div class="ev-head"><span class="ev-cat"><i style="background:'+color(e.rubro)+'"></i>'+esc((RUBROS[e.rubro]||{}).label||e.rubro)+'</span>'+st+'</div>'+
         '<div class="ev-title">'+esc(e.title)+'</div>'+
@@ -807,7 +809,9 @@ const PROVINCIAS_AR = {
        siempre si dependieran de esa clase. */
     return '<a class="ev-card" href="/agenda/evento/?id='+encodeURIComponent(slug(e.title))+'">'+
       '<div class="ev-card-media" style="background-image:url('+IMAGENES[i % IMAGENES.length]+')">'+
-        '<span class="ev-card-date"><b>'+d.getDate()+(multi?'–'+dEnd.getDate():'')+'</b><span>'+MES_ABR[d.getMonth()]+'</span></span>'+
+        '<span class="ev-card-date">'+(multi
+          ? '<b class="ev-date-range">'+d.getDate()+'<i>al</i>'+dEnd.getDate()+'</b>'
+          : '<b>'+d.getDate()+'</b>')+'<span>'+MES_ABR[d.getMonth()]+'</span></span>'+
         '<span class="ev-card-cat" style="background:'+rubro.color+'">'+esc(rubro.label)+'</span>'+
       '</div>'+
       '<div class="ev-card-body">'+

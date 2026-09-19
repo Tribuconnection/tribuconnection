@@ -339,7 +339,7 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .footer{ border-top:1px solid var(--line); padding-block:clamp(56px,8vw,84px) 40px; position:relative; z-index:1; }
 .footer-grid{ display:grid; grid-template-columns:1.3fr 1fr; gap:3rem; align-items:start; }
 .footer-logo img{ width:170px; max-width:60%; height:auto; margin-bottom:1.4rem; }
-.footer-tag{ font-family:var(--font-display); font-style:italic; font-size:1.25rem; color:var(--cream); max-width:none; white-space:nowrap; }
+.footer-tag{ font-family:var(--font-display); font-style:italic; font-size:1.05rem; color:var(--cream); max-width:none; white-space:nowrap; margin-bottom:.3rem; }
 .footer-right{ display:flex; flex-direction:column; gap:1.4rem; }
 .footer-right .col-cap{ font-size:.76rem; letter-spacing:.2em; text-transform:uppercase; color:var(--muted); margin-bottom:.4rem; }
 .socials{ display:flex; flex-wrap:wrap; gap:.7rem; }
@@ -490,11 +490,15 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .cal-dots i{ width:5px; height:5px; border-radius:50%; }
 .cal-list{ display:flex; flex-direction:column; gap:.8rem; }
 .cal-list h3{ font-family:var(--font-display); font-size:1.15rem; margin-bottom:.1rem; }
-.ev{ display:flex; gap:.75rem; padding:.65rem .85rem; border:1px solid var(--line); border-radius:14px; background:var(--ink-1); transition:.2s; text-decoration:none; color:inherit; }
+.ev{ display:flex; align-items:center; gap:.75rem; padding:.65rem .85rem; border:1px solid var(--line); border-radius:14px; background:var(--ink-1); transition:.2s; text-decoration:none; color:inherit; }
 .ev:hover{ border-color:var(--line-2); background:var(--ink-2); }
 .ev-date{ flex:none; width:44px; text-align:center; }
 .ev-date b{ display:block; font-family:var(--font-display); font-size:1.4rem; line-height:1; color:var(--cream); }
 .ev-date span{ font-size:.68rem; text-transform:uppercase; letter-spacing:.07em; color:var(--muted); }
+/* Evento de varios días: en vez de "20–24" apretado en 44px de ancho,
+   lo apilamos en 3 renglones cortos, todo centrado. */
+.ev-date b.ev-date-range{ font-size:1.05rem; line-height:1.15; }
+.ev-date b.ev-date-range i{ display:block; font-style:normal; font-size:.6rem; font-family:var(--font-sans); font-weight:400; color:var(--muted); text-transform:lowercase; line-height:1.4; }
 .ev-body{ flex:1; min-width:0; }
 .ev-cat{ display:inline-flex; align-items:center; gap:.4rem; font-size:.7rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:.15rem; }
 .ev-cat i{ width:7px; height:7px; border-radius:50%; }
