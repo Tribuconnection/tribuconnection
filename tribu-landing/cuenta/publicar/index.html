@@ -18,7 +18,7 @@
   .modalidad-toggle{ display:flex; gap:.6rem; margin-bottom:.2rem; }
   .modalidad-toggle button{ flex:1; padding:.7rem; border-radius:14px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); cursor:pointer; font-family:var(--font-sans); font-weight:600; font-size:.88rem; }
   .modalidad-toggle button.active{ background:var(--spectrum); color:#15110f; border-color:transparent; }
-  #mapaPublicar{ height:260px; border-radius:16px; margin-top:.6rem; }
+  #mapaPublicar{ height:200px; border-radius:16px; margin-top:.6rem; }
   .sin-perfil{ text-align:center; padding:2rem 1rem; }
 </style>
 </head>
@@ -61,26 +61,27 @@
 
     <div id="conPerfil" class="tribu-card reveal d2" style="display:none">
       <form id="formPublicar">
-        <div class="field">
-          <label for="nombre">Nombre de la experiencia</label>
-          <input id="nombre" required placeholder="Ej: Círculo de sonido y meditación">
-        </div>
-
-        <div class="field">
-          <label for="tipo">Tipo de experiencia</label>
-          <select id="tipo" required>
-            <option value="Taller">Taller</option>
-            <option value="Retiro">Retiro</option>
-            <option value="Ceremonia">Ceremonia</option>
-            <option value="Concierto">Concierto</option>
-            <option value="Encuentro">Encuentro</option>
-            <option value="Otro">Otro</option>
-          </select>
+        <div class="row2">
+          <div class="field">
+            <label for="nombre">Nombre de la experiencia</label>
+            <input id="nombre" required placeholder="Ej: Círculo de sonido y meditación">
+          </div>
+          <div class="field">
+            <label for="tipo">Tipo de experiencia</label>
+            <select id="tipo" required>
+              <option value="Taller">Taller</option>
+              <option value="Retiro">Retiro</option>
+              <option value="Ceremonia">Ceremonia</option>
+              <option value="Concierto">Concierto</option>
+              <option value="Encuentro">Encuentro</option>
+              <option value="Otro">Otro</option>
+            </select>
+          </div>
         </div>
 
         <div class="field">
           <label for="descripcion">Descripción breve</label>
-          <textarea id="descripcion" maxlength="300" required placeholder="¿De qué se trata? ¿Qué se van a llevar los participantes?"></textarea>
+          <textarea id="descripcion" maxlength="300" required style="min-height:56px" placeholder="¿De qué se trata? ¿Qué se van a llevar los participantes?"></textarea>
           <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="descCount">0</span> / 300</p>
         </div>
 
@@ -134,7 +135,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js"></script>
+<script src="/assets/supabase-client.js?v=2"></script>
 <script src="/assets/site.js?v=5"></script>
 <script>
 (function(){

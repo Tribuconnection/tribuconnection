@@ -3,15 +3,10 @@
  *
  * Cada formulario deja su información en SU PROPIA pestaña, nombrada según
  * de dónde viene:
- *   - "Solicitar agregar evento"       -> pestaña "Eventos"
- *   - "Sumate a la Tribu" · Cafecito    -> pestaña "Cafecito"
- *   - "Sumate a la Tribu" · Tribu Plus  -> pestaña "Tribu Plus"
- *   - "Conectarme a la Tribu"           -> pestaña "Conectarme a la Tribu"
- *   - "Propuesta a medida"              -> pestaña "Propuestas"
- *
- * (El formulario de sumarse es uno solo; se separa por el plan elegido.
- *  Cualquier plan que no sea Cafecito —incluido "General"— va a "Tribu Plus";
- *  la columna "Plan" de esa pestaña dice cuál fue exactamente.)
+ *   - "Solicitar agregar evento"      -> pestaña "Eventos"
+ *   - "Ser parte del Club Tribu"      -> pestaña "Club Tribu"
+ *   - "Conectarme a la Tribu"         -> pestaña "Conectarme a la Tribu"
+ *   - "Propuesta a medida"            -> pestaña "Propuestas"
  *
  * Cada envío avisa por mail a contacto@tribuconnection.com.
  *
@@ -21,18 +16,18 @@
 const NOTIFY_EMAIL = 'contacto@tribuconnection.com';
 
 /* Una pestaña por destino, con el nombre de dónde viene la info y sus propias columnas. */
-const JOIN_HEADERS = ['Fecha de envío', 'Nombre', 'Rubro', 'Perfil', 'Plan', 'Contacto', 'Detalles'];
 const TABS = {
   Evento:    { name: 'Eventos',               headers: ['Fecha de envío', 'Evento', 'Rubro', 'Fecha del evento', 'Ubicación', 'Lat', 'Lng', 'Etiquetas', 'Descripción', 'Link fotos/video', 'Adjuntos'] },
-  Cafecito:  { name: 'Cafecito',              headers: JOIN_HEADERS },
-  TribuPlus: { name: 'Tribu Plus',            headers: JOIN_HEADERS },
+  Join:      { name: 'Club Tribu',            headers: ['Fecha de envío', 'Nombre', 'Ciudad / Barrio', 'Contacto', 'Newsletter'] },
   Conectar:  { name: 'Conectarme a la Tribu',  headers: ['Fecha de envío', 'Nombre', 'Perfil', 'Marca / Proyecto / Evento', 'Contacto', 'Detalles', 'Fecha de nacimiento', 'Provincia', 'Ciudad'] },
   Propuesta: { name: 'Propuestas',             headers: ['Fecha de envío', 'Nombre', 'Marca / Evento', 'Contacto', 'Detalles'] },
   Externo:   { name: 'Formulario externo',     headers: ['Fecha de envío', 'Nombre completo', 'Correo electrónico', 'Instagram', 'WhatsApp', 'Propuesta', 'Fecha y lugar del evento', 'Ayuda'] }
 };
 
-/* Pestañas que quedaron de esquemas anteriores y ya no se usan. */
-const PESTANAS_OBSOLETAS = ['Formularios', 'Tribu Pass', 'Sumate a la Tribu'];
+/* Pestañas que quedaron de esquemas anteriores y ya no se usan (el sitio ya no
+   tiene planes pagos separados "Cafecito" / "Tribu Plus" — ahora es un único
+   "Club Tribu"). limpiarPestanasObsoletas() las borra SOLO si están vacías. */
+const PESTANAS_OBSOLETAS = ['Formularios', 'Tribu Pass', 'Sumate a la Tribu', 'Cafecito', 'Tribu Plus'];
 
 /** Ejecutar una sola vez desde el editor para crear la planilla y sus pestañas. */
 function setup() {
@@ -119,13 +114,11 @@ function handleEvento_(ss, e) {
 }
 
 function handleJoin_(ss, e) {
-  const plan = (e.parameter.Plan || 'General').trim();
-  const key = plan === 'Cafecito' ? 'Cafecito' : 'TribuPlus';
   const row = [
-    new Date(), e.parameter.Nombre || '', e.parameter.Rubro || '',
-    e.parameter.Perfil || '', plan, e.parameter.Contacto || '', e.parameter.Detalles || ''
+    new Date(), e.parameter.Nombre || '', e.parameter.Ciudad_Barrio || '',
+    e.parameter.Contacto || '', e.parameter.Newsletter || 'No'
   ];
-  agregarFila_(ss, key, row, 'Nuevo "Sumate a la Tribu" (' + plan + '): ' + (e.parameter.Nombre || '(sin nombre)'));
+  agregarFila_(ss, 'Join', row, 'Nuevo "Sumate al Club Tribu": ' + (e.parameter.Nombre || '(sin nombre)'));
   return respond_({ ok: true });
 }
 

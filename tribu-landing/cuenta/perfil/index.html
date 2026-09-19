@@ -68,9 +68,15 @@
           </div>
         </div>
 
-        <div class="field">
-          <label for="nombre">Nombre y apellido</label>
-          <input id="nombre" required placeholder="Ej: Noelia López">
+        <div class="row2">
+          <div class="field">
+            <label for="nombre">Nombre y apellido</label>
+            <input id="nombre" required placeholder="Ej: Noelia López">
+          </div>
+          <div class="field">
+            <label for="ciudad">Ciudad</label>
+            <input id="ciudad" placeholder="Ej: Buenos Aires, Argentina">
+          </div>
         </div>
 
         <div class="field" id="campoMarca" style="display:none">
@@ -101,13 +107,8 @@
         </div>
 
         <div class="field">
-          <label for="ciudad">Ciudad</label>
-          <input id="ciudad" placeholder="Ej: Buenos Aires, Argentina">
-        </div>
-
-        <div class="field">
           <label for="miniBio">Mini bio</label>
-          <textarea id="miniBio" maxlength="500" placeholder="Contanos brevemente quién sos, qué hacés y qué te inspira a compartir."></textarea>
+          <textarea id="miniBio" maxlength="500" style="min-height:56px" placeholder="Contanos brevemente quién sos, qué hacés y qué te inspira a compartir."></textarea>
           <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="bioCount">0</span> / 500</p>
         </div>
 
@@ -123,14 +124,13 @@
     </div>
 
     <p style="color:var(--muted);font-size:.84rem;margin-top:1.2rem">
-      🎪 Programa para Creadores / Marcas Aliadas: $25.000/mes, con presencia en agenda, perfil digital y beneficios del Club Tribu.
-      Guardá tu perfil primero — para activar el plan pago te contactamos por WhatsApp o mail para coordinar el pago (todavía no procesamos suscripciones automáticas).
+      🎪 Programa para Creadores / Marcas Aliadas: $25.000/mes. Guardá tu perfil primero — para activar el plan te contactamos por WhatsApp o mail.
     </p>
   </div>
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js"></script>
+<script src="/assets/supabase-client.js?v=2"></script>
 <script src="/assets/site.js?v=5"></script>
 <script>
 (function(){

@@ -52,7 +52,6 @@
     <a href="/red-tribu/">Red Tribu</a>
     <a href="#historias">Historias</a>
     <a href="/club-tribu-connection/">Club Tribu</a>
-    <a href="/cuenta/">Mi cuenta</a>
     <a href="#" data-connect>Sumá tu propuesta</a>
   </div>
   <div class="nav-cta">
@@ -61,6 +60,7 @@
       <input type="text" placeholder="Buscar en Tribu" aria-label="Buscar en Tribu" class="nav-search-input">
       <div class="nav-search-results"></div>
     </label>
+    <a href="#" class="btn btn--ghost" data-auth-nav data-auth><span data-auth-label>Ingresar</span></a>
     <a href="#" class="btn btn--spectrum btn--icon" data-connect>
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/></svg>
       Sumate
@@ -78,8 +78,8 @@
   <a href="/red-tribu/">Red Tribu</a>
   <a href="#historias">Historias</a>
   <a href="/club-tribu-connection/">Club Tribu</a>
-  <a href="/cuenta/">Mi cuenta</a>
   <a href="#" data-connect>Sumá tu propuesta</a>
+  <a href="#" class="btn btn--ghost" data-auth-nav data-auth><span data-auth-label>Ingresar</span></a>
   <a href="#" class="btn btn--spectrum" data-connect>Sumate a Tribu</a>
 </div>
 
@@ -625,6 +625,52 @@
   </div>
 </footer>
 
+<!-- ===================== MODAL INGRESAR / CREAR CUENTA ===================== -->
+<div class="modal-overlay" id="authModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="modal-close" id="authClose" aria-label="Cerrar">✕</button>
+    <div class="tab-row" id="authTabs" style="margin:0 0 1.2rem">
+      <button type="button" class="tab-btn active" data-tab="ingresar">Ingresar</button>
+      <button type="button" class="tab-btn" data-tab="crear">Crear cuenta</button>
+    </div>
+    <div id="authPanelIngresar">
+      <h2 id="authTitle" style="font-size:1.3rem;margin-bottom:.4rem">Ingresar</h2>
+      <p class="modal-sub">Entrá con tu cuenta para editar tu perfil o publicar una experiencia.</p>
+      <form id="authFormIngresar">
+        <div class="field">
+          <label for="authInEmail">Correo electrónico</label>
+          <input id="authInEmail" type="email" required placeholder="tu@email.com">
+        </div>
+        <div class="field">
+          <label for="authInPass">Contraseña</label>
+          <input id="authInPass" type="password" required placeholder="Tu contraseña">
+        </div>
+        <p class="field-error" id="authInError" style="display:none"></p>
+        <button type="submit" class="btn btn--spectrum" style="width:100%;justify-content:center" id="authInBtn">Ingresar</button>
+      </form>
+    </div>
+    <div id="authPanelCrear" style="display:none">
+      <h2 style="font-size:1.3rem;margin-bottom:.4rem">Ser parte de la Tribu</h2>
+      <p class="modal-sub">Creá tu cuenta para armar tu perfil de creador/a o marca y publicar tus experiencias.</p>
+      <form id="authFormCrear">
+        <div class="field">
+          <label for="authCrEmail">Correo electrónico</label>
+          <input id="authCrEmail" type="email" required placeholder="tu@email.com">
+        </div>
+        <div class="field">
+          <label for="authCrPass">Contraseña</label>
+          <input id="authCrPass" type="password" required minlength="6" placeholder="Mínimo 6 caracteres">
+        </div>
+        <p class="field-error" id="authCrError" style="display:none"></p>
+        <button type="submit" class="btn btn--spectrum" style="width:100%;justify-content:center" id="authCrBtn">Crear cuenta</button>
+      </form>
+      <div class="modal-msg" id="authCrMsg" style="display:none">¡Listo! Revisá tu correo para confirmar la cuenta y después iniciá sesión.</div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="/assets/supabase-client.js?v=2"></script>
 <script src="/assets/site.js?v=5"></script>
 <script defer src="/assets/tribu-chat.js?v=2"></script>
 </body>

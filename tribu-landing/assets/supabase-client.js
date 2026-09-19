@@ -36,3 +36,85 @@ async function tribuRequiereSesion(){
   }
   return session;
 }
+
+/* Botón de nav [data-auth-nav]: "Ingresar" (abre el modal) si no hay sesión,
+   "Mi cuenta" (va al perfil) si ya está logueado. Se llama en cada página. */
+async function tribuInitAuthNav(){
+  const session = await tribuSesionActual();
+  document.querySelectorAll('[data-auth-nav]').forEach(btn => {
+    const label = btn.querySelector('[data-auth-label]') || btn;
+    if(session){
+      label.textContent = 'Mi cuenta';
+      btn.setAttribute('href', '/cuenta/perfil/');
+      btn.removeAttribute('data-auth');
+    } else {
+      label.textContent = 'Ingresar';
+      btn.setAttribute('href', '#');
+      btn.setAttribute('data-auth', '');
+    }
+  });
+}
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', tribuInitAuthNav);
+} else {
+  tribuInitAuthNav();
+}
+
+/* Modal de login/registro embebido en el nav (mismo patrón que los demás
+   modales del sitio: overlay .open + disparadores [data-auth] delegados). */
+(function(){
+  const overlay = document.getElementById('authModal');
+  if(!overlay) return;
+  const tabs = overlay.querySelectorAll('#authTabs .tab-btn');
+  const panelCrear = document.getElementById('authPanelCrear');
+  const panelIngresar = document.getElementById('authPanelIngresar');
+
+  function mostrarTab(tab){
+    tabs.forEach(x => x.classList.toggle('active', x.dataset.tab === tab));
+    panelCrear.style.display = tab === 'crear' ? '' : 'none';
+    panelIngresar.style.display = tab === 'ingresar' ? '' : 'none';
+  }
+  tabs.forEach(t => t.addEventListener('click', () => mostrarTab(t.dataset.tab)));
+
+  const open = () => { overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
+  const close = () => { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('[data-auth]');
+    if(!trigger) return;
+    e.preventDefault();
+    mostrarTab('ingresar');
+    open();
+  });
+  document.getElementById('authClose').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if(e.target === overlay) close(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+
+  document.getElementById('authFormCrear').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = document.getElementById('authCrError'); err.style.display = 'none';
+    const btn = document.getElementById('authCrBtn'); btn.textContent = 'Creando...'; btn.disabled = true;
+    const email = document.getElementById('authCrEmail').value.trim();
+    const password = document.getElementById('authCrPass').value;
+    const { data, error } = await sb.auth.signUp({ email, password });
+    btn.textContent = 'Crear cuenta'; btn.disabled = false;
+    if(error){ err.textContent = error.message; err.style.display = 'block'; return; }
+    if(data.session){
+      window.location.href = '/cuenta/perfil/';
+    } else {
+      document.getElementById('authFormCrear').style.display = 'none';
+      document.getElementById('authCrMsg').style.display = 'block';
+    }
+  });
+
+  document.getElementById('authFormIngresar').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = document.getElementById('authInError'); err.style.display = 'none';
+    const btn = document.getElementById('authInBtn'); btn.textContent = 'Ingresando...'; btn.disabled = true;
+    const email = document.getElementById('authInEmail').value.trim();
+    const password = document.getElementById('authInPass').value;
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    btn.textContent = 'Ingresar'; btn.disabled = false;
+    if(error){ err.textContent = 'Email o contraseña incorrectos.'; err.style.display = 'block'; return; }
+    window.location.href = '/cuenta/perfil/';
+  });
+})();
