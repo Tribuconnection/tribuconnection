@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aprobar eventos · Tribu Connection</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/assets/isotipo.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/tribu.css?v=20">
+<link rel="stylesheet" href="/assets/home.css?v=4">
+<style>
+  .sol-card{ display:grid; grid-template-columns:1fr auto; gap:1rem; align-items:start; padding:1.2rem 1.4rem; border-bottom:1px solid var(--line); }
+  .sol-card:last-child{ border-bottom:none; }
+  .sol-titulo{ font-weight:600; font-size:1.02rem; margin-bottom:.2rem; }
+  .sol-meta{ color:var(--soft); font-size:.86rem; margin-bottom:.4rem; }
+  .sol-desc{ color:var(--muted); font-size:.86rem; line-height:1.5; }
+  .sol-tag{ display:inline-block; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; padding:.2rem .55rem; border-radius:999px; background:var(--ink-2); color:var(--soft); margin-right:.4rem; }
+  .sol-acciones{ display:flex; flex-direction:column; gap:.5rem; min-width:120px; }
+  .sol-acciones .btn{ padding:.55em 1em; font-size:.85rem; justify-content:center; }
+  .tab-row .tab-btn .cont-badge{ margin-left:.4rem; background:var(--ink-3); border-radius:999px; padding:.05rem .5rem; font-size:.72rem; }
+</style>
+</head>
+<body>
+
+<div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+
+<nav class="nav" id="nav">
+  <a href="/" class="brand" aria-label="Tribu Connection — inicio">
+    <img class="brand-full" src="/assets/logo-blanco.png?v=1" alt="Tribu Connection">
+  </a>
+  <div class="nav-links">
+    <a href="/">Inicio</a>
+    <a href="/agenda/">Agenda</a>
+    <a href="/cuenta/perfil/">Mi perfil</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" id="btnLogout" class="btn btn--ghost">Cerrar sesión</a>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Inicio</a>
+  <a href="/agenda/">Agenda</a>
+  <a href="/cuenta/perfil/">Mi perfil</a>
+  <a href="#" id="btnLogoutMobile" class="btn btn--ghost">Cerrar sesión</a>
+</div>
+
+<section class="section" style="padding-top:clamp(110px,14vw,140px)">
+  <div class="wrap" style="max-width:760px">
+    <p class="eyebrow reveal">Panel del equipo</p>
+    <h1 class="h2 reveal d1" style="margin:1rem 0 1.6rem">Aprobar eventos</h1>
+
+    <div id="sinAcceso" class="tribu-card" style="display:none;text-align:center">
+      <p style="color:var(--soft)">Esta sección es solo para el equipo de Tribu Connection. Tu cuenta no tiene acceso.</p>
+    </div>
+
+    <div id="panelAdmin" style="display:none">
+      <div class="tab-row" id="estadoTabs" style="margin-bottom:1.2rem">
+        <button type="button" class="tab-btn active" data-estado="pendiente">Pendientes</button>
+        <button type="button" class="tab-btn" data-estado="aprobado">Aprobados</button>
+        <button type="button" class="tab-btn" data-estado="rechazado">Rechazados</button>
+      </div>
+      <div class="tribu-card" style="padding:0" id="listaSolicitudes">
+        <p style="padding:1.4rem;color:var(--muted)">Cargando...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="/assets/supabase-client.js?v=3"></script>
+<script src="/assets/site.js?v=5"></script>
+<script>
+(function(){
+  const RUBRO_LABEL = {
+    festivales:'Festivales', ferias:'Ferias', artisticos:'Artísticos',
+    holistico:'Holístico & Bienestar', musica:'Música & Danza', talleres:'Talleres'
+  };
+  const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const esc = s => String(s || '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  function cerrarSesion(e){ e.preventDefault(); tribuCerrarSesion(); }
+  document.getElementById('btnLogout').addEventListener('click', cerrarSesion);
+  document.getElementById('btnLogoutMobile').addEventListener('click', cerrarSesion);
+
+  let estadoActual = 'pendiente';
+  const lista = document.getElementById('listaSolicitudes');
+  const tabs = document.querySelectorAll('#estadoTabs .tab-btn');
+
+  async function cargar(){
+    lista.innerHTML = '<p style="padding:1.4rem;color:var(--muted)">Cargando...</p>';
+    const { data, error } = await sb.from('event_submissions').select('*').eq('estado', estadoActual).order('created_at', { ascending:false });
+    if(error){ lista.innerHTML = '<p style="padding:1.4rem;color:var(--red)">No se pudo cargar: '+esc(error.message)+'</p>'; return; }
+    if(!data.length){ lista.innerHTML = '<p style="padding:1.4rem;color:var(--muted)">No hay solicitudes en este estado.</p>'; return; }
+    lista.innerHTML = data.map(s=>{
+      const d = new Date(s.fecha+'T00:00');
+      const fechaTxt = isNaN(d) ? '' : d.getDate()+' de '+MESES[d.getMonth()];
+      const acciones = estadoActual === 'pendiente'
+        ? '<button class="btn btn--spectrum" data-aprobar="'+s.id+'">Aprobar</button><button class="btn btn--ghost" data-rechazar="'+s.id+'">Rechazar</button>'
+        : (estadoActual === 'rechazado' ? '<button class="btn btn--ghost" data-aprobar="'+s.id+'">Aprobar igual</button>' : '<button class="btn btn--ghost" data-rechazar="'+s.id+'">Quitar de la agenda</button>');
+      return '<div class="sol-card">'+
+        '<div>'+
+          '<div class="sol-titulo">'+esc(s.nombre)+'</div>'+
+          '<div class="sol-meta"><span class="sol-tag">'+esc(RUBRO_LABEL[s.rubro] || s.rubro)+'</span>'+fechaTxt+(s.hora ? ' · '+esc(s.hora) : '')+(s.lugar ? ' · 📍 '+esc(s.lugar) : '')+'</div>'+
+          (s.descripcion ? '<div class="sol-desc">'+esc(s.descripcion)+'</div>' : '')+
+        '</div>'+
+        '<div class="sol-acciones">'+acciones+'</div>'+
+      '</div>';
+    }).join('');
+  }
+
+  lista.addEventListener('click', async e=>{
+    const btnAprobar = e.target.closest('[data-aprobar]');
+    const btnRechazar = e.target.closest('[data-rechazar]');
+    const id = btnAprobar ? btnAprobar.dataset.aprobar : (btnRechazar ? btnRechazar.dataset.rechazar : null);
+    if(!id) return;
+    const nuevoEstado = btnAprobar ? 'aprobado' : 'rechazado';
+    const { error } = await sb.from('event_submissions').update({ estado: nuevoEstado }).eq('id', id);
+    if(error){ alert('No se pudo actualizar: ' + error.message); return; }
+    cargar();
+  });
+
+  tabs.forEach(t => t.addEventListener('click', ()=>{
+    tabs.forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+    estadoActual = t.dataset.estado;
+    cargar();
+  }));
+
+  (async () => {
+    const session = await tribuRequiereSesion();
+    if(!session) return;
+    if(!tribuEsAdmin(session)){
+      document.getElementById('sinAcceso').style.display = 'block';
+      return;
+    }
+    document.getElementById('panelAdmin').style.display = 'block';
+    cargar();
+  })();
+})();
+</script>
+</body>
+</html>

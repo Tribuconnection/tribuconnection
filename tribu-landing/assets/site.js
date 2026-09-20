@@ -123,6 +123,30 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   window.TRIBU_RUBROS = RUBROS;
   window.TRIBU_SLUG = slugEvent;
 
+  /* Eventos aprobados desde el panel de moderación (Supabase): se suman acá,
+     en TODAS las páginas (no solo la Agenda), porque el home también lee
+     window.TRIBU_EVENTS para "Este finde en Tribu". Un evento de varios días
+     queda como una fila por día, igual que los cargados a mano arriba, para
+     reusar toda la lógica existente de agrupamiento por título. */
+  (async function cargarEventosAprobados(){
+    if(typeof sb === 'undefined') return;
+    const { data, error } = await sb.from('event_submissions').select('*').eq('estado', 'aprobado');
+    if(error || !data || !data.length) return;
+    const iso = d => d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+    data.forEach(ev=>{
+      const inicio = new Date(ev.fecha+'T00:00');
+      const fin = ev.fecha_fin ? new Date(ev.fecha_fin+'T00:00') : inicio;
+      for(let d = new Date(inicio); d <= fin; d.setDate(d.getDate()+1)){
+        EVENTS.push({
+          date: iso(d), title: ev.nombre, place: ev.lugar || '', time: ev.hora || '',
+          rubro: ev.rubro, status: 'Confirmado', url: ev.url || '',
+          lat: ev.lat!=null ? Number(ev.lat) : null, lng: ev.lng!=null ? Number(ev.lng) : null
+        });
+      }
+    });
+    document.dispatchEvent(new CustomEvent('tribu:events-updated'));
+  })();
+
   const daysEl = document.getElementById('calDays');
   const listEl = document.getElementById('calList');
   const monthEl = document.getElementById('calMonth');
@@ -144,11 +168,15 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
      día (el único que se muestra/clickea en el calendario) y el último (para
      mostrar "hasta el ..."), en vez de listarlo repetido día por día. */
   const RANGO = {};
-  EVENTS.forEach(e=>{
-    const g = RANGO[e.title];
-    if(!g) RANGO[e.title] = { start:e.date, end:e.date };
-    else { if(e.date < g.start) g.start = e.date; if(e.date > g.end) g.end = e.date; }
-  });
+  function computeRango(){
+    Object.keys(RANGO).forEach(k => delete RANGO[k]);
+    EVENTS.forEach(e=>{
+      const g = RANGO[e.title];
+      if(!g) RANGO[e.title] = { start:e.date, end:e.date };
+      else { if(e.date < g.start) g.start = e.date; if(e.date > g.end) g.end = e.date; }
+    });
+  }
+  computeRango();
   const esInicio = e => e.date === RANGO[e.title].start;
   function fmtRango(e){
     const { start, end } = RANGO[e.title];
@@ -288,6 +316,14 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   document.getElementById('calNext').addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); render(); });
   document.getElementById('calToday').addEventListener('click', ()=>{ view=new Date(today.getFullYear(),today.getMonth(),1); selected=null; render(); renderList(); });
   renderFilters(); render(); renderList();
+
+  /* Si cargarEventosAprobados() (definida arriba) suma eventos nuevos al
+     array EVENTS, volvemos a dibujar todo el calendario con los datos ya
+     completos. */
+  document.addEventListener('tribu:events-updated', ()=>{
+    computeRango();
+    renderFilters(); render(); renderList(); renderMap();
+  });
 })();
 
 /* ============ PROVINCIAS Y CIUDADES (Argentina) ============ */
@@ -470,6 +506,22 @@ const PROVINCIAS_AR = {
     const btn = document.getElementById('evSubmit');
     btn.textContent='Enviando...'; btn.disabled=true;
     const fd = new FormData(evForm);
+    /* Además del mail (Sheets), guardamos la solicitud en Supabase para que el
+       equipo la apruebe desde el panel en vez de editar código a mano. Si esto
+       falla no frenamos el envío: el mail de aviso sigue siendo el respaldo. */
+    if(typeof sb !== 'undefined'){
+      sb.from('event_submissions').insert({
+        nombre: fd.get('Evento') || '',
+        rubro: fd.get('Rubro') || 'talleres',
+        fecha: fd.get('Fecha') || null,
+        lugar: fd.get('Ubicacion') || null,
+        lat: fd.get('Ubicacion_lat') || null,
+        lng: fd.get('Ubicacion_lng') || null,
+        etiquetas: fd.get('Etiquetas') || null,
+        descripcion: fd.get('Descripcion') || null,
+        link_media: fd.get('Link_media') || null
+      }).then(({error})=>{ if(error) console.warn('event_submissions insert:', error.message); });
+    }
     try{
       await enviarASheets(fd, 'Evento');
       evForm.style.display='none'; evMsg.style.display='block';
@@ -770,54 +822,58 @@ const PROVINCIAS_AR = {
 (function(){
   const row = document.getElementById('homeAgendaRow');
   if(!row) return;
-  const EVENTS = window.TRIBU_EVENTS || [];
   const RUBROS = window.TRIBU_RUBROS || {};
   const slug = window.TRIBU_SLUG || (s => String(s));
   const MES_ABR = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const today = new Date(); today.setHours(0,0,0,0);
-
-  const grupos = {};
-  EVENTS.forEach(e=>{
-    const g = grupos[e.title];
-    if(!g) grupos[e.title] = { start:e.date, end:e.date, ev:e };
-    else { if(e.date < g.start) g.start = e.date; if(e.date > g.end) g.end = e.date; }
-  });
-  const proximos = Object.values(grupos)
-    .filter(g => new Date(g.end+'T00:00') >= today)
-    .sort((a,b) => a.start.localeCompare(b.start))
-    .slice(0, 4);
-
-  if(!proximos.length){
-    const section = row.closest('section');
-    if(section) section.style.display = 'none';
-    return;
-  }
-
   /* No tenemos foto propia por evento todavía: rotamos fotos reales de la Tribu
      ya usadas en el resto del sitio, en vez de inventar datos. */
   const IMAGENES = ['/assets/reels/reel1.jpg', '/assets/stories/musica-en-vivo.jpg', '/assets/reels/reel3.jpg', '/assets/stories/conciencia-festival.jpg'];
 
-  row.innerHTML = proximos.map((g, i) => {
-    const e = g.ev;
-    const rubro = RUBROS[e.rubro] || { label: e.rubro, color: '#8A8D98' };
-    const d = new Date(g.start+'T00:00');
-    const dEnd = new Date(g.end+'T00:00');
-    const multi = g.start !== g.end;
-    /* Sin clase "reveal": se agregan al DOM después de que el observer de
-       animaciones de entrada ya corrió, así que quedarían en opacity:0 para
-       siempre si dependieran de esa clase. */
-    return '<a class="ev-card" href="/agenda/evento/?id='+encodeURIComponent(slug(e.title))+'">'+
-      '<div class="ev-card-media" style="background-image:url('+IMAGENES[i % IMAGENES.length]+')">'+
-        '<span class="ev-card-date">'+(multi
-          ? '<b class="ev-date-range">'+d.getDate()+'<i>al</i>'+dEnd.getDate()+'</b>'
-          : '<b>'+d.getDate()+'</b>')+'<span>'+MES_ABR[d.getMonth()]+'</span></span>'+
-        '<span class="ev-card-cat" style="background:'+rubro.color+'">'+esc(rubro.label)+'</span>'+
-      '</div>'+
-      '<div class="ev-card-body">'+
-        '<h3>'+esc(e.title)+'</h3>'+
-        '<p class="ev-card-loc">📍 '+esc(e.place||'')+'</p>'+
-      '</div>'+
-    '</a>';
-  }).join('');
+  function pintar(){
+    const EVENTS = window.TRIBU_EVENTS || [];
+    const grupos = {};
+    EVENTS.forEach(e=>{
+      const g = grupos[e.title];
+      if(!g) grupos[e.title] = { start:e.date, end:e.date, ev:e };
+      else { if(e.date < g.start) g.start = e.date; if(e.date > g.end) g.end = e.date; }
+    });
+    const proximos = Object.values(grupos)
+      .filter(g => new Date(g.end+'T00:00') >= today)
+      .sort((a,b) => a.start.localeCompare(b.start))
+      .slice(0, 4);
+
+    const section = row.closest('section');
+    if(!proximos.length){
+      if(section) section.style.display = 'none';
+      return;
+    }
+    if(section) section.style.display = '';
+
+    row.innerHTML = proximos.map((g, i) => {
+      const e = g.ev;
+      const rubro = RUBROS[e.rubro] || { label: e.rubro, color: '#8A8D98' };
+      const d = new Date(g.start+'T00:00');
+      const dEnd = new Date(g.end+'T00:00');
+      const multi = g.start !== g.end;
+      /* Sin clase "reveal": se agregan al DOM después de que el observer de
+         animaciones de entrada ya corrió, así que quedarían en opacity:0 para
+         siempre si dependieran de esa clase. */
+      return '<a class="ev-card" href="/agenda/evento/?id='+encodeURIComponent(slug(e.title))+'">'+
+        '<div class="ev-card-media" style="background-image:url('+IMAGENES[i % IMAGENES.length]+')">'+
+          '<span class="ev-card-date">'+(multi
+            ? '<b class="ev-date-range">'+d.getDate()+'<i>al</i>'+dEnd.getDate()+'</b>'
+            : '<b>'+d.getDate()+'</b>')+'<span>'+MES_ABR[d.getMonth()]+'</span></span>'+
+          '<span class="ev-card-cat" style="background:'+rubro.color+'">'+esc(rubro.label)+'</span>'+
+        '</div>'+
+        '<div class="ev-card-body">'+
+          '<h3>'+esc(e.title)+'</h3>'+
+          '<p class="ev-card-loc">📍 '+esc(e.place||'')+'</p>'+
+        '</div>'+
+      '</a>';
+    }).join('');
+  }
+  pintar();
+  document.addEventListener('tribu:events-updated', pintar);
 })();

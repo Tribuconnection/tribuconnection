@@ -52,6 +52,11 @@
     <p class="eyebrow reveal">Mi perfil</p>
     <h1 class="h2 reveal d1" style="margin:1rem 0 1.6rem">Tu perfil en la Red Tribu</h1>
 
+    <a href="/cuenta/admin-eventos/" id="linkAdminEventos" class="tribu-card reveal d1" style="display:none;margin-bottom:1.2rem;padding:1rem 1.4rem;text-decoration:none;color:inherit;align-items:center;justify-content:space-between;gap:1rem">
+      <span>🛠️ <b>Panel del equipo</b> — aprobar o rechazar eventos enviados por la comunidad</span>
+      <span class="arr">→</span>
+    </a>
+
     <div class="tribu-card reveal d2">
       <div class="tipo-toggle">
         <button type="button" data-tipo="creador" class="active">Soy creador/a</button>
@@ -130,7 +135,7 @@
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=2"></script>
+<script src="/assets/supabase-client.js?v=3"></script>
 <script src="/assets/site.js?v=5"></script>
 <script>
 (function(){
@@ -241,6 +246,7 @@
   (async () => {
     session = await tribuRequiereSesion();
     if(!session) return;
+    if(tribuEsAdmin(session)) document.getElementById('linkAdminEventos').style.display = 'flex';
     document.getElementById('email').value = session.user.email;
     await cargarPerfilExistente();
   })();
