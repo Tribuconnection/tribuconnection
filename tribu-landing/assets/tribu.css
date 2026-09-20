@@ -342,7 +342,7 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .cta-box h2{ max-width:16ch; margin-bottom:1rem; font-size:clamp(1.9rem,3.8vw,2.8rem); }
 .cta-box .lead{ max-width:54ch; margin-bottom:1.7rem; }
 .cta-box::after{
-  content:""; position:absolute; top:50%; right:-2vw; transform:translateY(-50%);
+  content:""; position:absolute; top:50%; right:min(110px,8vw); transform:translateY(-50%);
   width:min(260px,22vw); height:min(260px,22vw);
   background:url(/assets/isotipo.png?v=2) no-repeat center/contain;
   opacity:.16; pointer-events:none;
