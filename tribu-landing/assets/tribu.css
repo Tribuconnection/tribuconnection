@@ -653,6 +653,8 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .chips.is-invalid .chip span{ border-color:color-mix(in srgb, var(--red) 60%, var(--line-2)); }
 .modal .btn{ width:100%; justify-content:center; margin-top:.5rem; }
 .modal-msg{ text-align:center; padding:1.5rem 0; color:var(--cream); font-size:1.05rem; line-height:1.5; display:none; }
+#authModal h2, #authModal .modal-sub{ text-align:center; }
+#authModal .field-error{ text-align:center; }
 .modal-note{ font-size:.8rem; color:var(--muted); text-align:center; margin-top:1rem; line-height:1.5; }
 @media (max-width:860px){ .cal-grid-wrap{ grid-template-columns:1fr; } .svc-grid{ grid-template-columns:1fr; } .svc-extra{ grid-template-columns:1fr; } }
 
