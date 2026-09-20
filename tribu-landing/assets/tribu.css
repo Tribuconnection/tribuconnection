@@ -76,6 +76,15 @@ p, li, .lead, .modal-sub, .field-error{ text-wrap:pretty; }
   to{ transform:translate3d(0,-40px,0) scale(1.12); }
 }
 
+/* Líneas decorativas en los costados de la página */
+.aurora::before, .aurora::after{
+  content:""; position:absolute; top:0; width:220px; height:1400px;
+  background-repeat:no-repeat; background-size:100% 100%;
+}
+.aurora::before{ left:0; background-image:url(/assets/deco-line-left.svg?v=1); }
+.aurora::after{ right:0; background-image:url(/assets/deco-line-right.svg?v=1); }
+@media (max-width:1650px){ .aurora::before, .aurora::after{ display:none; } }
+
 /* Layout */
 .wrap{ max-width:var(--maxw); margin-inline:auto; padding-inline:var(--pad); }
 .section{ position:relative; z-index:1; padding-block:clamp(26px,3.8vw,46px); }
