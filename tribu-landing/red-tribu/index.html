@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/tribu.css?v=34">
-<link rel="stylesheet" href="/assets/home.css?v=6">
+<link rel="stylesheet" href="/assets/home.css?v=7">
 </head>
 <body>
 
@@ -145,9 +145,12 @@
         <p>Espacio verde a cielo abierto para ferias, encuentros y experiencias al aire libre en CABA.</p>
       </a>
 
-      <div id="dirGridDinamico"></div>
-      <div id="dirGridEventos"></div>
-      <div id="dirGridEventosCal"></div>
+      <!-- display:contents: son solo "ganchos" para insertar tarjetas con JS, no deben
+           ocupar su propia celda del grid — si no, las tarjetas de adentro no comparten
+           fila/alto con las tarjetas fijas de más arriba. -->
+      <div id="dirGridDinamico" style="display:contents"></div>
+      <div id="dirGridEventos" style="display:contents"></div>
+      <div id="dirGridEventosCal" style="display:contents"></div>
 
       <div class="directory-empty" data-tipo="personas" id="emptyPersonas">
         <b>Todavía no hay personas publicadas en esta categoría</b>
@@ -155,9 +158,9 @@
         <a href="/cuenta/perfil/" class="btn btn--spectrum">Sumá tu perfil <span class="arr">→</span></a>
       </div>
       <div class="directory-empty" data-tipo="comunidades" id="emptyComunidades" style="display:none">
-        <b>Todavía no hay comunidades publicadas</b>
-        <p>Esta sección está recién arrancando: por ahora no hay un flujo propio para sumar una comunidad (a diferencia de personas, marcas y lugares). Si tenés una, escribinos y la sumamos a mano.</p>
-        <a href="#" class="btn btn--spectrum" data-connect>Contarnos sobre tu comunidad <span class="arr">→</span></a>
+        <b>Todavía no hay comunidades publicadas en esta categoría</b>
+        <p>Si armás o representás una comunidad, sumá tu perfil y sé de los primeros en la Red Tribu.</p>
+        <a href="/cuenta/perfil/" class="btn btn--spectrum">Sumá tu comunidad <span class="arr">→</span></a>
       </div>
       <div class="directory-empty" data-tipo="eventos" id="emptyEventos" style="display:none">
         <b>Todavía no hay experiencias publicadas en esta categoría</b>
@@ -409,7 +412,7 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=4"></script>
+<script src="/assets/supabase-client.js?v=5"></script>
 <script src="/assets/site.js?v=11"></script>
 <script>
 /* Directorio Red Tribu: perfiles + experiencias reales de Supabase, agrupados
@@ -451,18 +454,22 @@
 
   const ROL_TAB = {
     organiza_eventos:'personas', facilita_actividades:'personas', ofrece_servicios:'personas', quiere_colaborar:'personas',
-    tiene_marca:'marcas', tiene_lugar:'lugares'
+    tiene_marca:'marcas', tiene_lugar:'lugares', tiene_comunidad:'comunidades'
   };
 
   function perfilCard(p){
     const roles = (p.roles && p.roles.length) ? p.roles : (p.tipo === 'marca' ? ['tiene_marca'] : p.tipo === 'creador' ? ['facilita_actividades'] : []);
     const tabsDeEste = [...new Set(roles.map(r => ROL_TAB[r]).filter(Boolean))];
     if(!tabsDeEste.length) return null;
-    const esMarca = tabsDeEste.includes('marcas') && !tabsDeEste.includes('personas');
+    const esPersona = tabsDeEste.includes('personas');
+    const esMarca = tabsDeEste.includes('marcas') && !esPersona;
+    const esLugar = tabsDeEste.includes('lugares') && !esPersona && !esMarca;
+    const esComunidad = tabsDeEste.includes('comunidades') && !esPersona && !esMarca && !esLugar;
     const nombre = esMarca ? (p.nombre_marca || p.nombre) : p.nombre;
     const fotoUrl = sanitizeUrl(p.foto_url);
     const foto = fotoUrl !== '#' ? fotoUrl : '/assets/isotipo.png?v=2';
-    const rubro = p.categoria_principal || ((p.categorias && p.categorias.length) ? p.categorias.slice(0, 2).join(' · ') : (esMarca ? 'Marca aliada' : 'Persona'));
+    const tipoFallback = esMarca ? 'Marca aliada' : esLugar ? 'Espacio' : esComunidad ? 'Comunidad' : 'Persona';
+    const rubro = p.categoria_principal || ((p.categorias && p.categorias.length) ? p.categorias.slice(0, 2).join(' · ') : tipoFallback);
     const bio = p.mini_bio ? p.mini_bio.slice(0, 110) + (p.mini_bio.length > 110 ? '…' : '') : '';
     const igHandle = p.instagram ? p.instagram.replace(/^@/, '').trim() : '';
     const hrefRaw = igHandle ? 'https://instagram.com/' + encodeURIComponent(igHandle) : (p.sitio_web || '#');

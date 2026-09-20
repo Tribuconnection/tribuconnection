@@ -22,6 +22,7 @@ const ROLES_PARTICIPACION = [
   { valor:'facilita_actividades', label:'Facilito actividades' },
   { valor:'tiene_marca', label:'Tengo una marca' },
   { valor:'tiene_lugar', label:'Tengo un lugar' },
+  { valor:'tiene_comunidad', label:'Tengo una comunidad' },
   { valor:'ofrece_servicios', label:'Ofrezco servicios' },
   { valor:'quiere_colaborar', label:'Quiero colaborar' }
 ];
