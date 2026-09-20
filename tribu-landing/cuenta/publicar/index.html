@@ -298,7 +298,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="/assets/supabase-client.js?v=6"></script>
-<script src="/assets/site.js?v=11"></script>
+<script src="/assets/site.js?v=12"></script>
 <script>
 (function(){
   let session = null;
@@ -350,7 +350,7 @@
   document.getElementById('btnLogoutMobile').addEventListener('click', cerrarSesion);
 
   const map = L.map('mapaPublicar', { scrollWheelZoom: true }).setView([-34.6037, -58.3816], 11);
-  (typeof tribuDarkTiles === 'function' ? tribuDarkTiles() : L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')).addTo(map);
+  (typeof tribuMapTiles === 'function' ? tribuMapTiles() : L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')).addTo(map);
   map.on('click', (e) => {
     lat = e.latlng.lat; lng = e.latlng.lng;
     if(marker) map.removeLayer(marker);

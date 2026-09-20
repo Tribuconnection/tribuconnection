@@ -10,19 +10,17 @@ async function enviarASheets(fd, tipo){
   if(!data.ok) throw new Error(data.error || 'No se pudo guardar');
 }
 
-/* Capa de mapa compartida: Esri "Dark Gray Canvas" (gratis, sin API key), con la
-   estética oscura de Tribu. CARTO dejó de servir sus tiles gratis sin key en 2026,
-   por eso el cambio — Esri no pide key y su tope de zoom (16) alcanza para lo que
-   usamos acá (barrio/ciudad, nunca calle a calle). */
-function tribuDarkTiles(){
-  const base = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 16,
-    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ'
+/* Capa de mapa compartida: Esri "World Street Map" (gratis, sin API key), con
+   la estética clásica tipo Google Maps (calles claras, rutas resaltadas,
+   etiquetas) en vez del canvas oscuro que se usaba antes. CARTO dejó de
+   servir sus tiles gratis sin key en 2026, por eso se usa Esri — no pide key
+   y llega a zoom 19, de sobra para lo que usamos acá (barrio/ciudad, nunca
+   calle a calle). */
+function tribuMapTiles(){
+  return L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 19,
+    attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, (c) OpenStreetMap contributors, and the GIS User Community'
   });
-  const labels = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}', {
-    maxZoom: 16
-  });
-  return L.layerGroup([base, labels]);
 }
 
 /* Nav: fondo al scrollear */
@@ -232,7 +230,7 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   function initMap(){
     if(calMap) return;
     calMap = L.map('calMap', { scrollWheelZoom:true }).setView([-38.4, -63.6], 4);
-    tribuDarkTiles().addTo(calMap);
+    tribuMapTiles().addTo(calMap);
     renderMap();
   }
   /* Calendario, agenda y mapa se ven siempre juntos (no hay pestañas) — el
@@ -582,7 +580,7 @@ const PROVINCIAS_AR = {
     setTimeout(()=>{
       if(!geoMap){
         geoMap = L.map('evLocMap', { zoomControl:false, attributionControl:false, scrollWheelZoom:true }).setView([lat,lng], 13);
-        tribuDarkTiles().addTo(geoMap);
+        tribuMapTiles().addTo(geoMap);
       }
       geoMap.invalidateSize();
       geoMap.setView([lat,lng], 14);

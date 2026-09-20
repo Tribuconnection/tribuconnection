@@ -299,7 +299,7 @@
 <script defer src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script defer src="/assets/supabase-client.js?v=6"></script>
 <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script defer src="/assets/site.js?v=11"></script>
+<script defer src="/assets/site.js?v=12"></script>
 <script>
 /* ============ FICHA DE EVENTO: arma el detalle con la misma data del calendario ============ */
 document.addEventListener('DOMContentLoaded', function(){
@@ -382,7 +382,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   if(hasCoords){
     const map = L.map('evpMap', { zoomControl:true, scrollWheelZoom:true }).setView([first.lat, first.lng], 11);
-    tribuDarkTiles().addTo(map);
+    tribuMapTiles().addTo(map);
     const icon = L.divIcon({ className:'', html:'<div class="cal-pin-badge" style="background:'+rubro.color+'"></div>', iconSize:[26,26], iconAnchor:[13,26], popupAnchor:[0,-24] });
     L.marker([first.lat, first.lng], { icon }).addTo(map);
 
