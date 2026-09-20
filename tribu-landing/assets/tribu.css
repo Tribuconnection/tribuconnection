@@ -341,6 +341,13 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .cta-box .eyebrow{ margin-bottom:1rem; }
 .cta-box h2{ max-width:16ch; margin-bottom:1rem; font-size:clamp(1.9rem,3.8vw,2.8rem); }
 .cta-box .lead{ max-width:54ch; margin-bottom:1.7rem; }
+.cta-box::after{
+  content:""; position:absolute; top:50%; right:-2vw; transform:translateY(-50%);
+  width:min(260px,22vw); height:min(260px,22vw);
+  background:url(/assets/isotipo.png?v=2) no-repeat center/contain;
+  opacity:.16; pointer-events:none;
+}
+@media (max-width:900px){ .cta-box::after{ display:none; } }
 .steps{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; margin-bottom:1.8rem; }
 .step{ border-top:1px solid var(--line); padding-top:1.1rem; }
 .step .n{ font-family:var(--font-display); font-size:1rem; color:var(--muted); margin-bottom:.6rem; }
@@ -597,8 +604,15 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 
 /* MODAL — select, file, filas */
 .row2{ display:grid; grid-template-columns:1fr 1fr; gap:0 1rem; }
-.field select{ width:100%; background:var(--ink-2); border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; color:var(--cream); font-family:var(--font-sans); font-size:.98rem; cursor:pointer; }
+.field select{
+  width:100%; background-color:var(--ink-2); border:1px solid var(--line); border-radius:12px;
+  padding:.8rem 2.4rem .8rem 1rem; color:var(--cream); font-family:var(--font-sans); font-size:.98rem; cursor:pointer;
+  appearance:none; -webkit-appearance:none; -moz-appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238A8D98' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat:no-repeat; background-position:right 1rem center;
+}
 .field select:focus{ outline:none; border-color:var(--teal); }
+.field select::-ms-expand{ display:none; }
 .file-label{ display:flex; align-items:center; justify-content:center; gap:.5rem; padding:.9rem 1rem; border:1px dashed var(--line-2); border-radius:12px; color:var(--soft); font-size:.9rem; cursor:pointer; transition:.2s; text-align:center; }
 .file-label:hover{ border-color:var(--cream); color:var(--cream); }
 .file-in input[type=file]{ position:absolute; opacity:0; width:0; height:0; }
@@ -626,8 +640,13 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .cdate-month{ font-family:var(--font-display); font-size:.98rem; text-transform:capitalize; }
 .cdate-nav--split{ flex-direction:column; align-items:stretch; gap:.5rem; }
 .cdate-nav-row{ display:flex; align-items:center; gap:.5rem; }
-.cdate-month-sel, .cdate-year-sel{ flex:1; min-width:0; background:var(--ink-3); border:1px solid var(--line-2); border-radius:10px; color:var(--cream); font-family:var(--font-sans); font-size:.85rem; padding:.4rem .3rem; cursor:pointer; text-align:center; text-align-last:center; }
+.cdate-month-sel, .cdate-year-sel{
+  flex:1; min-width:0; background-color:var(--ink-3); border:1px solid var(--line-2); border-radius:10px;
+  color:var(--cream); font-family:var(--font-sans); font-size:.85rem; padding:.4rem .3rem; cursor:pointer;
+  text-align:center; text-align-last:center; appearance:none; -webkit-appearance:none; -moz-appearance:none;
+}
 .cdate-month-sel:focus, .cdate-year-sel:focus{ outline:none; border-color:var(--teal); }
+.cdate-month-sel::-ms-expand, .cdate-year-sel::-ms-expand{ display:none; }
 #birthDateSel .cdate-pop{ width:min(300px,88vw); }
 .cdate-week{ display:grid; grid-template-columns:repeat(7,1fr); gap:2px; margin-bottom:4px; }
 .cdate-week span{ text-align:center; font-size:.66rem; color:var(--muted); text-transform:uppercase; }

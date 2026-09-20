@@ -9,11 +9,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=32">
+<link rel="stylesheet" href="/assets/tribu.css?v=33">
 <link rel="stylesheet" href="/assets/home.css?v=6">
 <style>
   .prof-header{ border-radius:20px; overflow:hidden; border:1px solid var(--line); background:var(--ink-1); }
-  .prof-cover{ height:150px; background:linear-gradient(120deg, rgba(210,75,98,.35), rgba(244,166,35,.3) 45%, rgba(54,183,196,.3)); position:relative; }
+  .prof-cover{ height:150px; background:linear-gradient(120deg, rgba(210,75,98,.35), rgba(244,166,35,.3) 45%, rgba(54,183,196,.3)); background-size:cover; background-position:center; position:relative; overflow:hidden; }
   .prof-avatar{ width:92px; height:92px; border-radius:50%; object-fit:cover; border:4px solid rgba(244,241,234,.85); background:var(--ink-2); display:block; position:absolute; left:1.8rem; bottom:18px; box-shadow:0 8px 24px -8px rgba(0,0,0,.6); }
   .prof-body{ padding:1.2rem 1.8rem 1.6rem; }
   .prof-editrow{ display:flex; justify-content:flex-end; margin-bottom:.6rem; }
@@ -90,7 +90,7 @@
 
     <!-- ===== ENCABEZADO DE PERFIL ===== -->
     <div class="prof-header reveal d1">
-      <div class="prof-cover">
+      <div class="prof-cover" id="coverPerfil">
         <img id="avatar" class="prof-avatar" src="/assets/isotipo.png?v=2" alt="">
       </div>
       <div class="prof-body">
@@ -195,6 +195,7 @@
   function pintarPerfil(p){
     document.getElementById('nombre').textContent = (p.tipo === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre) || session.user.email;
     if(p.foto_url){ const f = sanitizeUrl(p.foto_url); if(f) document.getElementById('avatar').src = f; }
+    if(p.banner_url){ const b = sanitizeUrl(p.banner_url); if(b) document.getElementById('coverPerfil').style.backgroundImage = "url('" + b + "')"; }
 
     const metaParts = [];
     if(p.ciudad) metaParts.push('📍 ' + p.ciudad);
