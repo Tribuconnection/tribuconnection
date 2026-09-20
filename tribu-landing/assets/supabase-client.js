@@ -153,3 +153,73 @@ if(document.readyState === 'loading'){
     window.location.href = await tribuDestinoPostAuth(data.session);
   });
 })();
+
+/* Modal "Solicitud Comunidad": formulario de inscripción a la Comunidad de
+   Creadores / Programa de Marcas Aliadas (paga), en organizas-experiencias y
+   representas-marca. Guarda en solicitudes_comunidad; el equipo hace el
+   seguimiento y coordina el pago de la suscripción a mano (todavía no hay
+   cobro automático por Mercado Pago integrado). Dispara con
+   [data-solicitud="creador"] o [data-solicitud="marca"]. */
+(function(){
+  const overlay = document.getElementById('solicitudModal');
+  if(!overlay) return;
+  const form = document.getElementById('solicitudForm');
+  const catBox = document.getElementById('solCategorias');
+  const categoriasSel = [];
+
+  (typeof CATEGORIAS_RED_TRIBU !== 'undefined' ? CATEGORIAS_RED_TRIBU : []).forEach(cat => {
+    const chip = document.createElement('button');
+    chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = cat;
+    chip.addEventListener('click', () => {
+      const i = categoriasSel.indexOf(cat);
+      if(i > -1){ categoriasSel.splice(i, 1); chip.classList.remove('sel'); }
+      else { categoriasSel.push(cat); chip.classList.add('sel'); }
+    });
+    catBox.appendChild(chip);
+  });
+
+  const open = (tipo) => {
+    document.getElementById('solTipo').value = tipo;
+    document.getElementById('solCampoMarca').style.display = tipo === 'marca' ? '' : 'none';
+    document.getElementById('solicitudTitle').textContent = tipo === 'marca' ? 'Sumate al Programa de Marcas Aliadas' : 'Sumate al Programa para Creadores';
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
+  };
+  const close = () => { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; };
+
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('[data-solicitud]');
+    if(!trigger) return;
+    e.preventDefault();
+    open(trigger.dataset.solicitud);
+  });
+  document.getElementById('solicitudClose').addEventListener('click', close);
+  overlay.addEventListener('click', e => { if(e.target === overlay) close(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && overlay.classList.contains('open')) close(); });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = document.getElementById('solError'); err.style.display = 'none';
+    const btn = document.getElementById('solBtn'); btn.textContent = 'Enviando...'; btn.disabled = true;
+    try{
+      const row = {
+        tipo: document.getElementById('solTipo').value,
+        nombre: document.getElementById('solNombre').value.trim(),
+        nombre_marca: document.getElementById('solNombreMarca').value.trim() || null,
+        telefono: document.getElementById('solTelefono').value.trim(),
+        email: document.getElementById('solEmail').value.trim(),
+        instagram: document.getElementById('solInstagram').value.trim() || null,
+        sitio_web: document.getElementById('solWeb').value.trim() || null,
+        mini_bio: document.getElementById('solBio').value.trim() || null,
+        categorias: categoriasSel.slice()
+      };
+      const { error } = await sb.from('solicitudes_comunidad').insert(row);
+      if(error) throw error;
+      form.style.display = 'none';
+      document.getElementById('solMsg').style.display = 'block';
+    }catch(ex){
+      err.textContent = 'No se pudo enviar: ' + ex.message; err.style.display = 'block';
+    }finally{
+      btn.textContent = 'Enviar solicitud'; btn.disabled = false;
+    }
+  });
+})();
