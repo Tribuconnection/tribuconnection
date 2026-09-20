@@ -169,6 +169,7 @@
 .map-cta-copy{ max-width:340px; position:relative; z-index:1; }
 .map-cta-copy h2{ font-family:var(--font-display); font-weight:700; font-size:clamp(1.2rem,2.2vw,1.5rem); display:flex; align-items:center; gap:.5rem; margin-bottom:.5rem; }
 .map-cta-copy p{ color:var(--soft); font-size:.9rem; margin-bottom:1.2rem; }
+@media (min-width:700px){ .map-cta-copy{ max-width:480px; } .map-cta-copy p{ white-space:nowrap; } }
 .map-pins{ position:absolute; inset:0; z-index:0; }
 .map-pin{
   position:absolute; width:44px; height:44px; border-radius:50% 50% 50% 4px; transform:rotate(-45deg);
