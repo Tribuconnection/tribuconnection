@@ -19,8 +19,15 @@ async function enviarASheets(fd, tipo){
 function tribuMapTiles(){
   return L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
-    attribution: 'Tiles &copy; Esri &mdash; Esri, HERE, Garmin, USGS, Intermap, INCREMENT P, NRCan, Esri Japan, METI, Esri China (Hong Kong), Esri Korea, Esri (Thailand), NGCC, (c) OpenStreetMap contributors, and the GIS User Community'
+    attribution: 'Tiles &copy; Esri'
   });
+}
+/* Saca el prefijo "Leaflet |" y deja solo el crédito corto de arriba, para que
+   el cartel de atribución no tape mapas chicos (pasaba con la lista completa
+   de socios de Esri, que Leaflet mostraba envuelta en 3 líneas). Llamar
+   después de sumar el mapa al DOM. */
+function tribuMapChrome(map){
+  if(map.attributionControl) map.attributionControl.setPrefix(false);
 }
 
 /* Nav: fondo al scrollear */
@@ -231,6 +238,7 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     if(calMap) return;
     calMap = L.map('calMap', { scrollWheelZoom:true }).setView([-38.4, -63.6], 4);
     tribuMapTiles().addTo(calMap);
+    tribuMapChrome(calMap);
     renderMap();
   }
   /* Calendario, agenda y mapa se ven siempre juntos (no hay pestañas) — el

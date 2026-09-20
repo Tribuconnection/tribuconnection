@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=38">
+<link rel="stylesheet" href="/assets/tribu.css?v=39">
 <link rel="stylesheet" href="/assets/home.css?v=8">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all'">
 <style>
@@ -298,7 +298,7 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="/assets/supabase-client.js?v=6"></script>
-<script src="/assets/site.js?v=12"></script>
+<script src="/assets/site.js?v=13"></script>
 <script>
 (function(){
   let session = null;
@@ -351,6 +351,7 @@
 
   const map = L.map('mapaPublicar', { scrollWheelZoom: true }).setView([-34.6037, -58.3816], 11);
   (typeof tribuMapTiles === 'function' ? tribuMapTiles() : L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png')).addTo(map);
+  if(typeof tribuMapChrome === 'function') tribuMapChrome(map);
   map.on('click', (e) => {
     lat = e.latlng.lat; lng = e.latlng.lng;
     if(marker) map.removeLayer(marker);
