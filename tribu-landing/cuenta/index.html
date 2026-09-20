@@ -88,7 +88,7 @@
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=3"></script>
+<script src="/assets/supabase-client.js?v=4"></script>
 <script src="/assets/site.js?v=6"></script>
 <script>
 (function(){
@@ -107,9 +107,10 @@
     tabs[1].click();
   }
 
-  const destino = () => {
+  const destino = async (session) => {
     const volver = new URLSearchParams(location.search).get('volver');
-    return volver && volver.startsWith('/') ? volver : '/cuenta/perfil/';
+    if(volver && volver.startsWith('/')) return volver;
+    return tribuDestinoPostAuth(session);
   };
 
   document.getElementById('formCrear').addEventListener('submit', async (e) => {
@@ -122,7 +123,7 @@
     btn.textContent = 'Crear cuenta'; btn.disabled = false;
     if(error){ err.textContent = error.message; err.style.display = 'block'; return; }
     if(data.session){
-      window.location.href = destino();
+      window.location.href = await destino(data.session);
     } else {
       document.getElementById('formCrear').style.display = 'none';
       document.getElementById('crMsg').style.display = 'block';
@@ -135,15 +136,15 @@
     const btn = document.getElementById('inBtn'); btn.textContent = 'Ingresando...'; btn.disabled = true;
     const email = document.getElementById('inEmail').value.trim();
     const password = document.getElementById('inPass').value;
-    const { error } = await sb.auth.signInWithPassword({ email, password });
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
     btn.textContent = 'Ingresar'; btn.disabled = false;
     if(error){ err.textContent = 'Email o contraseña incorrectos.'; err.style.display = 'block'; return; }
-    window.location.href = destino();
+    window.location.href = await destino(data.session);
   });
 
   (async () => {
     const session = await tribuSesionActual();
-    if(session) window.location.href = destino();
+    if(session) window.location.href = await destino(session);
   })();
 })();
 </script>

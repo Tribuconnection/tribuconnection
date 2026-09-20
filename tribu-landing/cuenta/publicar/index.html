@@ -20,6 +20,18 @@
   .modalidad-toggle button.active{ background:var(--spectrum); color:#15110f; border-color:transparent; }
   #mapaPublicar{ height:200px; border-radius:16px; margin-top:.6rem; }
   .sin-perfil{ text-align:center; padding:2rem 1rem; }
+  .pub-step{ color:var(--muted); font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.5rem; }
+  .acceso-grid{ display:grid; grid-template-columns:1fr 1fr; gap:.6rem; }
+  .acceso-opt{ border:1px solid var(--line-2); border-radius:14px; padding:.8rem; cursor:pointer; font-size:.86rem; font-weight:600; text-align:center; }
+  .acceso-opt.sel{ border-color:transparent; background:var(--spectrum); color:#15110f; }
+  .acceso-detalle{ margin-top:1rem; padding-top:1rem; border-top:1px solid var(--line); }
+  .final-grid{ display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-bottom:1rem; }
+  .final-opt{ border:1px solid var(--line-2); border-radius:14px; padding:.9rem; cursor:pointer; }
+  .final-opt.sel{ border-color:var(--teal); background:color-mix(in srgb, var(--teal) 10%, transparent); }
+  .final-opt b{ display:block; margin-bottom:.2rem; font-size:.9rem; }
+  .final-opt span{ color:var(--muted); font-size:.78rem; }
+  .file-drop{ border:1px dashed var(--line-2); border-radius:14px; padding:1.4rem; text-align:center; cursor:pointer; color:var(--soft); font-size:.86rem; }
+  .file-drop img{ max-height:90px; border-radius:10px; margin-bottom:.6rem; }
 </style>
 </head>
 <body>
@@ -51,37 +63,39 @@
 
 <section class="section" style="padding-top:clamp(110px,14vw,140px)">
   <div class="wrap" style="max-width:640px">
-    <p class="eyebrow reveal">Publicar</p>
-    <h1 class="h2 reveal d1" style="margin:1rem 0 1.6rem">Contanos tu próxima experiencia</h1>
+    <p class="eyebrow reveal">Crear experiencia</p>
+    <h1 class="h2 reveal d1" style="margin:1rem 0 1.6rem">Contanos sobre tu experiencia</h1>
 
     <div id="sinPerfil" class="tribu-card sin-perfil reveal d2" style="display:none">
       <p style="color:var(--soft);margin-bottom:1.2rem">Antes de publicar necesitás completar tu perfil en la Red Tribu.</p>
       <a href="/cuenta/perfil/" class="btn btn--spectrum">Completar mi perfil</a>
     </div>
 
-    <div id="conPerfil" class="tribu-card reveal d2" style="display:none">
-      <form id="formPublicar">
-        <div class="row2">
-          <div class="field">
-            <label for="nombre">Nombre de la experiencia</label>
-            <input id="nombre" required placeholder="Ej: Círculo de sonido y meditación">
-          </div>
-          <div class="field">
-            <label for="tipo">Tipo de experiencia</label>
-            <select id="tipo" required>
-              <option value="Taller">Taller</option>
-              <option value="Retiro">Retiro</option>
-              <option value="Ceremonia">Ceremonia</option>
-              <option value="Concierto">Concierto</option>
-              <option value="Encuentro">Encuentro</option>
-              <option value="Otro">Otro</option>
-            </select>
-          </div>
+    <!-- ===== PASO 1: DATOS BÁSICOS ===== -->
+    <div id="paso1" class="tribu-card reveal d2" style="display:none">
+      <p class="pub-step">Paso 1 de 2</p>
+      <h2 style="font-size:1.1rem;margin-bottom:1rem">Contanos sobre tu experiencia</h2>
+      <form id="formPaso1">
+        <div class="field">
+          <label for="nombre">Nombre de la experiencia</label>
+          <input id="nombre" required placeholder="Ej: Ceremonia de Cacao y Sonido">
+        </div>
+
+        <div class="field">
+          <label for="tipo">Tipo de experiencia</label>
+          <select id="tipo" required>
+            <option value="Taller">Taller</option>
+            <option value="Retiro">Retiro</option>
+            <option value="Ceremonia">Ceremonia</option>
+            <option value="Concierto">Concierto</option>
+            <option value="Encuentro">Encuentro</option>
+            <option value="Otro">Otro</option>
+          </select>
         </div>
 
         <div class="field">
           <label for="descripcion">Descripción breve</label>
-          <textarea id="descripcion" maxlength="300" required style="min-height:56px" placeholder="¿De qué se trata? ¿Qué se van a llevar los participantes?"></textarea>
+          <textarea id="descripcion" maxlength="300" required style="min-height:56px" placeholder="Contá de qué se trata, para quién es y qué puede esperar quien participe."></textarea>
           <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="descCount">0</span> / 300</p>
         </div>
 
@@ -92,7 +106,7 @@
           </div>
           <div class="field">
             <label for="horario">Horario</label>
-            <input id="horario" placeholder="Ej: 18:00 hs">
+            <input id="horario" placeholder="Ej: 18:00-21:00">
           </div>
         </div>
 
@@ -108,34 +122,180 @@
         <div id="campoUbicacion">
           <div class="row2">
             <div class="field">
-              <label for="ciudadBarrio">Ciudad / Barrio</label>
+              <label for="ciudadBarrio">Ciudad o barrio</label>
               <input id="ciudadBarrio" placeholder="Ej: Palermo, CABA">
             </div>
             <div class="field">
-              <label for="lugar">Lugar (dirección o nombre del espacio)</label>
-              <input id="lugar" placeholder="Ej: Espacio Om, Av. Corrientes 1234">
+              <label for="lugar">Lugar o espacio</label>
+              <input id="lugar" placeholder="Ej: Centro Armonía">
             </div>
           </div>
-          <p style="color:var(--muted);font-size:.78rem;margin:.2rem 0 0">Buscá la dirección en el mapa para ubicarla (opcional, pero ayuda a que te encuentren).</p>
+          <p style="color:var(--muted);font-size:.78rem;margin:.2rem 0 0">Buscá la dirección en el mapa para ubicarla (opcional).</p>
           <div id="mapaPublicar"></div>
         </div>
 
         <div class="field" style="margin-top:1.2rem">
-          <label>Categorías (hasta 5)</label>
+          <label>¿Con qué se relaciona?</label>
           <div id="categorias"></div>
         </div>
 
-        <p class="field-error" id="pubError" style="display:none"></p>
-        <button type="submit" class="btn btn--spectrum" id="btnPublicar">Publicar experiencia</button>
-        <div class="modal-msg" id="pubMsg" style="display:none">¡Publicada! 🎉 Ya la podés ver en la <a href="/red-tribu/" style="color:var(--teal)">Red Tribu</a>.</div>
+        <p class="field-error" id="paso1Error" style="display:none"></p>
+        <button type="submit" class="btn btn--spectrum" id="btnContinuar1">Continuar</button>
       </form>
+    </div>
+
+    <!-- ===== PASO 2: DETALLES Y ACCESO ===== -->
+    <div id="paso2" class="tribu-card reveal d2" style="display:none">
+      <p class="pub-step">Paso 2 de 2</p>
+      <h2 style="font-size:1.1rem;margin-bottom:1rem">Completá los detalles de tu experiencia</h2>
+
+      <div class="field">
+        <label>Imagen de portada</label>
+        <label class="file-drop" for="portada">
+          <img id="portadaPreview" style="display:none">
+          <div id="portadaTexto">Arrastrá una imagen o hacé clic para subirla<br>Formato sugerido para la portada de tu experiencia</div>
+        </label>
+        <input type="file" id="portada" accept="image/png,image/jpeg,image/webp" style="display:none">
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="proyectoNombre">Proyecto o perfil asociado</label>
+          <input id="proyectoNombre" placeholder="Ej: El Beso del Árbol">
+        </div>
+        <div class="field">
+          <label for="organizaNombre">Organiza</label>
+          <input id="organizaNombre" placeholder="Ej: Gabriel Pietranave">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Inscripción y forma de acceso</label>
+        <div class="acceso-grid">
+          <div class="acceso-opt sel" data-acceso="gratis">Gratis</div>
+          <div class="acceso-opt" data-acceso="transferencia">Transferencia bancaria</div>
+          <div class="acceso-opt" data-acceso="link_pago">Link de pago</div>
+          <div class="acceso-opt" data-acceso="ticketera">Ticketera externa</div>
+          <div class="acceso-opt" data-acceso="pago_lugar">Pago en el lugar</div>
+          <div class="acceso-opt" data-acceso="consultar">Consultar o reservar</div>
+        </div>
+
+        <div class="acceso-detalle" id="detalleGratis">
+          <label class="visible-check" style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem">
+            <input type="checkbox" id="gratisInscripcionPrevia"> <span>Con inscripción previa</span>
+          </label>
+          <div class="field"><label for="gratisLink">Link o medio para reservar</label><input id="gratisLink" placeholder="Pegá un link o escribí un medio de contacto"></div>
+          <div class="row2">
+            <div class="field"><label for="gratisInstrucciones">Instrucciones para participar</label><input id="gratisInstrucciones"></div>
+            <div class="field"><label for="gratisCupo">Cupo</label><input id="gratisCupo" placeholder="Ej: 40 personas"></div>
+          </div>
+        </div>
+
+        <div class="acceso-detalle" id="detalleTransferencia" style="display:none">
+          <div class="row2">
+            <div class="field"><label for="transfPrecio">Precio o valor</label><input id="transfPrecio" placeholder="Ej: $25.000"></div>
+            <div class="field"><label for="transfAlias">Alias</label><input id="transfAlias" placeholder="Ej: UNINSTANTEETERNO"></div>
+          </div>
+          <div class="row2">
+            <div class="field"><label for="transfTitular">Titular</label><input id="transfTitular" placeholder="Ej: Gabriel Pietranave"></div>
+            <div class="field"><label for="transfCbu">CBU/CVU (opcional)</label><input id="transfCbu"></div>
+          </div>
+          <label class="visible-check" style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem">
+            <input type="checkbox" id="transfComprobante" checked> <span>Solicitar comprobante de transferencia</span>
+          </label>
+          <div class="field"><label for="transfCupo">Cupo</label><input id="transfCupo" placeholder="Ej: 40 personas"></div>
+        </div>
+
+        <div class="acceso-detalle" id="detalleLinkPago" style="display:none">
+          <div class="row2">
+            <div class="field"><label for="linkPagoPrecio">Precio o valor</label><input id="linkPagoPrecio" placeholder="Ej: $25.000"></div>
+            <div class="field"><label for="linkPagoLink">Link de pago</label><input id="linkPagoLink" placeholder="Ej: link de Mercado Pago"></div>
+          </div>
+          <div class="field"><label for="linkPagoCupo">Cupo</label><input id="linkPagoCupo" placeholder="Ej: 40 personas"></div>
+        </div>
+
+        <div class="acceso-detalle" id="detalleTicketera" style="display:none">
+          <div class="row2">
+            <div class="field"><label for="ticketeraLink">Link a la ticketera</label><input id="ticketeraLink" placeholder="Ej: link de Passline, Eventbrite..."></div>
+            <div class="field"><label for="ticketeraPrecio">Precio (opcional)</label><input id="ticketeraPrecio" placeholder="Ej: desde $10.000"></div>
+          </div>
+          <div class="field"><label for="ticketeraCupo">Cupo</label><input id="ticketeraCupo" placeholder="Ej: 40 personas"></div>
+        </div>
+
+        <div class="acceso-detalle" id="detallePagoLugar" style="display:none">
+          <div class="row2">
+            <div class="field"><label for="lugarPrecio">Precio o valor</label><input id="lugarPrecio" placeholder="Ej: $25.000"></div>
+            <div class="field">
+              <label>Modalidad de cobro</label>
+              <div class="modalidad-toggle">
+                <button type="button" data-cobro="Efectivo" class="active">Efectivo</button>
+                <button type="button" data-cobro="Transferencia">Transferencia</button>
+                <button type="button" data-cobro="Ambas">Ambas</button>
+              </div>
+            </div>
+          </div>
+          <label class="visible-check" style="display:flex;align-items:center;gap:.6rem;margin-bottom:1rem">
+            <input type="checkbox" id="lugarReservaPrevia"> <span>Reserva previa opcional / solicitar confirmación de asistencia</span>
+          </label>
+          <div class="row2">
+            <div class="field"><label for="lugarInstrucciones">Instrucciones o aclaración</label><input id="lugarInstrucciones" placeholder="Ej: se paga al ingresar"></div>
+            <div class="field"><label for="lugarCupo">Cupo</label><input id="lugarCupo" placeholder="Ej: 40 personas"></div>
+          </div>
+        </div>
+
+        <div class="acceso-detalle" id="detalleConsultar" style="display:none">
+          <div class="field"><label for="consultarLink">Link o medio para contactar</label><input id="consultarLink" placeholder="Pegá un link o escribí un medio de contacto"></div>
+          <div class="row2">
+            <div class="field"><label for="consultarInstrucciones">Instrucciones para participar</label><input id="consultarInstrucciones"></div>
+            <div class="field"><label for="consultarCupo">Cupo</label><input id="consultarCupo" placeholder="Ej: 40 personas"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="instagram2">Instagram o sitio web</label>
+          <input id="instagram2" placeholder="Ej: @usuario">
+        </div>
+        <div class="field">
+          <label for="colaboradores">Co-creadores o colaboradores</label>
+          <input id="colaboradores" placeholder="Ej: Cynthia, Matías">
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="visible-check" style="display:flex;align-items:flex-start;gap:.6rem">
+          <input type="checkbox" id="ofreceBeneficio" style="margin-top:.2rem">
+          <span>Ofrecer un beneficio exclusivo para miembros del Club Tribu</span>
+        </label>
+        <input id="clubBeneficio" style="margin-top:.6rem;display:none" placeholder="Ej: acceso prioritario o cupo reservado">
+      </div>
+
+      <p class="field-error" id="paso2Error" style="display:none"></p>
+
+      <div class="final-grid">
+        <div class="final-opt sel" data-estado="borrador">
+          <b>Guardar como borrador</b>
+          <span>Podrás seguir editando más tarde</span>
+        </div>
+        <div class="final-opt" data-estado="publicado">
+          <b>Publicar cuando esté listo</b>
+          <span>Quedará visible en el ecosistema</span>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:.8rem">
+        <button type="button" class="btn btn--ghost" id="btnVolver2">Volver</button>
+        <button type="button" class="btn btn--spectrum" id="btnFinalizar">Finalizar y continuar</button>
+      </div>
+      <div class="modal-msg" id="pubMsg" style="display:none">¡Listo! 🎉 Ya la podés ver en la <a href="/red-tribu/" style="color:var(--teal)">Red Tribu</a>.</div>
     </div>
   </div>
 </section>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=3"></script>
+<script src="/assets/supabase-client.js?v=4"></script>
 <script src="/assets/site.js?v=6"></script>
 <script>
 (function(){
@@ -144,6 +304,10 @@
   let categoriasSel = [];
   let lat = null, lng = null;
   let marker = null;
+  let acceso = 'gratis';
+  let modalidadCobro = 'Efectivo';
+  let estadoFinal = 'borrador';
+  let portadaFile = null;
 
   const catBox = document.getElementById('categorias');
   CATEGORIAS_RED_TRIBU.forEach(cat => {
@@ -157,12 +321,19 @@
     catBox.appendChild(chip);
   });
 
-  document.querySelectorAll('.modalidad-toggle button').forEach(btn => {
+  document.querySelectorAll('#paso1 .modalidad-toggle button').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.modalidad-toggle button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('#paso1 .modalidad-toggle button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       modalidad = btn.dataset.mod;
       document.getElementById('campoUbicacion').style.display = modalidad === 'Online' ? 'none' : '';
+    });
+  });
+  document.querySelectorAll('#detallePagoLugar .modalidad-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#detallePagoLugar .modalidad-toggle button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      modalidadCobro = btn.dataset.cobro;
     });
   });
 
@@ -182,13 +353,70 @@
     marker = L.marker([lat, lng]).addTo(map);
   });
 
-  document.getElementById('formPublicar').addEventListener('submit', async (e) => {
+  document.getElementById('formPaso1').addEventListener('submit', e => {
     e.preventDefault();
-    const err = document.getElementById('pubError'); err.style.display = 'none';
-    const btn = document.getElementById('btnPublicar'); btn.textContent = 'Publicando...'; btn.disabled = true;
+    document.getElementById('paso1').style.display = 'none';
+    document.getElementById('paso2').style.display = 'block';
+    if(!document.getElementById('organizaNombre').value && session){
+      sb.from('profiles').select('nombre').eq('id', session.user.id).maybeSingle().then(({data}) => {
+        if(data && data.nombre) document.getElementById('organizaNombre').value = data.nombre;
+      });
+    }
+  });
+  document.getElementById('btnVolver2').addEventListener('click', () => {
+    document.getElementById('paso2').style.display = 'none';
+    document.getElementById('paso1').style.display = 'block';
+    setTimeout(() => map.invalidateSize(), 50);
+  });
+
+  const ACCESO_DETALLES = { gratis:'detalleGratis', transferencia:'detalleTransferencia', link_pago:'detalleLinkPago', ticketera:'detalleTicketera', pago_lugar:'detallePagoLugar', consultar:'detalleConsultar' };
+  document.querySelectorAll('.acceso-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.acceso-opt').forEach(o => o.classList.remove('sel'));
+      opt.classList.add('sel');
+      acceso = opt.dataset.acceso;
+      Object.values(ACCESO_DETALLES).forEach(id => document.getElementById(id).style.display = 'none');
+      document.getElementById(ACCESO_DETALLES[acceso]).style.display = 'block';
+    });
+  });
+
+  document.querySelectorAll('.final-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      document.querySelectorAll('.final-opt').forEach(o => o.classList.remove('sel'));
+      opt.classList.add('sel');
+      estadoFinal = opt.dataset.estado;
+    });
+  });
+
+  document.getElementById('ofreceBeneficio').addEventListener('change', e => {
+    document.getElementById('clubBeneficio').style.display = e.target.checked ? '' : 'none';
+  });
+
+  document.getElementById('portada').addEventListener('change', e => {
+    const f = e.target.files[0];
+    if(!f) return;
+    portadaFile = f;
+    const img = document.getElementById('portadaPreview');
+    img.src = URL.createObjectURL(f); img.style.display = 'block';
+    document.getElementById('portadaTexto').style.display = 'none';
+  });
+
+  async function finalizar(){
+    const err = document.getElementById('paso2Error'); err.style.display = 'none';
+    const btn = document.getElementById('btnFinalizar'); btn.textContent = 'Guardando...'; btn.disabled = true;
     try{
       const { data: profile } = await sb.from('profiles').select('id').eq('id', session.user.id).maybeSingle();
       if(!profile) throw new Error('Primero completá tu perfil.');
+
+      let portadaUrl = null;
+      if(portadaFile){
+        const ext = portadaFile.name.split('.').pop();
+        const path = session.user.id + '/' + Date.now() + '.' + ext;
+        const { error: upErr } = await sb.storage.from('perfiles').upload(path, portadaFile, { upsert: true });
+        if(upErr) throw upErr;
+        portadaUrl = sb.storage.from('perfiles').getPublicUrl(path).data.publicUrl;
+      }
+
       const row = {
         profile_id: session.user.id,
         nombre: document.getElementById('nombre').value.trim(),
@@ -202,19 +430,61 @@
         lat: modalidad !== 'Online' ? lat : null,
         lng: modalidad !== 'Online' ? lng : null,
         categorias: categoriasSel,
+        imagen_portada_url: portadaUrl,
+        proyecto_nombre: document.getElementById('proyectoNombre').value.trim() || null,
+        organiza_nombre: document.getElementById('organizaNombre').value.trim() || null,
+        instagram: document.getElementById('instagram2').value.trim() || null,
+        colaboradores: document.getElementById('colaboradores').value.trim() || null,
+        club_beneficio: document.getElementById('ofreceBeneficio').checked ? (document.getElementById('clubBeneficio').value.trim() || null) : null,
+        acceso_tipo: acceso,
+        estado_publicacion: estadoFinal,
         publicado: true
       };
+
+      if(acceso === 'gratis'){
+        row.reserva_previa = document.getElementById('gratisInscripcionPrevia').checked;
+        row.link_reserva = document.getElementById('gratisLink').value.trim() || null;
+        row.instrucciones = document.getElementById('gratisInstrucciones').value.trim() || null;
+        row.cupo = document.getElementById('gratisCupo').value.trim() || null;
+      } else if(acceso === 'transferencia'){
+        row.precio = document.getElementById('transfPrecio').value.trim() || null;
+        row.alias = document.getElementById('transfAlias').value.trim() || null;
+        row.titular = document.getElementById('transfTitular').value.trim() || null;
+        row.cbu = document.getElementById('transfCbu').value.trim() || null;
+        row.solicitar_comprobante = document.getElementById('transfComprobante').checked;
+        row.cupo = document.getElementById('transfCupo').value.trim() || null;
+      } else if(acceso === 'link_pago'){
+        row.precio = document.getElementById('linkPagoPrecio').value.trim() || null;
+        row.link_reserva = document.getElementById('linkPagoLink').value.trim() || null;
+        row.cupo = document.getElementById('linkPagoCupo').value.trim() || null;
+      } else if(acceso === 'ticketera'){
+        row.link_reserva = document.getElementById('ticketeraLink').value.trim() || null;
+        row.precio = document.getElementById('ticketeraPrecio').value.trim() || null;
+        row.cupo = document.getElementById('ticketeraCupo').value.trim() || null;
+      } else if(acceso === 'pago_lugar'){
+        row.precio = document.getElementById('lugarPrecio').value.trim() || null;
+        row.modalidad_cobro = modalidadCobro;
+        row.reserva_previa = document.getElementById('lugarReservaPrevia').checked;
+        row.instrucciones = document.getElementById('lugarInstrucciones').value.trim() || null;
+        row.cupo = document.getElementById('lugarCupo').value.trim() || null;
+      } else if(acceso === 'consultar'){
+        row.link_reserva = document.getElementById('consultarLink').value.trim() || null;
+        row.instrucciones = document.getElementById('consultarInstrucciones').value.trim() || null;
+        row.cupo = document.getElementById('consultarCupo').value.trim() || null;
+      }
+
       const { error } = await sb.from('experiences').insert(row);
       if(error) throw error;
-      document.getElementById('formPublicar').style.display = 'none';
+      document.getElementById('paso2').querySelectorAll('.field, .final-grid, #btnVolver2, #btnFinalizar, #paso2Error').forEach(el => el.style.display = 'none');
       document.getElementById('pubMsg').style.display = 'block';
     }catch(ex){
       err.textContent = 'No se pudo publicar: ' + ex.message;
       err.style.display = 'block';
     }finally{
-      btn.textContent = 'Publicar experiencia'; btn.disabled = false;
+      btn.textContent = 'Finalizar y continuar'; btn.disabled = false;
     }
-  });
+  }
+  document.getElementById('btnFinalizar').addEventListener('click', finalizar);
 
   (async () => {
     session = await tribuRequiereSesion();
@@ -223,7 +493,7 @@
     if(!profile){
       document.getElementById('sinPerfil').style.display = 'block';
     } else {
-      document.getElementById('conPerfil').style.display = 'block';
+      document.getElementById('paso1').style.display = 'block';
       setTimeout(() => map.invalidateSize(), 50);
     }
   })();

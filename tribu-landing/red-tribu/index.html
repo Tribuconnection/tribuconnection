@@ -74,7 +74,7 @@
   <div class="wrap hero-inner">
     <p class="eyebrow reveal">La red que conecta</p>
     <h1 class="h2 reveal d1" style="margin:1rem 0">Red Tribu</h1>
-    <p class="lead reveal d2" style="max-width:600px;margin-inline:auto">Descubrí creadores, marcas y lugares que forman parte de la comunidad de Tribu Connection.</p>
+    <p class="lead reveal d2" style="max-width:600px;margin-inline:auto">Conectá con las personas, comunidades, eventos, marcas y lugares que hacen posible las experiencias que te transforman.</p>
   </div>
 </header>
 
@@ -88,7 +88,9 @@
 
     <div class="tab-row reveal d1" id="dirTabs">
       <button type="button" class="tab-btn active" data-tab="todos">Todos</button>
-      <button type="button" class="tab-btn" data-tab="creadores">Creadores</button>
+      <button type="button" class="tab-btn" data-tab="personas">Personas</button>
+      <button type="button" class="tab-btn" data-tab="comunidades">Comunidades</button>
+      <button type="button" class="tab-btn" data-tab="eventos">Eventos</button>
       <button type="button" class="tab-btn" data-tab="marcas">Marcas</button>
       <button type="button" class="tab-btn" data-tab="lugares">Lugares</button>
     </div>
@@ -132,16 +134,27 @@
       </a>
 
       <div id="dirGridDinamico"></div>
+      <div id="dirGridEventos"></div>
 
-      <div class="directory-empty" data-tipo="creadores" id="emptyCreadores">
-        <b>Todavía no hay creadores/as publicados en esta categoría</b>
-        <p>Si organizás experiencias, talleres o eventos, sumá tu perfil y sé de los primeros en la Red Tribu.</p>
+      <div class="directory-empty" data-tipo="personas" id="emptyPersonas">
+        <b>Todavía no hay personas publicadas en esta categoría</b>
+        <p>Si facilitás actividades, organizás eventos u ofrecés servicios, sumá tu perfil y sé de los primeros en la Red Tribu.</p>
         <a href="/cuenta/perfil/" class="btn btn--spectrum">Sumá tu perfil <span class="arr">→</span></a>
+      </div>
+      <div class="directory-empty" data-tipo="comunidades" id="emptyComunidades" style="display:none">
+        <b>Todavía no hay comunidades publicadas</b>
+        <p>Esta sección está recién arrancando: por ahora no hay un flujo propio para sumar una comunidad (a diferencia de personas, marcas y lugares). Si tenés una, escribinos y la sumamos a mano.</p>
+        <a href="#" class="btn btn--spectrum" data-connect>Contarnos sobre tu comunidad <span class="arr">→</span></a>
+      </div>
+      <div class="directory-empty" data-tipo="eventos" id="emptyEventos" style="display:none">
+        <b>Todavía no hay experiencias publicadas en esta categoría</b>
+        <p>Publicá tu primera experiencia desde tu perfil y aparecé acá.</p>
+        <a href="/cuenta/publicar/" class="btn btn--spectrum">Publicar experiencia <span class="arr">→</span></a>
       </div>
       <div class="directory-empty" data-tipo="lugares" id="emptyLugares" style="display:none">
         <b>Todavía no hay lugares publicados en esta categoría</b>
         <p>Si tenés un espacio para eventos, retiros o encuentros, sumalo a la Red Tribu.</p>
-        <a href="#" class="btn btn--spectrum" data-connect data-perfil="Marca / emprendimiento">Sumá tu espacio <span class="arr">→</span></a>
+        <a href="/cuenta/perfil/" class="btn btn--spectrum">Sumá tu espacio <span class="arr">→</span></a>
       </div>
     </div>
   </div>
@@ -307,7 +320,9 @@
       </div>
       <div class="footer-col">
         <p class="footer-col-title">Red Tribu</p>
-        <a href="/red-tribu/">Creadores</a>
+        <a href="/red-tribu/">Personas</a>
+        <a href="/red-tribu/">Comunidades</a>
+        <a href="/red-tribu/">Eventos</a>
         <a href="/red-tribu/">Marcas</a>
         <a href="/red-tribu/">Lugares</a>
       </div>
@@ -381,25 +396,34 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=3"></script>
+<script src="/assets/supabase-client.js?v=4"></script>
 <script src="/assets/site.js?v=6"></script>
 <script>
-/* Directorio Red Tribu: perfiles reales de Supabase + filtro por categoría + búsqueda (client-side) */
+/* Directorio Red Tribu: perfiles + experiencias reales de Supabase, agrupados
+   en 5 categorías (Personas, Comunidades, Eventos, Marcas, Lugares) + filtro
+   y búsqueda (client-side). Un perfil puede tener varios roles a la vez
+   (ej: organiza eventos Y tiene un lugar), así que puede aparecer en más
+   de una pestaña — de ahí que data-tipo sea una lista separada por espacios. */
 (function(){
   const tabs = document.querySelectorAll('#dirTabs .tab-btn');
   const search = document.getElementById('dirSearch');
   const dinamico = document.getElementById('dirGridDinamico');
-  const emptyCreadores = document.getElementById('emptyCreadores');
-  const emptyLugares = document.getElementById('emptyLugares');
+  const dinamicoEventos = document.getElementById('dirGridEventos');
+  const emptyEls = {
+    personas: document.getElementById('emptyPersonas'),
+    comunidades: document.getElementById('emptyComunidades'),
+    eventos: document.getElementById('emptyEventos'),
+    lugares: document.getElementById('emptyLugares')
+  };
   let activeTab = 'todos';
 
   function escapeHtml(str){
     return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   }
-  /* Los perfiles los escribe cualquier usuario logueado (nombre, bio, foto, sitio
-     web...): nunca son datos de confianza. Se escapan antes de ir a innerHTML y
-     se valida que los links sean http(s) reales, para que nadie pueda meter
-     HTML/JS o un link "javascript:" en su perfil y afectar a otros visitantes. */
+  /* Los perfiles y experiencias los escribe cualquier usuario logueado (nombre,
+     bio, foto, sitio web...): nunca son datos de confianza. Se escapan antes de
+     ir a innerHTML y se valida que los links sean http(s) reales, para que
+     nadie pueda meter HTML/JS o un link "javascript:" y afectar a otros. */
   function sanitizeUrl(url){
     if(!url) return '#';
     try{
@@ -409,42 +433,69 @@
     return '#';
   }
 
+  const ROL_TAB = {
+    organiza_eventos:'personas', facilita_actividades:'personas', ofrece_servicios:'personas', quiere_colaborar:'personas',
+    tiene_marca:'marcas', tiene_lugar:'lugares'
+  };
+
   function perfilCard(p){
-    const tipo = p.tipo === 'marca' ? 'marcas' : 'creadores';
-    const nombre = p.tipo === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre;
+    const roles = (p.roles && p.roles.length) ? p.roles : (p.tipo === 'marca' ? ['tiene_marca'] : p.tipo === 'creador' ? ['facilita_actividades'] : []);
+    const tabsDeEste = [...new Set(roles.map(r => ROL_TAB[r]).filter(Boolean))];
+    if(!tabsDeEste.length) return null;
+    const esMarca = tabsDeEste.includes('marcas') && !tabsDeEste.includes('personas');
+    const nombre = esMarca ? (p.nombre_marca || p.nombre) : p.nombre;
     const fotoUrl = sanitizeUrl(p.foto_url);
     const foto = fotoUrl !== '#' ? fotoUrl : '/assets/isotipo.png?v=2';
-    const rubro = (p.categorias && p.categorias.length) ? p.categorias.slice(0, 2).join(' · ') : (p.tipo === 'marca' ? 'Marca aliada' : 'Creador/a');
+    const rubro = p.categoria_principal || ((p.categorias && p.categorias.length) ? p.categorias.slice(0, 2).join(' · ') : (esMarca ? 'Marca aliada' : 'Persona'));
     const bio = p.mini_bio ? p.mini_bio.slice(0, 110) + (p.mini_bio.length > 110 ? '…' : '') : '';
     const igHandle = p.instagram ? p.instagram.replace(/^@/, '').trim() : '';
     const hrefRaw = igHandle ? 'https://instagram.com/' + encodeURIComponent(igHandle) : (p.sitio_web || '#');
     const href = sanitizeUrl(hrefRaw);
     const el = document.createElement('a');
     el.className = 'directory-card';
-    el.dataset.tipo = tipo;
+    el.dataset.tipo = tabsDeEste.join(' ');
     el.dataset.name = nombre;
     el.href = href;
     if(href !== '#'){ el.target = '_blank'; el.rel = 'noopener'; }
     el.innerHTML = '<div class="directory-card-logo"><img src="'+escapeHtml(foto)+'" alt="'+escapeHtml(nombre)+'" style="object-fit:cover"></div>'+
-      '<span class="directory-card-type">'+escapeHtml(p.tipo === 'marca' ? 'Marca aliada' : rubro)+'</span>'+
+      '<span class="directory-card-type">'+escapeHtml(rubro)+'</span>'+
       '<h3>'+escapeHtml(nombre)+'</h3>'+
       '<p>'+escapeHtml(bio || (p.ciudad || ''))+'</p>';
     return el;
   }
 
+  const MESES_CORTO = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  function eventoCard(e){
+    const foto = sanitizeUrl(e.imagen_portada_url);
+    const img = foto !== '#' ? foto : '/assets/isotipo.png?v=2';
+    const d = e.fecha ? new Date(e.fecha+'T00:00') : null;
+    const fechaTxt = d && !isNaN(d) ? d.getDate()+' '+MESES_CORTO[d.getMonth()] : '';
+    const lugarTxt = e.modalidad === 'Online' ? 'Online' : [e.lugar, e.ciudad_barrio].filter(Boolean).join(', ');
+    const el = document.createElement('div');
+    el.className = 'directory-card';
+    el.dataset.tipo = 'eventos';
+    el.dataset.name = e.nombre;
+    el.innerHTML = '<div class="directory-card-logo"><img src="'+escapeHtml(img)+'" alt="'+escapeHtml(e.nombre)+'" style="object-fit:cover"></div>'+
+      '<span class="directory-card-type">'+escapeHtml(e.tipo || 'Experiencia')+(fechaTxt ? ' · '+fechaTxt : '')+'</span>'+
+      '<h3>'+escapeHtml(e.nombre)+'</h3>'+
+      '<p>'+escapeHtml(lugarTxt || e.descripcion || '')+'</p>';
+    return el;
+  }
+
   function apply(){
     const q = search.value.trim().toLowerCase();
-    let anyCreadores = false, anyLugares = false;
+    const conteo = { personas:0, comunidades:0, eventos:0, lugares:0 };
     document.querySelectorAll('#dirGrid .directory-card').forEach(c=>{
-      const matchesTab = activeTab === 'todos' || c.dataset.tipo === activeTab;
+      const tiposCard = c.dataset.tipo.split(' ');
+      const matchesTab = activeTab === 'todos' || tiposCard.includes(activeTab);
       const matchesSearch = !q || (c.dataset.name || c.textContent).toLowerCase().includes(q);
       const visible = matchesTab && matchesSearch;
       c.style.display = visible ? '' : 'none';
-      if(visible && c.dataset.tipo === 'creadores') anyCreadores = true;
-      if(visible && c.dataset.tipo === 'lugares') anyLugares = true;
+      if(visible) tiposCard.forEach(t => { if(conteo[t] !== undefined) conteo[t]++; });
     });
-    emptyCreadores.style.display = (!anyCreadores && (activeTab === 'todos' || activeTab === 'creadores')) ? '' : 'none';
-    emptyLugares.style.display = (!anyLugares && (activeTab === 'todos' || activeTab === 'lugares')) ? '' : 'none';
+    Object.keys(emptyEls).forEach(tipo => {
+      emptyEls[tipo].style.display = (!conteo[tipo] && (activeTab === 'todos' || activeTab === tipo)) ? '' : 'none';
+    });
   }
   tabs.forEach(t=> t.addEventListener('click', ()=>{
     tabs.forEach(x=>x.classList.remove('active'));
@@ -455,10 +506,15 @@
   search.addEventListener('input', apply);
 
   (async () => {
-    const { data } = await sb.from('profiles').select('*').eq('publicado', true).eq('tipo', 'creador');
-    if(data && data.length){
-      data.forEach(p => dinamico.appendChild(perfilCard(p)));
-    }
+    const [{ data: perfiles }, { data: experiencias }] = await Promise.all([
+      sb.from('profiles').select('*').eq('publicado', true),
+      sb.from('experiences').select('*').eq('estado_publicacion', 'publicado')
+    ]);
+    (perfiles || []).forEach(p => {
+      const card = perfilCard(p);
+      if(card) dinamico.appendChild(card);
+    });
+    (experiencias || []).forEach(e => dinamicoEventos.appendChild(eventoCard(e)));
     apply();
   })();
 })();

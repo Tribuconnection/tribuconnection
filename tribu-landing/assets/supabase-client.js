@@ -13,6 +13,28 @@ const CATEGORIAS_RED_TRIBU = [
   'Eventos especiales', 'Organización de eventos', 'Arte', 'Coaching', 'Sanación'
 ];
 
+/* Listas del onboarding (pasos 2 y 3) — mismas opciones que el mockup. */
+const INTERESES_TRIBU = ['Conectar', 'Bailar', 'Naturaleza', 'Música', 'Bienestar', 'Aprender', 'Conocer gente'];
+const INTERES_EN_TRIBU = ['Experiencias', 'Talleres', 'Retiros', 'Productos', 'Lugares', 'Comunidad'];
+const QUIERE_RECIBIR_TRIBU = ['Beneficios y descuentos', 'Planes para este finde', 'Novedades de la comunidad', 'Sorteos y experiencias especiales'];
+const ROLES_PARTICIPACION = [
+  { valor:'organiza_eventos', label:'Organizo eventos' },
+  { valor:'facilita_actividades', label:'Facilito actividades' },
+  { valor:'tiene_marca', label:'Tengo una marca' },
+  { valor:'tiene_lugar', label:'Tengo un lugar' },
+  { valor:'ofrece_servicios', label:'Ofrezco servicios' },
+  { valor:'quiere_colaborar', label:'Quiero colaborar' }
+];
+
+/* A dónde mandar a alguien apenas se loguea/registra: si todavía no completó
+   el onboarding (pasos 2 y 3), lo mandamos ahí; si ya lo completó, a su cuenta. */
+async function tribuDestinoPostAuth(session){
+  if(!session) return '/cuenta/';
+  const { data } = await sb.from('profiles').select('onboarding_completo').eq('id', session.user.id).maybeSingle();
+  if(!data || !data.onboarding_completo) return '/cuenta/onboarding/personalizar/';
+  return '/cuenta/perfil/';
+}
+
 /* Mismo mail-a-mail que las políticas RLS de event_submissions en Supabase:
    si se suma o saca a alguien acá, hay que tocar también esas políticas
    (son la seguridad real; esta lista solo decide qué se MUESTRA en pantalla). */
@@ -111,7 +133,7 @@ if(document.readyState === 'loading'){
     btn.textContent = 'Crear cuenta'; btn.disabled = false;
     if(error){ err.textContent = error.message; err.style.display = 'block'; return; }
     if(data.session){
-      window.location.href = '/cuenta/perfil/';
+      window.location.href = await tribuDestinoPostAuth(data.session);
     } else {
       document.getElementById('authFormCrear').style.display = 'none';
       document.getElementById('authCrMsg').style.display = 'block';
@@ -124,9 +146,9 @@ if(document.readyState === 'loading'){
     const btn = document.getElementById('authInBtn'); btn.textContent = 'Ingresando...'; btn.disabled = true;
     const email = document.getElementById('authInEmail').value.trim();
     const password = document.getElementById('authInPass').value;
-    const { error } = await sb.auth.signInWithPassword({ email, password });
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
     btn.textContent = 'Ingresar'; btn.disabled = false;
     if(error){ err.textContent = 'Email o contraseña incorrectos.'; err.style.display = 'block'; return; }
-    window.location.href = '/cuenta/perfil/';
+    window.location.href = await tribuDestinoPostAuth(data.session);
   });
 })();

@@ -15,9 +15,11 @@
   .cat-chip{ display:inline-flex; align-items:center; padding:.45rem .9rem; border-radius:999px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); font-size:.85rem; cursor:pointer; transition:.15s; margin:0 .4rem .4rem 0; }
   .cat-chip.sel{ background:var(--spectrum); color:#15110f; border-color:transparent; font-weight:600; }
   .foto-preview{ width:96px; height:96px; border-radius:50%; object-fit:cover; background:var(--ink-2); border:2px solid var(--line-2); }
-  .tipo-toggle{ display:flex; gap:.6rem; margin-bottom:1.4rem; }
-  .tipo-toggle button{ flex:1; padding:.8rem; border-radius:14px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); cursor:pointer; font-family:var(--font-sans); font-weight:600; }
-  .tipo-toggle button.active{ background:var(--spectrum); color:#15110f; border-color:transparent; }
+  .modalidad-toggle{ display:flex; gap:.6rem; }
+  .modalidad-toggle button{ flex:1; padding:.7rem; border-radius:14px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); cursor:pointer; font-family:var(--font-sans); font-weight:600; font-size:.88rem; }
+  .modalidad-toggle button.active{ background:var(--spectrum); color:#15110f; border-color:transparent; }
+  .visible-check{ display:flex; align-items:flex-start; gap:.7rem; padding:.9rem 1rem; border:1px solid var(--line-2); border-radius:14px; cursor:pointer; }
+  .visible-check input{ margin-top:.2rem; }
 </style>
 </head>
 <body>
@@ -49,8 +51,9 @@
 
 <section class="section" style="padding-top:clamp(110px,14vw,140px)">
   <div class="wrap" style="max-width:640px">
-    <p class="eyebrow reveal">Mi perfil</p>
-    <h1 class="h2 reveal d1" style="margin:1rem 0 1.6rem">Tu perfil en la Red Tribu</h1>
+    <p class="eyebrow reveal">Perfil para compartir · Opcional</p>
+    <h1 class="h2 reveal d1" style="margin:1rem 0 .5rem">Contanos qué querés compartir</h1>
+    <p class="lead reveal d1" style="margin-bottom:1.4rem">Con esto armamos la base de tu perfil dentro del ecosistema. Después vas a poder sumar experiencias, próximas fechas y más detalles.</p>
 
     <a href="/cuenta/admin-eventos/" id="linkAdminEventos" class="tribu-card reveal d1" style="display:none;margin-bottom:1.2rem;padding:1rem 1.4rem;text-decoration:none;color:inherit;align-items:center;justify-content:space-between;gap:1rem">
       <span>🛠️ <b>Panel del equipo</b> — aprobar o rechazar eventos enviados por la comunidad</span>
@@ -58,11 +61,6 @@
     </a>
 
     <div class="tribu-card reveal d2">
-      <div class="tipo-toggle">
-        <button type="button" data-tipo="creador" class="active">Soy creador/a</button>
-        <button type="button" data-tipo="marca">Represento una marca</button>
-      </div>
-
       <form id="formPerfil">
         <div class="field" style="display:flex;align-items:center;gap:1.2rem">
           <img id="fotoPreview" class="foto-preview" src="/assets/isotipo.png?v=2" alt="">
@@ -73,14 +71,21 @@
           </div>
         </div>
 
+        <div class="field">
+          <label>¿Cómo participás hoy?</label>
+          <div id="roles"></div>
+        </div>
+
         <div class="row2">
           <div class="field">
-            <label for="nombre">Nombre y apellido</label>
-            <input id="nombre" required placeholder="Ej: Noelia López">
+            <label for="nombre">Nombre público o proyecto</label>
+            <input id="nombre" required placeholder="Ej: Noelia Yoga, Lotus, Amanita...">
           </div>
           <div class="field">
-            <label for="ciudad">Ciudad</label>
-            <input id="ciudad" placeholder="Ej: Buenos Aires, Argentina">
+            <label for="categoriaPrincipal">Categoría principal</label>
+            <select id="categoriaPrincipal">
+              <option value="">Elegí una categoría</option>
+            </select>
           </div>
         </div>
 
@@ -89,10 +94,42 @@
           <input id="nombreMarca" placeholder="¿Cómo se llama tu marca?">
         </div>
 
+        <div class="field">
+          <label for="miniBio">Descripción breve</label>
+          <textarea id="miniBio" maxlength="160" style="min-height:56px" placeholder="Contá en pocas líneas qué hacés y cómo acompañás a las personas."></textarea>
+          <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="bioCount">0</span> / 160</p>
+        </div>
+
         <div class="row2">
           <div class="field">
-            <label for="telefono">Teléfono / WhatsApp</label>
-            <input id="telefono" placeholder="Ej: 11 1234 5678">
+            <label for="ciudad">Ciudad base</label>
+            <input id="ciudad" placeholder="Ej: Buenos Aires, Argentina">
+          </div>
+          <div class="field">
+            <label>Modalidad</label>
+            <div class="modalidad-toggle">
+              <button type="button" data-mod="Presencial" class="active">Presencial</button>
+              <button type="button" data-mod="Online">Online</button>
+              <button type="button" data-mod="Ambas">Ambas</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="instagram">Instagram o red principal</label>
+            <input id="instagram" placeholder="@usuario o link">
+          </div>
+          <div class="field">
+            <label for="telefono">WhatsApp o contacto</label>
+            <input id="telefono" placeholder="+54 9 11 1234 5678">
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="sitioWeb">Web / Youtube / Spotify</label>
+            <input id="sitioWeb" placeholder="Link de tu canal o sitio">
           </div>
           <div class="field">
             <label for="email">Mail de contacto</label>
@@ -100,30 +137,23 @@
           </div>
         </div>
 
-        <div class="row2">
-          <div class="field">
-            <label for="instagram">Instagram</label>
-            <input id="instagram" placeholder="@usuario">
-          </div>
-          <div class="field">
-            <label for="sitioWeb">Web / Youtube / Spotify</label>
-            <input id="sitioWeb" placeholder="Link de tu canal o sitio">
-          </div>
-        </div>
-
         <div class="field">
-          <label for="miniBio">Mini bio</label>
-          <textarea id="miniBio" maxlength="500" style="min-height:56px" placeholder="Contanos brevemente quién sos, qué hacés y qué te inspira a compartir."></textarea>
-          <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="bioCount">0</span> / 500</p>
-        </div>
-
-        <div class="field">
-          <label>Seleccioná lo que ofrecés (hasta 5)</label>
+          <label>Etiquetas para que te encuentren (hasta 5)</label>
           <div id="categorias"></div>
         </div>
 
+        <div class="field">
+          <label class="visible-check">
+            <input type="checkbox" id="visible" checked>
+            <span>Quiero que este perfil quede visible en la Red Tribu. Más adelante vas a poder sumar comunidades, eventos, links y fotos.</span>
+          </label>
+        </div>
+
         <p class="field-error" id="perfilError" style="display:none"></p>
-        <button type="submit" class="btn btn--spectrum" id="btnGuardar">Guardar perfil</button>
+        <div style="display:flex;gap:.8rem;align-items:center">
+          <a href="/" class="btn btn--ghost">Lo completo después</a>
+          <button type="submit" class="btn btn--spectrum" id="btnGuardar">Guardar perfil</button>
+        </div>
         <div class="modal-msg" id="perfilMsg" style="display:none">¡Perfil guardado! 🌟 Ya podés <a href="/cuenta/publicar/" style="color:var(--teal)">publicar tu primera experiencia</a>.</div>
       </form>
     </div>
@@ -135,13 +165,14 @@
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=3"></script>
+<script src="/assets/supabase-client.js?v=4"></script>
 <script src="/assets/site.js?v=6"></script>
 <script>
 (function(){
   let session = null;
-  let tipo = 'creador';
+  let modalidad = 'Presencial';
   let categoriasSel = [];
+  let rolesSel = [];
   let fotoFile = null;
 
   const catBox = document.getElementById('categorias');
@@ -156,12 +187,33 @@
     catBox.appendChild(chip);
   });
 
-  document.querySelectorAll('.tipo-toggle button').forEach(btn => {
+  const catSelect = document.getElementById('categoriaPrincipal');
+  CATEGORIAS_RED_TRIBU.forEach(cat => {
+    const opt = document.createElement('option'); opt.value = cat; opt.textContent = cat;
+    catSelect.appendChild(opt);
+  });
+
+  const rolesBox = document.getElementById('roles');
+  function actualizarCampoMarca(){
+    document.getElementById('campoMarca').style.display = rolesSel.includes('tiene_marca') ? '' : 'none';
+  }
+  ROLES_PARTICIPACION.forEach(r => {
+    const chip = document.createElement('button');
+    chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = r.label; chip.dataset.rol = r.valor;
+    chip.addEventListener('click', () => {
+      const i = rolesSel.indexOf(r.valor);
+      if(i > -1){ rolesSel.splice(i, 1); chip.classList.remove('sel'); }
+      else { rolesSel.push(r.valor); chip.classList.add('sel'); }
+      actualizarCampoMarca();
+    });
+    rolesBox.appendChild(chip);
+  });
+
+  document.querySelectorAll('.modalidad-toggle button').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.tipo-toggle button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.modalidad-toggle button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      tipo = btn.dataset.tipo;
-      document.getElementById('campoMarca').style.display = tipo === 'marca' ? '' : 'none';
+      modalidad = btn.dataset.mod;
     });
   });
 
@@ -183,9 +235,6 @@
   async function cargarPerfilExistente(){
     const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
     if(!data) return;
-    tipo = data.tipo;
-    document.querySelectorAll('.tipo-toggle button').forEach(b => b.classList.toggle('active', b.dataset.tipo === tipo));
-    document.getElementById('campoMarca').style.display = tipo === 'marca' ? '' : 'none';
     document.getElementById('nombre').value = data.nombre || '';
     document.getElementById('nombreMarca').value = data.nombre_marca || '';
     document.getElementById('telefono').value = data.telefono || '';
@@ -195,11 +244,22 @@
     document.getElementById('ciudad').value = data.ciudad || '';
     document.getElementById('miniBio').value = data.mini_bio || '';
     document.getElementById('bioCount').textContent = (data.mini_bio || '').length;
+    document.getElementById('categoriaPrincipal').value = data.categoria_principal || '';
+    document.getElementById('visible').checked = data.publicado !== false;
     if(data.foto_url) document.getElementById('fotoPreview').src = data.foto_url;
     categoriasSel = data.categorias || [];
-    document.querySelectorAll('.cat-chip').forEach(chip => {
+    document.querySelectorAll('#categorias .cat-chip').forEach(chip => {
       chip.classList.toggle('sel', categoriasSel.includes(chip.textContent));
     });
+    rolesSel = data.roles || (data.tipo === 'marca' ? ['tiene_marca'] : data.tipo === 'creador' ? ['facilita_actividades'] : []);
+    document.querySelectorAll('#roles .cat-chip').forEach(chip => {
+      chip.classList.toggle('sel', rolesSel.includes(chip.dataset.rol));
+    });
+    actualizarCampoMarca();
+    if(data.modalidad_pref){
+      modalidad = data.modalidad_pref;
+      document.querySelectorAll('.modalidad-toggle button').forEach(b => b.classList.toggle('active', b.dataset.mod === modalidad));
+    }
   }
 
   document.getElementById('formPerfil').addEventListener('submit', async (e) => {
@@ -218,7 +278,12 @@
       }
       const row = {
         id: session.user.id,
-        tipo,
+        tipo: rolesSel.includes('tiene_marca') ? 'marca' : (rolesSel.length ? 'creador' : null),
+        roles: rolesSel,
+        comparte_perfil: true,
+        onboarding_completo: true,
+        categoria_principal: document.getElementById('categoriaPrincipal').value || null,
+        modalidad_pref: modalidad,
         nombre: document.getElementById('nombre').value.trim(),
         nombre_marca: document.getElementById('nombreMarca').value.trim() || null,
         telefono: document.getElementById('telefono').value.trim() || null,
@@ -229,7 +294,7 @@
         mini_bio: document.getElementById('miniBio').value.trim() || null,
         categorias: categoriasSel,
         foto_url: fotoUrl,
-        publicado: true
+        publicado: document.getElementById('visible').checked
       };
       const { error } = await sb.from('profiles').upsert(row);
       if(error) throw error;
