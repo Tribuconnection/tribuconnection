@@ -320,8 +320,9 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .plan .check-amber{ color:var(--amber); }
 .pack-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:.9rem; margin:.2rem 0 1.1rem; }
 @media (max-width:560px){ .pack-grid{ grid-template-columns:1fr; } }
-.pack-card{ border:1px solid var(--line-2); border-radius:16px; background:var(--ink-2); padding:1.1rem 1.2rem; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.4rem; }
-.pack-card .pack-title{ font-family:var(--font-display); font-size:.98rem; color:var(--cream); line-height:1.3; }
+.pack-card{ border:1px solid var(--line-2); border-radius:16px; background:var(--ink-2); padding:1.1rem .8rem; text-align:center; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.4rem; }
+.pack-card .pack-title{ font-family:var(--font-display); font-size:.86rem; color:var(--cream); line-height:1.3; white-space:normal; }
+.pack-card .pack-title br{ display:block; content:""; margin-top:.15rem; }
 .pack-card .pack-desc{ font-size:.8rem; color:var(--soft); line-height:1.45; }
 .plan .btn{ width:100%; justify-content:center; }
 .pass-note{ margin-top:1rem; font-size:.82rem; color:var(--muted); display:flex; align-items:center; gap:.6rem; }
