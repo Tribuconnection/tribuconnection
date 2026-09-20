@@ -132,9 +132,22 @@
         <h3>Amanita Festival</h3>
         <p>Festival y encuentro de experiencias conscientes en la naturaleza.</p>
       </a>
+      <a class="directory-card" data-tipo="lugares" data-name="Espacio Om" href="#" data-connect>
+        <div class="directory-card-logo"><img src="/assets/isotipo.png?v=2" alt="Espacio Om" style="object-fit:contain;padding:.6rem"></div>
+        <span class="directory-card-type">Espacio</span>
+        <h3>Espacio Om</h3>
+        <p>Sala para círculos, sonido y encuentros holísticos en Palermo, CABA.</p>
+      </a>
+      <a class="directory-card" data-tipo="lugares" data-name="Parque Centenario" href="#" data-connect>
+        <div class="directory-card-logo"><img src="/assets/isotipo.png?v=2" alt="Parque Centenario" style="object-fit:contain;padding:.6rem"></div>
+        <span class="directory-card-type">Espacio</span>
+        <h3>Parque Centenario</h3>
+        <p>Espacio verde a cielo abierto para ferias, encuentros y experiencias al aire libre en CABA.</p>
+      </a>
 
       <div id="dirGridDinamico"></div>
       <div id="dirGridEventos"></div>
+      <div id="dirGridEventosCal"></div>
 
       <div class="directory-empty" data-tipo="personas" id="emptyPersonas">
         <b>Todavía no hay personas publicadas en esta categoría</b>
@@ -471,6 +484,42 @@
   let miSesion = null;
   let misParticipaciones = {};
 
+  /* Eventos del calendario (home/agenda): vienen de window.TRIBU_EVENTS, cargado por
+     site.js (fijos + los aprobados en el panel de moderación vía event_submissions).
+     Es una fuente de datos aparte de "experiences" (que son las publicadas por perfiles
+     desde /cuenta/publicar/), así que se muestran como tarjetas propias en la misma
+     pestaña "Eventos" para que la Red Tribu no se vea vacía si todavía no hay
+     experiencias publicadas por la comunidad. */
+  const dinamicoEventosCal = document.getElementById('dirGridEventosCal');
+  function eventoCalCard(e){
+    const rubroInfo = (window.TRIBU_RUBROS || {})[e.rubro];
+    const label = rubroInfo ? rubroInfo.label : (e.rubro || 'Evento');
+    const d = e.date ? new Date(e.date + 'T00:00') : null;
+    const fechaTxt = d && !isNaN(d) ? d.getDate() + ' ' + MESES_CORTO[d.getMonth()] : '';
+    const slug = window.TRIBU_SLUG ? window.TRIBU_SLUG(e.title) : '';
+    const el = document.createElement('a');
+    el.className = 'directory-card';
+    el.dataset.tipo = 'eventos';
+    el.dataset.name = e.title;
+    el.href = '/agenda/evento/?id=' + encodeURIComponent(slug);
+    el.innerHTML = '<div class="directory-card-logo"><img src="/assets/isotipo.png?v=2" alt="" style="object-fit:cover"></div>' +
+      '<span class="directory-card-type">' + escapeHtml(label) + (fechaTxt ? ' · ' + fechaTxt : '') + '</span>' +
+      '<h3>' + escapeHtml(e.title) + '</h3>' +
+      '<p>' + escapeHtml(e.place || '') + '</p>';
+    return el;
+  }
+  function pintarEventosCalendario(){
+    dinamicoEventosCal.innerHTML = '';
+    const vistos = new Set();
+    (window.TRIBU_EVENTS || []).slice().sort((a, b) => a.date.localeCompare(b.date)).forEach(e => {
+      if(vistos.has(e.title)) return;
+      vistos.add(e.title);
+      dinamicoEventosCal.appendChild(eventoCalCard(e));
+    });
+    apply();
+  }
+  document.addEventListener('tribu:events-updated', pintarEventosCalendario);
+
   function eventoCard(e){
     const foto = sanitizeUrl(e.imagen_portada_url);
     const img = foto !== '#' ? foto : '/assets/isotipo.png?v=2';
@@ -553,7 +602,7 @@
       if(card) dinamico.appendChild(card);
     });
     (experiencias || []).forEach(e => dinamicoEventos.appendChild(eventoCard(e)));
-    apply();
+    pintarEventosCalendario();
   })();
 })();
 </script>
