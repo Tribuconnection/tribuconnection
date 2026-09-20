@@ -308,6 +308,10 @@
         if(!confirm('¿Eliminar esta experiencia? No se puede deshacer.')) return;
         const { error } = await sb.from('experiences').delete().eq('id', btn.dataset.borrar);
         if(error){ alert('No se pudo eliminar: ' + error.message); return; }
+        const fd = new FormData();
+        fd.set('Accion', 'eliminar');
+        fd.set('Id', btn.dataset.borrar);
+        enviarASheets(fd, 'Experiencia').catch(() => {}); // best-effort, no bloquea el borrado
         cargarTodo();
       });
     });

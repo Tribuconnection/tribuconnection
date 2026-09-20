@@ -22,8 +22,8 @@ const NOTIFY_EMAIL = 'contacto@tribuconnection.com';
 /* Planilla APARTE (no la de Formularios) donde se registra cada experiencia
    publicada desde "Publicar experiencia" en la cuenta de un usuario. Vive en
    el Drive del equipo, carpeta de Tribu Connection. */
-const EXPERIENCIAS_SHEET_ID = '198HiCmkOpGzCxHggiCDnE_5G12ePnNPPgmzBOK5ak3g';
-const EXPERIENCIAS_HEADERS = ['Fecha de publicación', 'Nombre', 'Tipo', 'Fecha del evento', 'Horario', 'Modalidad', 'Ciudad/Barrio', 'Lugar', 'Categorías', 'Descripción', 'Forma de acceso', 'Estado', 'Publicado por'];
+const EXPERIENCIAS_SHEET_ID = '1YCMMVi6pgx0Fl2q4j8CXa1vSzuSkJiifIVoQy8tK9ME';
+const EXPERIENCIAS_HEADERS = ['ID', 'Fecha de publicación', 'Nombre', 'Tipo', 'Fecha del evento', 'Horario', 'Modalidad', 'Ciudad/Barrio', 'Lugar', 'Categorías', 'Descripción', 'Forma de acceso', 'Estado', 'Publicado por'];
 
 /* Una pestaña por destino, con el nombre de dónde viene la info y sus propias columnas. */
 const TABS = {
@@ -163,19 +163,48 @@ function handleExterno_(ss, e) {
 }
 
 /** A diferencia del resto, esto NO va a la planilla de Formularios: va a la
-    planilla aparte "Experiencias - Tribu Connection" en el Drive del equipo. */
+    planilla aparte "Experiencias - Tribu Connection" en el Drive del equipo.
+    Mantiene la planilla sincronizada con lo que pasa en la cuenta del usuario:
+    Accion=crear agrega fila, Accion=editar la actualiza (buscando por ID),
+    Accion=eliminar la borra. Así una edición o un borrado en la web se ve
+    reflejado ahí también, no solo la creación. */
 function handleExperiencia_(e) {
   const sh = SpreadsheetApp.openById(EXPERIENCIAS_SHEET_ID).getSheets()[0];
+  const accion = (e.parameter.Accion || 'crear').trim();
+  const id = e.parameter.Id || '';
+  const filaExistente = id ? buscarFilaPorIdExperiencia_(sh, id) : null;
+
+  if (accion === 'eliminar') {
+    if (filaExistente) sh.deleteRow(filaExistente);
+    return respond_({ ok: true });
+  }
+
   const row = [
-    new Date(), e.parameter.Nombre || '', e.parameter.TipoExp || '', e.parameter.Fecha || '',
+    id, new Date(), e.parameter.Nombre || '', e.parameter.TipoExp || '', e.parameter.Fecha || '',
     e.parameter.Horario || '', e.parameter.Modalidad || '', e.parameter.CiudadBarrio || '',
     e.parameter.Lugar || '', e.parameter.Categorias || '', e.parameter.Descripcion || '',
     e.parameter.Acceso || '', e.parameter.Estado || '', e.parameter.PublicadoPor || ''
   ];
+
+  if (filaExistente) {
+    sh.getRange(filaExistente, 1, 1, row.length).setValues([row]);
+    return respond_({ ok: true });
+  }
+
   sh.appendRow(row);
   MailApp.sendEmail(NOTIFY_EMAIL, 'Nueva experiencia publicada: ' + (e.parameter.Nombre || '(sin nombre)'),
     EXPERIENCIAS_HEADERS.map((h, i) => h + ': ' + row[i]).join('\n'));
   return respond_({ ok: true });
+}
+
+function buscarFilaPorIdExperiencia_(sh, id) {
+  const total = sh.getLastRow() - 1;
+  if (total <= 0) return null;
+  const ids = sh.getRange(2, 1, total, 1).getValues();
+  for (let i = 0; i < ids.length; i++) {
+    if (String(ids[i][0]) === String(id)) return i + 2;
+  }
+  return null;
 }
 
 /* ===================== MANTENIMIENTO (correr a mano desde el editor) =====================
