@@ -308,6 +308,8 @@
   let modalidadCobro = 'Efectivo';
   let estadoFinal = 'borrador';
   let portadaFile = null;
+  let portadaUrlExistente = null;
+  const editId = new URLSearchParams(location.search).get('id');
 
   const catBox = document.getElementById('categorias');
   CATEGORIAS_RED_TRIBU.forEach(cat => {
@@ -401,6 +403,74 @@
     document.getElementById('portadaTexto').style.display = 'none';
   });
 
+  async function cargarExperienciaExistente(){
+    const { data: e, error } = await sb.from('experiences').select('*').eq('id', editId).maybeSingle();
+    if(error || !e) return;
+
+    document.querySelector('h1').textContent = 'Editar experiencia';
+    document.getElementById('nombre').value = e.nombre || '';
+    document.getElementById('tipo').value = e.tipo || 'Taller';
+    document.getElementById('descripcion').value = e.descripcion || '';
+    document.getElementById('descCount').textContent = (e.descripcion || '').length;
+    document.getElementById('fecha').value = e.fecha || '';
+    document.getElementById('horario').value = e.horario || '';
+    modalidad = e.modalidad || 'Presencial';
+    document.querySelectorAll('#paso1 .modalidad-toggle button').forEach(b => b.classList.toggle('active', b.dataset.mod === modalidad));
+    document.getElementById('campoUbicacion').style.display = modalidad === 'Online' ? 'none' : '';
+    document.getElementById('ciudadBarrio').value = e.ciudad_barrio || '';
+    document.getElementById('lugar').value = e.lugar || '';
+    if(e.lat != null && e.lng != null){
+      lat = Number(e.lat); lng = Number(e.lng);
+      marker = L.marker([lat, lng]).addTo(map);
+      map.setView([lat, lng], 13);
+    }
+    categoriasSel = e.categorias || [];
+    document.querySelectorAll('#categorias .cat-chip').forEach(chip => chip.classList.toggle('sel', categoriasSel.includes(chip.textContent)));
+
+    portadaUrlExistente = e.imagen_portada_url || null;
+    if(portadaUrlExistente){
+      document.getElementById('portadaPreview').src = portadaUrlExistente;
+      document.getElementById('portadaPreview').style.display = 'block';
+      document.getElementById('portadaTexto').style.display = 'none';
+    }
+    document.getElementById('proyectoNombre').value = e.proyecto_nombre || '';
+    document.getElementById('organizaNombre').value = e.organiza_nombre || '';
+    document.getElementById('instagram2').value = e.instagram || '';
+    document.getElementById('colaboradores').value = e.colaboradores || '';
+    if(e.club_beneficio){
+      document.getElementById('ofreceBeneficio').checked = true;
+      document.getElementById('clubBeneficio').style.display = '';
+      document.getElementById('clubBeneficio').value = e.club_beneficio;
+    }
+
+    acceso = e.acceso_tipo || 'gratis';
+    document.querySelectorAll('.acceso-opt').forEach(o => o.classList.toggle('sel', o.dataset.acceso === acceso));
+    Object.values(ACCESO_DETALLES).forEach(id => document.getElementById(id).style.display = 'none');
+    document.getElementById(ACCESO_DETALLES[acceso]).style.display = 'block';
+
+    if(e.cupo) document.getElementById(acceso === 'gratis' ? 'gratisCupo' : acceso === 'transferencia' ? 'transfCupo' : acceso === 'link_pago' ? 'linkPagoCupo' : acceso === 'ticketera' ? 'ticketeraCupo' : acceso === 'pago_lugar' ? 'lugarCupo' : 'consultarCupo').value = e.cupo;
+    if(e.link_reserva) document.getElementById(acceso === 'gratis' ? 'gratisLink' : acceso === 'link_pago' ? 'linkPagoLink' : acceso === 'ticketera' ? 'ticketeraLink' : 'consultarLink').value = e.link_reserva;
+    if(e.instrucciones) document.getElementById(acceso === 'gratis' ? 'gratisInstrucciones' : acceso === 'pago_lugar' ? 'lugarInstrucciones' : 'consultarInstrucciones').value = e.instrucciones;
+    if(acceso === 'gratis') document.getElementById('gratisInscripcionPrevia').checked = !!e.reserva_previa;
+    if(e.precio) document.getElementById(acceso === 'transferencia' ? 'transfPrecio' : acceso === 'link_pago' ? 'linkPagoPrecio' : acceso === 'ticketera' ? 'ticketeraPrecio' : 'lugarPrecio').value = e.precio;
+    if(acceso === 'transferencia'){
+      document.getElementById('transfAlias').value = e.alias || '';
+      document.getElementById('transfTitular').value = e.titular || '';
+      document.getElementById('transfCbu').value = e.cbu || '';
+      document.getElementById('transfComprobante').checked = !!e.solicitar_comprobante;
+    }
+    if(acceso === 'pago_lugar'){
+      modalidadCobro = e.modalidad_cobro || 'Efectivo';
+      document.querySelectorAll('#detallePagoLugar .modalidad-toggle button').forEach(b => b.classList.toggle('active', b.dataset.cobro === modalidadCobro));
+      document.getElementById('lugarReservaPrevia').checked = !!e.reserva_previa;
+    }
+
+    estadoFinal = e.estado_publicacion || 'borrador';
+    document.querySelectorAll('.final-opt').forEach(o => o.classList.toggle('sel', o.dataset.estado === estadoFinal));
+
+    document.getElementById('btnFinalizar').textContent = 'Guardar cambios';
+  }
+
   async function finalizar(){
     const err = document.getElementById('paso2Error'); err.style.display = 'none';
     const btn = document.getElementById('btnFinalizar'); btn.textContent = 'Guardando...'; btn.disabled = true;
@@ -408,7 +478,7 @@
       const { data: profile } = await sb.from('profiles').select('id').eq('id', session.user.id).maybeSingle();
       if(!profile) throw new Error('Primero completá tu perfil.');
 
-      let portadaUrl = null;
+      let portadaUrl = portadaUrlExistente;
       if(portadaFile){
         const ext = portadaFile.name.split('.').pop();
         const path = session.user.id + '/' + Date.now() + '.' + ext;
@@ -473,15 +543,20 @@
         row.cupo = document.getElementById('consultarCupo').value.trim() || null;
       }
 
-      const { error } = await sb.from('experiences').insert(row);
+      const { error } = editId
+        ? await sb.from('experiences').update(row).eq('id', editId)
+        : await sb.from('experiences').insert(row);
       if(error) throw error;
       document.getElementById('paso2').querySelectorAll('.field, .final-grid, #btnVolver2, #btnFinalizar, #paso2Error').forEach(el => el.style.display = 'none');
+      document.getElementById('pubMsg').innerHTML = editId
+        ? '¡Cambios guardados! 🎉 <a href="/cuenta/perfil/" style="color:var(--teal)">Volver a mi cuenta</a>'
+        : '¡Listo! 🎉 Ya la podés ver en la <a href="/red-tribu/" style="color:var(--teal)">Red Tribu</a>.';
       document.getElementById('pubMsg').style.display = 'block';
     }catch(ex){
       err.textContent = 'No se pudo publicar: ' + ex.message;
       err.style.display = 'block';
     }finally{
-      btn.textContent = 'Finalizar y continuar'; btn.disabled = false;
+      btn.textContent = editId ? 'Guardar cambios' : 'Finalizar y continuar'; btn.disabled = false;
     }
   }
   document.getElementById('btnFinalizar').addEventListener('click', finalizar);
@@ -495,6 +570,7 @@
     } else {
       document.getElementById('paso1').style.display = 'block';
       setTimeout(() => map.invalidateSize(), 50);
+      if(editId) await cargarExperienciaExistente();
     }
   })();
 })();

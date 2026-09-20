@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editar perfil · Tribu Connection</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/assets/isotipo.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/tribu.css?v=21">
+<link rel="stylesheet" href="/assets/home.css?v=6">
+<style>
+  .cat-chip{ display:inline-flex; align-items:center; padding:.45rem .9rem; border-radius:999px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); font-size:.85rem; cursor:pointer; transition:.15s; margin:0 .4rem .4rem 0; }
+  .cat-chip.sel{ background:var(--spectrum); color:#15110f; border-color:transparent; font-weight:600; }
+  .foto-preview{ width:96px; height:96px; border-radius:50%; object-fit:cover; background:var(--ink-2); border:2px solid var(--line-2); }
+  .modalidad-toggle{ display:flex; gap:.6rem; }
+  .modalidad-toggle button{ flex:1; padding:.7rem; border-radius:14px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); cursor:pointer; font-family:var(--font-sans); font-weight:600; font-size:.88rem; }
+  .modalidad-toggle button.active{ background:var(--spectrum); color:#15110f; border-color:transparent; }
+  .visible-check{ display:flex; align-items:flex-start; gap:.7rem; padding:.9rem 1rem; border:1px solid var(--line-2); border-radius:14px; cursor:pointer; }
+  .visible-check input{ margin-top:.2rem; }
+</style>
+</head>
+<body>
+
+<div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+
+<nav class="nav" id="nav">
+  <a href="/" class="brand" aria-label="Tribu Connection — inicio">
+    <img class="brand-full" src="/assets/logo-blanco.png?v=1" alt="Tribu Connection">
+  </a>
+  <div class="nav-links">
+    <a href="/">Inicio</a>
+    <a href="/agenda/">Agenda</a>
+    <a href="/red-tribu/">Red Tribu</a>
+    <a href="/cuenta/publicar/">Publicar experiencia</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" id="btnLogout" class="btn btn--ghost">Cerrar sesión</a>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Inicio</a>
+  <a href="/agenda/">Agenda</a>
+  <a href="/red-tribu/">Red Tribu</a>
+  <a href="/cuenta/publicar/">Publicar experiencia</a>
+  <a href="#" id="btnLogoutMobile" class="btn btn--ghost">Cerrar sesión</a>
+</div>
+
+<section class="section" style="padding-top:clamp(110px,14vw,140px)">
+  <div class="wrap" style="max-width:640px">
+    <a href="/cuenta/perfil/" style="color:var(--muted);font-size:.85rem;text-decoration:none">← Volver a mi cuenta</a>
+    <p class="eyebrow reveal" style="margin-top:1rem">Perfil para compartir · Opcional</p>
+    <h1 class="h2 reveal d1" style="margin:1rem 0 .5rem">Contanos qué querés compartir</h1>
+    <p class="lead reveal d1" style="margin-bottom:1.4rem">Con esto armamos la base de tu perfil dentro del ecosistema. Después vas a poder sumar experiencias, próximas fechas y más detalles.</p>
+
+    <div class="tribu-card reveal d2">
+      <form id="formPerfil">
+        <div class="field" style="display:flex;align-items:center;gap:1.2rem">
+          <img id="fotoPreview" class="foto-preview" src="/assets/isotipo.png?v=2" alt="">
+          <div>
+            <label class="file-label" for="foto" style="cursor:pointer">📎 Subir foto de perfil</label>
+            <input type="file" id="foto" accept="image/png,image/jpeg,image/webp" style="display:none">
+            <p style="color:var(--muted);font-size:.78rem;margin-top:.3rem">JPG o PNG, máx 5MB.</p>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>¿Cómo participás hoy?</label>
+          <div id="roles"></div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="nombre">Nombre público o proyecto</label>
+            <input id="nombre" required placeholder="Ej: Noelia Yoga, Lotus, Amanita...">
+          </div>
+          <div class="field">
+            <label for="categoriaPrincipal">Categoría principal</label>
+            <select id="categoriaPrincipal">
+              <option value="">Elegí una categoría</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field" id="campoMarca" style="display:none">
+          <label for="nombreMarca">Nombre de la marca</label>
+          <input id="nombreMarca" placeholder="¿Cómo se llama tu marca?">
+        </div>
+
+        <div class="field">
+          <label for="miniBio">Descripción breve</label>
+          <textarea id="miniBio" maxlength="160" style="min-height:56px" placeholder="Contá en pocas líneas qué hacés y cómo acompañás a las personas."></textarea>
+          <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="bioCount">0</span> / 160</p>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="ciudad">Ciudad base</label>
+            <input id="ciudad" placeholder="Ej: Buenos Aires, Argentina">
+          </div>
+          <div class="field">
+            <label>Modalidad</label>
+            <div class="modalidad-toggle">
+              <button type="button" data-mod="Presencial" class="active">Presencial</button>
+              <button type="button" data-mod="Online">Online</button>
+              <button type="button" data-mod="Ambas">Ambas</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="instagram">Instagram o red principal</label>
+            <input id="instagram" placeholder="@usuario o link">
+          </div>
+          <div class="field">
+            <label for="telefono">WhatsApp o contacto</label>
+            <input id="telefono" placeholder="+54 9 11 1234 5678">
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="sitioWeb">Web / Youtube / Spotify</label>
+            <input id="sitioWeb" placeholder="Link de tu canal o sitio">
+          </div>
+          <div class="field">
+            <label for="email">Mail de contacto</label>
+            <input id="email" type="email" placeholder="tu@email.com">
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Etiquetas para que te encuentren (hasta 5)</label>
+          <div id="categorias"></div>
+        </div>
+
+        <div class="field">
+          <label class="visible-check">
+            <input type="checkbox" id="visible" checked>
+            <span>Quiero que este perfil quede visible en la Red Tribu. Más adelante vas a poder sumar comunidades, eventos, links y fotos.</span>
+          </label>
+        </div>
+
+        <p class="field-error" id="perfilError" style="display:none"></p>
+        <div style="display:flex;gap:.8rem;align-items:center">
+          <a href="/cuenta/perfil/" class="btn btn--ghost">Cancelar</a>
+          <button type="submit" class="btn btn--spectrum" id="btnGuardar">Guardar perfil</button>
+        </div>
+        <div class="modal-msg" id="perfilMsg" style="display:none">¡Perfil guardado! 🌟 Volviendo a tu cuenta…</div>
+      </form>
+    </div>
+
+    <p style="color:var(--muted);font-size:.84rem;margin-top:1.2rem">
+      🎪 Programa para Creadores / Marcas Aliadas: $25.000/mes. Guardá tu perfil primero — para activar el plan te contactamos por WhatsApp o mail.
+    </p>
+  </div>
+</section>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="/assets/supabase-client.js?v=4"></script>
+<script src="/assets/site.js?v=6"></script>
+<script>
+(function(){
+  let session = null;
+  let modalidad = 'Presencial';
+  let categoriasSel = [];
+  let rolesSel = [];
+  let fotoFile = null;
+
+  const catBox = document.getElementById('categorias');
+  CATEGORIAS_RED_TRIBU.forEach(cat => {
+    const chip = document.createElement('button');
+    chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = cat;
+    chip.addEventListener('click', () => {
+      const i = categoriasSel.indexOf(cat);
+      if(i > -1){ categoriasSel.splice(i, 1); chip.classList.remove('sel'); }
+      else if(categoriasSel.length < 5){ categoriasSel.push(cat); chip.classList.add('sel'); }
+    });
+    catBox.appendChild(chip);
+  });
+
+  const catSelect = document.getElementById('categoriaPrincipal');
+  CATEGORIAS_RED_TRIBU.forEach(cat => {
+    const opt = document.createElement('option'); opt.value = cat; opt.textContent = cat;
+    catSelect.appendChild(opt);
+  });
+
+  const rolesBox = document.getElementById('roles');
+  function actualizarCampoMarca(){
+    document.getElementById('campoMarca').style.display = rolesSel.includes('tiene_marca') ? '' : 'none';
+  }
+  ROLES_PARTICIPACION.forEach(r => {
+    const chip = document.createElement('button');
+    chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = r.label; chip.dataset.rol = r.valor;
+    chip.addEventListener('click', () => {
+      const i = rolesSel.indexOf(r.valor);
+      if(i > -1){ rolesSel.splice(i, 1); chip.classList.remove('sel'); }
+      else { rolesSel.push(r.valor); chip.classList.add('sel'); }
+      actualizarCampoMarca();
+    });
+    rolesBox.appendChild(chip);
+  });
+
+  document.querySelectorAll('.modalidad-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.modalidad-toggle button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      modalidad = btn.dataset.mod;
+    });
+  });
+
+  document.getElementById('miniBio').addEventListener('input', (e) => {
+    document.getElementById('bioCount').textContent = e.target.value.length;
+  });
+
+  document.getElementById('foto').addEventListener('change', (e) => {
+    const f = e.target.files[0];
+    if(!f) return;
+    fotoFile = f;
+    document.getElementById('fotoPreview').src = URL.createObjectURL(f);
+  });
+
+  function cerrarSesion(e){ e.preventDefault(); tribuCerrarSesion(); }
+  document.getElementById('btnLogout').addEventListener('click', cerrarSesion);
+  document.getElementById('btnLogoutMobile').addEventListener('click', cerrarSesion);
+
+  async function cargarPerfilExistente(){
+    const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+    if(!data) return;
+    document.getElementById('nombre').value = data.nombre || '';
+    document.getElementById('nombreMarca').value = data.nombre_marca || '';
+    document.getElementById('telefono').value = data.telefono || '';
+    document.getElementById('email').value = data.email || session.user.email || '';
+    document.getElementById('instagram').value = data.instagram || '';
+    document.getElementById('sitioWeb').value = data.sitio_web || '';
+    document.getElementById('ciudad').value = data.ciudad || '';
+    document.getElementById('miniBio').value = data.mini_bio || '';
+    document.getElementById('bioCount').textContent = (data.mini_bio || '').length;
+    document.getElementById('categoriaPrincipal').value = data.categoria_principal || '';
+    document.getElementById('visible').checked = data.publicado !== false;
+    if(data.foto_url) document.getElementById('fotoPreview').src = data.foto_url;
+    categoriasSel = data.categorias || [];
+    document.querySelectorAll('#categorias .cat-chip').forEach(chip => {
+      chip.classList.toggle('sel', categoriasSel.includes(chip.textContent));
+    });
+    rolesSel = data.roles || (data.tipo === 'marca' ? ['tiene_marca'] : data.tipo === 'creador' ? ['facilita_actividades'] : []);
+    document.querySelectorAll('#roles .cat-chip').forEach(chip => {
+      chip.classList.toggle('sel', rolesSel.includes(chip.dataset.rol));
+    });
+    actualizarCampoMarca();
+    if(data.modalidad_pref){
+      modalidad = data.modalidad_pref;
+      document.querySelectorAll('.modalidad-toggle button').forEach(b => b.classList.toggle('active', b.dataset.mod === modalidad));
+    }
+  }
+
+  document.getElementById('formPerfil').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const err = document.getElementById('perfilError'); err.style.display = 'none';
+    const btn = document.getElementById('btnGuardar'); btn.textContent = 'Guardando...'; btn.disabled = true;
+    try{
+      const previewSrc = document.getElementById('fotoPreview').src;
+      let fotoUrl = previewSrc.includes('/assets/isotipo.png') || previewSrc.startsWith('blob:') ? null : previewSrc;
+      if(fotoFile){
+        const ext = fotoFile.name.split('.').pop();
+        const path = session.user.id + '/foto.' + ext;
+        const { error: upErr } = await sb.storage.from('perfiles').upload(path, fotoFile, { upsert: true });
+        if(upErr) throw upErr;
+        fotoUrl = sb.storage.from('perfiles').getPublicUrl(path).data.publicUrl + '?t=' + Date.now();
+      }
+      const row = {
+        id: session.user.id,
+        tipo: rolesSel.includes('tiene_marca') ? 'marca' : (rolesSel.length ? 'creador' : null),
+        roles: rolesSel,
+        comparte_perfil: true,
+        onboarding_completo: true,
+        categoria_principal: document.getElementById('categoriaPrincipal').value || null,
+        modalidad_pref: modalidad,
+        nombre: document.getElementById('nombre').value.trim(),
+        nombre_marca: document.getElementById('nombreMarca').value.trim() || null,
+        telefono: document.getElementById('telefono').value.trim() || null,
+        email: document.getElementById('email').value.trim() || null,
+        instagram: document.getElementById('instagram').value.trim() || null,
+        sitio_web: document.getElementById('sitioWeb').value.trim() || null,
+        ciudad: document.getElementById('ciudad').value.trim() || null,
+        mini_bio: document.getElementById('miniBio').value.trim() || null,
+        categorias: categoriasSel,
+        foto_url: fotoUrl,
+        publicado: document.getElementById('visible').checked
+      };
+      const { error } = await sb.from('profiles').upsert(row);
+      if(error) throw error;
+      document.getElementById('formPerfil').style.display = 'none';
+      document.getElementById('perfilMsg').style.display = 'block';
+      setTimeout(() => { window.location.href = '/cuenta/perfil/'; }, 1200);
+    }catch(ex){
+      err.textContent = 'No se pudo guardar: ' + ex.message;
+      err.style.display = 'block';
+    }finally{
+      btn.textContent = 'Guardar perfil'; btn.disabled = false;
+    }
+  });
+
+  (async () => {
+    session = await tribuRequiereSesion();
+    if(!session) return;
+    document.getElementById('email').value = session.user.email;
+    await cargarPerfilExistente();
+  })();
+})();
+</script>
+</body>
+</html>
