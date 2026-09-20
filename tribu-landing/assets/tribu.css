@@ -425,8 +425,9 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 /* ===================== RESPONSIVE ===================== */
 @media (max-width:1300px){
   .nav-links, .nav-cta .btn{ display:none; }
+  .nav-cta a[data-auth-nav]{ display:inline-flex; font-size:.82rem; padding:.55em 1.1em; }
   .burger{ display:block; }
-  .nav-cta{ gap:0; }
+  .nav-cta{ gap:.7rem; }
   .stats .wrap{ grid-template-columns:repeat(2,1fr); gap:2rem 1.5rem; }
   .ejes{ grid-template-columns:repeat(2,1fr); }
   .reels-grid{ grid-template-columns:repeat(2,1fr); }
