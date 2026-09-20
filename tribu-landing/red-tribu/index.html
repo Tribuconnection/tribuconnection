@@ -594,7 +594,7 @@
 
   (async () => {
     const [{ data: perfiles }, { data: experiencias }, sesion] = await Promise.all([
-      sb.from('profiles').select('*').eq('publicado', true),
+      sb.from('perfiles_publicos').select('*').eq('publicado', true),
       sb.from('experiences').select('*').eq('estado_publicacion', 'publicado'),
       tribuSesionActual()
     ]);

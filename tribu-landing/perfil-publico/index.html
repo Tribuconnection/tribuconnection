@@ -116,7 +116,7 @@
     const slug = location.pathname.replace(/^\/|\/$/g, '').split('/')[0];
     if(!slug){ notFound(); return; }
 
-    const { data: p } = await sb.from('profiles').select('*').eq('slug', slug).maybeSingle();
+    const { data: p } = await sb.from('perfiles_publicos').select('*').eq('slug', slug).maybeSingle();
     if(!p || !p.publicado || !p.comparte_perfil){ notFound(); return; }
 
     const { data: experiencias } = await sb.from('experiences').select('*').eq('profile_id', p.id).eq('estado_publicacion', 'publicado').order('fecha', { ascending: false });
