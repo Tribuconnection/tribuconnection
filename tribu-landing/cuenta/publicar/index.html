@@ -547,6 +547,24 @@
         ? await sb.from('experiences').update(row).eq('id', editId)
         : await sb.from('experiences').insert(row);
       if(error) throw error;
+
+      if(!editId){
+        const fd = new FormData();
+        fd.set('Nombre', row.nombre);
+        fd.set('TipoExp', row.tipo);
+        fd.set('Fecha', row.fecha);
+        fd.set('Horario', row.horario || '');
+        fd.set('Modalidad', row.modalidad);
+        fd.set('CiudadBarrio', row.ciudad_barrio || '');
+        fd.set('Lugar', row.lugar || '');
+        fd.set('Categorias', (row.categorias || []).join(', '));
+        fd.set('Descripcion', row.descripcion);
+        fd.set('Acceso', row.acceso_tipo);
+        fd.set('Estado', row.estado_publicacion);
+        fd.set('PublicadoPor', session.user.email);
+        enviarASheets(fd, 'Experiencia').catch(() => {}); // best-effort, no bloquea la publicación
+      }
+
       document.getElementById('paso2').querySelectorAll('.field, .final-grid, #btnVolver2, #btnFinalizar, #paso2Error').forEach(el => el.style.display = 'none');
       document.getElementById('pubMsg').innerHTML = editId
         ? '¡Cambios guardados! 🎉 <a href="/cuenta/perfil/" style="color:var(--teal)">Volver a mi cuenta</a>'

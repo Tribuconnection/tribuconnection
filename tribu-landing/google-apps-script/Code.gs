@@ -8,12 +8,22 @@
  *   - "Conectarme a la Tribu"         -> pestaña "Conectarme a la Tribu"
  *   - "Propuesta a medida"            -> pestaña "Propuestas"
  *
+ * "Publicar experiencia" (desde la cuenta de un usuario) es la excepción: no
+ * va a esta planilla de Formularios, va a una planilla APARTE llamada
+ * "Experiencias - Tribu Connection" (ver EXPERIENCIAS_SHEET_ID más abajo).
+ *
  * Cada envío avisa por mail a contacto@tribuconnection.com.
  *
  * Ver INSTRUCCIONES.txt para el paso a paso de despliegue.
  */
 
 const NOTIFY_EMAIL = 'contacto@tribuconnection.com';
+
+/* Planilla APARTE (no la de Formularios) donde se registra cada experiencia
+   publicada desde "Publicar experiencia" en la cuenta de un usuario. Vive en
+   el Drive del equipo, carpeta de Tribu Connection. */
+const EXPERIENCIAS_SHEET_ID = '198HiCmkOpGzCxHggiCDnE_5G12ePnNPPgmzBOK5ak3g';
+const EXPERIENCIAS_HEADERS = ['Fecha de publicación', 'Nombre', 'Tipo', 'Fecha del evento', 'Horario', 'Modalidad', 'Ciudad/Barrio', 'Lugar', 'Categorías', 'Descripción', 'Forma de acceso', 'Estado', 'Publicado por'];
 
 /* Una pestaña por destino, con el nombre de dónde viene la info y sus propias columnas. */
 const TABS = {
@@ -75,6 +85,7 @@ function doPost(e) {
     if (tipo === 'Conectar') return handleConectar_(ss, e);
     if (tipo === 'Propuesta') return handlePropuesta_(ss, e);
     if (tipo === 'Externo') return handleExterno_(ss, e);
+    if (tipo === 'Experiencia') return handleExperiencia_(e);
     if (tipo === 'Admin') return handleAdmin_(ss, e);
     return respond_({ ok: false, error: 'Tipo desconocido' });
   } catch (err) {
@@ -148,6 +159,22 @@ function handleExterno_(ss, e) {
     e.parameter.Propuesta || '', e.parameter.Fecha_Lugar || '', e.parameter.Ayuda || ''
   ];
   agregarFila_(ss, 'Externo', row, 'Nuevo formulario externo: ' + (e.parameter.Nombre || '(sin nombre)'));
+  return respond_({ ok: true });
+}
+
+/** A diferencia del resto, esto NO va a la planilla de Formularios: va a la
+    planilla aparte "Experiencias - Tribu Connection" en el Drive del equipo. */
+function handleExperiencia_(e) {
+  const sh = SpreadsheetApp.openById(EXPERIENCIAS_SHEET_ID).getSheets()[0];
+  const row = [
+    new Date(), e.parameter.Nombre || '', e.parameter.TipoExp || '', e.parameter.Fecha || '',
+    e.parameter.Horario || '', e.parameter.Modalidad || '', e.parameter.CiudadBarrio || '',
+    e.parameter.Lugar || '', e.parameter.Categorias || '', e.parameter.Descripcion || '',
+    e.parameter.Acceso || '', e.parameter.Estado || '', e.parameter.PublicadoPor || ''
+  ];
+  sh.appendRow(row);
+  MailApp.sendEmail(NOTIFY_EMAIL, 'Nueva experiencia publicada: ' + (e.parameter.Nombre || '(sin nombre)'),
+    EXPERIENCIAS_HEADERS.map((h, i) => h + ': ' + row[i]).join('\n'));
   return respond_({ ok: true });
 }
 
