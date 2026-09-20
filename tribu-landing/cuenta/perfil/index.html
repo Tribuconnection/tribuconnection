@@ -13,16 +13,17 @@
 <link rel="stylesheet" href="/assets/home.css?v=6">
 <style>
   .prof-header{ border-radius:20px; overflow:hidden; border:1px solid var(--line); background:var(--ink-1); }
-  .prof-cover{ height:110px; background:linear-gradient(120deg, rgba(210,75,98,.35), rgba(244,166,35,.3) 45%, rgba(54,183,196,.3)); position:relative; }
-  .prof-body{ padding:0 1.6rem 1.5rem; margin-top:-42px; }
-  .prof-avatar{ width:88px; height:88px; border-radius:50%; object-fit:cover; border:4px solid var(--ink-1); background:var(--ink-2); display:block; }
-  .prof-toprow{ display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; flex-wrap:wrap; }
-  .prof-name{ font-family:var(--font-display); font-size:1.35rem; font-weight:700; margin-top:.7rem; }
+  .prof-cover{ height:150px; background:linear-gradient(120deg, rgba(210,75,98,.35), rgba(244,166,35,.3) 45%, rgba(54,183,196,.3)); position:relative; }
+  .prof-avatar{ width:92px; height:92px; border-radius:50%; object-fit:cover; border:4px solid rgba(244,241,234,.85); background:var(--ink-2); display:block; position:absolute; left:1.8rem; bottom:18px; box-shadow:0 8px 24px -8px rgba(0,0,0,.6); }
+  .prof-body{ padding:1.2rem 1.8rem 1.6rem; }
+  .prof-editrow{ display:flex; justify-content:flex-end; margin-bottom:.6rem; }
+  .prof-name{ font-family:var(--font-display); font-size:1.4rem; font-weight:700; }
   .prof-meta{ color:var(--soft); font-size:.86rem; margin-top:.15rem; }
+  .prof-link-publico{ font-size:.82rem; margin-top:.3rem; display:inline-block; }
   .prof-badges{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.7rem; }
   .prof-badge{ font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; padding:.3rem .65rem; border-radius:999px; background:var(--ink-2); color:var(--soft); border:1px solid var(--line-2); }
   .prof-badge.principal{ background:var(--spectrum); color:#15110f; border-color:transparent; }
-  .prof-bio{ color:var(--cream); font-size:.92rem; line-height:1.55; margin-top:.9rem; max-width:56ch; }
+  .prof-bio{ color:var(--cream); font-size:.92rem; line-height:1.55; margin-top:.9rem; max-width:70ch; }
   .prof-socials{ display:flex; gap:.6rem; margin-top:1rem; }
   .prof-soc{ width:36px; height:36px; border-radius:50%; border:1px solid var(--line-2); display:flex; align-items:center; justify-content:center; color:var(--soft); text-decoration:none; transition:.15s; }
   .prof-soc:hover{ border-color:var(--cream); color:var(--cream); }
@@ -44,6 +45,13 @@
   .settings-row:last-child{ border-bottom:none; }
   .section-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; gap:1rem; flex-wrap:wrap; }
   .section-head h2{ font-size:1.05rem; font-family:var(--font-display); }
+  .mini-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.4rem; margin-bottom:1.6rem; }
+  @media (max-width:760px){ .mini-grid{ grid-template-columns:1fr; } }
+  .ev-mini{ display:grid; grid-template-columns:48px 1fr; gap:.7rem; align-items:center; padding:.8rem 1.1rem; border-bottom:1px solid var(--line); }
+  .ev-mini:last-child{ border-bottom:none; }
+  .ev-mini img{ width:48px; height:48px; border-radius:10px; object-fit:cover; background:var(--ink-2); }
+  .ev-mini-titulo{ font-weight:600; font-size:.84rem; }
+  .ev-mini-meta{ color:var(--muted); font-size:.74rem; }
 </style>
 </head>
 <body>
@@ -74,7 +82,7 @@
 </div>
 
 <section class="section" style="padding-top:clamp(110px,14vw,140px)">
-  <div class="wrap" style="max-width:760px">
+  <div class="wrap" style="max-width:1180px">
     <a href="/cuenta/admin-eventos/" id="linkAdminEventos" class="tribu-card reveal" style="display:none;margin-bottom:1.2rem;padding:1rem 1.4rem;text-decoration:none;color:inherit;align-items:center;justify-content:space-between;gap:1rem">
       <span>🛠️ <b>Panel del equipo</b> — aprobar o rechazar eventos enviados por la comunidad</span>
       <span class="arr">→</span>
@@ -82,14 +90,16 @@
 
     <!-- ===== ENCABEZADO DE PERFIL ===== -->
     <div class="prof-header reveal d1">
-      <div class="prof-cover"></div>
+      <div class="prof-cover">
+        <img id="avatar" class="prof-avatar" src="/assets/isotipo.png?v=2" alt="">
+      </div>
       <div class="prof-body">
-        <div class="prof-toprow">
-          <img id="avatar" class="prof-avatar" src="/assets/isotipo.png?v=2" alt="">
+        <div class="prof-editrow">
           <a href="/cuenta/perfil/editar/" class="btn btn--ghost">✏️ Editar perfil</a>
         </div>
         <div class="prof-name" id="nombre">—</div>
         <div class="prof-meta" id="metaLinea">Miembro de Tribu Connection</div>
+        <a href="#" id="linkPerfilPublico" class="prof-link-publico" style="display:none;color:var(--teal)" target="_blank" rel="noopener"></a>
         <div class="prof-badges" id="badges"></div>
         <p class="prof-bio" id="bio" style="display:none"></p>
         <div class="prof-socials" id="socials"></div>
@@ -105,6 +115,23 @@
       <div class="stat-card"><b id="statBorradores">0</b><span>En borrador</span></div>
       <div class="stat-card"><b id="statDesde">—</b><span>Miembro desde</span></div>
     </div>
+
+    <!-- ===== EVENTOS: ORGANIZA / PARTICIPÓ ===== -->
+    <div class="mini-grid reveal d1">
+      <div>
+        <div class="section-head"><h2>Eventos que organizo</h2></div>
+        <div class="tribu-card" style="padding:0" id="listaOrganiza">
+          <p style="padding:1.2rem;color:var(--muted);font-size:.86rem">Cargando...</p>
+        </div>
+      </div>
+      <div>
+        <div class="section-head"><h2>Eventos en los que participé</h2></div>
+        <div class="tribu-card" style="padding:0" id="listaParticipo">
+          <p style="padding:1.2rem;color:var(--muted);font-size:.86rem">Cargando...</p>
+        </div>
+      </div>
+    </div>
+    <p style="color:var(--muted);font-size:.8rem;margin:-1rem 0 1.6rem">Marcá tu asistencia u organización desde las tarjetas de eventos en <a href="/red-tribu/" style="color:var(--teal)">Red Tribu</a>.</p>
 
     <!-- ===== MIS EXPERIENCIAS ===== -->
     <div class="section-head reveal d2">
@@ -155,8 +182,11 @@
 
   function sanitizeUrl(url){
     if(!url) return null;
+    let v = url.trim();
+    if(!v) return null;
+    if(!/^https?:\/\//i.test(v)) v = 'https://' + v;
     try{
-      const u = new URL(url, location.origin);
+      const u = new URL(v);
       if(u.protocol === 'http:' || u.protocol === 'https:') return u.href;
     }catch(e){}
     return null;
@@ -170,6 +200,13 @@
     if(p.ciudad) metaParts.push('📍 ' + p.ciudad);
     if(p.modalidad_pref) metaParts.push(p.modalidad_pref);
     document.getElementById('metaLinea').textContent = metaParts.length ? metaParts.join(' · ') : 'Miembro de Tribu Connection';
+
+    const linkPub = document.getElementById('linkPerfilPublico');
+    if(p.slug){
+      linkPub.href = 'https://' + location.host + '/' + p.slug + '/';
+      linkPub.textContent = 'tribuconnection.com/' + p.slug + ' ↗';
+      linkPub.style.display = 'inline-block';
+    }
 
     const badges = document.getElementById('badges');
     if(p.categoria_principal){
@@ -215,6 +252,20 @@
     }
 
     if(!p.comparte_perfil || !p.publicado) document.getElementById('avisoSinCompartir').style.display = 'block';
+  }
+
+  function pintarEventosMini(contenedorId, filas, vacioTxt){
+    const cont = document.getElementById(contenedorId);
+    if(!filas.length){
+      cont.innerHTML = '<p style="padding:1.2rem;color:var(--muted);font-size:.86rem">' + vacioTxt + '</p>';
+      return;
+    }
+    cont.innerHTML = filas.map(ex => {
+      const d = ex.fecha ? new Date(ex.fecha + 'T00:00') : null;
+      const fechaTxt = d && !isNaN(d) ? d.getDate() + ' ' + MESES[d.getMonth()] : 'Sin fecha';
+      const thumb = sanitizeUrl(ex.imagen_portada_url) || '/assets/isotipo.png?v=2';
+      return '<div class="ev-mini"><img src="' + esc(thumb) + '" alt=""><div><div class="ev-mini-titulo">' + esc(ex.nombre) + '</div><div class="ev-mini-meta">' + esc(ex.tipo || '') + ' · ' + fechaTxt + '</div></div></div>';
+    }).join('');
   }
 
   function pintarStats(p, experiencias){
@@ -281,10 +332,15 @@
   async function cargarTodo(){
     const { data: perfil } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
     const { data: experiencias } = await sb.from('experiences').select('*').eq('profile_id', session.user.id).order('fecha', { ascending: false });
+    const { data: participaciones } = await sb.from('experience_participantes').select('rol, experiences(*)').eq('profile_id', session.user.id);
     const p = perfil || { nombre: session.user.email };
     pintarPerfil(p);
     pintarStats(p, experiencias || []);
     pintarExperiencias(experiencias || []);
+    const organiza = (participaciones || []).filter(x => x.rol === 'organiza' && x.experiences).map(x => x.experiences);
+    const participo = (participaciones || []).filter(x => x.rol === 'participo' && x.experiences).map(x => x.experiences);
+    pintarEventosMini('listaOrganiza', organiza, 'Todavía no marcaste ningún evento como organizador/a.');
+    pintarEventosMini('listaParticipo', participo, 'Todavía no marcaste tu asistencia a ningún evento.');
   }
 
   (async () => {

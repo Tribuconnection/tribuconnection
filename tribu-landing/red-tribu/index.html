@@ -426,8 +426,11 @@
      nadie pueda meter HTML/JS o un link "javascript:" y afectar a otros. */
   function sanitizeUrl(url){
     if(!url) return '#';
+    let v = url.trim();
+    if(!v) return '#';
+    if(!/^https?:\/\//i.test(v)) v = 'https://' + v;
     try{
-      const u = new URL(url, location.origin);
+      const u = new URL(v);
       if(u.protocol === 'http:' || u.protocol === 'https:') return u.href;
     }catch(e){}
     return '#';
@@ -465,6 +468,9 @@
   }
 
   const MESES_CORTO = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  let miSesion = null;
+  let misParticipaciones = {};
+
   function eventoCard(e){
     const foto = sanitizeUrl(e.imagen_portada_url);
     const img = foto !== '#' ? foto : '/assets/isotipo.png?v=2';
@@ -475,11 +481,36 @@
     el.className = 'directory-card';
     el.dataset.tipo = 'eventos';
     el.dataset.name = e.nombre;
+    const rolActual = misParticipaciones[e.id];
     el.innerHTML = '<div class="directory-card-logo"><img src="'+escapeHtml(img)+'" alt="'+escapeHtml(e.nombre)+'" style="object-fit:cover"></div>'+
       '<span class="directory-card-type">'+escapeHtml(e.tipo || 'Experiencia')+(fechaTxt ? ' · '+fechaTxt : '')+'</span>'+
       '<h3>'+escapeHtml(e.nombre)+'</h3>'+
-      '<p>'+escapeHtml(lugarTxt || e.descripcion || '')+'</p>';
+      '<p>'+escapeHtml(lugarTxt || e.descripcion || '')+'</p>'+
+      '<div class="participa-acciones" style="display:flex;gap:.5rem;margin-top:.7rem;flex-wrap:wrap">'+
+        '<button type="button" class="btn btn--ghost btn-participo" data-exp="'+e.id+'" style="font-size:.76rem;padding:.4em .8em'+(rolActual==='participo' ? ';background:var(--spectrum);color:#15110f;border-color:transparent' : '')+'">✓ Fui a este evento</button>'+
+        '<button type="button" class="btn btn--ghost btn-organiza" data-exp="'+e.id+'" style="font-size:.76rem;padding:.4em .8em'+(rolActual==='organiza' ? ';background:var(--spectrum);color:#15110f;border-color:transparent' : '')+'">★ Lo organicé</button>'+
+      '</div>';
+    el.querySelector('.btn-participo').addEventListener('click', (ev) => { ev.stopPropagation(); marcarParticipacion(e.id, 'participo'); });
+    el.querySelector('.btn-organiza').addEventListener('click', (ev) => { ev.stopPropagation(); marcarParticipacion(e.id, 'organiza'); });
     return el;
+  }
+
+  async function marcarParticipacion(experienceId, rol){
+    if(!miSesion){
+      window.location.href = '/cuenta/?modo=ingresar&volver=' + encodeURIComponent('/red-tribu/');
+      return;
+    }
+    const actual = misParticipaciones[experienceId];
+    if(actual === rol){
+      await sb.from('experience_participantes').delete().eq('experience_id', experienceId).eq('profile_id', miSesion.user.id);
+      delete misParticipaciones[experienceId];
+    } else {
+      await sb.from('experience_participantes').upsert({ experience_id: experienceId, profile_id: miSesion.user.id, rol }, { onConflict: 'experience_id,profile_id' });
+      misParticipaciones[experienceId] = rol;
+    }
+    dinamicoEventos.innerHTML = '';
+    (window.TRIBU_EXPERIENCIAS || []).forEach(e => dinamicoEventos.appendChild(eventoCard(e)));
+    apply();
   }
 
   function apply(){
@@ -506,10 +537,17 @@
   search.addEventListener('input', apply);
 
   (async () => {
-    const [{ data: perfiles }, { data: experiencias }] = await Promise.all([
+    const [{ data: perfiles }, { data: experiencias }, sesion] = await Promise.all([
       sb.from('profiles').select('*').eq('publicado', true),
-      sb.from('experiences').select('*').eq('estado_publicacion', 'publicado')
+      sb.from('experiences').select('*').eq('estado_publicacion', 'publicado'),
+      tribuSesionActual()
     ]);
+    miSesion = sesion;
+    window.TRIBU_EXPERIENCIAS = experiencias || [];
+    if(miSesion && experiencias && experiencias.length){
+      const { data: mias } = await sb.from('experience_participantes').select('experience_id, rol').eq('profile_id', miSesion.user.id);
+      (mias || []).forEach(m => { misParticipaciones[m.experience_id] = m.rol; });
+    }
     (perfiles || []).forEach(p => {
       const card = perfilCard(p);
       if(card) dinamico.appendChild(card);

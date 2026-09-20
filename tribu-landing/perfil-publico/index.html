@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfil · Tribu Connection</title>
+<meta name="description" content="Perfil dentro de la comunidad de Tribu Connection.">
+<link rel="icon" type="image/png" href="/assets/isotipo.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/tribu.css?v=21">
+<link rel="stylesheet" href="/assets/home.css?v=6">
+<style>
+  .pp-header{ border-radius:20px; overflow:hidden; border:1px solid var(--line); background:var(--ink-1); }
+  .pp-cover{ height:170px; background:linear-gradient(120deg, rgba(210,75,98,.4), rgba(244,166,35,.32) 45%, rgba(54,183,196,.35)); position:relative; }
+  .pp-body{ padding:0 1.8rem 1.8rem; display:flex; gap:1.4rem; align-items:flex-end; flex-wrap:wrap; margin-top:-54px; }
+  .pp-avatar{ width:108px; height:108px; border-radius:50%; object-fit:cover; border:4px solid var(--ink-1); background:var(--ink-2); display:block; flex-shrink:0; }
+  .pp-info{ flex:1; min-width:220px; padding-bottom:.2rem; }
+  .pp-name{ font-family:var(--font-display); font-size:1.6rem; font-weight:700; }
+  .pp-meta{ color:var(--soft); font-size:.9rem; margin-top:.2rem; }
+  .pp-badges{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.7rem; }
+  .pp-badge{ font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; padding:.3rem .65rem; border-radius:999px; background:var(--ink-2); color:var(--soft); border:1px solid var(--line-2); }
+  .pp-badge.principal{ background:var(--spectrum); color:#15110f; border-color:transparent; }
+  .pp-socials{ display:flex; gap:.6rem; margin-top:1rem; }
+  .pp-soc{ width:38px; height:38px; border-radius:50%; border:1px solid var(--line-2); display:flex; align-items:center; justify-content:center; color:var(--soft); text-decoration:none; transition:.15s; }
+  .pp-soc:hover{ border-color:var(--cream); color:var(--cream); }
+  .pp-bio{ color:var(--cream); font-size:.95rem; line-height:1.6; padding:1.4rem 1.8rem 0; max-width:70ch; }
+  .pp-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1.4rem; margin-top:1.8rem; align-items:start; }
+  @media (max-width:900px){ .pp-grid{ grid-template-columns:1fr; } }
+  .pp-section h2{ font-size:1rem; font-family:var(--font-display); margin-bottom:.9rem; }
+  .pp-card{ border:1px solid var(--line); border-radius:16px; background:var(--ink-1); overflow:hidden; }
+  .pp-ev{ display:grid; grid-template-columns:52px 1fr; gap:.8rem; align-items:center; padding:.9rem 1.1rem; border-bottom:1px solid var(--line); }
+  .pp-ev:last-child{ border-bottom:none; }
+  .pp-ev img{ width:52px; height:52px; border-radius:10px; object-fit:cover; background:var(--ink-2); }
+  .pp-ev-titulo{ font-weight:600; font-size:.86rem; }
+  .pp-ev-meta{ color:var(--muted); font-size:.76rem; }
+  .pp-empty{ padding:1.6rem 1.1rem; text-align:center; color:var(--muted); font-size:.86rem; }
+</style>
+</head>
+<body>
+
+<div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+
+<nav class="nav" id="nav">
+  <a href="/" class="brand" aria-label="Tribu Connection — inicio">
+    <img class="brand-full" src="/assets/logo-blanco.png?v=1" alt="Tribu Connection">
+  </a>
+  <div class="nav-links">
+    <a href="/">Inicio</a>
+    <a href="/agenda/">Agenda</a>
+    <a href="/red-tribu/">Red Tribu</a>
+    <a href="/club-tribu-connection/">Club Tribu</a>
+  </div>
+  <div class="nav-cta">
+    <a href="/cuenta/" class="btn btn--ghost">Mi cuenta</a>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Inicio</a>
+  <a href="/agenda/">Agenda</a>
+  <a href="/red-tribu/">Red Tribu</a>
+  <a href="/club-tribu-connection/">Club Tribu</a>
+  <a href="/cuenta/">Mi cuenta</a>
+</div>
+
+<section class="section" style="padding-top:clamp(110px,14vw,140px);min-height:70vh">
+  <div class="wrap" style="max-width:1100px" id="contenido">
+    <p style="color:var(--muted)">Cargando perfil...</p>
+  </div>
+</section>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="/assets/supabase-client.js?v=4"></script>
+<script src="/assets/site.js?v=6"></script>
+<script>
+(function(){
+  const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function sanitizeUrl(url){
+    if(!url) return null;
+    let v = url.trim();
+    if(!v) return null;
+    if(!/^https?:\/\//i.test(v)) v = 'https://' + v;
+    try{ const u = new URL(v); if(u.protocol === 'http:' || u.protocol === 'https:') return u.href; }catch(e){}
+    return null;
+  }
+
+  function notFound(){
+    document.getElementById('contenido').innerHTML =
+      '<div style="text-align:center;padding:4rem 1rem">' +
+        '<h1 class="h2">No encontramos este perfil</h1>' +
+        '<p style="color:var(--soft);margin-top:.6rem">Puede que todavía no esté publicado o que la dirección esté mal escrita.</p>' +
+        '<a href="/red-tribu/" class="btn btn--spectrum" style="margin-top:1.4rem;display:inline-flex">Ver Red Tribu</a>' +
+      '</div>';
+  }
+
+  function evCard(ex){
+    const d = ex.fecha ? new Date(ex.fecha + 'T00:00') : null;
+    const fechaTxt = d && !isNaN(d) ? d.getDate() + ' ' + MESES[d.getMonth()] : 'Sin fecha';
+    const thumb = sanitizeUrl(ex.imagen_portada_url) || '/assets/isotipo.png?v=2';
+    return '<div class="pp-ev">' +
+      '<img src="' + esc(thumb) + '" alt="">' +
+      '<div><div class="pp-ev-titulo">' + esc(ex.nombre) + '</div><div class="pp-ev-meta">' + esc(ex.tipo || '') + ' · ' + fechaTxt + '</div></div>' +
+    '</div>';
+  }
+
+  async function render(){
+    const slug = location.pathname.replace(/^\/|\/$/g, '').split('/')[0];
+    if(!slug){ notFound(); return; }
+
+    const { data: p } = await sb.from('profiles').select('*').eq('slug', slug).maybeSingle();
+    if(!p || !p.publicado || !p.comparte_perfil){ notFound(); return; }
+
+    const { data: experiencias } = await sb.from('experiences').select('*').eq('profile_id', p.id).eq('estado_publicacion', 'publicado').order('fecha', { ascending: false });
+    const { data: participaciones } = await sb.from('experience_participantes').select('rol, experiences(*)').eq('profile_id', p.id);
+
+    const organiza = (participaciones || []).filter(x => x.rol === 'organiza' && x.experiences).map(x => x.experiences);
+    const participo = (participaciones || []).filter(x => x.rol === 'participo' && x.experiences).map(x => x.experiences);
+
+    document.title = (p.nombre || 'Perfil') + ' · Tribu Connection';
+
+    const badges = [];
+    if(p.categoria_principal) badges.push('<span class="pp-badge principal">' + esc(p.categoria_principal) + '</span>');
+    (p.roles || []).forEach(rol => {
+      const info = ROLES_PARTICIPACION.find(r => r.valor === rol);
+      if(info) badges.push('<span class="pp-badge">' + esc(info.label) + '</span>');
+    });
+
+    const socials = [];
+    if(p.instagram){
+      const handle = p.instagram.replace(/^@/, '').trim();
+      const href = sanitizeUrl('https://instagram.com/' + encodeURIComponent(handle));
+      if(href) socials.push('<a class="pp-soc" target="_blank" rel="noopener" href="' + esc(href) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/></svg></a>');
+    }
+    if(p.sitio_web){
+      const href = sanitizeUrl(p.sitio_web);
+      if(href) socials.push('<a class="pp-soc" target="_blank" rel="noopener" href="' + esc(href) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg></a>');
+    }
+    if(p.telefono){
+      socials.push('<a class="pp-soc" target="_blank" rel="noopener" href="https://wa.me/' + esc(p.telefono.replace(/[^0-9]/g, '')) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.9-1.4A10 10 0 1 0 12 2z" opacity=".15"/><path d="M17 14.2c-.3-.1-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.5.1a8 8 0 0 1-4-3.5c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9.2 7c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.9 1-.9 2.4.1 3.9 2 2.9 3.2 3.5 5.8 4.4.7.2 1.3.2 1.8.1.5-.1 1.6-.6 1.8-1.3.2-.6.2-1.1.1-1.2-.1-.2-.3-.2-.5-.3z"/></svg></a>');
+    }
+
+    const metaParts = [];
+    if(p.ciudad) metaParts.push('📍 ' + esc(p.ciudad));
+    if(p.modalidad_pref) metaParts.push(esc(p.modalidad_pref));
+
+    document.getElementById('contenido').innerHTML =
+      '<div class="pp-header">' +
+        '<div class="pp-cover"></div>' +
+        '<div class="pp-body">' +
+          '<img class="pp-avatar" src="' + esc(sanitizeUrl(p.foto_url) || '/assets/isotipo.png?v=2') + '" alt="">' +
+          '<div class="pp-info">' +
+            '<div class="pp-name">' + esc(p.nombre) + '</div>' +
+            (metaParts.length ? '<div class="pp-meta">' + metaParts.join(' · ') + '</div>' : '') +
+            '<div class="pp-badges">' + badges.join('') + '</div>' +
+          '</div>' +
+        '</div>' +
+        (p.mini_bio ? '<p class="pp-bio">' + esc(p.mini_bio) + '</p>' : '') +
+        (socials.length ? '<div class="pp-socials" style="padding:1rem 1.8rem 1.8rem">' + socials.join('') + '</div>' : '<div style="padding-bottom:1.4rem"></div>') +
+      '</div>' +
+      '<div class="pp-grid">' +
+        '<div class="pp-section"><h2>Experiencias</h2><div class="pp-card">' +
+          (experiencias && experiencias.length ? experiencias.map(evCard).join('') : '<div class="pp-empty">Todavía no publicó experiencias.</div>') +
+        '</div></div>' +
+        '<div class="pp-section"><h2>Organiza</h2><div class="pp-card">' +
+          (organiza.length ? organiza.map(evCard).join('') : '<div class="pp-empty">Sin eventos marcados como organizador/a.</div>') +
+        '</div></div>' +
+        '<div class="pp-section"><h2>Participó en</h2><div class="pp-card">' +
+          (participo.length ? participo.map(evCard).join('') : '<div class="pp-empty">Sin eventos marcados como participante.</div>') +
+        '</div></div>' +
+      '</div>';
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>
