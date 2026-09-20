@@ -239,6 +239,49 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
      mapa se inicializa de una, no espera a que alguien lo abra. */
   if(document.getElementById('calMap')) initMap();
 
+  /* La altura del calendario es la que manda (nunca se estira ella para
+     igualar a las otras: eso deja huecos feos). La lista y el mapa se
+     ajustan a esa altura natural; lo que no entra en la lista se recorre
+     con las flechitas, no con una barra de scroll cruda. */
+  const calCard = document.querySelector('.cal-card');
+  const calListArrows = document.getElementById('calListArrows');
+  const calListUp = document.getElementById('calListUp');
+  const calListDown = document.getElementById('calListDown');
+  function syncAgendaHeights(){
+    if(!calCard) return;
+    const mapEl = document.getElementById('calMap');
+    const apilado = window.innerWidth <= 860;
+    if(apilado){
+      listEl.style.maxHeight = '';
+      if(mapEl) mapEl.style.height = '';
+      if(calListArrows) calListArrows.classList.add('is-hidden');
+      return;
+    }
+    const h = calCard.getBoundingClientRect().height;
+    listEl.style.maxHeight = h + 'px';
+    const dosColumnas = window.innerWidth <= 1300;
+    if(mapEl){
+      mapEl.style.height = dosColumnas ? '' : h + 'px';
+      if(!dosColumnas && calMap) setTimeout(()=> calMap.invalidateSize(), 60);
+    }
+    actualizarFlechasLista();
+  }
+  function actualizarFlechasLista(){
+    if(!calListArrows) return;
+    const puedeScrollear = listEl.scrollHeight > listEl.clientHeight + 4;
+    calListArrows.classList.toggle('is-hidden', !puedeScrollear || window.innerWidth <= 860);
+    if(!puedeScrollear) return;
+    calListUp.disabled = listEl.scrollTop <= 4;
+    calListDown.disabled = listEl.scrollTop + listEl.clientHeight >= listEl.scrollHeight - 4;
+  }
+  function scrollListaSuave(delta){
+    listEl.scrollTop = Math.max(0, Math.min(listEl.scrollTop + delta, listEl.scrollHeight - listEl.clientHeight));
+  }
+  if(calListUp) calListUp.addEventListener('click', ()=> scrollListaSuave(-160));
+  if(calListDown) calListDown.addEventListener('click', ()=> scrollListaSuave(160));
+  listEl.addEventListener('scroll', actualizarFlechasLista);
+  window.addEventListener('resize', syncAgendaHeights);
+
   function evCard(e){
     const g = RANGO[e.title];
     const d = new Date(g.start+'T00:00');
@@ -264,8 +307,10 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     else { evs = EVENTS.filter(e=> pass(e) && esInicio(e) && new Date(RANGO[e.title].end+'T00:00') >= today).sort((a,b)=>a.date.localeCompare(b.date)); title='Próxima agenda'; }
     if(agendaTitle) agendaTitle.firstChild.textContent = title+' ';
     countEl.textContent = evs.length ? evs.length+(evs.length===1?' evento':' eventos') : '';
-    if(!evs.length){ listEl.innerHTML = '<p class="cal-empty">No hay eventos'+(dateStr?' para este día':'')+'. Probá con otro filtro o mes.</p>'; return; }
+    if(!evs.length){ listEl.innerHTML = '<p class="cal-empty">No hay eventos'+(dateStr?' para este día':'')+'. Probá con otro filtro o mes.</p>'; actualizarFlechasLista(); return; }
     listEl.innerHTML = evs.map(evCard).join('');
+    listEl.scrollTop = 0;
+    actualizarFlechasLista();
   }
 
   function render(){
@@ -299,6 +344,7 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     }
     const trailing=(7-((start+total)%7))%7;
     for(let i=1;i<=trailing;i++){ const c=document.createElement('div'); c.className='cal-day other'; c.textContent=i; daysEl.appendChild(c); }
+    setTimeout(syncAgendaHeights, 0);
   }
   document.getElementById('calPrev').addEventListener('click', ()=>{ view.setMonth(view.getMonth()-1); render(); });
   document.getElementById('calNext').addEventListener('click', ()=>{ view.setMonth(view.getMonth()+1); render(); });
