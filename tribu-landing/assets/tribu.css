@@ -155,7 +155,7 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 @media (max-width:400px){ .brand .brand-full{ height:30px; } }
 .brand b{ font-family:var(--font-sans); font-weight:800; font-size:1.18rem; letter-spacing:-.02em; line-height:1; }
 .brand b span{ display:block; font-weight:500; font-size:.66rem; letter-spacing:.34em; color:var(--muted); text-transform:uppercase; margin-top:3px; }
-.nav-links{ display:flex; align-items:center; gap:1.3rem; justify-self:center; }
+.nav-links{ display:flex; align-items:center; gap:1.3rem; justify-self:center; margin-right:3rem; }
 .nav-links a{ color:var(--soft); text-decoration:none; font-size:.89rem; font-weight:500; white-space:nowrap; transition:color .2s ease; }
 .nav-links a:hover{ color:var(--cream); }
 .nav-cta{ display:flex; align-items:center; gap:1.1rem; }
