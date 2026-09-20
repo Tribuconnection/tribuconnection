@@ -911,3 +911,82 @@ const PROVINCIAS_AR = {
   pintar();
   document.addEventListener('tribu:events-updated', pintar);
 })();
+
+/* ============ SELECTS NATIVOS -> DESPLEGABLES REDONDEADOS (estética .cselect) ============
+   Reemplaza visualmente cualquier <select> del sitio por el mismo widget ya usado en
+   "rubroSel" (botón + lista propia), porque el popup nativo de un <select> no se puede
+   redondear en la mayoría de los navegadores. El <select> original queda oculto dentro
+   del widget y sigue siendo la fuente de verdad (value, name, disabled, eventos "change"),
+   así el resto del código de cada página no necesita cambiar. Excluye cdate-month-sel /
+   cdate-year-sel: son selects muy chicos ya embebidos en un popup de fecha propio, y
+   anidar otro popup ahí adentro rompe ese calendario compacto. */
+(function(){
+  function build(select){
+    if(select.dataset.cselectReady) return;
+    select.dataset.cselectReady = '1';
+
+    const wrap = document.createElement('div');
+    wrap.className = 'cselect';
+    select.parentNode.insertBefore(wrap, select);
+
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'cselect-btn';
+    btn.setAttribute('aria-haspopup', 'listbox'); btn.setAttribute('aria-expanded', 'false');
+    const val = document.createElement('span'); val.className = 'cselect-val';
+    btn.appendChild(val);
+    btn.insertAdjacentHTML('beforeend', '<svg class="cselect-chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M6 9l6 6 6-6"/></svg>');
+
+    const list = document.createElement('div'); list.className = 'cselect-list'; list.setAttribute('role', 'listbox');
+
+    wrap.appendChild(btn); wrap.appendChild(list); wrap.appendChild(select);
+
+    function paint(){
+      const opt = select.options[select.selectedIndex];
+      val.textContent = opt ? opt.textContent : '';
+      val.classList.toggle('is-ph', !select.value);
+      list.querySelectorAll('button').forEach(o => o.classList.toggle('sel', o.dataset.val === select.value));
+      wrap.classList.toggle('cselect-disabled', select.disabled);
+    }
+    function refresh(){
+      list.innerHTML = '';
+      Array.from(select.options).forEach(opt => {
+        const o = document.createElement('button');
+        o.type = 'button'; o.dataset.val = opt.value; o.textContent = opt.textContent;
+        o.addEventListener('click', () => {
+          if(select.disabled) return;
+          if(select.value !== opt.value){ select.value = opt.value; select.dispatchEvent(new Event('change', { bubbles: true })); }
+          wrap.classList.remove('open'); btn.setAttribute('aria-expanded', 'false');
+          paint();
+        });
+        list.appendChild(o);
+      });
+      paint();
+    }
+
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      if(select.disabled) return;
+      const willOpen = !wrap.classList.contains('open');
+      document.querySelectorAll('.cselect.open').forEach(o => { if(o !== wrap) o.classList.remove('open'); });
+      wrap.classList.toggle('open', willOpen);
+      btn.setAttribute('aria-expanded', String(willOpen));
+    });
+
+    refresh();
+    /* La opción de ciudad se reconstruye por completo cuando cambia la provincia
+       (ciudadSel.innerHTML = ...), y categoriaPrincipal se llena después de este script.
+       El observer detecta esos cambios de <option> y de "disabled" sin que cada página
+       tenga que avisarle a este widget. */
+    new MutationObserver(refresh).observe(select, { childList: true });
+    new MutationObserver(paint).observe(select, { attributes: true, attributeFilter: ['disabled'] });
+  }
+
+  document.addEventListener('click', () => document.querySelectorAll('.cselect.open').forEach(o => o.classList.remove('open')));
+  document.addEventListener('keydown', e => { if(e.key === 'Escape') document.querySelectorAll('.cselect.open').forEach(o => o.classList.remove('open')); });
+
+  function enhanceAll(root){
+    (root || document).querySelectorAll('select:not(.cdate-month-sel):not(.cdate-year-sel)').forEach(build);
+  }
+  document.addEventListener('DOMContentLoaded', () => enhanceAll());
+  window.tribuEnhanceSelects = enhanceAll;
+})();
