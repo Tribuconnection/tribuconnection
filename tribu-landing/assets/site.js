@@ -235,21 +235,9 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     tribuDarkTiles().addTo(calMap);
     renderMap();
   }
-  const viewToggle = document.getElementById('calViewToggle');
-  const viewList = document.getElementById('calViewList');
-  const viewMap = document.getElementById('calViewMap');
-  if(viewToggle){
-    viewToggle.querySelectorAll('button').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        viewToggle.querySelectorAll('button').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        const isMap = btn.dataset.view === 'map';
-        viewList.style.display = isMap ? 'none' : '';
-        viewMap.style.display = isMap ? '' : 'none';
-        if(isMap){ initMap(); setTimeout(()=>{ calMap.invalidateSize(); renderMap(); }, 60); }
-      });
-    });
-  }
+  /* Calendario, agenda y mapa se ven siempre juntos (no hay pestañas) — el
+     mapa se inicializa de una, no espera a que alguien lo abra. */
+  if(document.getElementById('calMap')) initMap();
 
   function evCard(e){
     const g = RANGO[e.title];

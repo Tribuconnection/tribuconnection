@@ -21,7 +21,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="/assets/tribu.css?v=26">
+<link rel="stylesheet" href="/assets/tribu.css?v=27">
 <link rel="stylesheet" href="/assets/home.css?v=6">
 </head>
 <body>
@@ -86,14 +86,10 @@
     <div class="cal-toolbar reveal">
       <div class="cal-filters" id="calFilters"></div>
       <div class="cal-toolbar-right">
-        <div class="cal-viewtoggle" id="calViewToggle">
-          <button type="button" class="active" data-view="list">📅 Calendario</button>
-          <button type="button" data-view="map">🗺️ Mapa</button>
-        </div>
         <button class="btn btn--ghost cal-add" id="calAdd" type="button"><span>＋</span> Solicitar agregar evento</button>
       </div>
     </div>
-    <div class="cal-grid-wrap reveal d1" id="calViewList">
+    <div class="cal-grid-wrap reveal d1">
       <div class="cal-card">
         <div class="cal-nav">
           <button class="cal-arrow" id="calPrev" aria-label="Mes anterior">‹</button>
@@ -108,10 +104,10 @@
         <div class="cal-agenda-title">Próxima agenda <span class="cal-count" id="calCount"></span></div>
         <div class="cal-list" id="calList"></div>
       </div>
-    </div>
-    <div class="cal-map-wrap reveal d1" id="calViewMap" style="display:none">
-      <div id="calMap"></div>
-      <p class="cal-map-note">📍 Ubicaciones aproximadas a nivel de ciudad/localidad — confirmá la dirección exacta con la organización de cada evento.</p>
+      <div class="cal-map-wrap">
+        <div id="calMap"></div>
+        <p class="cal-map-note">📍 Ubicaciones aproximadas a nivel de ciudad/localidad — confirmá la dirección exacta con la organización de cada evento.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -461,7 +457,7 @@
 <script defer src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script defer src="/assets/supabase-client.js?v=4"></script>
 <script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-<script defer src="/assets/site.js?v=6"></script>
+<script defer src="/assets/site.js?v=7"></script>
 <script defer src="/assets/tribu-chat.js?v=2"></script>
 </body>
 </html>
