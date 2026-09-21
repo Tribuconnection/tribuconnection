@@ -159,26 +159,29 @@
 
 /* ---------- Explorá por mapa ---------- */
 .map-cta{
-  position:relative; border-radius:24px; border:1px solid var(--line-2); overflow:hidden; padding:clamp(1.8rem,3.6vw,2.6rem);
+  position:relative; display:grid; grid-template-columns:1.2fr 1fr 1fr; align-items:stretch;
+  border-radius:24px; border:1px solid var(--line-2); overflow:hidden;
   background:
     radial-gradient(circle at 15% 30%, rgba(155,203,70,.14), transparent 40%),
-    radial-gradient(circle at 85% 70%, rgba(54,183,196,.14), transparent 45%),
+    radial-gradient(circle at 60% 70%, rgba(54,183,196,.14), transparent 45%),
     var(--ink-1);
   min-height:220px;
 }
-.map-cta-copy{ max-width:340px; position:relative; z-index:1; }
+.map-cta-copy{ position:relative; z-index:1; padding:clamp(1.8rem,3.6vw,2.6rem); display:flex; flex-direction:column; justify-content:center; }
 .map-cta-copy h2{ font-family:var(--font-display); font-weight:700; font-size:clamp(1.2rem,2.2vw,1.5rem); display:flex; align-items:center; gap:.5rem; margin-bottom:.5rem; }
 .map-cta-copy p{ color:var(--soft); font-size:.9rem; margin-bottom:1.2rem; }
-@media (min-width:700px){ .map-cta-copy{ max-width:480px; } .map-cta-copy p{ white-space:nowrap; } }
-.map-pins{ position:absolute; inset:0; z-index:0; }
+.map-cta-pins{ position:relative; }
 .map-pin{
   position:absolute; width:44px; height:44px; border-radius:50% 50% 50% 4px; transform:rotate(-45deg);
   display:flex; align-items:center; justify-content:center; box-shadow:0 8px 20px -6px rgba(0,0,0,.6);
 }
 .map-pin svg, .map-pin span{ transform:rotate(45deg); }
-.map-note{
-  position:absolute; right:6%; bottom:12%; z-index:1; font-family:var(--font-hand); color:var(--cream);
-  font-size:1.15rem; text-align:right; line-height:1.2; display:none;
+.map-cta-embed{ position:relative; cursor:pointer; }
+.map-cta-embed:hover #miniMapHome{ filter:brightness(1.08); }
+#miniMapHome{ position:absolute; inset:0; width:100%; height:100%; transition:filter .2s; }
+@media (max-width:860px){
+  .map-cta{ grid-template-columns:1fr; }
+  .map-cta-pins, .map-cta-embed{ display:none; }
 }
 
 /* ---------- Mini CTA banner (organizás / marca) ---------- */

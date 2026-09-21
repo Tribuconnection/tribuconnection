@@ -366,6 +366,26 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   });
 })();
 
+/* ============ MINI MAPA DECORATIVO (home, "Explorá por mapa") ============
+   Solo de vidriera: sin drag/zoom/controles propios, toda la tarjeta lleva a
+   /agenda/ al clickear (salvo el link de atribución de Esri, que respeta su
+   propio destino). */
+(function(){
+  const el = document.getElementById('miniMapHome');
+  if(!el || typeof L === 'undefined') return;
+  const map = L.map('miniMapHome', {
+    zoomControl:false, dragging:false, scrollWheelZoom:false, doubleClickZoom:false,
+    touchZoom:false, boxZoom:false, keyboard:false, tap:false
+  }).setView([-34.62, -58.5], 10);
+  tribuMapTiles().addTo(map);
+  tribuMapChrome(map);
+  const wrap = document.getElementById('mapCtaEmbed');
+  const ir = () => { window.location.href = '/agenda/'; };
+  wrap.addEventListener('click', e => { if(!e.target.closest('.leaflet-control-attribution')) ir(); });
+  wrap.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); ir(); } });
+  window.addEventListener('resize', () => map.invalidateSize());
+})();
+
 /* ============ PROVINCIAS Y CIUDADES (Argentina) ============ */
 const PROVINCIAS_AR = {
   'Ciudad Autónoma de Buenos Aires': ['Ciudad Autónoma de Buenos Aires'],
