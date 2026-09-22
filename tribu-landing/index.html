@@ -30,16 +30,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=39">
-<link rel="stylesheet" href="/assets/home.css?v=9">
+<link rel="stylesheet" href="/assets/tribu.css?v=40">
+<link rel="stylesheet" href="/assets/home.css?v=10">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" media="print" onload="this.media='all'">
 </head>
 <body>
-
-<!-- Fondo aurora -->
-<div class="aurora" aria-hidden="true">
-  <span class="a1"></span><span class="a2"></span><span class="a3"></span>
-</div>
 
 <!-- ============================ NAV ============================ -->
 <nav class="nav" id="nav">
@@ -91,8 +86,8 @@
       <h1 class="home-h1 reveal d1">Descubrí experiencias que te <span class="grad">conectan</span></h1>
       <p class="lead reveal d2">Agenda, comunidad y beneficios para vivir más<br class="br-desk"> de lo que te hace bien.</p>
       <div class="home-hero-actions reveal d2">
-        <a href="/agenda/" class="btn btn--spectrum">Descubrir qué hacer <span class="arr">→</span></a>
-        <a href="#" class="btn btn--ghost btn--icon" data-connect>
+        <a href="/agenda/" class="btn btn--tribu-cta">Descubrir qué hacer <span class="arr">→</span></a>
+        <a href="#" class="btn btn--tribu-cta btn--icon" data-connect>
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           Sumarme a Tribu
         </a>
@@ -161,9 +156,9 @@
   <div class="wrap">
     <div class="club-banner reveal">
       <div class="club-intro">
-        <h2>Club Tribu <span aria-hidden="true">🤚</span></h2>
+        <h2>Club Tribu <img src="/assets/isotipo-club-mano.png?v=1" alt="" class="club-hand-ic" aria-hidden="true"></h2>
         <p class="lead" style="font-size:.92rem">Más que beneficios, una comunidad que impulsa lo mejor de vivir más.</p>
-        <div><a href="/club-tribu-connection/" class="btn btn--spectrum">Quiero ser parte <span aria-hidden="true">🤚</span></a></div>
+        <div><a href="/club-tribu-connection/" class="btn btn--spectrum">Quiero ser parte <img src="/assets/isotipo-club-mano.png?v=1" alt="" class="club-hand-ic" aria-hidden="true"></a></div>
         <div class="club-members">
           <span class="avatar-stack"><span></span><span></span><span></span><span></span></span>
           +200 miembros ya forman parte
@@ -199,7 +194,7 @@
 <section class="section" id="historias" style="padding-top:clamp(20px,3vw,36px);padding-bottom:clamp(20px,3vw,36px)">
   <div class="wrap">
     <div class="row-head reveal">
-      <h2>Historias que inspiran <span aria-hidden="true">🕊️</span></h2>
+      <h2>Historias que inspiran <span aria-hidden="true">💫</span></h2>
       <a class="row-link" href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener">Ver más historias <span class="arr">→</span></a>
     </div>
     <div class="stories-row2">
@@ -250,6 +245,55 @@
         <a href="/agenda/" class="btn btn--light">Abrir mapa <span class="arr">→</span></a>
       </div>
       <div class="map-cta-pins" aria-hidden="true">
+        <svg class="map-cta-svgmap" viewBox="0 0 400 260" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="mapFadeX" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+              <stop offset=".2" stop-color="#fff" stop-opacity="1"/>
+              <stop offset=".82" stop-color="#fff" stop-opacity="1"/>
+              <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+            </linearGradient>
+            <linearGradient id="mapFadeY" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+              <stop offset=".22" stop-color="#fff" stop-opacity="1"/>
+              <stop offset=".85" stop-color="#fff" stop-opacity="1"/>
+              <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+            </linearGradient>
+            <mask id="mapFadeMask">
+              <rect x="0" y="0" width="400" height="260" fill="url(#mapFadeX)"/>
+              <rect x="0" y="0" width="400" height="260" fill="url(#mapFadeY)" style="mix-blend-mode:multiply"/>
+            </mask>
+          </defs>
+          <g mask="url(#mapFadeMask)">
+            <path d="M-10,25 C35,70 15,115 48,150 C80,184 58,228 92,262" fill="#2d4a5e" opacity=".3"/>
+            <g fill="none" stroke="#4b5566" stroke-width="1.1">
+              <path d="M-20,55 C90,10 210,100 420,45" opacity=".55"/>
+              <path d="M-20,190 C130,150 260,230 420,175" opacity=".55"/>
+              <path d="M60,-10 C50,80 75,170 55,270" opacity=".35"/>
+              <path d="M150,-10 C140,90 165,160 150,270" opacity=".35"/>
+              <path d="M240,-10 C255,80 230,180 250,270" opacity=".35"/>
+              <path d="M320,-10 C310,90 335,170 315,270" opacity=".35"/>
+              <circle cx="150" cy="95" r="7" opacity=".5"/>
+              <circle cx="250" cy="165" r="7" opacity=".5"/>
+              <circle cx="-40" cy="130" r="120" stroke-dasharray="3 5" opacity=".3"/>
+              <circle cx="440" cy="130" r="120" stroke-dasharray="3 5" opacity=".3"/>
+            </g>
+            <g fill="#4b5566" opacity=".22">
+              <rect x="75" y="20" width="18" height="14"/>
+              <rect x="100" y="55" width="14" height="18"/>
+              <rect x="180" y="25" width="16" height="12"/>
+              <rect x="200" y="60" width="20" height="14"/>
+              <rect x="270" y="30" width="14" height="16"/>
+              <rect x="290" y="70" width="18" height="12"/>
+              <rect x="90" y="150" width="16" height="14"/>
+              <rect x="120" y="190" width="20" height="14"/>
+              <rect x="200" y="150" width="16" height="18"/>
+              <rect x="230" y="195" width="18" height="12"/>
+              <rect x="300" y="140" width="14" height="16"/>
+              <rect x="330" y="180" width="18" height="14"/>
+            </g>
+          </g>
+        </svg>
         <span class="map-pin" style="left:11%;top:15%;background:var(--green)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0C0D10" stroke-width="2"><path d="M12 21v-8"/><path d="M12 13c0-3.5-3-5-7-5 0 4 2 6.5 7 5z"/><path d="M12 13c0-4 3-6.5 7-6.5 0 4.5-2.5 7-7 6.5z"/></svg></span>
         <span class="map-pin" style="left:62%;top:17%;background:var(--purple)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg></span>
         <span class="map-pin" style="left:11%;top:60%;background:var(--red)"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff" stroke="none"><path d="M12 21s-7-4.5-9.5-9A5.5 5.5 0 0 1 12 6a5.5 5.5 0 0 1 9.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg></span>
@@ -268,7 +312,7 @@
   <div class="wrap">
     <div class="mini-cta reveal">
       <div class="mini-cta-left">
-        <div class="mini-cta-ic" aria-hidden="true"><img src="/assets/isotipo.png?v=2" alt="" width="26" height="26"></div>
+        <div class="mini-cta-ic" aria-hidden="true"><img src="/assets/isotipo-creadores-estrellas.png?v=1" alt="" width="26" height="26"></div>
         <div>
           <h3>¿Organizás experiencias, tenés un espacio o una marca?</h3>
           <p>Sumate a la Tribu Connection y llegá a una comunidad que va a tus eventos.</p>

@@ -132,6 +132,9 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .btn--ghost:hover{ border-color:var(--cream); transform:translateY(-2px); }
 .btn--light{ background:var(--cream); color:var(--ink); }
 .btn--light:hover{ transform:translateY(-2px); box-shadow:0 14px 34px -14px rgba(0,0,0,.6); }
+.btn--tribu-cta{ background:linear-gradient(100deg, #F9AC30 0%, #E8753F 22%, #C13E54 55%, #76558F 100%); color:#fff; box-shadow:0 10px 34px -12px rgba(193,62,84,.55); }
+.btn--tribu-cta:hover{ transform:translateY(-2px); box-shadow:0 16px 40px -12px rgba(193,62,84,.6); }
+.btn--tribu-cta svg{ color:#fff; }
 .btn .arr{ transition:transform .25s ease; }
 .btn:hover .arr{ transform:translateX(3px); }
 
