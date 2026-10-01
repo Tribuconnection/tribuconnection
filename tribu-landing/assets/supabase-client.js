@@ -6,6 +6,19 @@ const SUPABASE_URL = 'https://dcoazdjqdohiekcsaxor.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_zC1SJUG-5kHTWArEgYIqBw_tuYEqwOf';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+/* Botón de ojo para mostrar/ocultar contraseña: delegado en document, así
+   funciona en cualquier .pw-wrap de cualquier página/modal sin wiring extra. */
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.pw-toggle');
+  if(!btn) return;
+  const input = btn.previousElementSibling;
+  if(!input) return;
+  const show = input.type === 'password';
+  input.type = show ? 'text' : 'password';
+  btn.classList.toggle('is-visible', show);
+  btn.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
+});
+
 const CATEGORIAS_RED_TRIBU = [
   'Yoga', 'Música', 'Meditación', 'Biodanza', 'Respiración consciente',
   'Sesiones individuales', 'Tarot / Oráculos', 'Terapias holísticas',

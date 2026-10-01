@@ -699,6 +699,15 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .field > label{ display:block; font-size:.76rem; letter-spacing:.06em; color:var(--muted); margin-bottom:.5rem; text-transform:uppercase; }
 .field input, .field textarea{ width:100%; background:var(--ink-2); border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; color:var(--cream); font-family:var(--font-sans); font-size:.98rem; transition:.2s; }
 .field input:focus, .field textarea:focus{ outline:none; border-color:var(--teal); background:var(--ink-3); }
+/* Toggle de "mostrar/ocultar contraseña" (ícono de ojo) */
+.pw-wrap{ position:relative; }
+.pw-wrap input{ padding-right:2.7rem !important; }
+.pw-toggle{ position:absolute; top:50%; right:.4rem; transform:translateY(-50%); width:2.1rem; height:2.1rem; display:flex; align-items:center; justify-content:center; background:none; border:none; padding:0; color:var(--muted); cursor:pointer; border-radius:8px; }
+.pw-toggle:hover{ color:var(--cream); }
+.pw-toggle svg{ width:19px; height:19px; }
+.pw-toggle .eye-off{ display:none; }
+.pw-toggle.is-visible .eye{ display:none; }
+.pw-toggle.is-visible .eye-off{ display:block; }
 .field textarea{ resize:vertical; min-height:76px; }
 .chips{ display:flex; flex-wrap:wrap; gap:.55rem; }
 .chip input{ position:absolute; opacity:0; width:0; height:0; }
