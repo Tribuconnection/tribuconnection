@@ -6,6 +6,18 @@ const SUPABASE_URL = 'https://dcoazdjqdohiekcsaxor.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_zC1SJUG-5kHTWArEgYIqBw_tuYEqwOf';
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+/* Cuando alguien clickea el link de "recuperar contraseña" del mail,
+   Supabase detecta el token en el hash de la URL automáticamente (en
+   cualquier página — depende de la Redirect URL configurada en el proyecto,
+   que hoy es la home) y dispara este evento. Lo mandamos al perfil con un
+   flag para que abra ahí el popup de "elegí tu nueva contraseña", en vez de
+   dejarlo logueado y perdido en la home sin ningún indicio de qué hacer. */
+sb.auth.onAuthStateChange((event) => {
+  if(event === 'PASSWORD_RECOVERY' && location.pathname !== '/cuenta/perfil/'){
+    window.location.replace('/cuenta/perfil/?recuperar=1');
+  }
+});
+
 /* Botón de ojo para mostrar/ocultar contraseña: delegado en document, así
    funciona en cualquier .pw-wrap de cualquier página/modal sin wiring extra. */
 document.addEventListener('click', e => {

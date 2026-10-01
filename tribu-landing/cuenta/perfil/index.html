@@ -166,8 +166,25 @@
   </div>
 </section>
 
+<!-- ===================== MODAL RECUPERAR CONTRASEÑA ===================== -->
+<div class="modal-overlay" id="recoveryModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="recoveryTitle">
+    <button class="modal-close" id="recoveryClose" aria-label="Cerrar">✕</button>
+    <h2 id="recoveryTitle" style="font-size:1.3rem;margin-bottom:.4rem">Elegí tu nueva contraseña</h2>
+    <p class="modal-sub">Escribí la contraseña que vas a usar de ahora en más para entrar a tu cuenta.</p>
+    <form id="recoveryForm">
+      <div class="field">
+        <label for="recoveryPass">Nueva contraseña</label>
+        <div class="pw-wrap"><input id="recoveryPass" type="password" required minlength="6" placeholder="Mínimo 6 caracteres"><button type="button" class="pw-toggle" aria-label="Mostrar contraseña" tabindex="-1"><svg class="eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+      </div>
+      <p class="field-error" id="recoveryError" style="display:none"></p>
+      <button type="submit" class="btn btn--spectrum" style="width:100%;justify-content:center" id="recoveryBtn">Guardar contraseña</button>
+    </form>
+  </div>
+</div>
+
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=7"></script>
+<script src="/assets/supabase-client.js?v=8"></script>
 <script src="/assets/site.js?v=15"></script>
 <script>
 (function(){
@@ -318,6 +335,28 @@
     });
   }
 
+  function abrirRecoveryModal(){
+    const overlay = document.getElementById('recoveryModal');
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
+  }
+  function cerrarRecoveryModal(){
+    const overlay = document.getElementById('recoveryModal');
+    overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); document.body.style.overflow = '';
+  }
+  document.getElementById('recoveryClose').addEventListener('click', cerrarRecoveryModal);
+  document.getElementById('recoveryModal').addEventListener('click', e => { if(e.target === document.getElementById('recoveryModal')) cerrarRecoveryModal(); });
+  document.getElementById('recoveryForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = document.getElementById('recoveryError'); err.style.display = 'none';
+    const btn = document.getElementById('recoveryBtn'); btn.textContent = 'Guardando...'; btn.disabled = true;
+    const pass = document.getElementById('recoveryPass').value;
+    const { error } = await sb.auth.updateUser({ password: pass });
+    btn.textContent = 'Guardar contraseña'; btn.disabled = false;
+    if(error){ err.textContent = error.message; err.style.display = 'block'; return; }
+    cerrarRecoveryModal();
+    history.replaceState(null, '', location.pathname);
+  });
+
   document.getElementById('btnCambiarPass').addEventListener('click', async () => {
     const msg = document.getElementById('passMsg');
     const pass = document.getElementById('nuevaPass').value;
@@ -354,6 +393,7 @@
     if(tribuEsAdmin(session)) document.getElementById('linkAdminEventos').style.display = 'flex';
     document.getElementById('settingsEmail').textContent = session.user.email;
     await cargarTodo();
+    if(new URLSearchParams(location.search).get('recuperar') === '1') abrirRecoveryModal();
   })();
 })();
 </script>
