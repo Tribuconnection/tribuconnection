@@ -12,36 +12,96 @@
 <link rel="stylesheet" href="/assets/tribu.css?v=41">
 <link rel="stylesheet" href="/assets/home.css?v=11">
 <style>
-  .pp-header{ border-radius:20px; overflow:hidden; border:1px solid var(--line); background:var(--ink-1); }
-  .pp-cover{ height:190px; background:linear-gradient(120deg, rgba(210,75,98,.4), rgba(244,166,35,.32) 45%, rgba(54,183,196,.35)); background-size:cover; background-position:center; position:relative; overflow:hidden; }
-  .pp-cover::after{ content:""; position:absolute; top:50%; right:3%; transform:translateY(-50%); width:min(210px,20vw); height:min(210px,20vw); background:url(/assets/isotipo.png?v=2) no-repeat center/contain; opacity:.16; pointer-events:none; }
-  @media (max-width:640px){ .pp-cover::after{ display:none; } }
-  .pp-avatar{ width:108px; height:108px; border-radius:50%; object-fit:cover; border:4px solid var(--ink-1); background:var(--ink-2); display:block; position:absolute; left:1.8rem; bottom:20px; box-shadow:0 8px 24px -8px rgba(0,0,0,.6); }
-  .pp-body{ padding:6.6rem 1.8rem 0; }
-  .pp-name{ font-family:var(--font-display); font-size:1.6rem; font-weight:700; }
-  .pp-meta{ color:var(--soft); font-size:.9rem; margin-top:.2rem; }
-  .pp-badges{ display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.7rem; }
-  .pp-badge{ font-size:.7rem; font-weight:700; text-transform:uppercase; letter-spacing:.03em; padding:.3rem .65rem; border-radius:999px; background:var(--ink-2); color:var(--soft); border:1px solid var(--line-2); }
-  .pp-badge.principal{ background:var(--spectrum); color:#15110f; border-color:transparent; }
-  .pp-socials{ display:flex; gap:.6rem; margin-top:1rem; }
-  .pp-soc{ width:38px; height:38px; border-radius:50%; border:1px solid var(--line-2); display:flex; align-items:center; justify-content:center; color:var(--soft); text-decoration:none; transition:.15s; }
-  .pp-soc:hover{ border-color:var(--cream); color:var(--cream); }
-  .pp-bio{ color:var(--cream); font-size:.95rem; line-height:1.6; padding:1.4rem 1.8rem 0; max-width:70ch; }
-  .pp-stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:.8rem; padding:1.4rem 1.8rem 1.8rem; }
-  .pp-stat{ border:1px solid var(--line); border-radius:16px; background:var(--ink-2); padding:1rem 1.1rem; text-align:center; }
-  .pp-stat b{ display:block; font-family:var(--font-display); font-size:1.4rem; }
-  .pp-stat span{ color:var(--muted); font-size:.74rem; }
-  @media (max-width:640px){ .pp-stats{ grid-template-columns:1fr; } }
-  .pp-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:1.4rem; margin-top:1.8rem; align-items:start; }
-  @media (max-width:900px){ .pp-grid{ grid-template-columns:1fr; } }
-  .pp-section h2{ font-size:1rem; font-family:var(--font-display); margin-bottom:.9rem; }
-  .pp-card{ border:1px solid var(--line); border-radius:16px; background:var(--ink-1); overflow:hidden; }
-  .pp-ev{ display:grid; grid-template-columns:52px 1fr; gap:.8rem; align-items:center; padding:.9rem 1.1rem; border-bottom:1px solid var(--line); }
-  .pp-ev:last-child{ border-bottom:none; }
-  .pp-ev img{ width:52px; height:52px; border-radius:10px; object-fit:cover; background:var(--ink-2); }
-  .pp-ev-titulo{ font-weight:600; font-size:.86rem; }
-  .pp-ev-meta{ color:var(--muted); font-size:.76rem; }
-  .pp-empty{ padding:1.6rem 1.1rem; text-align:center; color:var(--muted); font-size:.86rem; }
+  .pp2-wrap{ max-width:1180px; }
+  .pp2-back{ color:var(--muted); font-size:.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:.4rem; margin-bottom:1.4rem; }
+  .pp2-back:hover{ color:var(--cream); }
+
+  /* ---------- Hero ---------- */
+  .pp2-hero{ display:grid; grid-template-columns:1.05fr .95fr; gap:2.2rem; align-items:stretch; }
+  @media (max-width:900px){ .pp2-hero{ grid-template-columns:1fr; } }
+  .pp2-hero-info{ display:flex; flex-direction:column; justify-content:center; }
+  .pp2-badge{ display:inline-flex; align-self:flex-start; font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:.35rem .85rem; border-radius:999px; border:1px solid var(--amber); color:var(--amber); margin-bottom:1rem; }
+  .pp2-badge.is-marca{ border-color:var(--teal); color:var(--teal); }
+  .pp2-name{ font-family:var(--font-display); font-size:clamp(2rem,4.2vw,3.1rem); line-height:1.05; font-weight:700; }
+  .pp2-roles{ margin-top:.6rem; font-size:.84rem; font-weight:700; text-transform:uppercase; letter-spacing:.05em; color:var(--teal); }
+  .pp2-quote{ margin:1.1rem 0 0; padding-left:1rem; border-left:3px solid var(--line-2); color:var(--soft); font-size:1.05rem; line-height:1.55; font-style:italic; max-width:48ch; }
+  .pp2-meta{ margin-top:1.1rem; display:flex; flex-wrap:wrap; gap:.3rem 1rem; color:var(--muted); font-size:.86rem; }
+  .pp2-actions{ display:flex; flex-wrap:wrap; align-items:center; gap:.7rem; margin-top:1.6rem; }
+  .pp2-socials{ display:flex; gap:.5rem; }
+  .pp2-soc{ width:40px; height:40px; border-radius:50%; border:1px solid var(--line-2); display:flex; align-items:center; justify-content:center; color:var(--soft); text-decoration:none; transition:.15s; flex:none; }
+  .pp2-soc:hover{ border-color:var(--c, var(--cream)); color:var(--c, var(--cream)); background:color-mix(in srgb, var(--c, var(--cream)) 10%, transparent); }
+  .pp2-share{ display:inline-flex; align-items:center; gap:.4rem; background:none; border:1px solid var(--line-2); color:var(--soft); border-radius:999px; padding:.6rem 1.1rem; font-family:var(--font-sans); font-size:.85rem; font-weight:600; cursor:pointer; }
+  .pp2-share:hover{ border-color:var(--cream); color:var(--cream); }
+  .pp2-hero-photo{ border-radius:22px; overflow:hidden; background:var(--ink-2); min-height:280px; }
+  .pp2-hero-photo img{ width:100%; height:100%; object-fit:cover; display:block; min-height:280px; }
+  .pp2-hero-photo.is-placeholder{ background:linear-gradient(135deg, rgba(210,75,98,.35), rgba(244,166,35,.28) 45%, rgba(54,183,196,.3)); display:flex; align-items:center; justify-content:center; }
+  .pp2-hero-photo.is-placeholder img{ width:34%; height:auto; object-fit:contain; min-height:0; opacity:.85; filter:drop-shadow(0 8px 24px rgba(0,0,0,.4)); }
+
+  /* ---------- Cards de contenido ---------- */
+  .pp2-grid2{ display:grid; grid-template-columns:1fr 1fr; gap:1.4rem; margin-top:2.2rem; align-items:start; }
+  @media (max-width:860px){ .pp2-grid2{ grid-template-columns:1fr; } }
+  .pp2-card{ border:1px solid var(--line); border-radius:18px; background:var(--ink-1); padding:1.5rem 1.6rem; }
+  .pp2-card-head{ display:flex; align-items:center; justify-content:space-between; gap:1rem; margin-bottom:1rem; }
+  .pp2-card h2{ font-size:1.05rem; font-family:var(--font-display); display:flex; align-items:center; gap:.5rem; }
+  .pp2-ver-todo{ font-size:.8rem; color:var(--teal); text-decoration:none; white-space:nowrap; }
+  .pp2-ver-todo:hover{ text-decoration:underline; }
+  .pp2-bio p{ color:var(--cream); font-size:.94rem; line-height:1.65; }
+  .pp2-bio p + p{ margin-top:.8rem; }
+
+  .pp2-servicios{ display:flex; flex-direction:column; gap:.6rem; }
+  .pp2-servicio{ display:flex; align-items:center; gap:.7rem; border:1px solid var(--line-2); border-radius:999px; padding:.65rem 1rem; font-size:.88rem; font-weight:600; color:var(--cream); }
+  .pp2-servicio .ic{ width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none; border:1px solid currentColor; color:var(--c); }
+  .pp2-servicio .ic svg{ width:12px; height:12px; }
+
+  .pp2-evcard{ display:flex; gap:1rem; border-radius:14px; overflow:hidden; border:1px solid var(--line); margin-bottom:.8rem; text-decoration:none; color:inherit; }
+  .pp2-evcard:last-child{ margin-bottom:0; }
+  .pp2-evcard-media{ position:relative; width:150px; flex:none; aspect-ratio:4/3; background-size:cover; background-position:center; }
+  .pp2-evcard-date{ position:absolute; left:.5rem; top:.5rem; background:rgba(244,241,234,.94); border-radius:10px; padding:.3rem .5rem; text-align:center; line-height:1.05; }
+  .pp2-evcard-date b{ display:block; font-size:.86rem; color:#15110f; }
+  .pp2-evcard-date span{ display:block; font-size:.55rem; text-transform:uppercase; color:#5a5a5a; }
+  .pp2-evcard-body{ padding:.8rem .2rem .8rem 0; display:flex; flex-direction:column; justify-content:center; gap:.3rem; flex:1; min-width:0; }
+  .pp2-evcard-body b{ font-size:.92rem; line-height:1.25; }
+  .pp2-evcard-loc{ font-size:.78rem; color:var(--muted); display:flex; align-items:center; gap:.3rem; }
+  .pp2-evcard-go{ width:34px; height:34px; border-radius:50%; background:var(--spectrum); display:flex; align-items:center; justify-content:center; color:#15110f; flex:none; margin:auto 1rem auto 0; }
+
+  .pp2-historia{ display:flex; gap:.8rem; align-items:center; margin-bottom:.8rem; }
+  .pp2-historia:last-child{ margin-bottom:0; }
+  .pp2-historia-thumb{ position:relative; width:58px; height:58px; border-radius:12px; background-size:cover; background-position:center; flex:none; }
+  .pp2-historia-thumb::after{ content:"▶"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.35); color:#fff; font-size:.7rem; border-radius:12px; }
+  .pp2-historia-tipo{ font-size:.66rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--teal); }
+  .pp2-historia b{ display:block; font-size:.86rem; line-height:1.25; margin-top:.1rem; }
+
+  .pp2-stats{ display:grid; grid-template-columns:repeat(4,1fr); gap:1rem; margin-top:2.2rem; }
+  @media (max-width:760px){ .pp2-stats{ grid-template-columns:repeat(2,1fr); } }
+  .pp2-stat{ border:1px solid var(--line); border-radius:16px; background:var(--ink-1); padding:1.2rem 1rem; text-align:center; }
+  .pp2-stat .ic{ width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto .6rem; background:color-mix(in srgb, var(--c) 16%, transparent); color:var(--c); }
+  .pp2-stat b{ display:block; font-family:var(--font-display); font-size:1.5rem; }
+  .pp2-stat span{ color:var(--muted); font-size:.76rem; }
+  .pp2-stat.is-green{ --c:var(--green); } .pp2-stat.is-red{ --c:var(--red); } .pp2-stat.is-purple{ --c:var(--purple); } .pp2-stat.is-teal{ --c:var(--teal); }
+
+  .pp2-empty{ padding:1.4rem .2rem; color:var(--muted); font-size:.86rem; }
+
+  /* ---------- Modal "Conectar" ---------- */
+  #conectarPerfilModal .modal{ max-width:640px; }
+  .cp-benefits{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.4rem 0 1.6rem; padding:1.1rem; border-radius:16px; background:var(--ink-2); }
+  @media (max-width:640px){ .cp-benefits{ grid-template-columns:1fr; } }
+  .cp-benefit{ text-align:center; }
+  .cp-benefit .ic{ width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto .6rem; background:color-mix(in srgb, var(--c) 18%, transparent); color:var(--c); }
+  .cp-benefit b{ display:block; font-size:.84rem; margin-bottom:.2rem; }
+  .cp-benefit span{ font-size:.74rem; color:var(--muted); line-height:1.4; }
+  .cp-benefit:nth-child(1){ --c:var(--amber); } .cp-benefit:nth-child(2){ --c:var(--teal); } .cp-benefit:nth-child(3){ --c:var(--purple); }
+  .cp-step{ display:flex; align-items:center; gap:.5rem; font-weight:700; font-size:.95rem; margin:1.4rem 0 .9rem; }
+  .cp-step b{ color:var(--red); font-family:var(--font-display); }
+  .cp-tipos{ display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; }
+  @media (max-width:560px){ .cp-tipos{ grid-template-columns:repeat(2,1fr); } }
+  .cp-tipo{ border:1px solid var(--line-2); border-radius:14px; padding:1rem .7rem; text-align:center; cursor:pointer; background:var(--ink-2); transition:.15s; }
+  .cp-tipo:hover{ border-color:var(--line-2); background:var(--ink-3); }
+  .cp-tipo.sel{ border:2px solid transparent; background:linear-gradient(var(--ink-3),var(--ink-3)) padding-box, var(--spectrum) border-box; }
+  .cp-tipo .ic{ width:30px; height:30px; margin:0 auto .5rem; color:var(--teal); }
+  .cp-tipo span{ display:block; font-size:.78rem; font-weight:600; line-height:1.3; }
+  .cp-row3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:0 1rem; }
+  @media (max-width:640px){ .cp-row3{ grid-template-columns:1fr; } }
+  .cp-charcount{ text-align:right; font-size:.76rem; color:var(--muted); margin-top:-.7rem; margin-bottom:.4rem; }
 </style>
 </head>
 <body>
@@ -72,10 +132,86 @@
 </div>
 
 <section class="section" style="padding-top:clamp(110px,14vw,140px);min-height:70vh">
-  <div class="wrap" style="max-width:1100px" id="contenido">
+  <div class="wrap pp2-wrap" id="contenido">
     <p style="color:var(--muted)">Cargando perfil...</p>
   </div>
 </section>
+
+<!-- ===================== MODAL CONECTAR ===================== -->
+<div class="modal-overlay" id="conectarPerfilModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cpTitle">
+    <button class="modal-close" id="conectarPerfilClose" aria-label="Cerrar">✕</button>
+    <p class="eyebrow" style="text-align:center">Conectá a través de Tribu</p>
+    <h2 id="cpTitle" style="text-align:center">Conectá con <span class="grad" id="cpNombre"></span></h2>
+    <p class="modal-sub" style="text-align:center">Contanos tu propuesta y te ayudamos a hacerle llegar tu mensaje de forma clara y directa. Nos ocupamos de recibir, organizar y filtrar las consultas para que cada oportunidad tenga sentido.</p>
+
+    <div class="cp-benefits">
+      <div class="cp-benefit"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></div><b>Oportunidades reales</b><span>Tu propuesta llega con la información necesaria.</span></div>
+      <div class="cp-benefit"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="9" r="3"/><circle cx="17" cy="9" r="3"/><path d="M2 20c0-3 2.5-5 6-5s6 2 6 5M12 20c0-3 2-5 5.5-5s5.5 2 5.5 5"/></svg></div><b>Conexiones cuidadas</b><span>Revisamos cada mensaje para que sea relevante.</span></div>
+      <div class="cp-benefit"><div class="ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg></div><b>Menos ruido, más impacto</b><span>Así podemos generar colaboraciones significativas.</span></div>
+    </div>
+
+    <form id="conectarPerfilForm">
+      <div class="cp-step"><b>1.</b> ¿Qué tipo de propuesta tenés?</div>
+      <div class="cp-tipos" id="cpTipos"></div>
+
+      <div class="cp-step"><b>2.</b> Contanos sobre tu proyecto</div>
+      <div class="row2">
+        <div class="field">
+          <label for="cpNombreCampo">Tu nombre *</label>
+          <input id="cpNombreCampo" required placeholder="Nombre y apellido">
+        </div>
+        <div class="field">
+          <label for="cpProyecto">Proyecto, organización o marca</label>
+          <input id="cpProyecto" placeholder="Nombre del proyecto o marca">
+        </div>
+      </div>
+      <div class="row2">
+        <div class="field">
+          <label for="cpEmail">Email *</label>
+          <input id="cpEmail" type="email" required placeholder="tu@email.com">
+        </div>
+        <div class="field">
+          <label for="cpWhatsapp">WhatsApp (opcional)</label>
+          <input id="cpWhatsapp" placeholder="+54 9 11 1234 5678">
+        </div>
+      </div>
+
+      <div class="cp-step"><b>3.</b> Detalles de la propuesta</div>
+      <div class="cp-row3">
+        <div class="field">
+          <label for="cpFecha">Fecha aproximada <span style="text-transform:none;font-weight:400">(opcional)</span></label>
+          <input id="cpFecha" type="date">
+        </div>
+        <div class="field">
+          <label for="cpCiudad">Ciudad / País <span style="text-transform:none;font-weight:400">(opcional)</span></label>
+          <input id="cpCiudad" placeholder="Ciudad o país">
+        </div>
+        <div class="field">
+          <label for="cpTipoExp">Tipo de experiencia <span style="text-transform:none;font-weight:400">(opcional)</span></label>
+          <select id="cpTipoExp">
+            <option value="">Seleccioná una opción</option>
+            <option>Evento</option>
+            <option>Taller</option>
+            <option>Retiro</option>
+            <option>Contenido digital</option>
+            <option>Otra</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="cpMensaje">Contanos más sobre tu propuesta *</label>
+        <textarea id="cpMensaje" required maxlength="500" style="min-height:100px" placeholder="Compartí los detalles de tu idea, el contexto, el tipo de colaboración y cualquier otra información que consideres importante…"></textarea>
+      </div>
+      <p class="cp-charcount"><span id="cpCount">0</span> / 500</p>
+
+      <p class="field-error" id="cpError" style="display:none"></p>
+      <button type="submit" class="btn btn--spectrum" style="width:100%;justify-content:center" id="cpBtn">Enviar propuesta a través de Tribu Connection <span class="arr">→</span></button>
+      <p class="modal-note">🔒 Tu mensaje será recibido por el equipo de Tribu Connection y luego compartido con este creador/a, en caso de ser una propuesta acorde a sus intereses.</p>
+    </form>
+    <div class="modal-msg" id="cpMsg">¡Listo! Tu propuesta fue enviada 🌟<br>Te vamos a escribir pronto.</div>
+  </div>
+</div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="/assets/supabase-client.js?v=8"></script>
@@ -83,6 +219,7 @@
 <script>
 (function(){
   const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const MES_ABR = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   function sanitizeUrl(url){
     if(!url) return null;
@@ -92,6 +229,17 @@
     try{ const u = new URL(v); if(u.protocol === 'http:' || u.protocol === 'https:') return u.href; }catch(e){}
     return null;
   }
+
+  const TIPOS_PROPUESTA = [
+    { valor:'invitar', label:'Invitar a un evento o festival', icon:'<path d="M8 2v4M16 2v4M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="3"/><path d="m9 16 2 2 4-4"/>' },
+    { valor:'contratar', label:'Contratar un servicio', icon:'<circle cx="9" cy="8" r="3"/><path d="M2 20c0-3 2.8-5.5 7-5.5s7 2.5 7 5.5"/><path d="M17 9h5M19.5 6.5v5"/>' },
+    { valor:'colaborar', label:'Proponer una colaboración', icon:'<path d="M20.8 4.6a5 5 0 0 0-7.1 0L12 5.3l-1.7-.7a5 5 0 0 0-7.1 7.1L12 20.3l8.8-8.6a5 5 0 0 0 0-7.1z"/>' },
+    { valor:'prensa', label:'Prensa / entrevista / contenido', icon:'<path d="M3 11l18-7-7 18-2.5-7.5L3 11z"/>' },
+    { valor:'otra', label:'Otra propuesta', icon:'<circle cx="5" cy="12" r="1.5"/><circle cx="12" cy="12" r="1.5"/><circle cx="19" cy="12" r="1.5"/>' }
+  ];
+
+  let perfilActual = null;
+  let tipoSel = null;
 
   function notFound(){
     document.getElementById('contenido').innerHTML =
@@ -104,13 +252,34 @@
 
   function evCard(ex){
     const d = ex.fecha ? new Date(ex.fecha + 'T00:00') : null;
-    const fechaTxt = d && !isNaN(d) ? d.getDate() + ' ' + MESES[d.getMonth()] : 'Sin fecha';
     const thumb = sanitizeUrl(ex.imagen_portada_url) || '/assets/isotipo.png?v=2';
-    return '<div class="pp-ev">' +
-      '<img src="' + esc(thumb) + '" alt="">' +
-      '<div><div class="pp-ev-titulo">' + esc(ex.nombre) + '</div><div class="pp-ev-meta">' + esc(ex.tipo || '') + ' · ' + fechaTxt + '</div></div>' +
-    '</div>';
+    const loc = ex.lugar || ex.ciudad_barrio || '';
+    return '<a class="pp2-evcard" href="/cuenta/publicar/?ver=' + encodeURIComponent(ex.id) + '">' +
+      '<div class="pp2-evcard-media" style="background-image:url(\'' + esc(thumb) + '\')">' +
+        (d && !isNaN(d) ? '<span class="pp2-evcard-date"><b>' + d.getDate() + '</b><span>' + MES_ABR[d.getMonth()] + '</span></span>' : '') +
+      '</div>' +
+      '<div class="pp2-evcard-body">' +
+        '<b>' + esc(ex.nombre) + '</b>' +
+        (loc ? '<span class="pp2-evcard-loc">📍 ' + esc(loc) + '</span>' : '') +
+      '</div>' +
+      '<span class="pp2-evcard-go"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>' +
+    '</a>';
   }
+
+  function historiaCard(h){
+    const thumb = sanitizeUrl(h.thumb_url) || '/assets/isotipo.png?v=2';
+    const inner = '<div class="pp2-historia-thumb" style="background-image:url(\'' + esc(thumb) + '\')"></div>' +
+      '<div><div class="pp2-historia-tipo">' + esc(h.tipo || 'Historia') + '</div><b>' + esc(h.titulo || '') + '</b></div>';
+    const href = sanitizeUrl(h.video_url);
+    return href
+      ? '<a class="pp2-historia" href="' + esc(href) + '" target="_blank" rel="noopener" style="text-decoration:none;color:inherit">' + inner + '</a>'
+      : '<div class="pp2-historia">' + inner + '</div>';
+  }
+
+  /* Paleta que se repite para los chips de "Servicios que ofrece" (son texto
+     libre que carga cada perfil, así que no hay forma de mapear un ícono
+     específico por servicio — rotamos color + un ícono genérico de nota). */
+  const PALETA = ['red','amber','green','teal','purple'];
 
   async function render(){
     const slug = location.pathname.replace(/^\/|\/$/g, '').split('/')[0];
@@ -118,75 +287,168 @@
 
     const { data: p } = await sb.from('perfiles_publicos').select('*').eq('slug', slug).maybeSingle();
     if(!p || !p.publicado || !p.comparte_perfil){ notFound(); return; }
+    perfilActual = p;
 
     const { data: experiencias } = await sb.from('experiences').select('*').eq('profile_id', p.id).eq('estado_publicacion', 'publicado').order('fecha', { ascending: false });
     const { data: participaciones } = await sb.from('experience_participantes').select('rol, experiences(*)').eq('profile_id', p.id);
 
     const organiza = (participaciones || []).filter(x => x.rol === 'organiza' && x.experiences).map(x => x.experiences);
-    const participo = (participaciones || []).filter(x => x.rol === 'participo' && x.experiences).map(x => x.experiences);
+    const hoy = new Date(); hoy.setHours(0,0,0,0);
+    const proximos = (organiza.length ? organiza : (experiencias || []))
+      .filter(e => e.fecha && new Date(e.fecha + 'T00:00') >= hoy)
+      .sort((a,b) => (a.fecha || '').localeCompare(b.fecha || ''))
+      .slice(0, 4);
 
     document.title = (p.nombre || 'Perfil') + ' · Tribu Connection';
 
-    const badges = [];
-    if(p.categoria_principal) badges.push('<span class="pp-badge principal">' + esc(p.categoria_principal) + '</span>');
-    (p.roles || []).forEach(rol => {
-      const info = ROLES_PARTICIPACION.find(r => r.valor === rol);
-      if(info) badges.push('<span class="pp-badge">' + esc(info.label) + '</span>');
-    });
+    const nombreMostrado = p.tipo === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre;
 
-    const socials = [];
-    if(p.instagram){
-      const handle = p.instagram.replace(/^@/, '').trim();
-      const href = sanitizeUrl('https://instagram.com/' + encodeURIComponent(handle));
-      if(href) socials.push('<a class="pp-soc" target="_blank" rel="noopener" href="' + esc(href) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/></svg></a>');
-    }
-    if(p.sitio_web){
-      const href = sanitizeUrl(p.sitio_web);
-      if(href) socials.push('<a class="pp-soc" target="_blank" rel="noopener" href="' + esc(href) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/></svg></a>');
-    }
-    if(p.telefono){
-      socials.push('<a class="pp-soc" target="_blank" rel="noopener" href="https://wa.me/' + esc(p.telefono.replace(/[^0-9]/g, '')) + '"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.5 15.3L2 22l4.9-1.4A10 10 0 1 0 12 2z" opacity=".15"/><path d="M17 14.2c-.3-.1-1.6-.8-1.9-.9-.2-.1-.4-.1-.6.1-.2.3-.7.9-.8 1-.2.2-.3.2-.5.1a8 8 0 0 1-4-3.5c-.3-.5.3-.5.8-1.6.1-.2 0-.4 0-.5L9.2 7c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.9 1-.9 2.4.1 3.9 2 2.9 3.2 3.5 5.8 4.4.7.2 1.3.2 1.8.1.5-.1 1.6-.6 1.8-1.3.2-.6.2-1.1.1-1.2-.1-.2-.3-.2-.5-.3z"/></svg></a>');
-    }
+    const rolesTxt = (p.roles || [])
+      .map(rol => (ROLES_PARTICIPACION.find(r => r.valor === rol) || {}).label)
+      .filter(Boolean)
+      .map(s => s.toUpperCase());
+
+    const socialsDef = [
+      { url: p.instagram ? sanitizeUrl('https://instagram.com/' + encodeURIComponent(p.instagram.replace(/^@/, '').trim())) : null, c:'var(--red)', svg:'<rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/>' },
+      { url: sanitizeUrl(p.spotify), c:'var(--green)', svg:'<circle cx="12" cy="12" r="10"/><path d="M7 10.5c3-1 7-.6 9.5.9M7.5 13.5c2.5-.8 5.8-.5 7.8.7M8 16.3c2-.6 4.5-.4 6 .5" stroke-linecap="round"/>' },
+      { url: sanitizeUrl(p.youtube), c:'var(--red)', svg:'<rect x="2" y="5" width="20" height="14" rx="4"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor" stroke="none"/>' },
+      { url: sanitizeUrl(p.tiktok), c:'var(--cream)', svg:'<path d="M15 3v10.5a3.5 3.5 0 1 1-3-3.46M15 3a5 5 0 0 0 5 5"/>' },
+      { url: sanitizeUrl(p.sitio_web), c:'var(--teal)', svg:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/>' }
+    ].filter(s => s.url);
 
     const metaParts = [];
     if(p.ciudad) metaParts.push('📍 ' + esc(p.ciudad));
+    if(p.disponible_viajar) metaParts.push('🌐 Disponible para viajar');
     if(p.modalidad_pref) metaParts.push(esc(p.modalidad_pref));
 
-    const desde = p.created_at ? new Date(p.created_at) : null;
-    const desdeTxt = desde && !isNaN(desde) ? MESES[desde.getMonth()] + ' ' + desde.getFullYear() : '—';
-    const coverBg = sanitizeUrl(p.banner_url);
-    const coverStyle = coverBg ? ' style="background-image:url(\'' + esc(coverBg) + '\')"' : '';
+    const serviciosHtml = (p.servicios && p.servicios.length)
+      ? p.servicios.map((s, i) => {
+          const color = PALETA[i % PALETA.length];
+          return '<div class="pp2-servicio" style="--c:var(--' + color + ')"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 2 2 22h20z"/></svg></span>' + esc(s) + '</div>';
+        }).join('')
+      : '<p class="pp2-empty">Todavía no cargó los servicios que ofrece.</p>';
+
+    const historias = Array.isArray(p.historias) ? p.historias : [];
 
     document.getElementById('contenido').innerHTML =
-      '<div class="pp-header">' +
-        '<div class="pp-cover"' + coverStyle + '>' +
-          '<img class="pp-avatar" src="' + esc(sanitizeUrl(p.foto_url) || '/assets/isotipo.png?v=2') + '" alt="">' +
+      '<a href="/red-tribu/" class="pp2-back">← Volver a Red Tribu</a>' +
+      '<div class="pp2-hero">' +
+        '<div class="pp2-hero-info">' +
+          '<span class="pp2-badge' + (p.tipo === 'marca' ? ' is-marca' : '') + '">' + (p.tipo === 'marca' ? 'Marca' : 'Creador/a') + '</span>' +
+          '<h1 class="pp2-name">' + esc(nombreMostrado) + '</h1>' +
+          (rolesTxt.length ? '<p class="pp2-roles">' + rolesTxt.map(esc).join(' &nbsp;•&nbsp; ') + '</p>' : '') +
+          (p.mini_bio ? '<blockquote class="pp2-quote">“' + esc(p.mini_bio) + '”</blockquote>' : '') +
+          (metaParts.length ? '<div class="pp2-meta">' + metaParts.join(' &nbsp;|&nbsp; ') + '</div>' : '') +
+          '<div class="pp2-actions">' +
+            '<button type="button" class="btn btn--spectrum" id="btnConectarPerfil">Conectar</button>' +
+            (socialsDef.length ? '<div class="pp2-socials">' + socialsDef.map(s => '<a class="pp2-soc" style="--c:' + s.c + '" target="_blank" rel="noopener" href="' + esc(s.url) + '"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' + s.svg + '</svg></a>').join('') + '</div>' : '') +
+            '<button type="button" class="pp2-share" id="btnCompartirPerfil"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.6 15.4 7M8.6 13.4l6.8 3.6"/></svg> Compartir</button>' +
+          '</div>' +
         '</div>' +
-        '<div class="pp-body">' +
-          '<div class="pp-name">' + esc(p.nombre) + '</div>' +
-          (metaParts.length ? '<div class="pp-meta">' + metaParts.join(' · ') + '</div>' : '') +
-          '<div class="pp-badges">' + badges.join('') + '</div>' +
-          (p.mini_bio ? '<p class="pp-bio" style="padding-left:0;padding-right:0">' + esc(p.mini_bio) + '</p>' : '') +
-          (socials.length ? '<div class="pp-socials">' + socials.join('') + '</div>' : '') +
+        (sanitizeUrl(p.foto_url)
+          ? '<div class="pp2-hero-photo"><img src="' + esc(sanitizeUrl(p.foto_url)) + '" alt="' + esc(nombreMostrado) + '"></div>'
+          : '<div class="pp2-hero-photo is-placeholder"><img src="/assets/isotipo.png?v=2" alt=""></div>') +
+      '</div>' +
+
+      '<div class="pp2-grid2">' +
+        '<div class="pp2-card"><h2>Sobre ' + esc(nombreMostrado) + '</h2><div class="pp2-bio">' +
+          (p.bio_larga ? p.bio_larga.split(/\n+/).map(par => '<p>' + esc(par) + '</p>').join('') : '<p class="pp2-empty" style="padding:0">Todavía no cargó una bio más larga.</p>') +
+        '</div></div>' +
+        '<div class="pp2-card"><h2>🌿 Servicios que ofrece</h2><div class="pp2-servicios">' + serviciosHtml + '</div></div>' +
+      '</div>' +
+
+      '<div class="pp2-grid2">' +
+        '<div class="pp2-card">' +
+          '<div class="pp2-card-head"><h2>Próximos encuentros</h2><a class="pp2-ver-todo" href="/agenda/">Ver toda la agenda →</a></div>' +
+          (proximos.length ? proximos.map(evCard).join('') : '<p class="pp2-empty">Todavía no tiene próximos encuentros publicados.</p>') +
         '</div>' +
-        '<div class="pp-stats">' +
-          '<div class="pp-stat"><b>' + (experiencias ? experiencias.length : 0) + '</b><span>Experiencias publicadas</span></div>' +
-          '<div class="pp-stat"><b>' + organiza.length + '</b><span>Como organizador/a</span></div>' +
-          '<div class="pp-stat"><b>' + desdeTxt + '</b><span>Miembro desde</span></div>' +
+        '<div class="pp2-card">' +
+          '<div class="pp2-card-head"><h2>Historias destacadas</h2></div>' +
+          (historias.length ? historias.map(historiaCard).join('') : '<p class="pp2-empty">Todavía no tiene historias destacadas.</p>') +
         '</div>' +
       '</div>' +
-      '<div class="pp-grid">' +
-        '<div class="pp-section"><h2>Experiencias</h2><div class="pp-card">' +
-          (experiencias && experiencias.length ? experiencias.map(evCard).join('') : '<div class="pp-empty">Todavía no publicó experiencias.</div>') +
-        '</div></div>' +
-        '<div class="pp-section"><h2>Organiza</h2><div class="pp-card">' +
-          (organiza.length ? organiza.map(evCard).join('') : '<div class="pp-empty">Sin eventos marcados como organizador/a.</div>') +
-        '</div></div>' +
-        '<div class="pp-section"><h2>Participó en</h2><div class="pp-card">' +
-          (participo.length ? participo.map(evCard).join('') : '<div class="pp-empty">Sin eventos marcados como participante.</div>') +
-        '</div></div>' +
+
+      '<div class="pp2-stats">' +
+        '<div class="pp2-stat is-green"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-3 2.5-5 6-5s6 2 6 5M14.5 15.3c2.8.2 5 2 5 4.7"/></svg></div><b>' + (p.categorias ? p.categorias.length : 0) + '</b><span>Comunidades</span></div>' +
+        '<div class="pp2-stat is-red"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5 5 0 0 0-7.1 0L12 5.3l-1.7-.7a5 5 0 0 0-7.1 7.1L12 20.3l8.8-8.6a5 5 0 0 0 0-7.1z"/></svg></div><b>' + (participaciones ? participaciones.length : 0) + '</b><span>Colaboraciones</span></div>' +
+        '<div class="pp2-stat is-purple"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></div><b>' + (experiencias ? experiencias.length : 0) + '</b><span>Experiencias</span></div>' +
+        '<div class="pp2-stat is-teal"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div><b>' + historias.length + '</b><span>Historias</span></div>' +
       '</div>';
+
+    document.getElementById('cpNombre').textContent = nombreMostrado;
+    document.getElementById('btnConectarPerfil').addEventListener('click', abrirConectar);
+    document.getElementById('btnCompartirPerfil').addEventListener('click', compartirPerfil);
   }
+
+  function compartirPerfil(){
+    const url = location.href;
+    if(navigator.share){ navigator.share({ title: document.title, url }).catch(() => {}); return; }
+    navigator.clipboard.writeText(url).then(() => {
+      const btn = document.getElementById('btnCompartirPerfil');
+      const prev = btn.innerHTML;
+      btn.innerHTML = '✓ Link copiado';
+      setTimeout(() => { btn.innerHTML = prev; }, 1800);
+    }).catch(() => {});
+  }
+
+  /* ---------- Modal Conectar ---------- */
+  const tiposBox = document.getElementById('cpTipos');
+  TIPOS_PROPUESTA.forEach(t => {
+    const btn = document.createElement('button');
+    btn.type = 'button'; btn.className = 'cp-tipo'; btn.dataset.valor = t.valor;
+    btn.innerHTML = '<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + t.icon + '</svg></span><span>' + esc(t.label) + '</span>';
+    btn.addEventListener('click', () => {
+      tiposBox.querySelectorAll('.cp-tipo').forEach(b => b.classList.remove('sel'));
+      btn.classList.add('sel');
+      tipoSel = t.valor;
+    });
+    tiposBox.appendChild(btn);
+  });
+
+  document.getElementById('cpMensaje').addEventListener('input', e => {
+    document.getElementById('cpCount').textContent = e.target.value.length;
+  });
+
+  function abrirConectar(){
+    const overlay = document.getElementById('conectarPerfilModal');
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
+  }
+  function cerrarConectar(){
+    const overlay = document.getElementById('conectarPerfilModal');
+    overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); document.body.style.overflow = '';
+  }
+  document.getElementById('conectarPerfilClose').addEventListener('click', cerrarConectar);
+  document.getElementById('conectarPerfilModal').addEventListener('click', e => { if(e.target === document.getElementById('conectarPerfilModal')) cerrarConectar(); });
+  document.addEventListener('keydown', e => { if(e.key === 'Escape' && document.getElementById('conectarPerfilModal').classList.contains('open')) cerrarConectar(); });
+
+  document.getElementById('conectarPerfilForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const err = document.getElementById('cpError'); err.style.display = 'none';
+    if(!tipoSel){ err.textContent = 'Elegí qué tipo de propuesta tenés.'; err.style.display = 'block'; return; }
+    const btn = document.getElementById('cpBtn'); btn.textContent = 'Enviando...'; btn.disabled = true;
+    try{
+      const row = {
+        profile_id: perfilActual.id,
+        tipo_propuesta: tipoSel,
+        nombre: document.getElementById('cpNombreCampo').value.trim(),
+        proyecto: document.getElementById('cpProyecto').value.trim() || null,
+        email: document.getElementById('cpEmail').value.trim(),
+        whatsapp: document.getElementById('cpWhatsapp').value.trim() || null,
+        fecha_aprox: document.getElementById('cpFecha').value || null,
+        ciudad: document.getElementById('cpCiudad').value.trim() || null,
+        tipo_experiencia: document.getElementById('cpTipoExp').value || null,
+        mensaje: document.getElementById('cpMensaje').value.trim()
+      };
+      const { error } = await sb.from('profile_consultas').insert(row);
+      if(error) throw error;
+      document.getElementById('conectarPerfilForm').style.display = 'none';
+      document.getElementById('cpMsg').style.display = 'block';
+    }catch(ex){
+      err.textContent = 'No se pudo enviar: ' + ex.message; err.style.display = 'block';
+    }finally{
+      btn.textContent = 'Enviar propuesta a través de Tribu Connection →'; btn.disabled = false;
+    }
+  });
 
   render();
 })();

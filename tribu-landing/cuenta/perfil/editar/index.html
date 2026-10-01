@@ -100,9 +100,15 @@
         </div>
 
         <div class="field">
-          <label for="miniBio">Descripción breve</label>
-          <textarea id="miniBio" maxlength="160" style="min-height:56px" placeholder="Contá en pocas líneas qué hacés y cómo acompañás a las personas."></textarea>
+          <label for="miniBio">Frase destacada (aparece como cita en tu perfil)</label>
+          <textarea id="miniBio" maxlength="160" style="min-height:56px" placeholder="Ej: Creo música para acompañar procesos de transformación, meditación y conexión profunda."></textarea>
           <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="bioCount">0</span> / 160</p>
+        </div>
+
+        <div class="field">
+          <label for="bioLarga">Sobre vos (texto más largo, va en la sección "Sobre" de tu perfil)</label>
+          <textarea id="bioLarga" maxlength="600" style="min-height:90px" placeholder="Contá tu trayectoria, tu enfoque y qué te distingue. Podés separar en párrafos."></textarea>
+          <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="bioLargaCount">0</span> / 600</p>
         </div>
 
         <div class="row2">
@@ -133,13 +139,46 @@
 
         <div class="row2">
           <div class="field">
-            <label for="sitioWeb">Web / Youtube / Spotify</label>
-            <input id="sitioWeb" placeholder="Link de tu canal o sitio">
+            <label for="sitioWeb">Sitio web</label>
+            <input id="sitioWeb" placeholder="Link de tu sitio">
           </div>
           <div class="field">
             <label for="email">Mail de contacto</label>
             <input id="email" type="email" placeholder="tu@email.com">
           </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="spotify">Spotify</label>
+            <input id="spotify" placeholder="Link de tu perfil o canal">
+          </div>
+          <div class="field">
+            <label for="youtube">YouTube</label>
+            <input id="youtube" placeholder="Link de tu canal">
+          </div>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="tiktok">TikTok</label>
+            <input id="tiktok" placeholder="Link de tu perfil">
+          </div>
+          <div class="field">
+            <label class="visible-check" style="margin-top:1.7rem">
+              <input type="checkbox" id="disponibleViajar">
+              <span>Estoy disponible para viajar</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Servicios que ofrecés</label>
+          <div style="display:flex;gap:.6rem">
+            <input id="servicioInput" placeholder="Ej: Música en vivo — Enter para agregar" style="flex:1">
+            <button type="button" class="btn btn--ghost" id="btnAgregarServicio">Agregar</button>
+          </div>
+          <div id="serviciosChips" style="margin-top:.6rem"></div>
         </div>
 
         <div class="field">
@@ -181,6 +220,34 @@
   let fotoFile = null;
   let bannerFile = null;
   let bannerActual = null;
+  let serviciosSel = [];
+
+  function pintarServicios(){
+    const box = document.getElementById('serviciosChips');
+    box.innerHTML = serviciosSel.map((s, i) =>
+      '<span class="cat-chip sel" style="cursor:default">' + esc2(s) + ' <button type="button" data-i="' + i + '" style="background:none;border:none;color:inherit;cursor:pointer;margin-left:.3rem;font-size:1rem;line-height:1">×</button></span>'
+    ).join('');
+    box.querySelectorAll('button[data-i]').forEach(b => {
+      b.addEventListener('click', () => { serviciosSel.splice(Number(b.dataset.i), 1); pintarServicios(); });
+    });
+  }
+  function esc2(s){ return String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function agregarServicio(){
+    const input = document.getElementById('servicioInput');
+    const v = input.value.trim();
+    if(!v || serviciosSel.includes(v)) return;
+    serviciosSel.push(v);
+    input.value = '';
+    pintarServicios();
+  }
+  document.getElementById('btnAgregarServicio').addEventListener('click', agregarServicio);
+  document.getElementById('servicioInput').addEventListener('keydown', e => {
+    if(e.key === 'Enter'){ e.preventDefault(); agregarServicio(); }
+  });
+
+  document.getElementById('bioLarga').addEventListener('input', (e) => {
+    document.getElementById('bioLargaCount').textContent = e.target.value.length;
+  });
 
   const catBox = document.getElementById('categorias');
   CATEGORIAS_RED_TRIBU.forEach(cat => {
@@ -255,9 +322,17 @@
     document.getElementById('email').value = data.email || session.user.email || '';
     document.getElementById('instagram').value = data.instagram || '';
     document.getElementById('sitioWeb').value = data.sitio_web || '';
+    document.getElementById('spotify').value = data.spotify || '';
+    document.getElementById('youtube').value = data.youtube || '';
+    document.getElementById('tiktok').value = data.tiktok || '';
+    document.getElementById('disponibleViajar').checked = !!data.disponible_viajar;
     document.getElementById('ciudad').value = data.ciudad || '';
     document.getElementById('miniBio').value = data.mini_bio || '';
     document.getElementById('bioCount').textContent = (data.mini_bio || '').length;
+    document.getElementById('bioLarga').value = data.bio_larga || '';
+    document.getElementById('bioLargaCount').textContent = (data.bio_larga || '').length;
+    serviciosSel = data.servicios || [];
+    pintarServicios();
     document.getElementById('categoriaPrincipal').value = data.categoria_principal || '';
     document.getElementById('visible').checked = data.publicado !== false;
     if(data.foto_url) document.getElementById('fotoPreview').src = data.foto_url;
@@ -313,8 +388,14 @@
         email: document.getElementById('email').value.trim() || null,
         instagram: document.getElementById('instagram').value.trim() || null,
         sitio_web: document.getElementById('sitioWeb').value.trim() || null,
+        spotify: document.getElementById('spotify').value.trim() || null,
+        youtube: document.getElementById('youtube').value.trim() || null,
+        tiktok: document.getElementById('tiktok').value.trim() || null,
+        disponible_viajar: document.getElementById('disponibleViajar').checked,
         ciudad: document.getElementById('ciudad').value.trim() || null,
         mini_bio: document.getElementById('miniBio').value.trim() || null,
+        bio_larga: document.getElementById('bioLarga').value.trim() || null,
+        servicios: serviciosSel,
         categorias: categoriasSel,
         foto_url: fotoUrl,
         banner_url: bannerUrl,
