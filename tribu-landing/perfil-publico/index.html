@@ -114,58 +114,71 @@
   .pp2-empty{ padding:.3rem .1rem; color:var(--muted); font-size:.84rem; }
 
   /* ---------- Modal "Conectar" ---------- */
-  #conectarPerfilModal .modal{ max-width:640px; overflow-x:hidden; }
+  /* Todo el modal a escala más chica/compacta — antes quedaba demasiado
+     grande en relación al resto de la UI del sitio. */
+  #conectarPerfilModal .modal{ max-width:560px; overflow-x:hidden; padding:1.7rem 1.7rem 1.9rem; }
   #conectarPerfilModal .row2, #conectarPerfilModal .cp-row3{ min-width:0; }
   #conectarPerfilModal .row2 > .field, #conectarPerfilModal .cp-row3 > .field{ min-width:0; }
-  #conectarPerfilModal .field input, #conectarPerfilModal .field select{ min-width:0; max-width:100%; }
+  #conectarPerfilModal .field{ margin-bottom:.8rem; }
+  #conectarPerfilModal .field > label{ font-size:.68rem; }
+  #conectarPerfilModal .field input, #conectarPerfilModal .field select, #conectarPerfilModal .field textarea{ min-width:0; max-width:100%; padding:.65rem .8rem; font-size:.86rem; border-radius:10px; }
+  #conectarPerfilModal .modal-sub{ font-size:.85rem; margin-bottom:1.1rem; }
+
+  /* Texto "(opcional)" al lado de una label: más chico y en gris, para
+     que no compita en peso visual con el nombre del campo. */
+  .opt-tag{ text-transform:none; font-weight:400; color:var(--muted); font-size:.85em; letter-spacing:0; opacity:.6; }
 
   .cp-head{ text-align:center; }
-  .cp-head .eyebrow{ justify-content:center; }
-  .cp-con{ font-family:var(--font-display); font-weight:600; color:var(--soft); font-size:1.05rem; margin-top:.3rem; }
-  .cp-nombre{ font-family:var(--font-display); font-weight:700; line-height:1.12; margin-top:.15rem; text-wrap:balance; }
-  .cp-nombre.len-s{ font-size:clamp(1.9rem,4.4vw,2.5rem); }
-  .cp-nombre.len-m{ font-size:clamp(1.5rem,3.4vw,2rem); }
-  .cp-nombre.len-l{ font-size:clamp(1.2rem,2.7vw,1.6rem); }
+  .cp-head .eyebrow{ justify-content:center; font-size:.78rem; }
+  .cp-con{ font-family:var(--font-display); font-weight:600; color:var(--soft); font-size:.92rem; margin-top:.25rem; }
+  .cp-nombre{ font-family:var(--font-display); font-weight:700; line-height:1.12; margin-top:.1rem; text-wrap:balance; }
+  .cp-nombre.len-s{ font-size:clamp(1.5rem,3.6vw,2rem); }
+  .cp-nombre.len-m{ font-size:clamp(1.25rem,2.8vw,1.6rem); }
+  .cp-nombre.len-l{ font-size:clamp(1.05rem,2.3vw,1.3rem); }
 
-  /* Fila 3 del paso 3: las labels pueden envolver distinto número de
-     líneas según el idioma del navegador/ancho, así que se les da una
-     altura mínima pareja para que los inputs de abajo arranquen todos
-     a la misma altura en vez de quedar escalonados. */
-  .cp-row3 > .field > label{ min-height:2.4em; display:flex; align-items:flex-end; }
+  /* Las labels de "Tu nombre"/"Proyecto..." (paso 2) y "Fecha"/"Ciudad"/
+     "Tipo de experiencia" (paso 3) pueden envolver distinta cantidad de
+     líneas, así que se les da una altura mínima pareja para que los
+     inputs de abajo arranquen todos a la misma altura en vez de quedar
+     escalonados entre sí. */
+  #conectarPerfilModal .field > label{ min-height:36px; display:flex; align-items:flex-end; }
 
   /* Reemplaza el <select> nativo (su lista desplegada no se puede
      restylear) por un dropdown propio con la misma estética que el
      resto del formulario. */
   .cp-select{ position:relative; }
-  .cp-select-btn{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:.5rem; background:var(--ink-2); border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; color:var(--cream); font-family:var(--font-sans); font-size:.98rem; cursor:pointer; text-align:left; }
+  .cp-select-btn{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:.5rem; background:var(--ink-2); border:1px solid var(--line); border-radius:10px; padding:.65rem .8rem; color:var(--cream); font-family:var(--font-sans); font-size:.86rem; cursor:pointer; text-align:left; }
   .cp-select-btn span:first-child{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .cp-select-btn.is-placeholder{ color:var(--muted); }
   .cp-select-btn svg{ flex:none; transition:transform .15s; color:var(--muted); }
   .cp-select.open .cp-select-btn svg{ transform:rotate(180deg); }
   .cp-select.open .cp-select-btn{ border-color:var(--teal); }
-  .cp-select-list{ position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:12; background:var(--ink-2); border:1px solid var(--line-2); border-radius:14px; padding:.4rem; box-shadow:0 20px 50px -16px rgba(0,0,0,.65); display:none; max-height:220px; overflow-y:auto; }
+  .cp-select-list{ position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:12; background:var(--ink-2); border:1px solid var(--line-2); border-radius:12px; padding:.35rem; box-shadow:0 20px 50px -16px rgba(0,0,0,.65); display:none; max-height:200px; overflow-y:auto; }
   .cp-select.open .cp-select-list{ display:block; }
-  .cp-select-opt{ padding:.6rem .7rem; border-radius:9px; font-size:.92rem; cursor:pointer; }
+  .cp-select-opt{ padding:.5rem .6rem; border-radius:8px; font-size:.82rem; cursor:pointer; }
   .cp-select-opt:hover, .cp-select-opt.sel{ background:var(--ink-3); color:var(--teal); }
-  .cp-benefits{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.4rem 0 1.6rem; padding:1.1rem; border-radius:16px; background:var(--ink-2); }
+  .cp-benefits{ display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem; margin:1.1rem 0 1.2rem; padding:.85rem; border-radius:14px; background:var(--ink-2); }
   @media (max-width:640px){ .cp-benefits{ grid-template-columns:1fr; } }
   .cp-benefit{ text-align:center; }
-  .cp-benefit .ic{ width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto .6rem; background:color-mix(in srgb, var(--c) 18%, transparent); color:var(--c); }
-  .cp-benefit b{ display:block; font-size:.84rem; margin-bottom:.2rem; }
-  .cp-benefit span{ font-size:.74rem; color:var(--muted); line-height:1.4; }
+  .cp-benefit .ic{ width:27px; height:27px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto .45rem; background:color-mix(in srgb, var(--c) 18%, transparent); color:var(--c); }
+  .cp-benefit .ic svg{ width:13px; height:13px; }
+  .cp-benefit b{ display:block; font-size:.74rem; margin-bottom:.15rem; }
+  .cp-benefit span{ font-size:.66rem; color:var(--muted); line-height:1.35; }
   .cp-benefit:nth-child(1){ --c:var(--amber); } .cp-benefit:nth-child(2){ --c:var(--teal); } .cp-benefit:nth-child(3){ --c:var(--purple); }
-  .cp-step{ display:flex; align-items:center; gap:.5rem; font-weight:700; font-size:.95rem; margin:1.4rem 0 .9rem; }
+  .cp-step{ display:flex; align-items:center; gap:.4rem; font-weight:700; font-size:.82rem; margin:1.1rem 0 .65rem; }
   .cp-step b{ color:var(--red); font-family:var(--font-display); }
-  .cp-tipos{ display:grid; grid-template-columns:repeat(3,1fr); gap:.7rem; }
+  .cp-tipos{ display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; }
   @media (max-width:560px){ .cp-tipos{ grid-template-columns:repeat(2,1fr); } }
-  .cp-tipo{ border:1px solid var(--line-2); border-radius:14px; padding:1rem .7rem; text-align:center; cursor:pointer; background:var(--ink-2); transition:.15s; }
+  .cp-tipo{ border:1px solid var(--line-2); border-radius:12px; padding:.7rem .5rem; text-align:center; cursor:pointer; background:var(--ink-2); transition:.15s; }
   .cp-tipo:hover{ border-color:var(--line-2); background:var(--ink-3); }
   .cp-tipo.sel{ border:2px solid transparent; background:linear-gradient(var(--ink-3),var(--ink-3)) padding-box, var(--spectrum) border-box; }
-  .cp-tipo .ic{ width:30px; height:30px; margin:0 auto .5rem; color:var(--teal); }
-  .cp-tipo span{ display:block; font-size:.78rem; font-weight:600; line-height:1.3; }
-  .cp-row3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:0 1rem; }
+  .cp-tipo .ic{ width:20px; height:20px; margin:0 auto .35rem; color:var(--teal); }
+  .cp-tipo span{ display:block; font-size:.68rem; font-weight:600; line-height:1.25; }
+  .cp-row3{ display:grid; grid-template-columns:1fr 1fr 1fr; gap:0 .8rem; }
   @media (max-width:640px){ .cp-row3{ grid-template-columns:1fr; } }
-  .cp-charcount{ text-align:right; font-size:.76rem; color:var(--muted); margin-top:-.7rem; margin-bottom:.4rem; }
+  .cp-charcount{ text-align:right; font-size:.7rem; color:var(--muted); margin-top:-.6rem; margin-bottom:.3rem; }
+  #conectarPerfilModal .btn{ font-size:.88rem; padding:.8rem 1.3rem; }
+  #conectarPerfilModal .modal-note{ font-size:.72rem; margin-top:.8rem; }
 </style>
 </head>
 <body>
@@ -239,7 +252,7 @@
           <input id="cpEmail" type="email" required placeholder="tu@email.com">
         </div>
         <div class="field">
-          <label for="cpWhatsapp">WhatsApp (opcional)</label>
+          <label for="cpWhatsapp">WhatsApp <span class="opt-tag">(opcional)</span></label>
           <input id="cpWhatsapp" placeholder="+54 9 11 1234 5678">
         </div>
       </div>
@@ -247,15 +260,15 @@
       <div class="cp-step"><b>3.</b> Detalles de la propuesta</div>
       <div class="cp-row3">
         <div class="field">
-          <label for="cpFecha">Fecha aproximada <span style="text-transform:none;font-weight:400">(opcional)</span></label>
+          <label for="cpFecha">Fecha aproximada <span class="opt-tag">(opcional)</span></label>
           <input id="cpFecha" placeholder="dd/mm/aaaa">
         </div>
         <div class="field">
-          <label for="cpCiudad">Ciudad / País <span style="text-transform:none;font-weight:400">(opcional)</span></label>
+          <label for="cpCiudad">Ciudad / País <span class="opt-tag">(opcional)</span></label>
           <input id="cpCiudad" placeholder="Ciudad o país">
         </div>
         <div class="field">
-          <label id="cpTipoExpLabel">Tipo de experiencia <span style="text-transform:none;font-weight:400">(opcional)</span></label>
+          <label id="cpTipoExpLabel">Tipo de experiencia <span class="opt-tag">(opcional)</span></label>
           <div class="cp-select" id="cpTipoExp" tabindex="0" role="listbox" aria-labelledby="cpTipoExpLabel">
             <button type="button" class="cp-select-btn is-placeholder" id="cpTipoExpBtn">
               <span>Seleccioná una opción</span>
