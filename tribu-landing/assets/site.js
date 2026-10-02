@@ -662,7 +662,8 @@ const PROVINCIAS_AR = {
   const cs = document.getElementById('rubroSel');
   const dp = document.getElementById('dateSel');
   const bp = document.getElementById('birthDateSel');
-  const openPickers = [cs, dp, bp].filter(Boolean);
+  const cpd = document.getElementById('cpDateSel');
+  const openPickers = [cs, dp, bp, cpd].filter(Boolean);
   const closeAll = (except)=> openPickers.forEach(p => { if(p!==except) p.classList.remove('open'); });
   const pad = n => String(n).padStart(2,'0');
   const MESES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
@@ -755,6 +756,7 @@ const PROVINCIAS_AR = {
 
   setupDatePicker(dp, { hiddenId:'evDate' });
   setupDatePicker(bp, { hiddenId:'cBirth', noFuture:true, minYear: new Date().getFullYear()-90, maxYear: new Date().getFullYear() });
+  setupDatePicker(cpd, { hiddenId:'cpFechaVal', minYear: new Date().getFullYear(), maxYear: new Date().getFullYear()+3 });
 
   document.addEventListener('click', ()=> closeAll(null));
   document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeAll(null); });
