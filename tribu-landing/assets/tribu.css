@@ -28,8 +28,8 @@
   /* Espectro (rojo → ámbar → verde → turquesa → violeta) */
   --spectrum: linear-gradient(100deg, var(--red) 0%, var(--amber) 27%, var(--green) 52%, var(--teal) 76%, var(--purple) 100%);
 
-  --maxw: 1320px;
-  --pad:  clamp(20px, 5vw, 64px);
+  --maxw: 1560px;
+  --pad:  clamp(20px, 4vw, 64px);
   --r:    18px;
 
   --font-display: 'Poppins', system-ui, -apple-system, sans-serif;
