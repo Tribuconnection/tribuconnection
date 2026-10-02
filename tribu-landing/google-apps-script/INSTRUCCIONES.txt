@@ -10,6 +10,7 @@ nombre de dónde viene:
    - "Ser parte del Club Tribu"        -> pestaña "Club Tribu"
    - "Conectarme a la Tribu"           -> pestaña "Conectarme a la Tribu"
    - "Propuesta a medida"              -> pestaña "Propuestas"
+   - "Conectar" (botón de un perfil público) -> pestaña "Conectar"
    - "Formulario externo"              -> pestaña "Formulario externo"
 
 1) CREAR EL PROYECTO DE APPS SCRIPT

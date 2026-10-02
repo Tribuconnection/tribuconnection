@@ -7,6 +7,7 @@
  *   - "Ser parte del Club Tribu"      -> pestaña "Club Tribu"
  *   - "Conectarme a la Tribu"         -> pestaña "Conectarme a la Tribu"
  *   - "Propuesta a medida"            -> pestaña "Propuestas"
+ *   - "Conectar" (botón en un perfil público, perfil-publico/index.html) -> pestaña "Conectar"
  *
  * "Publicar experiencia" (desde la cuenta de un usuario) es la excepción: no
  * va a esta planilla de Formularios, va a una planilla APARTE llamada
@@ -31,7 +32,10 @@ const TABS = {
   Join:      { name: 'Club Tribu',            headers: ['Fecha de envío', 'Nombre', 'Ciudad / Barrio', 'Contacto', 'Newsletter'] },
   Conectar:  { name: 'Conectarme a la Tribu',  headers: ['Fecha de envío', 'Nombre', 'Perfil', 'Marca / Proyecto / Evento', 'Contacto', 'Detalles', 'Fecha de nacimiento', 'Provincia', 'Ciudad'] },
   Propuesta: { name: 'Propuestas',             headers: ['Fecha de envío', 'Nombre', 'Marca / Evento', 'Contacto', 'Detalles'] },
-  Externo:   { name: 'Formulario externo',     headers: ['Fecha de envío', 'Nombre completo', 'Correo electrónico', 'Instagram', 'WhatsApp', 'Propuesta', 'Fecha y lugar del evento', 'Ayuda'] }
+  Externo:   { name: 'Formulario externo',     headers: ['Fecha de envío', 'Nombre completo', 'Correo electrónico', 'Instagram', 'WhatsApp', 'Propuesta', 'Fecha y lugar del evento', 'Ayuda'] },
+  /* La clave interna es ConectarPerfil (Conectar ya la usa "Conectarme a la
+     Tribu"), pero la pestaña visible se llama "Conectar". */
+  ConectarPerfil: { name: 'Conectar',           headers: ['Fecha de envío', 'Perfil consultado', 'Tipo de propuesta', 'Nombre', 'Proyecto / Marca', 'Email', 'WhatsApp', 'Fecha aproximada', 'Ciudad / País', 'Tipo de experiencia', 'Mensaje'] }
 };
 
 /* Pestañas que quedaron de esquemas anteriores y ya no se usan (el sitio ya no
@@ -85,6 +89,7 @@ function doPost(e) {
     if (tipo === 'Conectar') return handleConectar_(ss, e);
     if (tipo === 'Propuesta') return handlePropuesta_(ss, e);
     if (tipo === 'Externo') return handleExterno_(ss, e);
+    if (tipo === 'ConectarPerfil') return handleConectarPerfil_(ss, e);
     if (tipo === 'Experiencia') return handleExperiencia_(e);
     if (tipo === 'Admin') return handleAdmin_(ss, e);
     return respond_({ ok: false, error: 'Tipo desconocido' });
@@ -140,6 +145,17 @@ function handleConectar_(ss, e) {
     e.parameter.Fecha_Nacimiento || '', e.parameter.Provincia || '', e.parameter.Ciudad || ''
   ];
   agregarFila_(ss, 'Conectar', row, 'Nuevo "Conectarme a la Tribu": ' + (e.parameter.Nombre || '(sin nombre)'));
+  return respond_({ ok: true });
+}
+
+function handleConectarPerfil_(ss, e) {
+  const row = [
+    new Date(), e.parameter.Perfil || '', e.parameter.Tipo_Propuesta || '',
+    e.parameter.Nombre || '', e.parameter.Proyecto || '', e.parameter.Email || '',
+    e.parameter.WhatsApp || '', e.parameter.Fecha_Aprox || '', e.parameter.Ciudad || '',
+    e.parameter.Tipo_Experiencia || '', e.parameter.Mensaje || ''
+  ];
+  agregarFila_(ss, 'ConectarPerfil', row, 'Nueva consulta para ' + (e.parameter.Perfil || '(perfil)') + ': ' + (e.parameter.Nombre || '(sin nombre)'));
   return respond_({ ok: true });
 }
 
