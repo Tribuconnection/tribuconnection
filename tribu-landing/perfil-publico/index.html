@@ -114,7 +114,39 @@
   .pp2-empty{ padding:.3rem .1rem; color:var(--muted); font-size:.84rem; }
 
   /* ---------- Modal "Conectar" ---------- */
-  #conectarPerfilModal .modal{ max-width:640px; }
+  #conectarPerfilModal .modal{ max-width:640px; overflow-x:hidden; }
+  #conectarPerfilModal .row2, #conectarPerfilModal .cp-row3{ min-width:0; }
+  #conectarPerfilModal .row2 > .field, #conectarPerfilModal .cp-row3 > .field{ min-width:0; }
+  #conectarPerfilModal .field input, #conectarPerfilModal .field select{ min-width:0; max-width:100%; }
+
+  .cp-head{ text-align:center; }
+  .cp-head .eyebrow{ justify-content:center; }
+  .cp-con{ font-family:var(--font-display); font-weight:600; color:var(--soft); font-size:1.05rem; margin-top:.3rem; }
+  .cp-nombre{ font-family:var(--font-display); font-weight:700; line-height:1.12; margin-top:.15rem; text-wrap:balance; }
+  .cp-nombre.len-s{ font-size:clamp(1.9rem,4.4vw,2.5rem); }
+  .cp-nombre.len-m{ font-size:clamp(1.5rem,3.4vw,2rem); }
+  .cp-nombre.len-l{ font-size:clamp(1.2rem,2.7vw,1.6rem); }
+
+  /* Fila 3 del paso 3: las labels pueden envolver distinto número de
+     líneas según el idioma del navegador/ancho, así que se les da una
+     altura mínima pareja para que los inputs de abajo arranquen todos
+     a la misma altura en vez de quedar escalonados. */
+  .cp-row3 > .field > label{ min-height:2.4em; display:flex; align-items:flex-end; }
+
+  /* Reemplaza el <select> nativo (su lista desplegada no se puede
+     restylear) por un dropdown propio con la misma estética que el
+     resto del formulario. */
+  .cp-select{ position:relative; }
+  .cp-select-btn{ width:100%; display:flex; align-items:center; justify-content:space-between; gap:.5rem; background:var(--ink-2); border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; color:var(--cream); font-family:var(--font-sans); font-size:.98rem; cursor:pointer; text-align:left; }
+  .cp-select-btn span:first-child{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .cp-select-btn.is-placeholder{ color:var(--muted); }
+  .cp-select-btn svg{ flex:none; transition:transform .15s; color:var(--muted); }
+  .cp-select.open .cp-select-btn svg{ transform:rotate(180deg); }
+  .cp-select.open .cp-select-btn{ border-color:var(--teal); }
+  .cp-select-list{ position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:12; background:var(--ink-2); border:1px solid var(--line-2); border-radius:14px; padding:.4rem; box-shadow:0 20px 50px -16px rgba(0,0,0,.65); display:none; max-height:220px; overflow-y:auto; }
+  .cp-select.open .cp-select-list{ display:block; }
+  .cp-select-opt{ padding:.6rem .7rem; border-radius:9px; font-size:.92rem; cursor:pointer; }
+  .cp-select-opt:hover, .cp-select-opt.sel{ background:var(--ink-3); color:var(--teal); }
   .cp-benefits{ display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; margin:1.4rem 0 1.6rem; padding:1.1rem; border-radius:16px; background:var(--ink-2); }
   @media (max-width:640px){ .cp-benefits{ grid-template-columns:1fr; } }
   .cp-benefit{ text-align:center; }
@@ -173,8 +205,11 @@
 <div class="modal-overlay" id="conectarPerfilModal" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cpTitle">
     <button class="modal-close" id="conectarPerfilClose" aria-label="Cerrar">✕</button>
-    <p class="eyebrow" style="text-align:center">Conectá a través de Tribu</p>
-    <h2 id="cpTitle" style="text-align:center">Conectá con <span class="grad" id="cpNombre"></span></h2>
+    <div class="cp-head">
+      <p class="eyebrow">Conectá a través de Tribu</p>
+      <p class="cp-con">Conectá con</p>
+      <h2 id="cpTitle" class="cp-nombre grad"><span id="cpNombre"></span></h2>
+    </div>
     <p class="modal-sub" style="text-align:center">Contanos tu propuesta y te ayudamos a hacerle llegar tu mensaje de forma clara y directa. Nos ocupamos de recibir, organizar y filtrar las consultas para que cada oportunidad tenga sentido.</p>
 
     <div class="cp-benefits">
@@ -213,22 +248,28 @@
       <div class="cp-row3">
         <div class="field">
           <label for="cpFecha">Fecha aproximada <span style="text-transform:none;font-weight:400">(opcional)</span></label>
-          <input id="cpFecha" type="date">
+          <input id="cpFecha" placeholder="dd/mm/aaaa">
         </div>
         <div class="field">
           <label for="cpCiudad">Ciudad / País <span style="text-transform:none;font-weight:400">(opcional)</span></label>
           <input id="cpCiudad" placeholder="Ciudad o país">
         </div>
         <div class="field">
-          <label for="cpTipoExp">Tipo de experiencia <span style="text-transform:none;font-weight:400">(opcional)</span></label>
-          <select id="cpTipoExp">
-            <option value="">Seleccioná una opción</option>
-            <option>Evento</option>
-            <option>Taller</option>
-            <option>Retiro</option>
-            <option>Contenido digital</option>
-            <option>Otra</option>
-          </select>
+          <label id="cpTipoExpLabel">Tipo de experiencia <span style="text-transform:none;font-weight:400">(opcional)</span></label>
+          <div class="cp-select" id="cpTipoExp" tabindex="0" role="listbox" aria-labelledby="cpTipoExpLabel">
+            <button type="button" class="cp-select-btn is-placeholder" id="cpTipoExpBtn">
+              <span>Seleccioná una opción</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <div class="cp-select-list" id="cpTipoExpList">
+              <div class="cp-select-opt" data-val="">Seleccioná una opción</div>
+              <div class="cp-select-opt" data-val="Evento">Evento</div>
+              <div class="cp-select-opt" data-val="Taller">Taller</div>
+              <div class="cp-select-opt" data-val="Retiro">Retiro</div>
+              <div class="cp-select-opt" data-val="Contenido digital">Contenido digital</div>
+              <div class="cp-select-opt" data-val="Otra">Otra</div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="field">
@@ -405,6 +446,9 @@
       '</div>';
 
     document.getElementById('cpNombre').textContent = nombreMostrado;
+    const cpTitle = document.getElementById('cpTitle');
+    cpTitle.classList.remove('len-s', 'len-m', 'len-l');
+    cpTitle.classList.add(nombreMostrado.length <= 14 ? 'len-s' : nombreMostrado.length <= 24 ? 'len-m' : 'len-l');
     document.getElementById('btnConectarPerfil').addEventListener('click', abrirConectar);
     document.getElementById('btnCompartirPerfil').addEventListener('click', compartirPerfil);
   }
@@ -438,9 +482,31 @@
     document.getElementById('cpCount').textContent = e.target.value.length;
   });
 
+  /* Dropdown propio de "Tipo de experiencia" (reemplaza al <select>
+     nativo, cuya lista desplegada no se puede restylear). */
+  let cpTipoExpVal = '';
+  const cpSelect = document.getElementById('cpTipoExp');
+  const cpSelectBtn = document.getElementById('cpTipoExpBtn');
+  cpSelectBtn.addEventListener('click', e => {
+    e.stopPropagation();
+    cpSelect.classList.toggle('open');
+  });
+  cpSelect.querySelectorAll('.cp-select-opt').forEach(opt => {
+    opt.addEventListener('click', () => {
+      cpTipoExpVal = opt.dataset.val;
+      cpSelectBtn.querySelector('span').textContent = opt.textContent;
+      cpSelectBtn.classList.toggle('is-placeholder', !cpTipoExpVal);
+      cpSelect.querySelectorAll('.cp-select-opt').forEach(o => o.classList.toggle('sel', o === opt));
+      cpSelect.classList.remove('open');
+    });
+  });
+  document.addEventListener('click', e => { if(!cpSelect.contains(e.target)) cpSelect.classList.remove('open'); });
+
   function abrirConectar(){
     const overlay = document.getElementById('conectarPerfilModal');
     overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
+    document.getElementById('conectarPerfilForm').style.display = '';
+    document.getElementById('cpMsg').style.display = 'none';
   }
   function cerrarConectar(){
     const overlay = document.getElementById('conectarPerfilModal');
@@ -465,7 +531,7 @@
         whatsapp: document.getElementById('cpWhatsapp').value.trim() || null,
         fecha_aprox: document.getElementById('cpFecha').value || null,
         ciudad: document.getElementById('cpCiudad').value.trim() || null,
-        tipo_experiencia: document.getElementById('cpTipoExp').value || null,
+        tipo_experiencia: cpTipoExpVal || null,
         mensaje: document.getElementById('cpMensaje').value.trim()
       };
       const { error } = await sb.from('profile_consultas').insert(row);
