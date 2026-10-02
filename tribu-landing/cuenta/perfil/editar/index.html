@@ -20,6 +20,10 @@
   .modalidad-toggle button.active{ background:var(--spectrum); color:#15110f; border-color:transparent; }
   .visible-check{ display:flex; align-items:flex-start; gap:.7rem; padding:.9rem 1rem; border:1px solid var(--line-2); border-radius:14px; cursor:pointer; }
   .visible-check input{ margin-top:.2rem; }
+  .historia-row{ border:1px solid var(--line-2); border-radius:14px; padding:1rem; margin-bottom:.8rem; background:var(--ink-1); }
+  .historia-row .row2{ margin-bottom:0; }
+  .historia-row .field{ margin-bottom:.8rem; }
+  .historia-row .h-quitar{ font-size:.78rem; padding:.45rem .9rem; }
 </style>
 </head>
 <body>
@@ -182,6 +186,17 @@
         </div>
 
         <div class="field">
+          <label>Historias destacadas <span style="text-transform:none;font-weight:400">(entrevistas, podcasts, reels — opcional)</span></label>
+          <div id="historiasList"></div>
+          <button type="button" class="btn btn--ghost" id="btnAgregarHistoria" style="margin-top:.4rem">+ Agregar historia</button>
+        </div>
+
+        <div class="field">
+          <label>Próximos encuentros</label>
+          <p style="color:var(--muted);font-size:.84rem">Tus próximos encuentros se arman solos a partir de las experiencias que publiques. <a href="/cuenta/publicar/" style="color:var(--teal)">Publicar una experiencia →</a></p>
+        </div>
+
+        <div class="field">
           <label>Etiquetas para que te encuentren (hasta 5)</label>
           <div id="categorias"></div>
         </div>
@@ -243,6 +258,34 @@
   document.getElementById('btnAgregarServicio').addEventListener('click', agregarServicio);
   document.getElementById('servicioInput').addEventListener('keydown', e => {
     if(e.key === 'Enter'){ e.preventDefault(); agregarServicio(); }
+  });
+
+  let historiasSel = [];
+  function pintarHistorias(){
+    const box = document.getElementById('historiasList');
+    box.innerHTML = historiasSel.map((h, i) =>
+      '<div class="historia-row">' +
+        '<div class="row2">' +
+          '<div class="field"><label>Tipo</label><input data-i="' + i + '" data-k="tipo" value="' + esc2(h.tipo) + '" placeholder="Entrevista, Podcast, Reel..."></div>' +
+          '<div class="field"><label>Título</label><input data-i="' + i + '" data-k="titulo" value="' + esc2(h.titulo) + '" placeholder="Cómo nació su proyecto"></div>' +
+        '</div>' +
+        '<div class="row2">' +
+          '<div class="field"><label>Link (video, reel, post)</label><input data-i="' + i + '" data-k="video_url" value="' + esc2(h.video_url) + '" placeholder="https://..."></div>' +
+          '<div class="field"><label>Imagen de portada (link)</label><input data-i="' + i + '" data-k="thumb_url" value="' + esc2(h.thumb_url) + '" placeholder="https://..."></div>' +
+        '</div>' +
+        '<button type="button" class="btn btn--ghost h-quitar" data-i="' + i + '">Quitar esta historia</button>' +
+      '</div>'
+    ).join('');
+    box.querySelectorAll('input[data-k]').forEach(inp => {
+      inp.addEventListener('input', () => { historiasSel[Number(inp.dataset.i)][inp.dataset.k] = inp.value; });
+    });
+    box.querySelectorAll('.h-quitar').forEach(btn => {
+      btn.addEventListener('click', () => { historiasSel.splice(Number(btn.dataset.i), 1); pintarHistorias(); });
+    });
+  }
+  document.getElementById('btnAgregarHistoria').addEventListener('click', () => {
+    historiasSel.push({ tipo:'', titulo:'', video_url:'', thumb_url:'' });
+    pintarHistorias();
   });
 
   document.getElementById('bioLarga').addEventListener('input', (e) => {
@@ -333,6 +376,8 @@
     document.getElementById('bioLargaCount').textContent = (data.bio_larga || '').length;
     serviciosSel = data.servicios || [];
     pintarServicios();
+    historiasSel = (Array.isArray(data.historias) ? data.historias : []).map(h => ({ tipo:h.tipo||'', titulo:h.titulo||'', video_url:h.video_url||'', thumb_url:h.thumb_url||'' }));
+    pintarHistorias();
     document.getElementById('categoriaPrincipal').value = data.categoria_principal || '';
     document.getElementById('visible').checked = data.publicado !== false;
     if(data.foto_url) document.getElementById('fotoPreview').src = data.foto_url;
@@ -396,6 +441,7 @@
         mini_bio: document.getElementById('miniBio').value.trim() || null,
         bio_larga: document.getElementById('bioLarga').value.trim() || null,
         servicios: serviciosSel,
+        historias: historiasSel.filter(h => h.titulo.trim()),
         categorias: categoriasSel,
         foto_url: fotoUrl,
         banner_url: bannerUrl,
