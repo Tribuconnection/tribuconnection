@@ -159,14 +159,15 @@
   .cp-select.open .cp-select-list{ display:block; }
   .cp-select-opt{ padding:.5rem .6rem; border-radius:8px; font-size:.82rem; cursor:pointer; }
   .cp-select-opt:hover, .cp-select-opt.sel{ background:var(--ink-3); color:var(--teal); }
-  .cp-benefits{ display:grid; grid-template-columns:repeat(3,1fr); gap:.6rem; margin:1.1rem 0 1.2rem; padding:.85rem; border-radius:14px; background:var(--ink-2); }
-  @media (max-width:640px){ .cp-benefits{ grid-template-columns:1fr; } }
-  .cp-benefit{ text-align:center; }
-  .cp-benefit .ic{ width:27px; height:27px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto .45rem; background:color-mix(in srgb, var(--c) 18%, transparent); color:var(--c); }
-  .cp-benefit .ic svg{ width:13px; height:13px; }
-  .cp-benefit b{ display:block; font-size:.74rem; margin-bottom:.15rem; }
+  .cp-benefits{ display:grid; grid-template-columns:repeat(3,1fr); margin:1.1rem 0 1.2rem; padding:1.2rem .4rem; border-radius:16px; background:var(--ink-2); }
+  @media (max-width:640px){ .cp-benefits{ grid-template-columns:1fr; } .cp-benefit{ border-left:none !important; border-top:1px solid var(--line-2); padding-top:1rem !important; margin-top:1rem; } .cp-benefit:first-child{ border-top:none; padding-top:0 !important; margin-top:0; } }
+  .cp-benefit{ text-align:center; padding:0 .7rem; border-left:1px solid var(--line-2); }
+  .cp-benefit:first-child{ border-left:none; }
+  .cp-benefit .ic{ width:34px; height:34px; display:flex; align-items:center; justify-content:center; margin:0 auto .55rem; color:var(--c); filter:drop-shadow(0 0 5px var(--c)); }
+  .cp-benefit .ic svg{ width:100%; height:100%; }
+  .cp-benefit b{ display:block; font-size:.76rem; margin-bottom:.2rem; }
   .cp-benefit span{ font-size:.66rem; color:var(--muted); line-height:1.35; }
-  .cp-benefit:nth-child(1){ --c:var(--amber); } .cp-benefit:nth-child(2){ --c:var(--teal); } .cp-benefit:nth-child(3){ --c:var(--purple); }
+  .cp-benefit:nth-child(1){ --c:var(--red); } .cp-benefit:nth-child(2){ --c:var(--teal); } .cp-benefit:nth-child(3){ --c:var(--green); }
   .cp-step{ display:flex; align-items:center; gap:.4rem; font-weight:700; font-size:.82rem; margin:1.1rem 0 .65rem; }
   .cp-step b{ color:var(--red); font-family:var(--font-display); }
   .cp-tipos{ display:grid; grid-template-columns:repeat(3,1fr); gap:.5rem; }
