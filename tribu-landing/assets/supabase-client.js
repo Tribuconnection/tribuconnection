@@ -40,12 +40,26 @@ document.addEventListener('click', e => {
   btn.setAttribute('aria-label', show ? 'Ocultar contraseña' : 'Mostrar contraseña');
 });
 
-const CATEGORIAS_RED_TRIBU = [
-  'Yoga', 'Música', 'Meditación', 'Biodanza', 'Respiración consciente',
-  'Sesiones individuales', 'Tarot / Oráculos', 'Terapias holísticas',
-  'Compositor / Productor musical', 'Facilitación', 'Talleres',
-  'Eventos especiales', 'Organización de eventos', 'Arte', 'Coaching', 'Sanación'
-];
+/* Disciplinas / prácticas, agrupadas por área (filtro "Disciplina o práctica"
+   de Red Tribu). Las etiquetas que carga cada perfil (profiles.categorias)
+   salen de esta lista. Se conservan tal cual los nombres previos para que los
+   perfiles ya cargados sigan coincidiendo. */
+const DISCIPLINA_GRUPOS = {
+  'Bienestar':            ['Reiki', 'Masajes', 'Terapias holísticas', 'Sanación', 'Sonoterapia'],
+  'Movimiento':           ['Yoga', 'Biodanza', 'Ecstatic Dance', 'Danza'],
+  'Artes':                ['Arte', 'Música', 'Compositor / Productor musical', 'Fotografía'],
+  'Espiritualidad':       ['Meditación', 'Tarot / Oráculos', 'Astrología', 'Ceremonias', 'Respiración consciente', 'Breathwork'],
+  'Deportes':             ['Karate', 'Entrenamiento funcional'],
+  'Naturaleza':           ['Trekking', 'Permacultura'],
+  'Desarrollo personal':  ['Coaching', 'Sesiones individuales', 'Facilitación'],
+  'Producción y servicios': ['Organización de eventos', 'Eventos especiales', 'Talleres']
+};
+const CATEGORIAS_RED_TRIBU = Object.values(DISCIPLINA_GRUPOS).flat();
+const TIPOS_CREADOR = ['Facilitador/a', 'Terapeuta', 'Guía / acompañante', 'Educador/a', 'Organizador/a', 'Productor/a', 'Artista', 'Prestador/a de servicios'];
+const QUE_OFRECE = ['Sesión', 'Clase', 'Taller', 'Ceremonia', 'Consulta', 'Performance', 'Experiencia grupal', 'Formación'];
+/* Color de cada categoría de la Red Tribu (etiquetas y bordes de fichas). */
+const CATEGORIA_COLOR = { creador:'#D97A88', comunidad:'#F4C76B', experiencia:'#A99BC2', marca:'#63C2CA', lugar:'#A8CC74' };
+const CATEGORIA_LABEL = { creador:'Creador/a', comunidad:'Comunidad', experiencia:'Experiencia', marca:'Marca', lugar:'Lugar' };
 
 /* Listas del onboarding (pasos 2 y 3) — mismas opciones que el mockup. */
 const INTERESES_TRIBU = ['Conectar', 'Bailar', 'Naturaleza', 'Música', 'Bienestar', 'Aprender', 'Conocer gente'];

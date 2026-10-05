@@ -9,11 +9,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=44">
+<link rel="stylesheet" href="/assets/tribu.css?v=45">
 <link rel="stylesheet" href="/assets/home.css?v=12">
 <style>
-  .cat-chip{ display:inline-flex; align-items:center; padding:.45rem .9rem; border-radius:999px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); font-size:.85rem; cursor:pointer; transition:.15s; margin:0 .4rem .4rem 0; }
+  .cat-chip{ font-family:var(--font-sans); display:inline-flex; align-items:center; padding:.45rem .9rem; border-radius:999px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); font-size:.85rem; cursor:pointer; transition:.15s; margin:0 .4rem .4rem 0; }
   .cat-chip.sel{ background:var(--spectrum); color:#15110f; border-color:transparent; font-weight:600; }
+  .cat-grupo{ font-size:.7rem; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:.8rem 0 .4rem; }
+  .cat-grupo:first-child{ margin-top:0; }
   .foto-preview{ width:96px; height:96px; border-radius:50%; object-fit:cover; background:var(--ink-2); border:2px solid var(--line-2); }
   .modalidad-toggle{ display:flex; gap:.6rem; }
   .modalidad-toggle button{ flex:1; padding:.7rem; border-radius:14px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); cursor:pointer; font-family:var(--font-sans); font-weight:600; font-size:.88rem; }
@@ -197,7 +199,17 @@
         </div>
 
         <div class="field">
-          <label>Etiquetas para que te encuentren (hasta 5)</label>
+          <label>Tipo de creador/a <span style="text-transform:none;font-weight:400">(podés elegir varios)</span></label>
+          <div id="tipoCreador"></div>
+        </div>
+
+        <div class="field">
+          <label>¿Qué ofrecés? <span style="text-transform:none;font-weight:400">(formatos)</span></label>
+          <div id="queOfrece"></div>
+        </div>
+
+        <div class="field">
+          <label>Disciplinas o prácticas — para que te encuentren (hasta 5)</label>
           <div id="categorias"></div>
         </div>
 
@@ -224,7 +236,7 @@
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=10"></script>
+<script src="/assets/supabase-client.js?v=11"></script>
 <script src="/assets/site.js?v=17"></script>
 <script>
 (function(){
@@ -293,16 +305,42 @@
   });
 
   const catBox = document.getElementById('categorias');
-  CATEGORIAS_RED_TRIBU.forEach(cat => {
-    const chip = document.createElement('button');
-    chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = cat;
-    chip.addEventListener('click', () => {
-      const i = categoriasSel.indexOf(cat);
-      if(i > -1){ categoriasSel.splice(i, 1); chip.classList.remove('sel'); }
-      else if(categoriasSel.length < 5){ categoriasSel.push(cat); chip.classList.add('sel'); }
+  Object.entries(DISCIPLINA_GRUPOS).forEach(([grupo, lista]) => {
+    const t = document.createElement('div');
+    t.className = 'cat-grupo'; t.textContent = grupo;
+    catBox.appendChild(t);
+    lista.forEach(cat => {
+      const chip = document.createElement('button');
+      chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = cat;
+      chip.addEventListener('click', () => {
+        const i = categoriasSel.indexOf(cat);
+        if(i > -1){ categoriasSel.splice(i, 1); chip.classList.remove('sel'); }
+        else if(categoriasSel.length < 5){ categoriasSel.push(cat); chip.classList.add('sel'); }
+      });
+      catBox.appendChild(chip);
     });
-    catBox.appendChild(chip);
   });
+
+  /* "Tipo de creador/a" y "Qué ofrecés": alimentan los filtros de Red Tribu. */
+  let tipoCreadorSel = [], queOfreceSel = [];
+  function chipsMulti(boxId, opciones, getSel){
+    const box = document.getElementById(boxId);
+    opciones.forEach(op => {
+      const chip = document.createElement('button');
+      chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = op;
+      chip.addEventListener('click', () => {
+        const sel = getSel(); const i = sel.indexOf(op);
+        if(i > -1){ sel.splice(i, 1); chip.classList.remove('sel'); }
+        else { sel.push(op); chip.classList.add('sel'); }
+      });
+      box.appendChild(chip);
+    });
+  }
+  chipsMulti('tipoCreador', TIPOS_CREADOR, () => tipoCreadorSel);
+  chipsMulti('queOfrece', QUE_OFRECE, () => queOfreceSel);
+  function marcarChips(boxId, sel){
+    document.querySelectorAll('#' + boxId + ' .cat-chip').forEach(chip => chip.classList.toggle('sel', sel.includes(chip.textContent)));
+  }
 
   const catSelect = document.getElementById('categoriaPrincipal');
   CATEGORIAS_RED_TRIBU.forEach(cat => {
@@ -382,6 +420,10 @@
     document.getElementById('visible').checked = data.publicado !== false;
     if(data.foto_url) document.getElementById('fotoPreview').src = data.foto_url;
     if(data.banner_url){ bannerActual = data.banner_url; document.getElementById('bannerPreviewWrap').style.backgroundImage = "url('" + data.banner_url + "')"; }
+    tipoCreadorSel = data.tipo_creador || [];
+    queOfreceSel = data.que_ofrece || [];
+    marcarChips('tipoCreador', tipoCreadorSel);
+    marcarChips('queOfrece', queOfreceSel);
     categoriasSel = data.categorias || [];
     document.querySelectorAll('#categorias .cat-chip').forEach(chip => {
       chip.classList.toggle('sel', categoriasSel.includes(chip.textContent));
@@ -443,6 +485,8 @@
         servicios: serviciosSel,
         historias: historiasSel.filter(h => h.titulo.trim()),
         categorias: categoriasSel,
+        tipo_creador: tipoCreadorSel,
+        que_ofrece: queOfreceSel,
         foto_url: fotoUrl,
         banner_url: bannerUrl,
         publicado: document.getElementById('visible').checked

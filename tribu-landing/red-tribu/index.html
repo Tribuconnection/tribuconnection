@@ -19,8 +19,108 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=44">
+<link rel="stylesheet" href="/assets/tribu.css?v=45">
 <link rel="stylesheet" href="/assets/home.css?v=12">
+<style>
+  .rt-head{ max-width:640px; align-self:flex-start; margin-right:auto; text-align:left; }
+  #top .wrap{ width:100%; }
+  .rt-head h1{ font-family:var(--font-display); font-size:clamp(2rem,4vw,2.8rem); font-weight:700; line-height:1.05; }
+  .rt-head p{ color:var(--soft); margin-top:.6rem; font-size:1rem; line-height:1.55; }
+  .rt-bar{ display:grid; grid-template-columns:minmax(0,2.2fr) minmax(0,1fr); gap:.8rem; margin-top:1.6rem; }
+  @media (max-width:760px){ .rt-bar{ grid-template-columns:1fr; } }
+  .rt-search{ display:flex; align-items:center; gap:.7rem; border:1px solid var(--line-2); border-radius:14px; padding:.85rem 1.1rem; background:rgba(255,255,255,.03); color:var(--muted); }
+  .rt-search:focus-within{ border-color:#d60049; }
+  .rt-search input{ flex:1; min-width:0; background:none; border:0; outline:0; color:var(--cream); font-family:var(--font-sans); font-size:.95rem; }
+  .rt-dd{ position:relative; }
+  .rt-dd-btn{ width:100%; display:flex; align-items:center; gap:.7rem; border:1px solid var(--line-2); border-radius:14px; padding:.85rem 1.1rem; background:rgba(255,255,255,.03); color:var(--cream); font-family:var(--font-sans); font-size:.95rem; cursor:pointer; text-align:left; }
+  .rt-dd-btn span{ flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .rt-dd-btn.is-ph span{ color:var(--muted); }
+  .rt-dd-btn svg{ flex:none; color:var(--muted); }
+  .rt-dd.open .rt-dd-btn{ border-color:#d60049; }
+  .rt-dd-list{ position:absolute; left:0; right:0; top:calc(100% + 6px); z-index:20; background:var(--ink-2); border:1px solid var(--line-2); border-radius:14px; padding:.35rem; box-shadow:0 20px 50px -16px rgba(0,0,0,.7); display:none; max-height:260px; overflow-y:auto; }
+  .rt-dd.open .rt-dd-list{ display:block; }
+  .rt-dd-list button{ display:block; width:100%; text-align:left; background:none; border:0; color:var(--soft); font-family:var(--font-sans); font-size:.88rem; padding:.55rem .7rem; border-radius:9px; cursor:pointer; }
+  .rt-dd-list button:hover, .rt-dd-list button.sel{ background:var(--ink-3); color:var(--cream); }
+
+  .rt-tabs{ display:flex; flex-wrap:wrap; gap:.6rem; margin-top:1rem; align-items:center; }
+  .rt-tab{ --c:#F47A2A; display:inline-flex; align-items:center; gap:.55rem; border:1px solid var(--line-2); border-radius:14px; padding:.7rem 1.15rem; background:rgba(255,255,255,.02); color:var(--c); font-family:var(--font-sans); font-weight:600; font-size:.84rem; letter-spacing:.03em; cursor:pointer; transition:.15s; }
+  .rt-tab[data-tab="todos"]{ color:var(--cream); text-transform:none; letter-spacing:0; }
+  .rt-tab svg{ width:20px; height:20px; color:var(--c); flex:none; }
+  .rt-tab:hover{ border-color:var(--c); }
+  .rt-tab.active{ border-color:var(--c); background:color-mix(in srgb, var(--c) 12%, transparent); box-shadow:0 0 18px -8px var(--c); }
+  .rt-filtros-btn{ margin-left:auto; display:inline-flex; align-items:center; gap:.6rem; border:1px solid #d60049; border-radius:14px; padding:.7rem 1.2rem; background:transparent; color:var(--cream); font-family:var(--font-sans); font-weight:600; font-size:.88rem; cursor:pointer; }
+  .rt-filtros-btn:hover, .rt-filtros-btn[aria-expanded="true"]{ background:rgba(214,0,73,.12); box-shadow:0 0 18px -8px #d60049; }
+  .rt-filtros-btn b{ display:none; min-width:20px; height:20px; border-radius:999px; background:#d60049; color:#fff; font-size:.72rem; align-items:center; justify-content:center; padding:0 .35rem; }
+  .rt-filtros-btn b.on{ display:inline-flex; }
+  @media (max-width:760px){
+    .rt-tabs{ flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; margin-inline:-16px; padding:2px 16px 6px; }
+    .rt-tabs::-webkit-scrollbar{ display:none; }
+    .rt-tab, .rt-filtros-btn{ flex:none; padding:.6rem .9rem; font-size:.78rem; }
+    .rt-filtros-btn{ margin-left:0; order:-1; }
+  }
+
+  .rt-panel{ margin-top:1rem; border:1px solid #d60049; border-radius:20px; padding:1.2rem 1.4rem 1.4rem; background:linear-gradient(180deg, rgba(214,0,73,.06), rgba(255,255,255,.01)); box-shadow:0 0 34px -18px #d60049; }
+  .rt-panel-head{ display:flex; align-items:center; gap:.7rem; padding-bottom:1rem; border-bottom:1px solid var(--line); }
+  .rt-panel-head h2{ font-family:var(--font-sans); font-size:1.05rem; font-weight:600; flex:1; }
+  .rt-panel-head button{ background:none; border:0; color:#E8457A; font-family:var(--font-sans); font-size:.84rem; font-weight:600; cursor:pointer; }
+  .rt-panel-head .rt-cerrar{ color:var(--soft); display:flex; padding:.2rem; }
+  .rt-cols{ display:grid; grid-template-columns:1fr 1.55fr 1fr .85fr; gap:0; margin-top:1rem; }
+  @media (max-width:1100px){ .rt-cols{ grid-template-columns:1fr 1fr; row-gap:1.4rem; } }
+  @media (max-width:640px){
+    .rt-cols{ grid-template-columns:1fr; }
+    .rt-panel{ padding:1rem 1rem 1.2rem; }
+    .rt-panel-head{ gap:.5rem; }
+    .rt-panel-head h2{ font-size:.9rem; white-space:nowrap; min-width:0; overflow:hidden; text-overflow:ellipsis; }
+    .rt-panel-head button{ white-space:nowrap; font-size:.8rem; }
+  }
+  .rt-col{ padding:0 1.2rem; border-left:1px solid var(--line); min-width:0; }
+  .rt-col:first-child{ border-left:0; padding-left:0; }
+  @media (max-width:1100px){ .rt-col{ border-left:0; padding:0; } }
+  .rt-col h3{ display:flex; align-items:center; gap:.55rem; font-family:var(--font-sans); font-size:.92rem; font-weight:600; margin-bottom:.8rem; }
+  .rt-col h3 svg{ width:20px; height:20px; color:#E8457A; flex:none; }
+  .rt-chips{ display:flex; flex-wrap:wrap; gap:.45rem; }
+  .rt-chip{ border:1px solid var(--line-2); border-radius:10px; padding:.45rem .75rem; background:rgba(255,255,255,.02); color:var(--soft); font-family:var(--font-sans); font-size:.78rem; cursor:pointer; transition:.15s; line-height:1.2; }
+  .rt-chip:hover{ border-color:rgba(232,69,122,.6); }
+  .rt-chip.sel{ border-color:#E8457A; color:#F06B97; background:rgba(232,69,122,.12); box-shadow:0 0 12px -6px #E8457A; }
+  .rt-disc{ display:grid; grid-template-columns:minmax(0,1.2fr) minmax(0,1fr); gap:1rem; }
+  @media (max-width:640px){ .rt-disc{ grid-template-columns:1fr; } }
+  .rt-disc-search{ display:flex; align-items:center; gap:.5rem; border:1px solid var(--line-2); border-radius:10px; padding:.55rem .75rem; margin-bottom:.7rem; color:var(--muted); }
+  .rt-disc-search input{ flex:1; min-width:0; background:none; border:0; outline:0; color:var(--cream); font-family:var(--font-sans); font-size:.82rem; }
+  .rt-checks{ max-height:220px; overflow-y:auto; padding-right:.3rem; display:grid; gap:.15rem; scrollbar-width:thin; }
+  .rt-checks label{ display:flex; align-items:center; gap:.55rem; color:var(--soft); font-size:.8rem; padding:.2rem 0; cursor:pointer; }
+  .rt-checks label.sel{ color:#F06B97; }
+  .rt-checks input{ width:15px; height:15px; accent-color:#E8457A; flex:none; }
+
+  .rt-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(215px,1fr)); gap:1rem; margin-top:1.4rem; }
+  @media (max-width:520px){
+    .rt-grid{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:.7rem; }
+    .rt-grid .rt-card{ aspect-ratio:3/4.3; }
+    .rt-grid .rt-card-body{ padding:.7rem .75rem .8rem; }
+    .rt-grid .rt-card-body h3{ font-size:.88rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+    .rt-grid .rt-card-body p{ font-size:.72rem; -webkit-line-clamp:1; }
+    .rt-grid .rt-card-loc{ font-size:.7rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .rt-grid .rt-tag{ font-size:.58rem; padding:.26rem .5rem; top:.5rem; left:.5rem; }
+  }
+  .rt-card{ --c:#D97A88; position:relative; display:block; aspect-ratio:1/1.08; border-radius:16px; overflow:hidden; border:1px solid color-mix(in srgb, var(--c) 75%, transparent); background:#0d0e12; color:#fff; text-decoration:none; transition:transform .2s, box-shadow .2s; }
+  .rt-card:hover{ transform:translateY(-3px); box-shadow:0 14px 34px -16px var(--c); }
+  .rt-card-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .rt-card-img.is-logo{ object-fit:contain; padding:16% 18% 42%; background:radial-gradient(circle at 50% 35%, rgba(255,255,255,.1), transparent 70%); }
+  .rt-card-img.is-ph{ object-fit:contain; padding:18% 30% 46%; opacity:.85; }
+  .rt-card.has-ph{ background:linear-gradient(150deg, color-mix(in srgb, var(--c) 30%, #0d0e12), #0d0e12 70%); }
+  .rt-card::after{ content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,0) 30%, rgba(8,9,12,.78) 62%, #08090c 92%); pointer-events:none; }
+  .rt-tag{ position:absolute; top:.65rem; left:.65rem; z-index:2; background:var(--c); color:var(--tag-fg, #fff); font-family:var(--font-sans); font-size:.66rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:.32rem .65rem; border-radius:8px; }
+  .rt-card-body{ position:absolute; left:0; right:0; bottom:0; z-index:2; padding:.9rem 1rem 1rem; }
+  .rt-card-body h3{ font-family:var(--font-sans); font-size:1.02rem; font-weight:600; line-height:1.2; }
+  .rt-card-body p{ color:rgba(244,241,234,.82); font-size:.8rem; line-height:1.35; margin-top:.25rem; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .rt-card-loc{ display:flex; align-items:center; gap:.35rem; color:rgba(244,241,234,.75); font-size:.76rem; margin-top:.45rem; }
+  .rt-card-loc svg{ flex:none; }
+  .rt-acc{ display:flex; gap:.4rem; margin-top:.55rem; }
+  .rt-acc button{ border:1px solid rgba(255,255,255,.25); background:rgba(0,0,0,.35); color:#fff; border-radius:999px; font-family:var(--font-sans); font-size:.68rem; padding:.3rem .6rem; cursor:pointer; }
+  .rt-acc button.on{ background:var(--c); border-color:var(--c); color:#15110f; }
+  .rt-empty{ grid-column:1 / -1; border:1px dashed var(--line-2); border-radius:16px; padding:2rem 1.4rem; text-align:center; }
+  .rt-empty b{ display:block; font-size:1rem; margin-bottom:.4rem; }
+  .rt-empty p{ color:var(--soft); font-size:.9rem; margin-bottom:1rem; }
+</style>
 </head>
 <body>
 
@@ -69,108 +169,70 @@
   <a href="#" class="btn btn--rainbow" data-signup>Sumate a la Tribu</a>
 </div>
 
-<!-- ============================ HERO ============================ -->
-<header class="hero" id="top" style="min-height:auto;padding-top:140px;padding-bottom:24px">
-  <div class="wrap hero-inner">
-    <p class="eyebrow reveal">La red que conecta</p>
-    <h1 class="h2 reveal d1" style="margin:1rem 0">Red Tribu</h1>
-    <p class="lead reveal d2" style="max-width:600px;margin-inline:auto">Conectá con las personas, comunidades, eventos, marcas y lugares que hacen posible las experiencias que te transforman.</p>
+<header class="hero" id="top" style="min-height:auto;padding-top:128px;padding-bottom:8px">
+  <div class="wrap">
+    <div class="rt-head reveal">
+      <h1>Red Tribu</h1>
+      <p>Conectá con las personas, comunidades, eventos, marcas y lugares que hacen posible las experiencias que te transforman.</p>
+    </div>
   </div>
 </header>
 
 <!-- ===================== BUSCADOR + DIRECTORIO ===================== -->
-<section class="section section--tight">
+<section class="section section--tight" style="padding-top:0">
   <div class="wrap">
-    <label class="directory-search reveal">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      <input type="text" id="dirSearch" placeholder="Buscar por nombre, rubro o lugar…" aria-label="Buscar en la Red Tribu">
-    </label>
-
-    <div class="tab-row reveal d1" id="dirTabs">
-      <button type="button" class="tab-btn active" data-tab="todos">Todos</button>
-      <button type="button" class="tab-btn" data-tab="personas">Personas</button>
-      <button type="button" class="tab-btn" data-tab="comunidades">Comunidades</button>
-      <button type="button" class="tab-btn" data-tab="eventos">Eventos</button>
-      <button type="button" class="tab-btn" data-tab="marcas">Marcas</button>
-      <button type="button" class="tab-btn" data-tab="lugares">Lugares</button>
+    <div class="rt-bar reveal">
+      <label class="rt-search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        <input type="text" id="dirSearch" placeholder="Buscar por nombre, actividad, disciplina o palabra clave…" aria-label="Buscar en la Red Tribu">
+      </label>
+      <div class="rt-dd" id="dirLoc">
+        <button type="button" class="rt-dd-btn is-ph" aria-haspopup="listbox"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>Ubicación</span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 9 6 6 6-6"/></svg></button>
+        <div class="rt-dd-list" role="listbox"></div>
+      </div>
     </div>
 
-    <div class="directory-grid reveal d2" id="dirGrid">
-      <a class="directory-card" data-tipo="marcas" data-name="Bioferia Argentina" href="#" data-connect>
-        <div class="directory-card-logo"><img src="/assets/partners/bioferia.png" alt="Bioferia Argentina"></div>
-        <span class="directory-card-type">Marca aliada</span>
-        <h3>Bioferia Argentina</h3>
-        <p>Feria de productos orgánicos y conscientes, parte de la comunidad Tribu.</p>
-      </a>
-      <a class="directory-card" data-tipo="marcas" data-name="Expo Holística & Bienestar" href="#" data-connect>
-        <div class="directory-card-logo"><img src="/assets/partners/expo-holistica.png" alt="Expo Holística & Bienestar"></div>
-        <span class="directory-card-type">Marca aliada</span>
-        <h3>Expo Holística & Bienestar</h3>
-        <p>Espacio de encuentro para terapias, bienestar y prácticas holísticas.</p>
-      </a>
-      <a class="directory-card" data-tipo="marcas" data-name="Resonar Festival" href="#" data-connect>
-        <div class="directory-card-logo"><img src="/assets/partners/resonar-festival.png" alt="Resonar Festival"></div>
-        <span class="directory-card-type">Marca aliada</span>
-        <h3>Resonar Festival</h3>
-        <p>Festival de música consciente y experiencias transformadoras.</p>
-      </a>
-      <a class="directory-card" data-tipo="marcas" data-name="Sagrada Madre" href="#" data-connect>
-        <div class="directory-card-logo"><img src="/assets/partners/sagrada-madre.png" alt="Sagrada Madre"></div>
-        <span class="directory-card-type">Marca aliada</span>
-        <h3>Sagrada Madre</h3>
-        <p>Proyecto dedicado a rituales y encuentros de conexión con la naturaleza.</p>
-      </a>
-      <a class="directory-card" data-tipo="marcas" data-name="Unifungi" href="#" data-connect>
-        <div class="directory-card-logo"><img src="/assets/partners/unifungi.png" alt="Unifungi"></div>
-        <span class="directory-card-type">Marca aliada</span>
-        <h3>Unifungi</h3>
-        <p>Comunidad y proyecto dedicado al mundo de los hongos y la micología consciente.</p>
-      </a>
-      <a class="directory-card" data-tipo="marcas" data-name="Amanita Festival" href="#" data-connect>
-        <div class="directory-card-logo"><img src="/assets/partners/amanita-festival.png" alt="Amanita Festival"></div>
-        <span class="directory-card-type">Marca aliada</span>
-        <h3>Amanita Festival</h3>
-        <p>Festival y encuentro de experiencias conscientes en la naturaleza.</p>
-      </a>
-      <a class="directory-card" data-tipo="lugares" data-name="Espacio Om" href="#" data-connect>
-        <div class="directory-card-logo"><img src="/assets/isotipo.png?v=2" alt="Espacio Om" style="object-fit:contain;padding:.6rem"></div>
-        <span class="directory-card-type">Espacio</span>
-        <h3>Espacio Om</h3>
-        <p>Sala para círculos, sonido y encuentros holísticos en Palermo, CABA.</p>
-      </a>
-      <a class="directory-card" data-tipo="lugares" data-name="Parque Centenario" href="#" data-connect>
-        <div class="directory-card-logo"><img src="/assets/isotipo.png?v=2" alt="Parque Centenario" style="object-fit:contain;padding:.6rem"></div>
-        <span class="directory-card-type">Espacio</span>
-        <h3>Parque Centenario</h3>
-        <p>Espacio verde a cielo abierto para ferias, encuentros y experiencias al aire libre en CABA.</p>
-      </a>
+    <div class="rt-tabs reveal d1" id="dirTabs">
+      <button type="button" class="rt-tab active" data-tab="todos" style="--c:#F47A2A"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="2"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="2"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="2"/></svg>Todos</button>
+      <button type="button" class="rt-tab" data-tab="creador" style="--c:#D97A88"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>CREADOR/A</button>
+      <button type="button" class="rt-tab" data-tab="comunidad" style="--c:#F4C76B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="3"/><circle cx="5" cy="10.5" r="2.2"/><circle cx="19" cy="10.5" r="2.2"/><path d="M7 20a5 5 0 0 1 10 0M1.5 19.5a3.8 3.8 0 0 1 5-3.5M22.5 19.5a3.8 3.8 0 0 0-5-3.5"/></svg>COMUNIDAD</button>
+      <button type="button" class="rt-tab" data-tab="experiencia" style="--c:#A99BC2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4M8 14h.01M12 14h.01M16 14h.01M8 17.5h.01M12 17.5h.01"/></svg>EXPERIENCIA</button>
+      <button type="button" class="rt-tab" data-tab="marca" style="--c:#63C2CA"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg>MARCA</button>
+      <button type="button" class="rt-tab" data-tab="lugar" style="--c:#A8CC74"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>LUGAR</button>
+      <button type="button" class="rt-filtros-btn" id="btnFiltros" aria-expanded="false" aria-controls="panelFiltros"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg>Filtros <b id="filtrosCount"></b></button>
+    </div>
 
-      <!-- display:contents: son solo "ganchos" para insertar tarjetas con JS, no deben
-           ocupar su propia celda del grid — si no, las tarjetas de adentro no comparten
-           fila/alto con las tarjetas fijas de más arriba. -->
+    <div class="rt-panel" id="panelFiltros" hidden>
+      <div class="rt-panel-head">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg><h2>Filtros de Creador/a</h2>
+        <button type="button" id="btnLimpiar">Limpiar todo</button>
+        <button type="button" class="rt-cerrar" id="btnCerrarFiltros" aria-label="Cerrar filtros"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 15 6-6 6 6"/></svg></button>
+      </div>
+      <div class="rt-cols">
+        <div class="rt-col"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Tipo de creador/a</h3><div class="rt-chips" id="fTipo"></div></div>
+        <div class="rt-col"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.4"/></svg>Disciplina o práctica</h3>
+          <div class="rt-disc">
+            <div>
+              <label class="rt-disc-search"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg><input type="text" id="fDiscBuscar" placeholder="Buscar disciplina…"></label>
+              <div class="rt-chips" id="fGrupos"></div>
+            </div>
+            <div class="rt-checks" id="fDisc"></div>
+          </div>
+        </div>
+        <div class="rt-col"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4M8 14h.01M12 14h.01M16 14h.01M8 17.5h.01M12 17.5h.01"/></svg>Qué ofrece</h3><div class="rt-chips" id="fOfrece"></div></div>
+        <div class="rt-col"><h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>Modalidad</h3><div class="rt-chips" id="fModalidad"></div></div>
+      </div>
+    </div>
+
+    <div class="rt-grid reveal d2" id="dirGrid">
+      <div id="dirGridFijos" style="display:contents"></div>
       <div id="dirGridDinamico" style="display:contents"></div>
       <div id="dirGridEventos" style="display:contents"></div>
       <div id="dirGridEventosCal" style="display:contents"></div>
-
-      <div class="directory-empty" data-tipo="personas" id="emptyPersonas">
-        <b>Todavía no hay personas publicadas en esta categoría</b>
-        <p>Si facilitás actividades, organizás eventos u ofrecés servicios, sumá tu perfil y sé de los primeros en la Red Tribu.</p>
-        <a href="/cuenta/perfil/editar/" class="btn btn--spectrum">Sumá tu perfil <span class="arr">→</span></a>
-      </div>
-      <div class="directory-empty" data-tipo="comunidades" id="emptyComunidades" style="display:none">
-        <b>Todavía no hay comunidades publicadas en esta categoría</b>
-        <p>Si armás o representás una comunidad, sumá tu perfil y sé de los primeros en la Red Tribu.</p>
-        <a href="/cuenta/perfil/editar/" class="btn btn--spectrum">Sumá tu comunidad <span class="arr">→</span></a>
-      </div>
-      <div class="directory-empty" data-tipo="eventos" id="emptyEventos" style="display:none">
-        <b>Todavía no hay experiencias publicadas en esta categoría</b>
-        <p>Publicá tu primera experiencia desde tu perfil y aparecé acá.</p>
-        <a href="/cuenta/publicar/" class="btn btn--spectrum">Publicar experiencia <span class="arr">→</span></a>
-      </div>
-      <div class="directory-empty" data-tipo="lugares" id="emptyLugares" style="display:none">
-        <b>Todavía no hay lugares publicados en esta categoría</b>
-        <p>Si tenés un espacio para eventos, retiros o encuentros, sumalo a la Red Tribu.</p>
-        <a href="/cuenta/perfil/editar/" class="btn btn--spectrum">Sumá tu espacio <span class="arr">→</span></a>
+      <div class="rt-empty" id="dirEmpty" hidden>
+        <b id="dirEmptyTitle"></b>
+        <p id="dirEmptyTxt"></p>
+        <a href="#" class="btn btn--spectrum" id="dirEmptyBtn"></a>
       </div>
     </div>
   </div>
@@ -412,185 +474,282 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=10"></script>
+<script src="/assets/supabase-client.js?v=11"></script>
 <script src="/assets/site.js?v=17"></script>
 <script>
-/* Directorio Red Tribu: perfiles + experiencias reales de Supabase, agrupados
-   en 5 categorías (Personas, Comunidades, Eventos, Marcas, Lugares) + filtro
-   y búsqueda (client-side). Un perfil puede tener varios roles a la vez
-   (ej: organiza eventos Y tiene un lugar), así que puede aparecer en más
-   de una pestaña — de ahí que data-tipo sea una lista separada por espacios. */
+/* Directorio Red Tribu: perfiles + experiencias reales de Supabase + eventos
+   del calendario, en 5 categorías (Creador/a, Comunidad, Experiencia, Marca,
+   Lugar) con búsqueda, ubicación y filtros de Creador/a. Un perfil puede tener
+   varios roles (ej: organiza eventos Y tiene un lugar), así que puede caer en
+   más de una categoría. */
 (function(){
-  const tabs = document.querySelectorAll('#dirTabs .tab-btn');
-  const search = document.getElementById('dirSearch');
+  const grid = document.getElementById('dirGrid');
+  const fijos = document.getElementById('dirGridFijos');
   const dinamico = document.getElementById('dirGridDinamico');
   const dinamicoEventos = document.getElementById('dirGridEventos');
-  const emptyEls = {
-    personas: document.getElementById('emptyPersonas'),
-    comunidades: document.getElementById('emptyComunidades'),
-    eventos: document.getElementById('emptyEventos'),
-    lugares: document.getElementById('emptyLugares')
-  };
-  let activeTab = 'todos';
-
-  function escapeHtml(str){
-    return String(str).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-  /* Los perfiles y experiencias los escribe cualquier usuario logueado (nombre,
-     bio, foto, sitio web...): nunca son datos de confianza. Se escapan antes de
-     ir a innerHTML y se valida que los links sean http(s) reales, para que
-     nadie pueda meter HTML/JS o un link "javascript:" y afectar a otros. */
-  function sanitizeUrl(url){
-    if(!url) return '#';
-    let v = url.trim();
-    if(!v) return '#';
-    if(!/^https?:\/\//i.test(v)) v = 'https://' + v;
-    try{
-      const u = new URL(v);
-      if(u.protocol === 'http:' || u.protocol === 'https:') return u.href;
-    }catch(e){}
-    return '#';
-  }
-
-  const ROL_TAB = {
-    organiza_eventos:'personas', facilita_actividades:'personas', ofrece_servicios:'personas', quiere_colaborar:'personas',
-    tiene_marca:'marcas', tiene_lugar:'lugares', tiene_comunidad:'comunidades'
-  };
-
-  function perfilCard(p){
-    const roles = (p.roles && p.roles.length) ? p.roles : (p.tipo === 'marca' ? ['tiene_marca'] : p.tipo === 'creador' ? ['facilita_actividades'] : []);
-    const tabsDeEste = [...new Set(roles.map(r => ROL_TAB[r]).filter(Boolean))];
-    if(!tabsDeEste.length) return null;
-    const esPersona = tabsDeEste.includes('personas');
-    const esMarca = tabsDeEste.includes('marcas') && !esPersona;
-    const esLugar = tabsDeEste.includes('lugares') && !esPersona && !esMarca;
-    const esComunidad = tabsDeEste.includes('comunidades') && !esPersona && !esMarca && !esLugar;
-    const nombre = esMarca ? (p.nombre_marca || p.nombre) : p.nombre;
-    const fotoUrl = sanitizeUrl(p.foto_url);
-    const foto = fotoUrl !== '#' ? fotoUrl : '/assets/isotipo.png?v=2';
-    const tipoFallback = esMarca ? 'Marca aliada' : esLugar ? 'Espacio' : esComunidad ? 'Comunidad' : 'Persona';
-    const rubro = p.categoria_principal || ((p.categorias && p.categorias.length) ? p.categorias.slice(0, 2).join(' · ') : tipoFallback);
-    const bio = p.mini_bio ? p.mini_bio.slice(0, 110) + (p.mini_bio.length > 110 ? '…' : '') : '';
-    const igHandle = p.instagram ? p.instagram.replace(/^@/, '').trim() : '';
-    const hrefRaw = igHandle ? 'https://instagram.com/' + encodeURIComponent(igHandle) : (p.sitio_web || '#');
-    const href = sanitizeUrl(hrefRaw);
-    const el = document.createElement('a');
-    el.className = 'directory-card';
-    el.dataset.tipo = tabsDeEste.join(' ');
-    el.dataset.name = nombre;
-    el.href = href;
-    if(href !== '#'){ el.target = '_blank'; el.rel = 'noopener'; }
-    el.innerHTML = '<div class="directory-card-logo"><img src="'+escapeHtml(foto)+'" alt="'+escapeHtml(nombre)+'" style="object-fit:cover"></div>'+
-      '<span class="directory-card-type">'+escapeHtml(rubro)+'</span>'+
-      '<h3>'+escapeHtml(nombre)+'</h3>'+
-      '<p>'+escapeHtml(bio || (p.ciudad || ''))+'</p>';
-    return el;
-  }
-
-  const MESES_CORTO = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  let miSesion = null;
-  let misParticipaciones = {};
-
-  /* Eventos del calendario (home/agenda): vienen de window.TRIBU_EVENTS, cargado por
-     site.js (fijos + los aprobados en el panel de moderación vía event_submissions).
-     Es una fuente de datos aparte de "experiences" (que son las publicadas por perfiles
-     desde /cuenta/publicar/), así que se muestran como tarjetas propias en la misma
-     pestaña "Eventos" para que la Red Tribu no se vea vacía si todavía no hay
-     experiencias publicadas por la comunidad. */
   const dinamicoEventosCal = document.getElementById('dirGridEventosCal');
-  function eventoCalCard(e){
-    const rubroInfo = (window.TRIBU_RUBROS || {})[e.rubro];
-    const label = rubroInfo ? rubroInfo.label : (e.rubro || 'Evento');
-    const d = e.date ? new Date(e.date + 'T00:00') : null;
-    const fechaTxt = d && !isNaN(d) ? d.getDate() + ' ' + MESES_CORTO[d.getMonth()] : '';
-    const slug = window.TRIBU_SLUG ? window.TRIBU_SLUG(e.title) : '';
+  const search = document.getElementById('dirSearch');
+  const tabs = document.querySelectorAll('#dirTabs .rt-tab');
+  let activeTab = 'todos', ubicacion = '';
+  const F = { tipo:[], disc:[], ofrece:[], modalidad:[] };
+
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  /* Perfiles y experiencias los escribe cualquier usuario: se escapan antes de
+     ir a innerHTML y solo se aceptan links http(s). */
+  function sanitizeUrl(url){
+    if(!url) return null;
+    let v = String(url).trim(); if(!v) return null;
+    if(!/^https?:\/\//i.test(v)) v = 'https://' + v;
+    try{ const u = new URL(v); if(u.protocol === 'http:' || u.protocol === 'https:') return u.href; }catch(e){}
+    return null;
+  }
+  const PIN = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
+  const TAG_OSCURO = { comunidad:true, lugar:true };
+
+  /* Arma una ficha. o = { cats:[...], principal, nombre, desc, ciudad, img, imgTipo, href, attrs, extra, datos } */
+  function ficha(o){
     const el = document.createElement('a');
-    el.className = 'directory-card';
-    el.dataset.tipo = 'eventos';
-    el.dataset.name = e.title;
-    el.href = '/agenda/evento/?id=' + encodeURIComponent(slug);
-    el.innerHTML = '<div class="directory-card-logo"><img src="/assets/isotipo.png?v=2" alt="" style="object-fit:cover"></div>' +
-      '<span class="directory-card-type">' + escapeHtml(label) + (fechaTxt ? ' · ' + fechaTxt : '') + '</span>' +
-      '<h3>' + escapeHtml(e.title) + '</h3>' +
-      '<p>' + escapeHtml(e.place || '') + '</p>';
+    el.className = 'rt-card' + (o.imgTipo === 'ph' ? ' has-ph' : '');
+    el.style.setProperty('--c', CATEGORIA_COLOR[o.principal]);
+    if(TAG_OSCURO[o.principal]) el.style.setProperty('--tag-fg', '#15110f');
+    el.href = o.href || '#';
+    Object.entries(o.attrs || {}).forEach(([k, v]) => el.setAttribute(k, v));
+    el.dataset.cats = o.cats.join(' ');
+    el.dataset.text = [o.nombre, o.desc, o.ciudad, ...(o.extraTexto || [])].join(' ').toLowerCase();
+    el.dataset.ciudad = (o.ciudad || '').toLowerCase();
+    el._datos = o.datos || null;
+    const img = o.img || '/assets/isotipo.png?v=2';
+    el.innerHTML =
+      '<img class="rt-card-img' + (o.imgTipo === 'logo' ? ' is-logo' : o.imgTipo === 'ph' ? ' is-ph' : '') + '" src="' + esc(img) + '" alt="" loading="lazy">' +
+      '<span class="rt-tag">' + esc(CATEGORIA_LABEL[o.principal]) + '</span>' +
+      '<div class="rt-card-body"><h3>' + esc(o.nombre) + '</h3>' +
+        (o.desc ? '<p>' + esc(o.desc) + '</p>' : '') +
+        (o.ciudad ? '<span class="rt-card-loc">' + PIN + esc(o.ciudad) + '</span>' : '') +
+        (o.extra || '') +
+      '</div>';
     return el;
   }
+
+  /* ---- Fichas fijas: marcas aliadas y lugares ---- */
+  [
+    ['marca', 'Bioferia Argentina', 'Feria de productos orgánicos y conscientes.', '', '/assets/partners/bioferia.png'],
+    ['marca', 'Expo Holística & Bienestar', 'Terapias, bienestar y prácticas holísticas.', '', '/assets/partners/expo-holistica.png'],
+    ['marca', 'Resonar Festival', 'Festival de música consciente.', '', '/assets/partners/resonar-festival.png'],
+    ['marca', 'Sagrada Madre', 'Rituales y encuentros de conexión con la naturaleza.', '', '/assets/partners/sagrada-madre.png'],
+    ['marca', 'Unifungi', 'El mundo de los hongos y la micología consciente.', '', '/assets/partners/unifungi.png'],
+    ['marca', 'Amanita Festival', 'Experiencias conscientes en la naturaleza.', 'Mercedes, Buenos Aires', '/assets/partners/amanita-festival.png'],
+    ['lugar', 'Espacio Om', 'Sala para círculos, sonido y encuentros holísticos.', 'Palermo, CABA', null],
+    ['lugar', 'Parque Centenario', 'Espacio verde para ferias y encuentros al aire libre.', 'CABA', null]
+  ].forEach(([cat, nombre, desc, ciudad, logo]) => {
+    fijos.appendChild(ficha({ cats:[cat], principal:cat, nombre, desc, ciudad, img:logo, imgTipo: logo ? 'logo' : 'ph', href:'#', attrs:{ 'data-connect':'' } }));
+  });
+
+  const ROL_CAT = { organiza_eventos:'creador', facilita_actividades:'creador', ofrece_servicios:'creador', quiere_colaborar:'creador', tiene_marca:'marca', tiene_lugar:'lugar', tiene_comunidad:'comunidad' };
+
+  function perfilFicha(p){
+    const roles = (p.roles && p.roles.length) ? p.roles : (p.tipo === 'marca' ? ['tiene_marca'] : p.tipo === 'creador' ? ['facilita_actividades'] : []);
+    const cats = [...new Set(roles.map(r => ROL_CAT[r]).filter(Boolean))];
+    if(!cats.length) return null;
+    const principal = ['creador', 'marca', 'lugar', 'comunidad'].find(c => cats.includes(c));
+    const nombre = principal === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre;
+    const desc = (p.tipo_creador && p.tipo_creador.length ? p.tipo_creador.join(' · ') : '') || p.categoria_principal || (p.categorias || []).slice(0, 2).join(' · ') || p.mini_bio || '';
+    const foto = sanitizeUrl(p.foto_url);
+    return ficha({
+      cats, principal, nombre, desc, ciudad:p.ciudad || '', img:foto, imgTipo: foto ? 'foto' : 'ph',
+      href: p.slug ? '/' + encodeURIComponent(p.slug) + '/' : '#',
+      extraTexto: [...(p.categorias || []), ...(p.servicios || []), ...(p.tipo_creador || []), ...(p.que_ofrece || [])],
+      datos: { tipo:p.tipo_creador || [], disc:p.categorias || [], ofrece:p.que_ofrece || [], modalidad:p.modalidad_pref || '', viaja:!!p.disponible_viajar }
+    });
+  }
+
+  /* ---- Eventos del calendario (home/agenda), vía window.TRIBU_EVENTS de site.js ---- */
+  const MESES_CORTO = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const IMG_EV = ['/assets/reels/reel1.jpg', '/assets/stories/musica-en-vivo.jpg', '/assets/reels/reel3.jpg', '/assets/stories/conciencia-festival.jpg'];
   function pintarEventosCalendario(){
     dinamicoEventosCal.innerHTML = '';
-    const vistos = new Set();
+    const vistos = new Set(); let i = 0;
     (window.TRIBU_EVENTS || []).slice().sort((a, b) => a.date.localeCompare(b.date)).forEach(e => {
-      if(vistos.has(e.title)) return;
-      vistos.add(e.title);
-      dinamicoEventosCal.appendChild(eventoCalCard(e));
+      if(vistos.has(e.title)) return; vistos.add(e.title);
+      const rubro = (window.TRIBU_RUBROS || {})[e.rubro];
+      const d = e.date ? new Date(e.date + 'T00:00') : null;
+      const fecha = d && !isNaN(d) ? d.getDate() + ' ' + MESES_CORTO[d.getMonth()] : '';
+      const slug = window.TRIBU_SLUG ? window.TRIBU_SLUG(e.title) : '';
+      dinamicoEventosCal.appendChild(ficha({
+        cats:['experiencia'], principal:'experiencia', nombre:e.title,
+        desc:[rubro ? rubro.label : '', fecha].filter(Boolean).join(' · '), ciudad:e.place || '',
+        img: IMG_EV[i++ % IMG_EV.length], imgTipo:'foto', href:'/agenda/evento/?id=' + encodeURIComponent(slug)
+      }));
     });
-    apply();
+    aplicar();
   }
   document.addEventListener('tribu:events-updated', pintarEventosCalendario);
 
-  function eventoCard(e){
+  /* ---- Experiencias publicadas por perfiles (con "Fui" / "Lo organicé") ---- */
+  let miSesion = null; const misPart = {};
+  function experienciaFicha(e){
     const foto = sanitizeUrl(e.imagen_portada_url);
-    const img = foto !== '#' ? foto : '/assets/isotipo.png?v=2';
-    const d = e.fecha ? new Date(e.fecha+'T00:00') : null;
-    const fechaTxt = d && !isNaN(d) ? d.getDate()+' '+MESES_CORTO[d.getMonth()] : '';
-    const lugarTxt = e.modalidad === 'Online' ? 'Online' : [e.lugar, e.ciudad_barrio].filter(Boolean).join(', ');
-    const el = document.createElement('div');
-    el.className = 'directory-card';
-    el.dataset.tipo = 'eventos';
-    el.dataset.name = e.nombre;
-    const rolActual = misParticipaciones[e.id];
-    el.innerHTML = '<div class="directory-card-logo"><img src="'+escapeHtml(img)+'" alt="'+escapeHtml(e.nombre)+'" style="object-fit:cover"></div>'+
-      '<span class="directory-card-type">'+escapeHtml(e.tipo || 'Experiencia')+(fechaTxt ? ' · '+fechaTxt : '')+'</span>'+
-      '<h3>'+escapeHtml(e.nombre)+'</h3>'+
-      '<p>'+escapeHtml(lugarTxt || e.descripcion || '')+'</p>'+
-      '<div class="participa-acciones" style="display:flex;gap:.5rem;margin-top:.7rem;flex-wrap:wrap">'+
-        '<button type="button" class="btn btn--ghost btn-participo" data-exp="'+e.id+'" style="font-size:.76rem;padding:.4em .8em'+(rolActual==='participo' ? ';background:var(--spectrum);color:#15110f;border-color:transparent' : '')+'">✓ Fui a este evento</button>'+
-        '<button type="button" class="btn btn--ghost btn-organiza" data-exp="'+e.id+'" style="font-size:.76rem;padding:.4em .8em'+(rolActual==='organiza' ? ';background:var(--spectrum);color:#15110f;border-color:transparent' : '')+'">★ Lo organicé</button>'+
-      '</div>';
-    el.querySelector('.btn-participo').addEventListener('click', (ev) => { ev.stopPropagation(); marcarParticipacion(e.id, 'participo'); });
-    el.querySelector('.btn-organiza').addEventListener('click', (ev) => { ev.stopPropagation(); marcarParticipacion(e.id, 'organiza'); });
+    const d = e.fecha ? new Date(e.fecha + 'T00:00') : null;
+    const fecha = d && !isNaN(d) ? d.getDate() + ' ' + MESES_CORTO[d.getMonth()] : '';
+    const lugar = e.modalidad === 'Online' ? 'Online' : [e.lugar, e.ciudad_barrio].filter(Boolean).join(', ');
+    const rol = misPart[e.id];
+    const el = ficha({
+      cats:['experiencia'], principal:'experiencia', nombre:e.nombre, desc:[e.tipo || 'Experiencia', fecha].filter(Boolean).join(' · '),
+      ciudad:lugar, img:foto, imgTipo: foto ? 'foto' : 'ph', href:'#',
+      extra:'<div class="rt-acc"><button type="button" data-rol="participo" class="' + (rol === 'participo' ? 'on' : '') + '">✓ Fui</button><button type="button" data-rol="organiza" class="' + (rol === 'organiza' ? 'on' : '') + '">★ Lo organicé</button></div>'
+    });
+    el.addEventListener('click', ev => { const b = ev.target.closest('[data-rol]'); ev.preventDefault(); if(b) marcar(e.id, b.dataset.rol); });
     return el;
   }
-
-  async function marcarParticipacion(experienceId, rol){
-    if(!miSesion){
-      window.location.href = '/cuenta/?modo=ingresar&volver=' + encodeURIComponent('/red-tribu/');
-      return;
-    }
-    const actual = misParticipaciones[experienceId];
-    if(actual === rol){
-      await sb.from('experience_participantes').delete().eq('experience_id', experienceId).eq('profile_id', miSesion.user.id);
-      delete misParticipaciones[experienceId];
+  async function marcar(id, rol){
+    if(!miSesion){ document.querySelector('[data-signup-login], [data-auth]')?.click(); return; }
+    if(misPart[id] === rol){
+      await sb.from('experience_participantes').delete().eq('experience_id', id).eq('profile_id', miSesion.user.id);
+      delete misPart[id];
     } else {
-      await sb.from('experience_participantes').upsert({ experience_id: experienceId, profile_id: miSesion.user.id, rol }, { onConflict: 'experience_id,profile_id' });
-      misParticipaciones[experienceId] = rol;
+      await sb.from('experience_participantes').upsert({ experience_id:id, profile_id:miSesion.user.id, rol }, { onConflict:'experience_id,profile_id' });
+      misPart[id] = rol;
     }
     dinamicoEventos.innerHTML = '';
-    (window.TRIBU_EXPERIENCIAS || []).forEach(e => dinamicoEventos.appendChild(eventoCard(e)));
-    apply();
+    (window.TRIBU_EXPERIENCIAS || []).forEach(e => dinamicoEventos.appendChild(experienciaFicha(e)));
+    aplicar();
   }
 
-  function apply(){
-    const q = search.value.trim().toLowerCase();
-    const conteo = { personas:0, comunidades:0, eventos:0, lugares:0 };
-    document.querySelectorAll('#dirGrid .directory-card').forEach(c=>{
-      const tiposCard = c.dataset.tipo.split(' ');
-      const matchesTab = activeTab === 'todos' || tiposCard.includes(activeTab);
-      const matchesSearch = !q || (c.dataset.name || c.textContent).toLowerCase().includes(q);
-      const visible = matchesTab && matchesSearch;
-      c.style.display = visible ? '' : 'none';
-      if(visible) tiposCard.forEach(t => { if(conteo[t] !== undefined) conteo[t]++; });
-    });
-    Object.keys(emptyEls).forEach(tipo => {
-      emptyEls[tipo].style.display = (!conteo[tipo] && (activeTab === 'todos' || activeTab === tipo)) ? '' : 'none';
+  /* ---- Filtros de Creador/a ---- */
+  function chips(boxId, opciones, key, label){
+    const box = document.getElementById(boxId);
+    opciones.forEach(op => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'rt-chip'; b.textContent = label ? label(op) : op; b.dataset.v = op;
+      b.addEventListener('click', () => { toggle(F[key], op); b.classList.toggle('sel'); cambioFiltros(); });
+      box.appendChild(b);
     });
   }
-  tabs.forEach(t=> t.addEventListener('click', ()=>{
-    tabs.forEach(x=>x.classList.remove('active'));
-    t.classList.add('active');
-    activeTab = t.dataset.tab;
-    apply();
-  }));
-  search.addEventListener('input', apply);
+  function toggle(arr, v){ const i = arr.indexOf(v); if(i > -1) arr.splice(i, 1); else arr.push(v); }
+  chips('fTipo', TIPOS_CREADOR, 'tipo');
+  chips('fOfrece', QUE_OFRECE, 'ofrece');
+  chips('fModalidad', ['Presencial', 'Online', 'Ambas', 'Viaja'], 'modalidad', v => ({ Ambas:'Híbrido', Viaja:'Puede viajar' })[v] || v);
+
+  /* Áreas (chips) seleccionan/deseleccionan todas sus disciplinas de la lista. */
+  const discBox = document.getElementById('fDisc');
+  CATEGORIAS_RED_TRIBU.slice().sort((a, b) => a.localeCompare(b, 'es')).forEach(d => {
+    const l = document.createElement('label');
+    l.innerHTML = '<input type="checkbox" value="' + esc(d) + '"><span>' + esc(d) + '</span>';
+    l.querySelector('input').addEventListener('change', ev => { toggle(F.disc, d); l.classList.toggle('sel', ev.target.checked); sincGrupos(); cambioFiltros(); });
+    discBox.appendChild(l);
+  });
+  const gruposBox = document.getElementById('fGrupos');
+  Object.entries(DISCIPLINA_GRUPOS).forEach(([g, lista]) => {
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'rt-chip'; b.textContent = g; b.dataset.grupo = g;
+    b.addEventListener('click', () => {
+      const todas = lista.every(d => F.disc.includes(d));
+      lista.forEach(d => {
+        const i = F.disc.indexOf(d);
+        if(todas && i > -1) F.disc.splice(i, 1);
+        if(!todas && i === -1) F.disc.push(d);
+      });
+      sincChecks(); sincGrupos(); cambioFiltros();
+    });
+    gruposBox.appendChild(b);
+  });
+  function sincChecks(){ discBox.querySelectorAll('label').forEach(l => { const on = F.disc.includes(l.querySelector('input').value); l.querySelector('input').checked = on; l.classList.toggle('sel', on); }); }
+  function sincGrupos(){ gruposBox.querySelectorAll('.rt-chip').forEach(b => b.classList.toggle('sel', DISCIPLINA_GRUPOS[b.dataset.grupo].every(d => F.disc.includes(d)))); }
+  document.getElementById('fDiscBuscar').addEventListener('input', e => {
+    const q = e.target.value.trim().toLowerCase();
+    discBox.querySelectorAll('label').forEach(l => l.style.display = !q || l.textContent.toLowerCase().includes(q) ? '' : 'none');
+  });
+
+  const panel = document.getElementById('panelFiltros');
+  const btnFiltros = document.getElementById('btnFiltros');
+  function abrirFiltros(abrir){
+    panel.hidden = !abrir; btnFiltros.setAttribute('aria-expanded', String(abrir));
+    if(abrir && activeTab !== 'creador') elegirTab('creador');
+  }
+  btnFiltros.addEventListener('click', () => abrirFiltros(panel.hidden));
+  document.getElementById('btnCerrarFiltros').addEventListener('click', () => abrirFiltros(false));
+  document.getElementById('btnLimpiar').addEventListener('click', () => {
+    Object.values(F).forEach(a => a.length = 0);
+    panel.querySelectorAll('.rt-chip.sel').forEach(b => b.classList.remove('sel'));
+    sincChecks(); cambioFiltros();
+  });
+  function cuantosFiltros(){ return F.tipo.length + F.disc.length + F.ofrece.length + F.modalidad.length; }
+  function cambioFiltros(){
+    const n = cuantosFiltros(); const b = document.getElementById('filtrosCount');
+    b.textContent = n; b.classList.toggle('on', n > 0);
+    if(n && activeTab !== 'creador') elegirTab('creador'); else aplicar();
+  }
+  function pasaFiltros(d){
+    if(!cuantosFiltros()) return true;
+    if(!d) return false;
+    if(F.tipo.length && !F.tipo.some(v => d.tipo.includes(v))) return false;
+    if(F.disc.length && !F.disc.some(v => d.disc.includes(v))) return false;
+    if(F.ofrece.length && !F.ofrece.some(v => d.ofrece.includes(v))) return false;
+    if(F.modalidad.length && !F.modalidad.some(v => v === 'Viaja' ? d.viaja : v === 'Ambas' ? d.modalidad === 'Ambas' : (d.modalidad === v || d.modalidad === 'Ambas'))) return false;
+    return true;
+  }
+
+  /* ---- Ubicación ---- */
+  const dd = document.getElementById('dirLoc'), ddBtn = dd.querySelector('.rt-dd-btn'), ddList = dd.querySelector('.rt-dd-list');
+  ddBtn.addEventListener('click', e => { e.stopPropagation(); dd.classList.toggle('open'); });
+  document.addEventListener('click', e => { if(!dd.contains(e.target)) dd.classList.remove('open'); });
+  function armarUbicaciones(){
+    const set = new Set();
+    grid.querySelectorAll('.rt-card').forEach(c => {
+      const t = c.querySelector('.rt-card-loc'); if(!t) return;
+      const partes = t.textContent.split(',').map(s => s.trim()).filter(Boolean);
+      const ultima = (partes[partes.length - 1] || '').replace(/\s*\(.*\)$/, ''); if(ultima) set.add(ultima);
+    });
+    const opts = ['', ...[...set].sort((a, b) => a.localeCompare(b, 'es'))];
+    ddList.innerHTML = opts.map(o => '<button type="button" data-v="' + esc(o) + '" class="' + (o === ubicacion ? 'sel' : '') + '">' + (o ? esc(o) : 'Todas las ubicaciones') + '</button>').join('');
+    ddList.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+      ubicacion = b.dataset.v;
+      ddBtn.querySelector('span').textContent = ubicacion || 'Ubicación';
+      ddBtn.classList.toggle('is-ph', !ubicacion);
+      dd.classList.remove('open'); armarUbicaciones(); aplicar();
+    }));
+  }
+
+  /* ---- Pestañas, búsqueda, vacío ---- */
+  const VACIO = {
+    creador:['Todavía no hay creadores/as con estos criterios', 'Si facilitás actividades, organizás eventos u ofrecés servicios, sumá tu perfil a la Red Tribu.', 'Sumá tu perfil', '/cuenta/perfil/editar/'],
+    comunidad:['Todavía no hay comunidades publicadas', 'Si armás o representás una comunidad, sumá tu perfil y sé de las primeras en la Red Tribu.', 'Sumá tu comunidad', '/cuenta/perfil/editar/'],
+    experiencia:['Todavía no hay experiencias con estos criterios', 'Publicá tu primera experiencia desde tu perfil y aparecé acá.', 'Publicar experiencia', '/cuenta/publicar/'],
+    marca:['No encontramos marcas con estos criterios', 'Probá con otra búsqueda o ubicación.', 'Ver todo', '#todos'],
+    lugar:['Todavía no hay lugares con estos criterios', 'Si tenés un espacio para eventos, retiros o encuentros, sumalo a la Red Tribu.', 'Sumá tu espacio', '/cuenta/perfil/editar/'],
+    todos:['No encontramos resultados', 'Probá con otra búsqueda, ubicación o filtro.', 'Limpiar búsqueda', '#todos']
+  };
+  function elegirTab(t){
+    activeTab = t;
+    tabs.forEach(x => x.classList.toggle('active', x.dataset.tab === t));
+    aplicar();
+  }
+  tabs.forEach(t => t.addEventListener('click', () => elegirTab(t.dataset.tab)));
+  search.addEventListener('input', aplicar);
+
+  function aplicar(){
+    const q = search.value.trim().toLowerCase();
+    const ubi = ubicacion.toLowerCase();
+    let visibles = 0;
+    grid.querySelectorAll('.rt-card').forEach(c => {
+      const cats = c.dataset.cats.split(' ');
+      let ok = (activeTab === 'todos' || cats.includes(activeTab))
+        && (!q || c.dataset.text.includes(q))
+        && (!ubi || c.dataset.ciudad.includes(ubi));
+      if(ok && cuantosFiltros() && activeTab === 'creador') ok = pasaFiltros(c._datos);
+      c.style.display = ok ? '' : 'none';
+      if(ok) visibles++;
+    });
+    const empty = document.getElementById('dirEmpty');
+    empty.hidden = visibles > 0;
+    if(!visibles){
+      const [t, p, b, href] = VACIO[activeTab];
+      document.getElementById('dirEmptyTitle').textContent = t;
+      document.getElementById('dirEmptyTxt').textContent = p;
+      const btn = document.getElementById('dirEmptyBtn');
+      btn.textContent = b; btn.setAttribute('href', href === '#todos' ? '#' : href);
+      btn.onclick = href === '#todos' ? (e => { e.preventDefault(); search.value = ''; ubicacion = ''; ddBtn.querySelector('span').textContent = 'Ubicación'; ddBtn.classList.add('is-ph'); document.getElementById('btnLimpiar').click(); elegirTab('todos'); }) : null;
+    }
+  }
 
   (async () => {
     const [{ data: perfiles }, { data: experiencias }, sesion] = await Promise.all([
@@ -602,15 +761,14 @@
     window.TRIBU_EXPERIENCIAS = experiencias || [];
     if(miSesion && experiencias && experiencias.length){
       const { data: mias } = await sb.from('experience_participantes').select('experience_id, rol').eq('profile_id', miSesion.user.id);
-      (mias || []).forEach(m => { misParticipaciones[m.experience_id] = m.rol; });
+      (mias || []).forEach(m => { misPart[m.experience_id] = m.rol; });
     }
-    (perfiles || []).forEach(p => {
-      const card = perfilCard(p);
-      if(card) dinamico.appendChild(card);
-    });
-    (experiencias || []).forEach(e => dinamicoEventos.appendChild(eventoCard(e)));
+    (perfiles || []).forEach(p => { const c = perfilFicha(p); if(c) dinamico.appendChild(c); });
+    (experiencias || []).forEach(e => dinamicoEventos.appendChild(experienciaFicha(e)));
     pintarEventosCalendario();
+    armarUbicaciones();
   })();
+  aplicar();
 })();
 </script>
 <script defer src="/assets/tribu-chat.js?v=3"></script>
