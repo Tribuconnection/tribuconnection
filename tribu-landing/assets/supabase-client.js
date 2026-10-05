@@ -469,3 +469,35 @@ if(document.readyState === 'loading'){
     }
   });
 })();
+
+/* ============ ONBOARDING: piezas compartidas de los pasos 2 y 3 ============ */
+const TRIBU_ROL_ESTILO = {
+  facilita_actividades: { c:'#B07CF0', svg:'<circle cx="12" cy="5" r="2.2"/><path d="M5 9.5 12 11l7-1.5M12 11v4.5M8.5 21l3.5-5.5 3.5 5.5"/>' },
+  organiza_eventos:     { c:'#F47A2A', svg:'<path d="M12 3c1 2.5 3 3.5 5.5 3.5-1.5 2-1.5 4 0 6-2.5 0-4.5 1-5.5 3.5-1-2.5-3-3.5-5.5-3.5 1.5-2 1.5-4 0-6C9 6.5 11 5.5 12 3z"/><path d="M12 16v5"/>' },
+  tiene_marca:          { c:'#9BCB46', svg:'<rect x="3.5" y="7" width="17" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3.5 12h17M12 10.5v3"/>' },
+  tiene_lugar:          { c:'#4F7BEA', svg:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>' },
+  tiene_comunidad:      { c:'#36B7C4', svg:'<circle cx="12" cy="8" r="3"/><circle cx="5" cy="10.5" r="2.2"/><circle cx="19" cy="10.5" r="2.2"/><path d="M7 20a5 5 0 0 1 10 0M1.5 19.5a3.8 3.8 0 0 1 5-3.5M22.5 19.5a3.8 3.8 0 0 0-5-3.5"/>' },
+  ofrece_servicios:     { c:'#F4A623', svg:'<path d="M12 2c.6 3.2 1.4 5.3 2.8 6.7C16.2 10.1 18 11 21 11.5c-3 .5-4.8 1.4-6.2 2.8C13.4 15.7 12.6 17.8 12 21c-.6-3.2-1.4-5.3-2.8-6.7C7.8 12.9 6 12 3 11.5c3-.5 4.8-1.4 6.2-2.8C10.6 7.3 11.4 5.2 12 2z"/>' },
+  quiere_colaborar:     { c:'#E0336E', svg:'<path d="M20.8 4.6a5 5 0 0 0-7.1 0L12 5.3l-1.7-.7a5 5 0 0 0-7.1 7.1L12 20.3l8.8-8.6a5 5 0 0 0 0-7.1z"/>' }
+};
+
+/* Panel derecho "Tu perfil": avatar + resumen de lo elegido. `d` trae
+   ciudad / intereses / interes_en / quiere_recibir; lo vacío se muestra
+   como "Todavía no elegiste". */
+function tribuPanelPerfil(el, d, titulo){
+  const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const lista = a => (a && a.length) ? '<span>' + esc(a.join(', ')) + '</span>' : '<span class="vacio">Todavía no elegiste</span>';
+  const fila = (color, svg, label, valor) =>
+    '<div class="onb-sum"><svg viewBox="0 0 24 24" fill="none" stroke="' + color + '" stroke-width="1.7">' + svg + '</svg><div><b>' + label + '</b>' + valor + '</div></div>';
+  el.innerHTML =
+    '<svg class="su-curve" viewBox="0 0 300 130" preserveAspectRatio="none"><defs><linearGradient id="onbCurveG" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#F47A2A"/><stop offset=".55" stop-color="#E0336E"/><stop offset="1" stop-color="#E0336E" stop-opacity="0"/></linearGradient></defs><path d="M3 128 C3 48 30 16 110 12 L298 6" fill="none" stroke="url(#onbCurveG)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>' +
+    '<div class="su-card">' +
+      '<div class="su-avatar"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg></div><span><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c.6 3.2 1.4 5.3 2.8 6.7C16.2 10.1 18 11 21 11.5c-3 .5-4.8 1.4-6.2 2.8C13.4 15.7 12.6 17.8 12 21c-.6-3.2-1.4-5.3-2.8-6.7C7.8 12.9 6 12 3 11.5c3-.5 4.8-1.4 6.2-2.8C10.6 7.3 11.4 5.2 12 2z"/></svg></span></div>' +
+      '<div class="onb-side-title">' + esc(titulo) + '</div>' +
+      fila('#F47A2A', '<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>', 'Ubicación', d.ciudad ? '<span>' + esc(d.ciudad) + '</span>' : '<span class="vacio">Cerca tuyo</span>') +
+      fila('#E0336E', '<path d="M20.8 4.6a5 5 0 0 0-7.1 0L12 5.3l-1.7-.7a5 5 0 0 0-7.1 7.1L12 20.3l8.8-8.6a5 5 0 0 0 0-7.1z"/>', 'Intereses', lista(d.intereses)) +
+      fila('#E0336E', '<circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2.2 4.8-4.8 2.2 2.2-4.8z"/>', 'Te interesa', lista(d.interes_en)) +
+      fila('#E0336E', '<rect x="3.5" y="9" width="17" height="11.5" rx="2"/><path d="M3.5 13h17M12 9v11.5M12 9c-1.5-4-6-4-6-1.5S12 9 12 9zm0 0c1.5-4 6-4 6-1.5S12 9 12 9z"/>', 'Vas a recibir', lista(d.quiere_recibir)) +
+      '<div class="onb-side-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6.1L12 16.8 6.6 19.7l1.1-6.1L3.2 9.4l6.1-.8z"/></svg><span>Más adelante también podés sumar proyectos, comunidades o roles profesionales.</span></div>' +
+    '</div>';
+}

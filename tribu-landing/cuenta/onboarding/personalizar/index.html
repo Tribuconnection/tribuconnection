@@ -9,18 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=43">
+<link rel="stylesheet" href="/assets/tribu.css?v=44">
 <link rel="stylesheet" href="/assets/home.css?v=12">
-<style>
-  .cat-chip{ display:inline-flex; align-items:center; padding:.45rem .9rem; border-radius:999px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); font-size:.85rem; cursor:pointer; transition:.15s; margin:0 .4rem .4rem 0; }
-  .cat-chip.sel{ background:var(--spectrum); color:#15110f; border-color:transparent; font-weight:600; }
-  .modalidad-toggle{ display:flex; gap:.6rem; }
-  .modalidad-toggle button{ flex:1; padding:.7rem; border-radius:14px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); cursor:pointer; font-family:var(--font-sans); font-weight:600; font-size:.88rem; }
-  .modalidad-toggle button.active{ background:var(--spectrum); color:#15110f; border-color:transparent; }
-  .onb-step{ color:var(--muted); font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; margin-bottom:.5rem; }
-  .onb-actions{ display:flex; gap:.8rem; margin-top:1.6rem; }
-  .onb-actions .btn--ghost{ flex:none; }
-</style>
 </head>
 <body>
 
@@ -47,57 +37,52 @@
   <a href="#" id="btnLogoutMobile" class="btn btn--ghost">Cerrar sesión</a>
 </div>
 
-<section class="section" style="padding-top:clamp(110px,14vw,140px)">
-  <div class="wrap" style="max-width:640px">
-    <p class="onb-step reveal">Paso 2 de 3</p>
-    <h1 class="h2 reveal d1" style="margin:0 0 .5rem">Personalizá tu experiencia</h1>
-    <p class="lead reveal d1" style="margin-bottom:1.4rem">Contanos un poco más sobre vos para mostrarte beneficios, planes y recomendaciones más afines.</p>
+<section class="section" style="padding-top:clamp(100px,12vw,124px)">
+  <div class="wrap">
+    <div class="onb-card reveal">
+      <div class="su-grid">
+        <form id="formPersonalizar">
+          <div class="su-steps"><b>Paso 2 de 3</b><div class="su-dots"><i class="on"></i><s class="on"></s><i class="on"></i><s class="on"></s><i></i></div></div>
+          <h1 class="su-title">Personalizá tu experiencia</h1>
+          <p class="su-sub">Contanos un poco más sobre vos para mostrarte beneficios, planes y recomendaciones más afines.</p>
 
-    <div class="tribu-card reveal d2">
-      <form id="formPersonalizar">
-        <div class="row2">
-          <div class="field">
-            <label>Modalidad</label>
-            <div class="modalidad-toggle">
-              <button type="button" data-mod="Presencial" class="active">Presencial</button>
-              <button type="button" data-mod="Online">Online</button>
-              <button type="button" data-mod="Ambas">Ambas</button>
+          <div class="su-row">
+            <div>
+              <span class="onb-label" style="margin-top:0">Modalidad</span>
+              <div class="onb-seg">
+                <button type="button" data-mod="Presencial" class="active">Presencial</button>
+                <button type="button" data-mod="Online">Online</button>
+                <button type="button" data-mod="Ambas">Ambas</button>
+              </div>
+            </div>
+            <div>
+              <label class="onb-label" for="ciudad" style="margin-top:0">Ciudad o barrio</label>
+              <div class="su-in"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><input id="ciudad" placeholder="Ej: Palermo, CABA"></div>
             </div>
           </div>
-          <div class="field">
-            <label for="ciudad">Ciudad o barrio</label>
-            <input id="ciudad" placeholder="Ej: Buenos Aires, Argentina">
-          </div>
-        </div>
 
-        <div class="field">
-          <label>¿Qué te mueve?</label>
+          <span class="onb-label">¿Qué te mueve?</span>
           <div id="intereses"></div>
-        </div>
-
-        <div class="field">
-          <label>¿Qué te interesa más?</label>
+          <span class="onb-label">¿Qué te interesa más?</span>
           <div id="interesEn"></div>
-        </div>
-
-        <div class="field">
-          <label>¿Qué querés recibir?</label>
+          <span class="onb-label">¿Qué querés recibir?</span>
           <div id="quiereRecibir"></div>
-        </div>
 
-        <p class="field-error" id="perError" style="display:none"></p>
-        <div class="onb-actions">
-          <a href="/cuenta/" class="btn btn--ghost">Volver</a>
-          <button type="submit" class="btn btn--spectrum" id="btnContinuar">Continuar</button>
-        </div>
-        <p style="color:var(--muted);font-size:.78rem;margin-top:.8rem">Después vas a poder editar estas preferencias cuando quieras.</p>
-      </form>
+          <p class="field-error" id="perError" style="display:none"></p>
+          <p class="onb-foot" style="margin-top:1.2rem"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2 2 4-4"/></svg>Después vas a poder editar estas preferencias cuando quieras.</p>
+          <div class="onb-actions2">
+            <button type="submit" class="btn btn--spectrum" id="btnContinuar"><span>Continuar</span> <span class="arr">→</span></button>
+            <a href="/cuenta/perfil/" class="btn btn--ghost">Completar más tarde</a>
+          </div>
+        </form>
+        <aside class="su-side" id="panelPerfil"></aside>
+      </div>
     </div>
   </div>
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=9"></script>
+<script src="/assets/supabase-client.js?v=10"></script>
 <script src="/assets/site.js?v=17"></script>
 <script>
 (function(){
@@ -115,22 +100,29 @@
     const box = document.getElementById(containerId);
     opciones.forEach(op => {
       const chip = document.createElement('button');
-      chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = op;
+      chip.type = 'button'; chip.className = 'onb-chip'; chip.textContent = op;
       chip.addEventListener('click', () => {
         const i = seleccionadas.indexOf(op);
         if(i > -1){ seleccionadas.splice(i, 1); chip.classList.remove('sel'); }
         else { seleccionadas.push(op); chip.classList.add('sel'); }
+        refrescarPanel();
       });
       box.appendChild(chip);
     });
   }
+  const panel = document.getElementById('panelPerfil');
+  function refrescarPanel(){
+    tribuPanelPerfil(panel, { ciudad: document.getElementById('ciudad').value.trim(), intereses, interes_en: interesEn, quiere_recibir: quiereRecibir }, 'Así se arma tu perfil');
+  }
+  document.getElementById('ciudad').addEventListener('input', refrescarPanel);
   armarChips('intereses', INTERESES_TRIBU, intereses);
   armarChips('interesEn', INTERES_EN_TRIBU, interesEn);
   armarChips('quiereRecibir', QUIERE_RECIBIR_TRIBU, quiereRecibir);
+  refrescarPanel();
 
-  document.querySelectorAll('.modalidad-toggle button').forEach(btn => {
+  document.querySelectorAll('.onb-seg button').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.modalidad-toggle button').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.onb-seg button').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       modalidad = btn.dataset.mod;
     });
@@ -139,7 +131,7 @@
   document.getElementById('formPersonalizar').addEventListener('submit', async e => {
     e.preventDefault();
     const err = document.getElementById('perError'); err.style.display = 'none';
-    const btn = document.getElementById('btnContinuar'); btn.textContent = 'Guardando...'; btn.disabled = true;
+    const btn = document.getElementById('btnContinuar'), lbl = btn.querySelector('span'); lbl.textContent = 'Guardando...'; btn.disabled = true;
     try{
       /* Nombre y apellido vienen del paso 1 (registro), guardados en los
          metadatos de la cuenta; solo se usan si el perfil todavía no tiene nombre. */
@@ -161,7 +153,7 @@
     }catch(ex){
       err.textContent = 'No se pudo guardar: ' + ex.message;
       err.style.display = 'block';
-      btn.textContent = 'Continuar'; btn.disabled = false;
+      lbl.textContent = 'Continuar'; btn.disabled = false;
     }
   });
 
