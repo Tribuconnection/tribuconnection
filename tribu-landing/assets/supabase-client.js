@@ -4,6 +4,10 @@
    políticas de Row Level Security de cada tabla, no en ocultar esta clave. */
 const SUPABASE_URL = 'https://dcoazdjqdohiekcsaxor.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_zC1SJUG-5kHTWArEgYIqBw_tuYEqwOf';
+/* Se lee ANTES de crear el cliente: el cliente limpia el hash de la URL al
+   procesar el token, y necesitamos saber si se llegó desde el mail de
+   confirmación de cuenta para mandar a la persona al paso 2. */
+const TRIBU_VIENE_DE_CONFIRMAR = /type=signup/.test(location.hash);
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 /* Cuando alguien clickea el link de "recuperar contraseña" del mail,
@@ -12,9 +16,14 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
    que hoy es la home) y dispara este evento. Lo mandamos al perfil con un
    flag para que abra ahí el popup de "elegí tu nueva contraseña", en vez de
    dejarlo logueado y perdido en la home sin ningún indicio de qué hacer. */
-sb.auth.onAuthStateChange((event) => {
+sb.auth.onAuthStateChange((event, session) => {
   if(event === 'PASSWORD_RECOVERY' && location.pathname !== '/cuenta/perfil/'){
     window.location.replace('/cuenta/perfil/?recuperar=1');
+    return;
+  }
+  /* Volvió del link "confirmá tu cuenta" del mail: sigue con el paso 2. */
+  if(event === 'SIGNED_IN' && TRIBU_VIENE_DE_CONFIRMAR && session){
+    tribuDestinoPostAuth(session).then(dest => { if(location.pathname !== dest) window.location.replace(dest); });
   }
 });
 
@@ -97,10 +106,12 @@ async function tribuRequiereSesion(){
   return session;
 }
 
-/* Botón de nav [data-auth-nav]: "Ingresar" (abre el modal) si no hay sesión,
-   "Mi cuenta" (va al perfil) si ya está logueado. Se llama en cada página. */
+/* Header: sin sesión, "Ingresar" + "Sumate". Con sesión, esos dos botones
+   se reemplazan por una pastilla con la foto y el nombre de la persona y un
+   menú (mi perfil / completar perfil / cerrar sesión). Se llama en cada página. */
 async function tribuInitAuthNav(){
   const session = await tribuSesionActual();
+  const hayModalLogin = !!document.getElementById('authModal');
   document.querySelectorAll('[data-auth-nav]').forEach(btn => {
     const label = btn.querySelector('[data-auth-label]') || btn;
     if(session){
@@ -109,11 +120,55 @@ async function tribuInitAuthNav(){
       btn.removeAttribute('data-auth');
     } else {
       label.textContent = 'Ingresar';
+      // Sin el modal de login en la página, "Ingresar" abre el login del registro.
       btn.setAttribute('href', '#');
-      btn.setAttribute('data-auth', '');
+      if(hayModalLogin){ btn.setAttribute('data-auth', ''); }
+      else { btn.removeAttribute('data-auth'); btn.setAttribute('data-signup-login', ''); }
     }
   });
+  if(!session) return;
+
+  const { data: p } = await sb.from('profiles').select('nombre, nombre_marca, tipo, foto_url').eq('id', session.user.id).maybeSingle();
+  const meta = session.user.user_metadata || {};
+  const nombreCompleto = (p && (p.tipo === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre)) || [meta.nombre, meta.apellido].filter(Boolean).join(' ') || session.user.email.split('@')[0];
+  const primerNombre = nombreCompleto.split(' ')[0];
+  const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  let foto = p && p.foto_url;
+  try{ const u = new URL(foto); if(u.protocol !== 'https:') foto = null; }catch(e){ foto = null; }
+  const avatar = foto ? '<img src="' + esc(foto) + '" alt="">' : esc(primerNombre.charAt(0).toUpperCase());
+
+  document.querySelectorAll('.nav .nav-cta').forEach(cta => {
+    cta.querySelectorAll('[data-auth-nav], [data-signup]').forEach(el => el.style.display = 'none');
+    if(cta.querySelector('.nav-me')) return;
+    const me = document.createElement('div');
+    me.className = 'nav-me';
+    me.innerHTML =
+      '<button type="button" class="nav-me-btn" aria-haspopup="menu" aria-expanded="false">' +
+        '<span class="nav-me-av">' + avatar + '</span><span class="nav-me-name">' + esc(primerNombre) + '</span>' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>' +
+      '</button>' +
+      '<div class="nav-me-menu" role="menu">' +
+        '<a href="/cuenta/perfil/">Mi perfil</a>' +
+        '<a href="/cuenta/perfil/editar/">Completar / editar mi perfil</a>' +
+        '<hr><a href="#" data-logout>Cerrar sesión</a>' +
+      '</div>';
+    const burger = cta.querySelector('.burger');
+    cta.insertBefore(me, burger || null);
+    const btn = me.querySelector('.nav-me-btn');
+    btn.addEventListener('click', e => { e.stopPropagation(); const o = me.classList.toggle('open'); btn.setAttribute('aria-expanded', o); });
+    document.addEventListener('click', e => { if(!me.contains(e.target)) me.classList.remove('open'); });
+  });
+  document.querySelectorAll('.mobile-menu').forEach(mm => {
+    mm.querySelectorAll('[data-signup]').forEach(el => {
+      el.textContent = 'Completar mi perfil';
+      el.setAttribute('href', '/cuenta/perfil/editar/');
+      el.removeAttribute('data-signup');
+    });
+  });
 }
+document.addEventListener('click', e => {
+  if(e.target.closest('[data-logout]')){ e.preventDefault(); tribuCerrarSesion(); }
+});
 if(document.readyState === 'loading'){
   document.addEventListener('DOMContentLoaded', tribuInitAuthNav);
 } else {
@@ -245,6 +300,172 @@ if(document.readyState === 'loading'){
       err.textContent = 'No se pudo enviar: ' + ex.message; err.style.display = 'block';
     }finally{
       btn.textContent = 'Enviar solicitud'; btn.disabled = false;
+    }
+  });
+})();
+
+/* ============ REGISTRO "SUMATE" (paso 1 de 3) ============
+   Lo abre cualquier [data-signup] de cualquier página (el "Sumate" del
+   header). Con sesión iniciada lleva a completar el perfil en vez de
+   registrar de nuevo. Pasos 2 y 3: /cuenta/onboarding/personalizar/ y
+   /cuenta/onboarding/participacion/. El modal se arma acá por JS para no
+   duplicar el HTML en cada página. */
+(function(){
+  const I = {
+    user:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>',
+    mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg>',
+    lock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15.5" r="1.2" fill="currentColor"/></svg>',
+    eye:'<svg class="eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>',
+    shield:'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.4 7.5 9.5 4.3-1.1 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2 2 4-4"/></svg>',
+    google:'<svg width="20" height="20" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.7 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 15.1 19 12 24 12c3.1 0 5.8 1.2 7.9 3.1l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.7 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35.1 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-8l-6.5 5C9.5 39.6 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.1 5.6l6.2 5.2C37 39.2 44 34 44 24c0-1.3-.1-2.4-.4-3.5z"/></svg>',
+    sparkle:'<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c.6 3.2 1.4 5.3 2.8 6.7C16.2 10.1 18 11 21 11.5c-3 .5-4.8 1.4-6.2 2.8C13.4 15.7 12.6 17.8 12 21c-.6-3.2-1.4-5.3-2.8-6.7C7.8 12.9 6 12 3 11.5c3-.5 4.8-1.4 6.2-2.8C10.6 7.3 11.4 5.2 12 2z"/></svg>'
+  };
+  function pw(id, ph, ac){
+    return '<div class="su-in pw-wrap">' + I.lock + '<input id="' + id + '" type="password" placeholder="' + ph + '" autocomplete="' + ac + '" minlength="6"><button type="button" class="pw-toggle" aria-label="Mostrar contraseña" tabindex="-1">' + I.eye + '</button></div>';
+  }
+  const google = '<div class="su-gwrap" hidden><div class="su-or">o continuar con Google</div><button type="button" class="su-google" data-su-google>' + I.google + 'Continuar con Google</button></div>';
+
+  let overlay = null;
+
+  function armar(){
+    overlay = document.createElement('div');
+    overlay.className = 'modal-overlay su-overlay';
+    overlay.id = 'signupModal';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML =
+      '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="suTitle">' +
+        '<button class="modal-close su-close" type="button" aria-label="Cerrar">✕</button>' +
+        '<div class="su-grid">' +
+          '<div>' +
+            '<form id="suForm" novalidate>' +
+              '<div class="su-steps"><b>Paso 1 de 3</b><div class="su-dots"><i class="on"></i><s class="on"></s><i></i><s></s><i></i></div></div>' +
+              '<h2 class="su-title" id="suTitle">Ser parte de la Tribu</h2>' +
+              '<p class="su-sub">Creá tu cuenta para empezar a descubrir beneficios, experiencias y recomendaciones pensadas para vos.</p>' +
+              '<div class="su-row">' +
+                '<div class="su-in">' + I.user + '<input id="suNombre" placeholder="Nombre" autocomplete="given-name"></div>' +
+                '<div class="su-in">' + I.user + '<input id="suApellido" placeholder="Apellido" autocomplete="family-name"></div>' +
+              '</div>' +
+              '<div class="su-in">' + I.mail + '<input id="suEmail" type="email" placeholder="Correo electrónico" autocomplete="email"></div>' +
+              pw('suPass', 'Contraseña', 'new-password') +
+              pw('suPass2', 'Confirmar contraseña', 'new-password') +
+              '<label class="su-check"><input type="checkbox" id="suTerms"><span>Acepto los <a href="#" data-legal="terminos">términos</a> y la <a href="#" data-legal="privacidad">política de privacidad</a>.</span></label>' +
+              '<p class="su-err" id="suErr"></p>' +
+              '<button type="submit" class="btn btn--spectrum su-btn" id="suBtn"><span>Continuar</span> <span class="arr">→</span></button>' +
+              '<button type="button" class="btn btn--ghost su-alt" data-su-modo="login">Ya tengo cuenta</button>' +
+              google +
+              '<p class="su-note">' + I.shield + 'Después vas a poder completar tus intereses y preferencias.</p>' +
+            '</form>' +
+            '<form id="suLogin" novalidate hidden>' +
+              '<h2 class="su-title">Ingresar</h2>' +
+              '<p class="su-sub">Entrá con tu cuenta para editar tu perfil, publicar experiencias y acceder a tus beneficios.</p>' +
+              '<div class="su-in">' + I.mail + '<input id="suLoginEmail" type="email" placeholder="Correo electrónico" autocomplete="email"></div>' +
+              pw('suLoginPass', 'Contraseña', 'current-password') +
+              '<p class="su-err" id="suLoginErr"></p>' +
+              '<button type="submit" class="btn btn--spectrum su-btn" id="suLoginBtn"><span>Ingresar</span> <span class="arr">→</span></button>' +
+              '<button type="button" class="btn btn--ghost su-alt" data-su-modo="registro">Crear una cuenta nueva</button>' +
+              google +
+            '</form>' +
+            '<div class="su-done" id="suDone" hidden>' +
+              '<div class="ic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m3.5 6.5 8.5 6.5 8.5-6.5"/></svg></div>' +
+              '<h2 class="su-title">Revisá tu correo</h2>' +
+              '<p class="su-sub" id="suDoneTxt"></p>' +
+              '<p class="su-note">' + I.shield + 'Al confirmar seguís con el paso 2: tus intereses y preferencias.</p>' +
+            '</div>' +
+          '</div>' +
+          '<aside class="su-side" aria-hidden="true">' +
+            '<svg class="su-curve" viewBox="0 0 300 130" preserveAspectRatio="none"><defs><linearGradient id="suCurveG" x1="0" x2="1" y1="0" y2="0"><stop offset="0" stop-color="#F47A2A"/><stop offset=".55" stop-color="#E0336E"/><stop offset="1" stop-color="#E0336E" stop-opacity="0"/></linearGradient></defs><path d="M3 128 C3 48 30 16 110 12 L298 6" fill="none" stroke="url(#suCurveG)" stroke-width="2.5" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>' +
+            '<div class="su-card">' +
+            '<div class="su-avatar"><div>' + I.user.replace('stroke-width="1.8"', 'stroke-width="1.3"') + '</div><span>' + I.sparkle + '</span></div>' +
+            '<div class="su-ben"><svg viewBox="0 0 24 24" fill="none" stroke="#F47A2A" stroke-width="1.7"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><path d="M8 7.5v3M6.5 9h3"/></svg><span>Accedé a beneficios y descuentos exclusivos.</span></div>' +
+            '<div class="su-ben"><svg viewBox="0 0 24 24" fill="none" stroke="#E0336E" stroke-width="1.7"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span>Recibí planes, novedades y recomendaciones.</span></div>' +
+            '<div class="su-ben"><svg viewBox="0 0 24 24" fill="none" stroke="#4F7BEA" stroke-width="1.7"><circle cx="12" cy="7.5" r="3"/><circle cx="5.5" cy="10" r="2.3"/><circle cx="18.5" cy="10" r="2.3"/><path d="M7 20a5 5 0 0 1 10 0M1.5 19.5a4 4 0 0 1 5-3.8M22.5 19.5a4 4 0 0 0-5-3.8"/></svg><span>Descubrí experiencias y personas afines a vos.</span></div>' +
+          '</div></aside>' +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    const $ = sel => overlay.querySelector(sel);
+    $('.su-close').addEventListener('click', cerrar);
+    overlay.addEventListener('click', e => { if(e.target === overlay) cerrar(); });
+    document.addEventListener('keydown', e => {
+      if(e.key === 'Escape' && overlay.classList.contains('open') && !document.querySelector('#legalModal.open')) cerrar();
+    });
+    overlay.querySelectorAll('[data-su-modo]').forEach(b => b.addEventListener('click', () => modo(b.dataset.suModo)));
+    overlay.querySelectorAll('[data-su-google]').forEach(b => b.addEventListener('click', () => {
+      sb.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: location.origin + '/cuenta/' } });
+    }));
+
+    $('#suForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const err = $('#suErr'); err.style.display = 'none';
+      const v = id => $('#' + id).value.trim();
+      const fallo = t => { err.textContent = t; err.style.display = 'block'; };
+      if(!v('suNombre') || !v('suApellido')) return fallo('Completá tu nombre y apellido.');
+      if(!/^\S+@\S+\.\S+$/.test(v('suEmail'))) return fallo('Revisá el correo electrónico.');
+      const pass = $('#suPass').value;
+      if(pass.length < 6) return fallo('La contraseña tiene que tener al menos 6 caracteres.');
+      if(pass !== $('#suPass2').value) return fallo('Las contraseñas no coinciden.');
+      if(!$('#suTerms').checked) return fallo('Para continuar, aceptá los términos y la política de privacidad.');
+      const btn = $('#suBtn'), lbl = btn.querySelector('span');
+      btn.disabled = true; lbl.textContent = 'Creando cuenta...';
+      const { data, error } = await sb.auth.signUp({
+        email: v('suEmail'), password: pass,
+        options: { data: { nombre: v('suNombre'), apellido: v('suApellido') } }
+      });
+      btn.disabled = false; lbl.textContent = 'Continuar';
+      if(error) return fallo(/registered|already/i.test(error.message) ? 'Ya existe una cuenta con ese correo. Probá con "Ya tengo cuenta".' : error.message);
+      if(data.session){ window.location.href = await tribuDestinoPostAuth(data.session); return; }
+      $('#suDoneTxt').textContent = 'Te mandamos un mail a ' + v('suEmail') + ' para confirmar tu cuenta. Abrilo y tocá el link para seguir.';
+      modo('listo');
+    });
+
+    $('#suLogin').addEventListener('submit', async e => {
+      e.preventDefault();
+      const err = $('#suLoginErr'); err.style.display = 'none';
+      const btn = $('#suLoginBtn'), lbl = btn.querySelector('span');
+      btn.disabled = true; lbl.textContent = 'Ingresando...';
+      const { data, error } = await sb.auth.signInWithPassword({ email: $('#suLoginEmail').value.trim(), password: $('#suLoginPass').value });
+      btn.disabled = false; lbl.textContent = 'Ingresar';
+      if(error){
+        err.textContent = /confirm/i.test(error.message) ? 'Todavía no confirmaste tu correo: revisá tu bandeja de entrada.' : 'Email o contraseña incorrectos.';
+        err.style.display = 'block'; return;
+      }
+      window.location.href = await tribuDestinoPostAuth(data.session);
+    });
+
+    /* El botón de Google aparece solo si el proveedor está activo en Supabase. */
+    fetch(SUPABASE_URL + '/auth/v1/settings', { headers: { apikey: SUPABASE_KEY } })
+      .then(r => r.json())
+      .then(s => { const on = !!(s.external && s.external.google); overlay.querySelectorAll('.su-gwrap').forEach(g => g.hidden = !on); })
+      .catch(() => {});
+  }
+
+  function modo(m){
+    overlay.querySelector('#suForm').hidden = m !== 'registro';
+    overlay.querySelector('#suLogin').hidden = m !== 'login';
+    overlay.querySelector('#suDone').hidden = m !== 'listo';
+    const f = m === 'registro' ? '#suNombre' : m === 'login' ? '#suLoginEmail' : null;
+    if(f) setTimeout(() => overlay.querySelector(f).focus(), 60);
+  }
+  function abrir(m){
+    if(!overlay) armar();
+    modo(m);
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
+  }
+  function cerrar(){
+    overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); document.body.style.overflow = '';
+  }
+
+  document.addEventListener('click', async e => {
+    const t = e.target.closest('[data-signup], [data-signup-login]');
+    if(!t) return;
+    e.preventDefault();
+    if(t.hasAttribute('data-signup')){
+      const session = await tribuSesionActual();
+      if(session){ window.location.href = '/cuenta/perfil/editar/'; return; }
+      abrir('registro');
+    } else {
+      abrir('login');
     }
   });
 })();

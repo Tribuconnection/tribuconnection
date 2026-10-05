@@ -791,8 +791,12 @@ const PROVINCIAS_AR = {
     legalOverlay.classList.remove('open'); legalOverlay.setAttribute('aria-hidden','true');
     document.body.style.overflow='';
   }
-  document.querySelectorAll('[data-legal]').forEach(link=>{
-    link.addEventListener('click', (e)=>{ e.preventDefault(); openLegal(link.dataset.legal); });
+  /* Delegado: también lo usan links que se agregan después por JS (ej. los
+     "términos"/"privacidad" del modal de registro de supabase-client.js). */
+  document.addEventListener('click', (e)=>{
+    const link = e.target.closest('[data-legal]');
+    if(!link) return;
+    e.preventDefault(); openLegal(link.dataset.legal);
   });
   tabs.forEach(t=> t.addEventListener('click', ()=> openLegal(t.dataset.tab)));
   legalClose.addEventListener('click', closeLegal);

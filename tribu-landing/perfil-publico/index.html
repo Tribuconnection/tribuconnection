@@ -9,8 +9,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=42">
-<link rel="stylesheet" href="/assets/home.css?v=11">
+<link rel="stylesheet" href="/assets/tribu.css?v=43">
+<link rel="stylesheet" href="/assets/home.css?v=12">
 <style>
   .pp2-back{ color:var(--muted); font-size:.85rem; text-decoration:none; display:inline-flex; align-items:center; gap:.4rem; margin-bottom:1.4rem; }
   .pp2-back:hover{ color:var(--cream); }
@@ -197,7 +197,11 @@
     <a href="/club-tribu-connection/">Club Tribu</a>
   </div>
   <div class="nav-cta">
-    <a href="/cuenta/" class="btn btn--ghost">Mi cuenta</a>
+    <a href="/cuenta/" class="btn btn--ghost" data-auth-nav><span data-auth-label>Ingresar</span></a>
+    <a href="#" class="btn btn--rainbow btn--icon" data-signup>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/></svg>
+      Sumate
+    </a>
     <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </nav>
@@ -206,7 +210,8 @@
   <a href="/agenda/">Agenda</a>
   <a href="/red-tribu/">Red Tribu</a>
   <a href="/club-tribu-connection/">Club Tribu</a>
-  <a href="/cuenta/">Mi cuenta</a>
+  <a href="/cuenta/" class="btn btn--ghost" data-auth-nav><span data-auth-label>Ingresar</span></a>
+  <a href="#" class="btn btn--rainbow" data-signup>Sumate a la Tribu</a>
 </div>
 
 <section class="section" style="padding-top:clamp(110px,14vw,140px);min-height:70vh">
@@ -319,7 +324,7 @@
       <p class="cp-charcount"><span id="cpCount">0</span> / 500</p>
 
       <p class="field-error" id="cpError" style="display:none"></p>
-      <button type="submit" class="btn btn--spectrum" style="width:100%;justify-content:center" id="cpBtn">Enviar propuesta a través de Tribu Connection <span class="arr">→</span></button>
+      <button type="submit" class="btn btn--rainbow" style="width:100%;justify-content:center" id="cpBtn">Enviar propuesta a través de Tribu Connection <span class="arr">→</span></button>
       <p class="modal-note">🔒 Tu mensaje será recibido por el equipo de Tribu Connection y luego compartido con este creador/a, en caso de ser una propuesta acorde a sus intereses.</p>
     </form>
     <div class="modal-msg" id="cpMsg">¡Listo! Tu propuesta fue enviada 🌟<br>Te vamos a escribir pronto.</div>
@@ -327,8 +332,8 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=8"></script>
-<script src="/assets/site.js?v=16"></script>
+<script src="/assets/supabase-client.js?v=9"></script>
+<script src="/assets/site.js?v=17"></script>
 <script>
 (function(){
   const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
@@ -453,7 +458,7 @@
           (p.mini_bio ? '<blockquote class="pp2-quote">“' + esc(p.mini_bio) + '”</blockquote>' : '') +
           (metaParts.length ? '<div class="pp2-meta">' + metaParts.join(' &nbsp;|&nbsp; ') + '</div>' : '') +
           '<div class="pp2-actions">' +
-            '<button type="button" class="btn btn--spectrum" id="btnConectarPerfil">Conectar</button>' +
+            '<button type="button" class="btn btn--rainbow" id="btnConectarPerfil">Conectar</button>' +
             (socialsDef.length ? '<div class="pp2-socials">' + socialsDef.map(s => '<a class="pp2-soc" style="--c:' + s.c + '" target="_blank" rel="noopener" href="' + esc(s.url) + '"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' + s.svg + '</svg></a>').join('') + '</div>' : '') +
             '<button type="button" class="pp2-share" id="btnCompartirPerfil"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.6 15.4 7M8.6 13.4l6.8 3.6"/></svg> Compartir</button>' +
           '</div>' +
