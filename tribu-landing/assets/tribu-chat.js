@@ -140,7 +140,7 @@
       go: '/#calendario',
       chips: ['¿Cuánto cuesta?', '¿Qué es el Club?'],
       cta: { label: 'Cargar mi evento', action: 'evento' },
-      html: `<p>¡Buenísimo! Podés <strong>sumar tu evento</strong> a la agenda de la Tribu desde el botón <em>"Solicitar agregar evento"</em>.</p>
+      html: `<p>¡Buenísimo! Podés <strong>sumar tu evento</strong> a la agenda de la Tribu desde el botón <em>"Quiero agregar mi evento"</em>.</p>
 <p>Nos contás <strong>qué es, cuándo y dónde</strong>, lo revisamos y te confirmamos por WhatsApp o mail.</p>`
     },
     {

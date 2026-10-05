@@ -350,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
   const statusBadge = first.status==='Pendiente'
     ? '<span class="ev-status st-pend">Pendiente de confirmar</span>'
-    : (first.status ? '<span class="ev-status st-conf">Confirmado</span>' : '');
+    : '';
 
   const hasCoords = first.lat != null && first.lng != null;
   const waText = encodeURIComponent('Mirá este evento en la Agenda de Tribu Connection: '+first.title+' — '+location.href);
@@ -406,6 +406,6 @@ document.addEventListener('DOMContentLoaded', function(){
   }
 });
 </script>
-<script defer src="/assets/tribu-chat.js?v=2"></script>
+<script defer src="/assets/tribu-chat.js?v=3"></script>
 </body>
 </html>
