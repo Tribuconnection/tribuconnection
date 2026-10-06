@@ -101,7 +101,11 @@
   .pt-mencion{ display:inline-block; max-width:560px; margin-top:1.4rem; padding:1rem 1.4rem; border-radius:22px; border:1px solid var(--line-2); background:rgba(255,255,255,.03); color:var(--soft); line-height:1.6; font-size:.95rem; }
   .pt-mencion b{ color:var(--cream); font-weight:600; }
   .pt-h3{ font-family:var(--font-sans); font-size:.8rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--amber); margin-top:2.4rem; }
-  .pt-carrusel{ display:flex; gap:1.1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:1.2rem 16px 1rem; margin:0 -16px; scrollbar-width:thin; }
+  .pt-carrusel{ display:flex; gap:1.1rem; overflow-x:auto; scroll-snap-type:x mandatory; padding:1.2rem 16px 1rem; margin:0 -16px; scrollbar-width:none; -ms-overflow-style:none; cursor:grab; }
+  .pt-carrusel::-webkit-scrollbar{ display:none; }
+  .pt-carrusel img, .pt-carrusel canvas{ -webkit-user-drag:none; user-select:none; }
+  /* Mientras se arrastra: manito cerrada y sin imán, para que siga al mouse. */
+  .pt-carrusel.arrastrando{ cursor:grabbing; scroll-snap-type:none; scroll-behavior:auto; }
   .pt-mini{ flex:none; width:280px; scroll-snap-align:center; }
   @media (max-width:560px){ .pt-mini{ width:74vw; } }
   .pt-mini h4{ margin:.9rem 0 .6rem; color:var(--soft); font-size:.7rem; }
@@ -966,6 +970,31 @@
     catch(e){ const ta = document.createElement('textarea'); ta.value = texto; document.body.appendChild(ta); ta.select(); try{ document.execCommand('copy'); }catch(_){} ta.remove(); }
     const prev = btn.textContent; btn.textContent = t(okKey); setTimeout(() => { btn.textContent = prev; }, 1800);
   }
+  /* El carrusel se empuja con el mouse como si se arrastrara con la mano.
+     Si el gesto fue un arrastre y no un clic, no se dispara la descarga. */
+  (function(){
+    const c = $('carrusel');
+    let agarrado = false, xIni = 0, scrollIni = 0, movido = 0;
+    c.addEventListener('pointerdown', ev => {
+      if(ev.pointerType !== 'mouse' || ev.button !== 0) return;
+      agarrado = true; movido = 0; xIni = ev.clientX; scrollIni = c.scrollLeft;
+      c.classList.add('arrastrando');
+      try{ c.setPointerCapture(ev.pointerId); }catch(e){}
+    });
+    c.addEventListener('pointermove', ev => {
+      if(!agarrado) return;
+      const d = ev.clientX - xIni;
+      movido = Math.max(movido, Math.abs(d));
+      if(movido > 3) ev.preventDefault();
+      c.scrollLeft = scrollIni - d;
+    });
+    const soltar = () => { if(!agarrado) return; agarrado = false; c.classList.remove('arrastrando'); };
+    c.addEventListener('pointerup', soltar);
+    c.addEventListener('pointercancel', soltar);
+    c.addEventListener('click', ev => { if(movido > 6){ ev.preventDefault(); ev.stopPropagation(); movido = 0; } }, true);
+    c.addEventListener('dragstart', ev => ev.preventDefault());
+  })();
+
   $('btnCopiarCaption').addEventListener('click', e => copiar($('caption').textContent, e.currentTarget, 'copiado'));
   $('btnCopiarLink').addEventListener('click', e => copiar(linkLargo(), e.currentTarget, 'link_copiado'));
   $('btnCompartir').addEventListener('click', e => {
