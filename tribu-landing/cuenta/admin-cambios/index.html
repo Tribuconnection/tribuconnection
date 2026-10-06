@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cambios de perfiles · Tribu Connection</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/png" href="/assets/isotipo.png?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/tribu.css?v=45">
+<link rel="stylesheet" href="/assets/home.css?v=12">
+<style>
+  .ac-card{ padding:1.3rem 1.4rem; border-bottom:1px solid var(--line); }
+  .ac-card:last-child{ border-bottom:none; }
+  .ac-top{ display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; flex-wrap:wrap; }
+  .ac-quien{ display:flex; align-items:center; gap:.7rem; min-width:0; }
+  .ac-quien img, .ac-quien b.av{ width:40px; height:40px; border-radius:50%; object-fit:cover; flex:none; background:var(--ink-3); display:flex; align-items:center; justify-content:center; font-weight:700; }
+  .ac-quien strong{ display:block; font-size:1rem; }
+  .ac-quien a{ color:var(--teal); font-size:.8rem; text-decoration:none; }
+  .ac-campo{ display:inline-block; font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:.25rem .6rem; border-radius:999px; background:color-mix(in srgb, var(--amber) 16%, transparent); color:var(--amber); }
+  .ac-fecha{ color:var(--muted); font-size:.78rem; margin-top:.3rem; text-align:right; }
+  .ac-cols{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-top:1rem; }
+  @media (max-width:760px){ .ac-cols{ grid-template-columns:1fr; } }
+  .ac-lbl{ font-size:.68rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:.35rem; display:block; }
+  .ac-antes{ border:1px solid var(--line); border-radius:12px; padding:.75rem .9rem; color:var(--soft); font-size:.88rem; line-height:1.55; white-space:pre-line; min-height:48px; background:var(--ink-1); overflow-wrap:anywhere; }
+  .ac-antes.vacio{ color:var(--muted); font-style:italic; }
+  .ac-card textarea, .ac-card input[type=text]{ width:100%; background:var(--ink-2); border:1px solid var(--line-2); border-radius:12px; padding:.75rem .9rem; color:var(--cream); font-family:var(--font-sans); font-size:.88rem; line-height:1.55; resize:vertical; }
+  .ac-card textarea:focus, .ac-card input:focus{ outline:none; border-color:var(--teal); }
+  .ac-acc{ display:flex; gap:.6rem; flex-wrap:wrap; align-items:center; margin-top:1rem; }
+  .ac-acc .btn{ padding:.55em 1.1em; font-size:.85rem; }
+  .ac-estado{ font-size:.8rem; color:var(--muted); }
+  .ac-estado.ok{ color:var(--green); } .ac-estado.err{ color:#F07F92; }
+  .tab-row .tab-btn .cont-badge{ margin-left:.4rem; background:var(--ink-3); color:var(--cream); border-radius:999px; padding:.05rem .5rem; font-size:.72rem; font-weight:700; }
+  .tab-row .tab-btn.active .cont-badge{ background:#15110F; color:#F4F1EA; }
+  .ac-tr{ padding:1.2rem 1.4rem; border-bottom:1px solid var(--line); }
+  .ac-tr:last-child{ border-bottom:none; }
+  .ac-tr-campo{ margin-top:1rem; }
+  .ac-filtro{ display:flex; align-items:center; gap:.5rem; color:var(--soft); font-size:.85rem; margin-bottom:1rem; cursor:pointer; }
+</style>
+</head>
+<body>
+
+<div class="aurora" aria-hidden="true"><span class="a1"></span><span class="a2"></span><span class="a3"></span></div>
+
+<nav class="nav" id="nav">
+  <a href="/" class="brand" aria-label="Tribu Connection — inicio">
+    <img class="brand-full" src="/assets/logo-blanco.png?v=1" alt="Tribu Connection">
+  </a>
+  <div class="nav-links">
+    <a href="/cuenta/admin-cambios/" class="active">Cambios de perfiles</a>
+    <a href="/cuenta/admin-eventos/">Aprobar eventos</a>
+    <a href="/cuenta/admin-comunidad/">Solicitudes de Comunidad</a>
+    <a href="/cuenta/perfil/">Mi perfil</a>
+  </div>
+  <div class="nav-cta">
+    <a href="#" id="btnLogout" class="btn btn--ghost">Cerrar sesión</a>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/cuenta/admin-cambios/">Cambios de perfiles</a>
+  <a href="/cuenta/admin-eventos/">Aprobar eventos</a>
+  <a href="/cuenta/admin-comunidad/">Solicitudes de Comunidad</a>
+  <a href="/cuenta/perfil/">Mi perfil</a>
+  <a href="#" id="btnLogoutMobile" class="btn btn--ghost">Cerrar sesión</a>
+</div>
+
+<section class="section" style="padding-top:clamp(110px,14vw,140px)">
+  <div class="wrap" style="max-width:920px">
+    <p class="eyebrow reveal">Panel del equipo</p>
+    <h1 class="h2 reveal d1" style="margin:1rem 0 .6rem">Cambios de perfiles</h1>
+    <p class="lead reveal d1" style="margin-bottom:1.6rem">Cada creador/a pide cambios de sus textos desde su portal. Revisalos, corregí lo que haga falta, sumá la traducción al inglés y publicalos: le llega un mail avisando que el cambio ya está online.</p>
+
+    <div id="sinAcceso" class="tribu-card" style="display:none;text-align:center">
+      <p style="color:var(--soft)">Esta sección es solo para el equipo de Tribu Connection. Tu cuenta no tiene acceso.</p>
+    </div>
+
+    <div id="panelAdmin" style="display:none">
+      <div class="tab-row" id="estadoTabs" style="margin-bottom:1.2rem">
+        <button type="button" class="tab-btn active" data-estado="pendiente">Pendientes <span class="cont-badge" id="cntPend">0</span></button>
+        <button type="button" class="tab-btn" data-estado="aplicado">Publicados</button>
+        <button type="button" class="tab-btn" data-estado="rechazado">Rechazados</button>
+        <button type="button" class="tab-btn" data-estado="traducciones">Traducciones</button>
+      </div>
+      <div class="tribu-card" style="padding:0" id="lista">
+        <p style="padding:1.4rem;color:var(--muted)">Cargando...</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="/assets/supabase-client.js?v=12"></script>
+<script src="/assets/site.js?v=18"></script>
+<script>
+(function(){
+  const CAMPO = { nombre:'Nombre público', nombre_marca:'Nombre de la marca', titulo_profesional:'Cómo se presenta', mini_bio:'Frase destacada', bio_larga:'Bio completa', que_esperar:'Qué esperar', otro:'Pedido sobre su landing' };
+  const TRADUCIBLE = { titulo_profesional:true, mini_bio:true, bio_larga:true, que_esperar:true };
+  const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const fecha = iso => { const d = new Date(iso); return d.getDate() + ' ' + MESES[d.getMonth()] + ' ' + d.getFullYear() + ', ' + String(d.getHours()).padStart(2,'0') + ':' + String(d.getMinutes()).padStart(2,'0'); };
+  const nombreDe = p => p ? (p.tipo === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre) || '(sin nombre)' : '(perfil borrado)';
+  function fotoOk(u){ try{ const x = new URL(u); return x.protocol === 'https:' ? x.href : null; }catch(e){ return null; } }
+
+  function cerrarSesion(e){ e.preventDefault(); tribuCerrarSesion(); }
+  document.getElementById('btnLogout').addEventListener('click', cerrarSesion);
+  document.getElementById('btnLogoutMobile').addEventListener('click', cerrarSesion);
+
+  let estadoActual = 'pendiente', soloSinTraducir = true;
+  let perfiles = {};
+  const lista = document.getElementById('lista');
+  const tabs = document.querySelectorAll('#estadoTabs .tab-btn');
+
+  async function cargarPerfiles(ids){
+    const faltan = ids.filter(id => !perfiles[id]);
+    if(!faltan.length) return;
+    const { data } = await sb.from('profiles').select('*').in('id', faltan);
+    (data || []).forEach(p => { perfiles[p.id] = p; });
+  }
+
+  function quien(p){
+    const f = p && fotoOk(p.foto_url);
+    return '<div class="ac-quien">' + (f ? '<img src="' + esc(f) + '" alt="">' : '<b class="av">' + esc(nombreDe(p).charAt(0)) + '</b>') +
+      '<div><strong>' + esc(nombreDe(p)) + '</strong>' + (p && p.slug ? '<a href="/' + esc(p.slug) + '/" target="_blank" rel="noopener">tribuconnection.com/' + esc(p.slug) + ' ↗</a>' : '') + '</div></div>';
+  }
+
+  /* Le pide al Apps Script que mande el mail de aviso. El Apps Script vuelve
+     a consultar la base de datos: solo avisa pedidos ya resueltos y una sola vez. */
+  async function avisar(id){
+    const fd = new FormData(); fd.set('Id', id);
+    await enviarASheets(fd, 'NotificarCambio');
+  }
+
+  async function contarPendientes(){
+    const { count } = await sb.from('cambios_perfil').select('id', { count:'exact', head:true }).eq('estado', 'pendiente');
+    document.getElementById('cntPend').textContent = count || 0;
+  }
+
+  async function cargar(){
+    lista.innerHTML = '<p style="padding:1.4rem;color:var(--muted)">Cargando...</p>';
+    contarPendientes();
+    if(estadoActual === 'traducciones') return cargarTraducciones();
+    const { data, error } = await sb.from('cambios_perfil').select('*').eq('estado', estadoActual).order('created_at', { ascending: estadoActual === 'pendiente' }).limit(100);
+    if(error){ lista.innerHTML = '<p style="padding:1.4rem;color:var(--red)">No se pudo cargar: ' + esc(error.message) + '</p>'; return; }
+    if(!data.length){ lista.innerHTML = '<p style="padding:1.4rem;color:var(--muted)">' + (estadoActual === 'pendiente' ? 'No hay cambios pendientes. 🌿' : 'Nada por acá todavía.') + '</p>'; return; }
+    await cargarPerfiles([...new Set(data.map(c => c.profile_id))]);
+    lista.innerHTML = '';
+    data.forEach(c => lista.appendChild(tarjeta(c)));
+  }
+
+  function tarjeta(c){
+    const p = perfiles[c.profile_id];
+    const el = document.createElement('div'); el.className = 'ac-card';
+    const traducible = TRADUCIBLE[c.campo];
+    const enActual = p && traducible ? (p[c.campo + '_en'] || '') : '';
+    let cuerpo = '';
+    if(c.estado === 'pendiente'){
+      if(c.campo === 'otro'){
+        cuerpo = '<span class="ac-lbl" style="margin-top:1rem">Qué pide</span><div class="ac-antes">' + esc(c.valor_nuevo) + '</div>' +
+          '<p style="color:var(--muted);font-size:.8rem;margin-top:.5rem">Hacé el cambio en su perfil y después marcalo como resuelto para que le llegue el aviso.</p>';
+      } else {
+        cuerpo = '<div class="ac-cols">' +
+          '<div><span class="ac-lbl">Publicado ahora</span><div class="ac-antes' + (c.valor_anterior ? '' : ' vacio') + '">' + esc(c.valor_anterior || '(vacío)') + '</div></div>' +
+          '<div><span class="ac-lbl">Propuesta (podés corregirla)</span>' + (c.campo === 'nombre' || c.campo === 'nombre_marca' || c.campo === 'titulo_profesional'
+            ? '<input type="text" data-valor value="' + esc(c.valor_nuevo) + '" maxlength="' + (c.campo === 'titulo_profesional' ? 90 : 80) + '">'
+            : '<textarea data-valor rows="' + (c.valor_nuevo.length > 220 ? 7 : 3) + '">' + esc(c.valor_nuevo) + '</textarea>') + '</div>' +
+          '</div>' +
+          (traducible ? '<div style="margin-top:1rem"><span class="ac-lbl">Traducción al inglés (la ve en su portal y en la landing con EN)</span><textarea data-en rows="3" placeholder="English version…">' + esc(enActual) + '</textarea></div>' : '');
+      }
+      cuerpo += '<div style="margin-top:1rem"><span class="ac-lbl">Nota para la persona (opcional, va en el mail)</span><input type="text" data-nota maxlength="400" placeholder="Ej: corregimos un par de tildes 🙂"></div>' +
+        '<div class="ac-acc"><button type="button" class="btn btn--spectrum" data-aplicar>' + (c.campo === 'otro' ? 'Marcar como resuelto' : 'Aplicar y publicar') + '</button>' +
+        '<button type="button" class="btn btn--ghost" data-rechazar>Rechazar</button><span class="ac-estado" data-estado></span></div>';
+    } else {
+      cuerpo = '<div class="ac-cols"><div><span class="ac-lbl">Antes</span><div class="ac-antes' + (c.valor_anterior ? '' : ' vacio') + '">' + esc(c.valor_anterior || (c.campo === 'otro' ? '—' : '(vacío)')) + '</div></div>' +
+        '<div><span class="ac-lbl">' + (c.estado === 'aplicado' ? 'Publicado' : 'Pedido') + '</span><div class="ac-antes">' + esc(c.valor_nuevo || '(vacío)') + '</div></div></div>' +
+        (c.nota_equipo ? '<p style="margin-top:.8rem;font-size:.86rem;color:var(--soft)"><b>Nota:</b> ' + esc(c.nota_equipo) + '</p>' : '') +
+        '<div class="ac-acc"><span class="ac-estado ' + (c.notificado ? 'ok' : 'err') + '" data-estado>' + (c.notificado ? '✓ Mail de aviso enviado' : '✗ El mail de aviso no salió') + '</span>' +
+        '<button type="button" class="btn btn--ghost" data-reenviar>' + (c.notificado ? 'Reenviar aviso' : 'Enviar aviso') + '</button>' +
+        '<span class="ac-estado">Revisado por ' + esc(c.revisado_por || '—') + '</span></div>';
+    }
+    el.innerHTML = '<div class="ac-top">' + quien(p) + '<div><span class="ac-campo">' + esc(CAMPO[c.campo] || c.campo) + '</span><div class="ac-fecha">' + esc(fecha(c.estado === 'pendiente' ? c.created_at : (c.revisado_at || c.created_at))) + '</div></div></div>' + cuerpo;
+
+    const est = el.querySelector('[data-estado]');
+    const bloquear = v => el.querySelectorAll('button').forEach(b => b.disabled = v);
+    async function despues(){
+      est.className = 'ac-estado'; est.textContent = 'Enviando mail de aviso…';
+      try{ await avisar(c.id); est.className = 'ac-estado ok'; est.textContent = '✓ Listo. Le avisamos por mail.'; }
+      catch(e){ est.className = 'ac-estado err'; est.textContent = '✗ Se guardó, pero el mail de aviso no salió (revisá el Apps Script). Podés reenviarlo desde “Publicados”.'; }
+      setTimeout(cargar, 2200);
+    }
+    const bA = el.querySelector('[data-aplicar]');
+    if(bA) bA.addEventListener('click', async () => {
+      const valor = el.querySelector('[data-valor]') ? el.querySelector('[data-valor]').value.trim() : c.valor_nuevo;
+      if((c.campo === 'nombre' || c.campo === 'nombre_marca') && !valor){ est.className = 'ac-estado err'; est.textContent = 'El nombre no puede quedar vacío.'; return; }
+      const en = el.querySelector('[data-en]') ? el.querySelector('[data-en]').value : null;
+      bloquear(true);
+      const { error } = await sb.rpc('aplicar_cambio_perfil', { p_id: c.id, p_valor: valor, p_valor_en: en, p_nota: el.querySelector('[data-nota]').value });
+      if(error){ bloquear(false); est.className = 'ac-estado err'; est.textContent = 'No se pudo aplicar: ' + error.message; return; }
+      if(perfiles[c.profile_id]){ delete perfiles[c.profile_id]; }
+      despues();
+    });
+    const bR = el.querySelector('[data-rechazar]');
+    if(bR) bR.addEventListener('click', async () => {
+      const nota = el.querySelector('[data-nota]').value.trim();
+      if(!nota && !confirm('¿Rechazar sin dejar una nota? La persona no va a saber por qué.')) return;
+      bloquear(true);
+      const { error } = await sb.rpc('rechazar_cambio_perfil', { p_id: c.id, p_nota: nota });
+      if(error){ bloquear(false); est.className = 'ac-estado err'; est.textContent = 'No se pudo rechazar: ' + error.message; return; }
+      despues();
+    });
+    const bE = el.querySelector('[data-reenviar]');
+    if(bE) bE.addEventListener('click', async () => {
+      bloquear(true);
+      const { error } = await sb.rpc('reenviar_aviso_cambio', { p_id: c.id });
+      if(error){ bloquear(false); est.className = 'ac-estado err'; est.textContent = 'No se pudo: ' + error.message; return; }
+      despues();
+    });
+    return el;
+  }
+
+  /* ---------- Traducciones de perfiles publicados ---------- */
+  async function cargarTraducciones(){
+    const { data, error } = await sb.from('profiles').select('*').eq('publicado', true).order('updated_at', { ascending:false });
+    if(error){ lista.innerHTML = '<p style="padding:1.4rem;color:var(--red)">No se pudo cargar: ' + esc(error.message) + '</p>'; return; }
+    const campos = Object.keys(TRADUCIBLE);
+    const filas = (data || []).filter(p => !soloSinTraducir || campos.some(k => p[k] && !p[k + '_en']));
+    lista.innerHTML = '<div style="padding:1.2rem 1.4rem 0"><label class="ac-filtro"><input type="checkbox" id="chkSinTraducir"' + (soloSinTraducir ? ' checked' : '') + '> Mostrar solo perfiles con textos sin traducir</label></div>';
+    document.getElementById('chkSinTraducir').addEventListener('change', e => { soloSinTraducir = e.target.checked; cargarTraducciones(); });
+    if(!filas.length){ lista.insertAdjacentHTML('beforeend', '<p style="padding:0 1.4rem 1.4rem;color:var(--muted)">Todo traducido. 🌿</p>'); return; }
+    filas.forEach(p => {
+      perfiles[p.id] = p;
+      const el = document.createElement('div'); el.className = 'ac-tr';
+      el.innerHTML = quien(p) + campos.filter(k => p[k]).map(k =>
+        '<div class="ac-tr-campo"><span class="ac-campo">' + esc(CAMPO[k]) + '</span>' +
+        '<div class="ac-cols"><div class="ac-antes">' + esc(p[k]) + '</div>' +
+        '<div><textarea data-k="' + k + '" rows="' + (p[k].length > 220 ? 6 : 2) + '" placeholder="English version…">' + esc(p[k + '_en'] || '') + '</textarea>' +
+        '<div class="ac-acc" style="margin-top:.5rem"><button type="button" class="btn btn--ghost" data-guardar="' + k + '">Guardar traducción</button><span class="ac-estado" data-est="' + k + '"></span></div></div></div></div>'
+      ).join('');
+      el.querySelectorAll('[data-guardar]').forEach(b => b.addEventListener('click', async () => {
+        const k = b.dataset.guardar, est = el.querySelector('[data-est="' + k + '"]');
+        b.disabled = true;
+        const { error } = await sb.rpc('guardar_traduccion_perfil', { p_profile: p.id, p_campo: k, p_texto: el.querySelector('[data-k="' + k + '"]').value });
+        b.disabled = false;
+        est.className = 'ac-estado ' + (error ? 'err' : 'ok'); est.textContent = error ? 'No se pudo: ' + error.message : '✓ Guardada';
+      }));
+      lista.appendChild(el);
+    });
+  }
+
+  tabs.forEach(t => t.addEventListener('click', () => {
+    tabs.forEach(x => x.classList.remove('active')); t.classList.add('active');
+    estadoActual = t.dataset.estado; cargar();
+  }));
+
+  (async () => {
+    const session = await tribuRequiereSesion();
+    if(!session) return;
+    if(!tribuEsAdmin(session)){ document.getElementById('sinAcceso').style.display = 'block'; return; }
+    document.getElementById('panelAdmin').style.display = 'block';
+    cargar();
+  })();
+})();
+</script>
+</body>
+</html>

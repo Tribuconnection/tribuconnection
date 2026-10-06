@@ -474,8 +474,8 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=11"></script>
-<script src="/assets/site.js?v=17"></script>
+<script src="/assets/supabase-client.js?v=12"></script>
+<script src="/assets/site.js?v=18"></script>
 <script>
 /* Directorio Red Tribu: perfiles + experiencias reales de Supabase + eventos
    del calendario, en 5 categorías (Creador/a, Comunidad, Experiencia, Marca,
@@ -520,7 +520,7 @@
     el._datos = o.datos || null;
     const img = o.img || '/assets/isotipo.png?v=2';
     el.innerHTML =
-      '<img class="rt-card-img' + (o.imgTipo === 'logo' ? ' is-logo' : o.imgTipo === 'ph' ? ' is-ph' : '') + '" src="' + esc(img) + '" alt="" loading="lazy">' +
+      '<img class="rt-card-img' + (o.imgTipo === 'logo' ? ' is-logo' : o.imgTipo === 'ph' ? ' is-ph' : '') + '" src="' + esc(img) + '" alt="" loading="lazy"' + (o.encuadre ? ' style="' + o.encuadre + '"' : '') + '>' +
       '<span class="rt-tag">' + esc(CATEGORIA_LABEL[o.principal]) + '</span>' +
       '<div class="rt-card-body"><h3>' + esc(o.nombre) + '</h3>' +
         (o.desc ? '<p>' + esc(o.desc) + '</p>' : '') +
@@ -556,6 +556,7 @@
     const foto = sanitizeUrl(p.foto_url);
     return ficha({
       cats, principal, nombre, desc, ciudad:p.ciudad || '', img:foto, imgTipo: foto ? 'foto' : 'ph',
+      encuadre: foto ? (() => { const x = p.foto_pos_x == null ? 50 : Number(p.foto_pos_x), y = p.foto_pos_y == null ? 50 : Number(p.foto_pos_y), z = Number(p.foto_zoom) || 1; return 'object-position:' + x + '% ' + y + '%;transform-origin:' + x + '% ' + y + '%;transform:scale(' + z + ')'; })() : '',
       href: p.slug ? '/' + encodeURIComponent(p.slug) + '/' : '#',
       extraTexto: [...(p.categorias || []), ...(p.servicios || []), ...(p.tipo_creador || []), ...(p.que_ofrece || [])],
       datos: { tipo:p.tipo_creador || [], disc:p.categorias || [], ofrece:p.que_ofrece || [], modalidad:p.modalidad_pref || '', viaja:!!p.disponible_viajar }
@@ -753,7 +754,7 @@
 
   (async () => {
     const [{ data: perfiles }, { data: experiencias }, sesion] = await Promise.all([
-      sb.from('perfiles_publicos').select('*').eq('publicado', true),
+      sb.from('perfiles_publicos').select('*').eq('publicado', true).eq('comparte_perfil', true),
       sb.from('experiences').select('*').eq('estado_publicacion', 'publicado'),
       tribuSesionActual()
     ]);

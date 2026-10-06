@@ -32,7 +32,8 @@ function tribuMapChrome(map){
 
 /* Nav: fondo al scrollear */
 const nav = document.getElementById('nav');
-const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 40);
+/* Páginas con header propio (ej. el portal) no tienen #nav ni menú mobile. */
+const onScroll = () => { if(nav) nav.classList.toggle('scrolled', window.scrollY > 40); };
 onScroll(); window.addEventListener('scroll', onScroll, {passive:true});
 
 /* Menú mobile */
@@ -44,11 +45,13 @@ const toggleMenu = (open) => {
   burger.setAttribute('aria-expanded', open);
   if(open) menuOpenScrollY = window.scrollY;
 };
-burger.addEventListener('click', () => toggleMenu(!menu.classList.contains('open')));
-menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+if(burger && menu){
+  burger.addEventListener('click', () => toggleMenu(!menu.classList.contains('open')));
+  menu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+}
 /* Cerrar el menú suavemente si se scrollea la página detrás */
 window.addEventListener('scroll', () => {
-  if(menu.classList.contains('open') && Math.abs(window.scrollY - menuOpenScrollY) > 4){
+  if(menu && menu.classList.contains('open') && Math.abs(window.scrollY - menuOpenScrollY) > 4){
     toggleMenu(false);
   }
 }, {passive:true});
@@ -294,8 +297,7 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     const dEnd = new Date(g.end+'T00:00');
     const multiDia = g.start !== g.end;
     const href = ' href="/agenda/evento/?id='+encodeURIComponent(slugEvent(e.title))+'"';
-    const st = e.status==='Pendiente' ? '<span class="ev-status st-pend">Pendiente</span>'
-            : (e.status ? '<span class="ev-status st-conf">Confirmado</span>' : '');
+    const st = e.status==='Pendiente' ? '<span class="ev-status st-pend">Pendiente</span>' : '';
     return '<a class="ev"'+href+'>'+
       '<div class="ev-date">'+(multiDia
         ? '<b class="ev-date-range">'+d.getDate()+'<i>al</i>'+dEnd.getDate()+'</b>'

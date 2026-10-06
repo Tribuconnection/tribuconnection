@@ -64,6 +64,9 @@
 
     <div class="tribu-card reveal d2">
       <form id="formPerfil">
+        <div id="avisoRevision" style="display:none;margin-bottom:1.2rem;padding:.9rem 1rem;border:1px solid color-mix(in srgb, var(--amber) 50%, transparent);background:color-mix(in srgb, var(--amber) 7%, transparent);border-radius:14px;color:var(--soft);font-size:.86rem;line-height:1.5">
+          ✨ Tu perfil ya está publicado: los cambios en tu nombre y en los textos (cómo te presentás, frase, bio y qué esperar) pasan por una revisión rápida del equipo y te avisamos por mail cuando están online. El resto se guarda al instante. También podés hacerlo desde <a href="/cuenta/portal/" style="color:var(--teal)">tu portal</a>.
+        </div>
         <div class="field">
           <label>Banner de tu perfil</label>
           <div id="bannerPreviewWrap" style="position:relative;height:130px;border-radius:16px;overflow:hidden;background:linear-gradient(120deg, rgba(210,75,98,.35), rgba(244,166,35,.3) 45%, rgba(54,183,196,.3));background-size:cover;background-position:center">
@@ -100,6 +103,11 @@
           </div>
         </div>
 
+        <div class="field">
+          <label for="tituloProfesional">Cómo te presentás (va debajo de tu nombre)</label>
+          <input id="tituloProfesional" maxlength="90" placeholder="Ej: DJ de Ecstatic Dance y productor">
+        </div>
+
         <div class="field" id="campoMarca" style="display:none">
           <label for="nombreMarca">Nombre de la marca</label>
           <input id="nombreMarca" placeholder="¿Cómo se llama tu marca?">
@@ -113,8 +121,14 @@
 
         <div class="field">
           <label for="bioLarga">Sobre vos (texto más largo, va en la sección "Sobre" de tu perfil)</label>
-          <textarea id="bioLarga" maxlength="600" style="min-height:90px" placeholder="Contá tu trayectoria, tu enfoque y qué te distingue. Podés separar en párrafos."></textarea>
-          <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="bioLargaCount">0</span> / 600</p>
+          <textarea id="bioLarga" maxlength="1200" style="min-height:90px" placeholder="Contá tu trayectoria, tu enfoque y qué te distingue. Podés separar en párrafos."></textarea>
+          <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="bioLargaCount">0</span> / 1200</p>
+        </div>
+
+        <div class="field">
+          <label for="queEsperar">Qué esperar (qué vive alguien que va a uno de tus encuentros)</label>
+          <textarea id="queEsperar" maxlength="1000" style="min-height:80px" placeholder="Ej: Un viaje de dos horas de baile libre, sin alcohol ni celulares, con música en vivo y un cierre de relajación."></textarea>
+          <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="queEsperarCount">0</span> / 1000</p>
         </div>
 
         <div class="row2">
@@ -236,8 +250,8 @@
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=11"></script>
-<script src="/assets/site.js?v=17"></script>
+<script src="/assets/supabase-client.js?v=12"></script>
+<script src="/assets/site.js?v=18"></script>
 <script>
 (function(){
   let session = null;
@@ -248,6 +262,7 @@
   let bannerFile = null;
   let bannerActual = null;
   let serviciosSel = [];
+  let original = null;
 
   function pintarServicios(){
     const box = document.getElementById('serviciosChips');
@@ -300,6 +315,9 @@
     pintarHistorias();
   });
 
+  document.getElementById('queEsperar').addEventListener('input', (e) => {
+    document.getElementById('queEsperarCount').textContent = e.target.value.length;
+  });
   document.getElementById('bioLarga').addEventListener('input', (e) => {
     document.getElementById('bioLargaCount').textContent = e.target.value.length;
   });
@@ -397,6 +415,11 @@
   async function cargarPerfilExistente(){
     const { data } = await sb.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
     if(!data) return;
+    original = data;
+    if(data.publicado_alguna_vez) document.getElementById('avisoRevision').style.display = 'block';
+    document.getElementById('tituloProfesional').value = data.titulo_profesional || '';
+    document.getElementById('queEsperar').value = data.que_esperar || '';
+    document.getElementById('queEsperarCount').textContent = (data.que_esperar || '').length;
     document.getElementById('nombre').value = data.nombre || '';
     document.getElementById('nombreMarca').value = data.nombre_marca || '';
     document.getElementById('telefono').value = data.telefono || '';
@@ -482,6 +505,8 @@
         ciudad: document.getElementById('ciudad').value.trim() || null,
         mini_bio: document.getElementById('miniBio').value.trim() || null,
         bio_larga: document.getElementById('bioLarga').value.trim() || null,
+        titulo_profesional: document.getElementById('tituloProfesional').value.trim() || null,
+        que_esperar: document.getElementById('queEsperar').value.trim() || null,
         servicios: serviciosSel,
         historias: historiasSel.filter(h => h.titulo.trim()),
         categorias: categoriasSel,
@@ -491,11 +516,37 @@
         banner_url: bannerUrl,
         publicado: document.getElementById('visible').checked
       };
+      /* Perfil ya publicado: los textos públicos no se pisan directo, quedan
+         como pedidos de cambio para que el equipo los revise (la base de datos
+         también lo garantiza). */
+      const pedidos = [];
+      if(original && original.publicado_alguna_vez){
+        ['nombre', 'nombre_marca', 'titulo_profesional', 'mini_bio', 'bio_larga', 'que_esperar'].forEach(k => {
+          const antes = original[k] || '', ahora = row[k] || '';
+          if(antes !== ahora) pedidos.push({ profile_id: session.user.id, campo: k, valor_anterior: antes, valor_nuevo: ahora });
+          row[k] = original[k];
+        });
+      }
       const { error } = await sb.from('profiles').upsert(row);
       if(error) throw error;
+      if(pedidos.length){
+        const { error: de } = await sb.from('cambios_perfil').delete().eq('profile_id', session.user.id).eq('estado', 'pendiente').in('campo', pedidos.map(x => x.campo));
+        if(de) throw de;
+        const { data: creados, error: ie } = await sb.from('cambios_perfil').insert(pedidos).select();
+        if(ie) throw ie;
+        const ETQ = { nombre:'Nombre público', nombre_marca:'Nombre de la marca', titulo_profesional:'Cómo te presentás', mini_bio:'Frase destacada', bio_larga:'Bio completa', que_esperar:'Qué esperar' };
+        (creados || []).forEach(c => {
+          const fd = new FormData();
+          fd.set('Id', c.id); fd.set('Perfil', row.nombre || original.nombre || ''); fd.set('Email', session.user.email);
+          fd.set('Link', original.slug ? location.origin + '/' + original.slug + '/' : ''); fd.set('Campo', ETQ[c.campo] || c.campo);
+          fd.set('Actual', c.valor_anterior || ''); fd.set('Propuesto', c.valor_nuevo || '');
+          enviarASheets(fd, 'CambioPerfil').catch(() => {});
+        });
+        document.getElementById('perfilMsg').innerHTML = '¡Perfil guardado! 🌟<br>Los cambios de textos quedaron en revisión del equipo: te avisamos por mail cuando estén publicados.';
+      }
       document.getElementById('formPerfil').style.display = 'none';
       document.getElementById('perfilMsg').style.display = 'block';
-      setTimeout(() => { window.location.href = '/cuenta/perfil/'; }, 1200);
+      setTimeout(() => { window.location.href = pedidos.length ? '/cuenta/portal/' : '/cuenta/perfil/'; }, pedidos.length ? 3200 : 1200);
     }catch(ex){
       err.textContent = 'No se pudo guardar: ' + ex.message;
       err.style.display = 'block';

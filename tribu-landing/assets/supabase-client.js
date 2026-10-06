@@ -162,8 +162,10 @@ async function tribuInitAuthNav(){
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>' +
       '</button>' +
       '<div class="nav-me-menu" role="menu">' +
+        '<a href="/cuenta/portal/">Mi portal (placas y materiales)</a>' +
         '<a href="/cuenta/perfil/">Mi perfil</a>' +
         '<a href="/cuenta/perfil/editar/">Completar / editar mi perfil</a>' +
+        (tribuEsAdmin(session) ? '<a href="/cuenta/admin-cambios/">Panel del equipo</a>' : '') +
         '<hr><a href="#" data-logout>Cerrar sesión</a>' +
       '</div>';
     const burger = cta.querySelector('.burger');

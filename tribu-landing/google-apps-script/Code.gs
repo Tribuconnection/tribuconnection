@@ -8,6 +8,10 @@
  *   - "Conectarme a la Tribu"         -> pestaña "Conectarme a la Tribu"
  *   - "Propuesta a medida"            -> pestaña "Propuestas"
  *   - "Conectar" (botón en un perfil público, perfil-publico/index.html) -> pestaña "Conectar"
+ *   - Pedido de cambio de textos (portal del creador/a)     -> pestaña "Cambios de perfil"
+ *
+ * Además, "NotificarCambio" manda el mail a la persona cuando el equipo publica
+ * o rechaza su pedido de cambio (desde /cuenta/admin-cambios/).
  *
  * "Publicar experiencia" (desde la cuenta de un usuario) es la excepción: no
  * va a esta planilla de Formularios, va a una planilla APARTE llamada
@@ -19,6 +23,13 @@
  */
 
 const NOTIFY_EMAIL = 'contacto@tribuconnection.com';
+
+/* Supabase: la misma clave PÚBLICA que usa la web (assets/supabase-client.js),
+   no es secreta. El Apps Script la usa solo para preguntarle a la base de datos
+   a quién avisar de un pedido de cambio ya resuelto. */
+const SUPABASE_URL = 'https://dcoazdjqdohiekcsaxor.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_zC1SJUG-5kHTWArEgYIqBw_tuYEqwOf';
+const SITIO = 'https://www.tribuconnection.com';
 
 /* Planilla APARTE (no la de Formularios) donde se registra cada experiencia
    publicada desde "Publicar experiencia" en la cuenta de un usuario. Vive en
@@ -35,7 +46,8 @@ const TABS = {
   Externo:   { name: 'Formulario externo',     headers: ['Fecha de envío', 'Nombre completo', 'Correo electrónico', 'Instagram', 'WhatsApp', 'Propuesta', 'Fecha y lugar del evento', 'Ayuda'] },
   /* La clave interna es ConectarPerfil (Conectar ya la usa "Conectarme a la
      Tribu"), pero la pestaña visible se llama "Conectar". */
-  ConectarPerfil: { name: 'Conectar',           headers: ['Fecha de envío', 'Perfil consultado', 'Tipo de propuesta', 'Nombre', 'Proyecto / Marca', 'Email', 'WhatsApp', 'Fecha aproximada', 'Ciudad / País', 'Tipo de experiencia', 'Mensaje'] }
+  ConectarPerfil: { name: 'Conectar',           headers: ['Fecha de envío', 'Perfil consultado', 'Tipo de propuesta', 'Nombre', 'Proyecto / Marca', 'Email', 'WhatsApp', 'Fecha aproximada', 'Ciudad / País', 'Tipo de experiencia', 'Mensaje'] },
+  CambioPerfil:   { name: 'Cambios de perfil',  headers: ['Fecha de envío', 'Perfil', 'Email de la cuenta', 'Landing', 'Qué cambia', 'Texto publicado', 'Texto propuesto', 'ID del pedido'] }
 };
 
 /* Pestañas que quedaron de esquemas anteriores y ya no se usan (el sitio ya no
@@ -91,6 +103,8 @@ function doPost(e) {
     if (tipo === 'Externo') return handleExterno_(ss, e);
     if (tipo === 'ConectarPerfil') return handleConectarPerfil_(ss, e);
     if (tipo === 'Experiencia') return handleExperiencia_(e);
+    if (tipo === 'CambioPerfil') return handleCambioPerfil_(ss, e);
+    if (tipo === 'NotificarCambio') return handleNotificarCambio_(e);
     if (tipo === 'Admin') return handleAdmin_(ss, e);
     return respond_({ ok: false, error: 'Tipo desconocido' });
   } catch (err) {
@@ -157,6 +171,78 @@ function handleConectarPerfil_(ss, e) {
   ];
   agregarFila_(ss, 'ConectarPerfil', row, 'Nueva consulta para ' + (e.parameter.Perfil || '(perfil)') + ': ' + (e.parameter.Nombre || '(sin nombre)'));
   return respond_({ ok: true });
+}
+
+function handleCambioPerfil_(ss, e) {
+  const p = e.parameter;
+  const row = [new Date(), p.Perfil || '', p.Email || '', p.Link || '', p.Campo || '', p.Actual || '', p.Propuesto || '', p.Id || ''];
+  getTab_(ss, 'CambioPerfil').appendRow(row);
+  MailApp.sendEmail({
+    to: NOTIFY_EMAIL,
+    subject: 'Pedido de cambio de perfil: ' + (p.Perfil || '(perfil)') + ' — ' + (p.Campo || ''),
+    body: TABS.CambioPerfil.headers.map((h, i) => h + ': ' + row[i]).join('\n') + '\n\nRevisalo y publicalo en ' + SITIO + '/cuenta/admin-cambios/'
+  });
+  return respond_({ ok: true });
+}
+
+/** Mail a la persona cuando su pedido se publicó o se rechazó. Los datos NO
+    vienen de la web: se le piden a la base de datos con el ID del pedido, que
+    solo los devuelve si el pedido ya está resuelto y todavía no se avisó. Así
+    nadie puede usar esto para mandar mails a cualquiera, ni dos veces. */
+function handleNotificarCambio_(e) {
+  const id = String(e.parameter.Id || '').trim();
+  if (!/^[0-9a-f-]{36}$/i.test(id)) return respond_({ ok: false, error: 'ID inválido' });
+  const res = UrlFetchApp.fetch(SUPABASE_URL + '/rest/v1/rpc/cambio_para_notificar', {
+    method: 'post', contentType: 'application/json', muteHttpExceptions: true,
+    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY },
+    payload: JSON.stringify({ p_id: id })
+  });
+  if (res.getResponseCode() !== 200) return respond_({ ok: false, error: 'Supabase ' + res.getResponseCode() });
+  const d = JSON.parse(res.getContentText() || 'null');
+  if (!d || !d.email) return respond_({ ok: false, error: 'Nada para avisar' });
+  const mail = mailCambio_(d);
+  MailApp.sendEmail({ to: d.email, subject: mail.asunto, htmlBody: mail.html, body: mail.texto, name: 'Tribu Connection', replyTo: NOTIFY_EMAIL });
+  return respond_({ ok: true });
+}
+
+const CAMPOS_CAMBIO_ = { nombre: 'tu nombre público', nombre_marca: 'el nombre de tu marca', titulo_profesional: 'cómo te presentás', mini_bio: 'tu frase destacada', bio_larga: 'tu bio', que_esperar: 'la sección “Qué esperar”', otro: 'tu landing' };
+
+function escHtml_(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+
+/** Mismo diseño que los mails de la cuenta (email-templates/): fondo oscuro, barra espectro, logo blanco. */
+function mailCambio_(d) {
+  const ok = d.estado === 'aplicado';
+  const nombre = String(d.nombre || '').split(' ')[0] || 'hola';
+  const que = CAMPOS_CAMBIO_[d.campo] || 'tu perfil';
+  const landing = d.slug ? SITIO + '/' + d.slug + '/' : SITIO + '/red-tribu/';
+  const portal = SITIO + '/cuenta/portal/';
+  const titulo = ok ? '¡Tu cambio ya está publicado!' : 'Revisamos tu pedido de cambio';
+  const intro = ok
+    ? '¡Hola ' + escHtml_(nombre) + '! Ya aplicamos el cambio en ' + que + ' y ya se ve en tu landing de la Red Tribu.'
+    : '¡Hola ' + escHtml_(nombre) + '! Revisamos el cambio que pediste en ' + que + ' y por ahora no lo publicamos.';
+  const F = 'font-family:Arial,Helvetica,sans-serif;';
+  const cita = d.campo !== 'otro' && d.valor
+    ? '<tr><td style="padding:22px 40px 0 40px;"><div style="border-left:3px solid #36B7C4;background:#15171F;border-radius:10px;padding:14px 16px;' + F + 'font-size:14px;line-height:1.6;color:#F4F1EA;white-space:pre-line;">' + escHtml_(d.valor) + '</div></td></tr>' : '';
+  const nota = d.nota
+    ? '<tr><td style="padding:18px 40px 0 40px;"><p style="margin:0;' + F + 'font-size:14px;line-height:1.6;color:#C7C9D1;"><strong style="color:#F4F1EA;">Nota del equipo:</strong> ' + escHtml_(d.nota) + '</p></td></tr>' : '';
+  const boton = ok ? ['Ver mi landing', landing] : ['Ir a mi portal', portal];
+  const grad = 'linear-gradient(100deg,#D24B62 0%,#F4A623 27%,#9BCB46 52%,#36B7C4 76%,#9B7CB8 100%)';
+  const html = '<!DOCTYPE html><html lang="es-AR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="color-scheme" content="light"></head>' +
+    '<body style="margin:0;padding:0;background-color:#0C0D10;"><table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#0C0D10;padding:32px 16px;"><tr><td align="center">' +
+    '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:600px;max-width:600px;background-color:#101218;border:1px solid rgba(255,255,255,.09);border-radius:18px;overflow:hidden;">' +
+    '<tr><td style="height:5px;line-height:5px;font-size:0;background:' + grad + ';">&nbsp;</td></tr>' +
+    '<tr><td align="center" style="padding:40px 40px 8px 40px;"><img src="' + SITIO + '/assets/logo-white-horizontal.png" width="180" alt="Tribu Connection" style="display:block;width:180px;max-width:60%;height:auto;border:0;"></td></tr>' +
+    '<tr><td align="center" style="padding:24px 40px 0 40px;"><span style="' + F + 'font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#36B7C4;">Tu landing en la Red Tribu</span></td></tr>' +
+    '<tr><td align="center" style="padding:10px 40px 0 40px;"><h1 style="margin:0;' + F + 'font-size:26px;line-height:1.3;font-weight:800;color:#F4F1EA;">' + titulo + '</h1></td></tr>' +
+    '<tr><td align="center" style="padding:16px 40px 0 40px;"><p style="margin:0;' + F + 'font-size:15px;line-height:1.6;color:#C7C9D1;text-align:center;">' + intro + '</p></td></tr>' +
+    cita + nota +
+    '<tr><td align="center" style="padding:30px 40px 8px 40px;"><table role="presentation" cellpadding="0" cellspacing="0"><tr><td align="center" style="border-radius:999px;background:' + grad + ';"><a href="' + boton[1] + '" target="_blank" style="display:inline-block;padding:14px 34px;' + F + 'font-size:15px;font-weight:700;color:#15110F;text-decoration:none;border-radius:999px;">' + boton[0] + '</a></td></tr></table></td></tr>' +
+    '<tr><td style="padding:32px 40px 0 40px;"><div style="border-top:1px solid rgba(255,255,255,.09);"></div></td></tr>' +
+    '<tr><td align="center" style="padding:22px 40px 40px 40px;"><p style="margin:0 0 6px 0;' + F + 'font-size:12px;line-height:1.6;color:#8A8D98;">Tus placas para redes y tus textos están siempre en <a href="' + portal + '" style="color:#36B7C4;">tu portal</a>.</p>' +
+    '<p style="margin:0;' + F + 'font-size:12px;line-height:1.6;color:#8A8D98;"><a href="' + SITIO + '" style="color:#8A8D98;text-decoration:underline;">tribuconnection.com</a> &nbsp;·&nbsp; <a href="mailto:' + NOTIFY_EMAIL + '" style="color:#8A8D98;text-decoration:underline;">' + NOTIFY_EMAIL + '</a></p></td></tr>' +
+    '</table></td></tr></table></body></html>';
+  const texto = titulo + '\n\n' + intro.replace(/<[^>]+>/g, '') + (d.valor && d.campo !== 'otro' ? '\n\n"' + d.valor + '"' : '') + (d.nota ? '\n\nNota del equipo: ' + d.nota : '') + '\n\n' + boton[0] + ': ' + boton[1];
+  return { asunto: ok ? '✨ Tu cambio ya está publicado en Tribu Connection' : 'Revisamos tu pedido de cambio · Tribu Connection', html: html, texto: texto };
 }
 
 function handlePropuesta_(ss, e) {

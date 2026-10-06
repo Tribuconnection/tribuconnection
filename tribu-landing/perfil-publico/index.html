@@ -113,6 +113,19 @@
 
   .pp2-empty{ padding:.3rem .1rem; color:var(--muted); font-size:.84rem; }
 
+  .pp2-top{ display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.4rem; }
+  .pp2-top .pp2-back{ margin-bottom:0; }
+  .pp2-lang{ display:inline-flex; border:1px solid var(--line-2); border-radius:999px; padding:3px; }
+  .pp2-lang button{ background:none; border:0; color:var(--muted); font-family:var(--font-sans); font-weight:700; font-size:.72rem; letter-spacing:.12em; padding:.35rem .8rem; border-radius:999px; cursor:pointer; }
+  .pp2-lang button.on{ background:var(--ink-3); color:var(--cream); }
+  .pp2-titulo{ margin-top:.5rem; color:var(--soft); font-size:1.02rem; line-height:1.4; }
+  .pp2-esperar{ margin-top:1.1rem; }
+  .pp2-esperar p{ color:var(--soft); font-size:.92rem; line-height:1.65; max-width:80ch; }
+  .pp2-esperar p + p{ margin-top:.6rem; }
+  .pp2-row3.n2{ grid-template-columns:1fr 1fr; }
+  .pp2-row3.n1{ grid-template-columns:1fr; }
+  @media (max-width:980px){ .pp2-row3.n2{ grid-template-columns:1fr; } }
+
   /* ---------- Modal "Conectar" ---------- */
   /* Todo el modal a escala más chica/compacta — antes quedaba demasiado
      grande en relación al resto de la UI del sitio. */
@@ -332,8 +345,8 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=11"></script>
-<script src="/assets/site.js?v=17"></script>
+<script src="/assets/supabase-client.js?v=12"></script>
+<script src="/assets/site.js?v=18"></script>
 <script>
 (function(){
   const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
@@ -434,68 +447,102 @@
       { url: sanitizeUrl(p.sitio_web), c:'var(--teal)', svg:'<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20"/>' }
     ].filter(s => s.url);
 
-    const metaParts = [];
-    if(p.ciudad) metaParts.push('📍 ' + esc(p.ciudad));
-    if(p.disponible_viajar) metaParts.push('🌐 Disponible para viajar');
-    if(p.modalidad_pref) metaParts.push(esc(p.modalidad_pref));
-
-    const serviciosHtml = (p.servicios && p.servicios.length)
-      ? p.servicios.map((s, i) => {
-          const color = PALETA[i % PALETA.length];
-          return '<div class="pp2-servicio" style="--c:var(--' + color + ')"><span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c.6 3.2 1.4 5.3 2.8 6.7C16.2 10.1 18 11 21 11.5c-3 .5-4.8 1.4-6.2 2.8C13.4 15.7 12.6 17.8 12 21c-.6-3.2-1.4-5.3-2.8-6.7C7.8 12.9 6 12 3 11.5c3-.5 4.8-1.4 6.2-2.8C10.6 7.3 11.4 5.2 12 2z"/></svg></span>' + esc(s) + '</div>';
-        }).join('')
-      : '<p class="pp2-empty">Todavía no cargó los servicios que ofrece.</p>';
-
     const historias = Array.isArray(p.historias) ? p.historias : [];
 
-    document.getElementById('contenido').innerHTML =
-      '<a href="/red-tribu/" class="pp2-back">← Volver a Red Tribu</a>' +
-      '<div class="pp2-hero">' +
-        '<div class="pp2-hero-info">' +
-          '<span class="pp2-badge' + (p.tipo === 'marca' ? ' is-marca' : '') + '">' + (p.tipo === 'marca' ? 'Marca' : 'Creador/a') + '</span>' +
-          '<h1 class="pp2-name">' + esc(nombreMostrado) + '</h1>' +
-          (rolesTxt.length ? '<p class="pp2-roles">' + rolesTxt.map(esc).join(' &nbsp;•&nbsp; ') + '</p>' : '') +
-          (p.mini_bio ? '<blockquote class="pp2-quote">“' + esc(p.mini_bio) + '”</blockquote>' : '') +
-          (metaParts.length ? '<div class="pp2-meta">' + metaParts.join(' &nbsp;|&nbsp; ') + '</div>' : '') +
-          '<div class="pp2-actions">' +
-            '<button type="button" class="btn btn--rainbow" id="btnConectarPerfil">Conectar</button>' +
-            (socialsDef.length ? '<div class="pp2-socials">' + socialsDef.map(s => '<a class="pp2-soc" style="--c:' + s.c + '" target="_blank" rel="noopener" href="' + esc(s.url) + '"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' + s.svg + '</svg></a>').join('') + '</div>' : '') +
-            '<button type="button" class="pp2-share" id="btnCompartirPerfil"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.6 15.4 7M8.6 13.4l6.8 3.6"/></svg> Compartir</button>' +
+    /* Idioma: si el equipo cargó traducciones, se ofrece ES / EN. Lo que no
+       esté traducido se sigue mostrando en castellano. */
+    const tieneEn = ['titulo_profesional_en', 'mini_bio_en', 'bio_larga_en', 'que_esperar_en'].some(k => p[k]);
+    let langPerfil = 'es';
+    try{ if(tieneEn && localStorage.getItem('tribu_perfil_lang') === 'en') langPerfil = 'en'; }catch(e){}
+    const TX = {
+      es: { volver:'← Volver a Red Tribu', sobre:'Sobre ', esperar:'Qué esperar', servicios:'🌿 Servicios', proximos:'Próximos encuentros', agenda:'Ver toda la agenda →', historias:'Historias destacadas', marca:'Marca', creador:'Creador/a', viajar:'🌐 Disponible para viajar', conectar:'Conectar', compartir:'Compartir', comunidades:'Comunidades', colaboraciones:'Colaboraciones', experiencias:'Experiencias', hist:'Historias' },
+      en: { volver:'← Back to Red Tribu', sobre:'About ', esperar:'What to expect', servicios:'🌿 Services', proximos:'Upcoming gatherings', agenda:'See the full calendar →', historias:'Featured stories', marca:'Brand', creador:'Creator', viajar:'🌐 Available to travel', conectar:'Connect', compartir:'Share', comunidades:'Communities', colaboraciones:'Collaborations', experiencias:'Experiences', hist:'Stories' }
+    };
+    const txt = k => (langPerfil === 'en' && p[k + '_en']) ? p[k + '_en'] : p[k];
+    const parrafos = s => String(s).split(/\n+/).filter(x => x.trim()).map(par => '<p>' + esc(par) + '</p>').join('');
+
+    /* Encuadre de la foto elegido en el portal (mismo cálculo que las placas). */
+    const fotoUrl = sanitizeUrl(p.foto_url);
+    const fx = p.foto_pos_x == null ? 50 : Number(p.foto_pos_x), fy = p.foto_pos_y == null ? 50 : Number(p.foto_pos_y), fz = Number(p.foto_zoom) || 1;
+    const fotoStyle = 'object-position:' + fx + '% ' + fy + '%;transform-origin:' + fx + '% ' + fy + '%;transform:scale(' + fz + ')';
+
+    const ICON_SERV = '<span class="ic"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12 2c.6 3.2 1.4 5.3 2.8 6.7C16.2 10.1 18 11 21 11.5c-3 .5-4.8 1.4-6.2 2.8C13.4 15.7 12.6 17.8 12 21c-.6-3.2-1.4-5.3-2.8-6.7C7.8 12.9 6 12 3 11.5c3-.5 4.8-1.4 6.2-2.8C10.6 7.3 11.4 5.2 12 2z"/></svg></span>';
+
+    function pintar(){
+      const T = TX[langPerfil];
+      const metaParts = [];
+      if(p.ciudad) metaParts.push('📍 ' + esc(p.ciudad));
+      if(p.disponible_viajar) metaParts.push(T.viajar);
+      if(p.modalidad_pref) metaParts.push(esc(langPerfil === 'en' ? ({ Presencial:'In person', Online:'Online', Ambas:'In person & online' })[p.modalidad_pref] || p.modalidad_pref : p.modalidad_pref));
+      const ROL_EN = { organiza_eventos:'I organize events', facilita_actividades:'I facilitate activities', tiene_marca:'I have a brand', tiene_lugar:'I have a venue', tiene_comunidad:'I lead a community', ofrece_servicios:'I offer services', quiere_colaborar:'Open to collaborate' };
+      const roles = langPerfil === 'en' ? (p.roles || []).map(r => ROL_EN[r]).filter(Boolean).map(s => s.toUpperCase()) : rolesTxt;
+
+      /* Como en las landings de festival: lo que no se cargó no se muestra
+         (ni siquiera queda el espacio vacío). */
+      const tarjetas = [];
+      if(p.servicios && p.servicios.length){
+        tarjetas.push('<div class="pp2-card"><h2>' + T.servicios + '</h2><div class="pp2-servicios">' +
+          p.servicios.map((s, i) => '<div class="pp2-servicio" style="--c:var(--' + PALETA[i % PALETA.length] + ')">' + ICON_SERV + esc(s) + '</div>').join('') +
+        '</div></div>');
+      }
+      if(proximos.length){
+        tarjetas.push('<div class="pp2-card"><div class="pp2-card-head"><h2>' + T.proximos + '</h2><a class="pp2-ver-todo" href="/agenda/">' + T.agenda + '</a></div>' + proximos.map(evCard).join('') + '</div>');
+      }
+      if(historias.length){
+        tarjetas.push('<div class="pp2-card"><div class="pp2-card-head"><h2>' + T.historias + '</h2></div>' + historias.map(historiaCard).join('') + '</div>');
+      }
+
+      const titulo = txt('titulo_profesional'), frase = txt('mini_bio'), bio = txt('bio_larga'), esperar = txt('que_esperar');
+
+      document.getElementById('contenido').innerHTML =
+        '<div class="pp2-top"><a href="/red-tribu/" class="pp2-back">' + T.volver + '</a>' +
+          (tieneEn ? '<div class="pp2-lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" class="' + (langPerfil === 'es' ? 'on' : '') + '">ES</button><button type="button" data-lang="en" class="' + (langPerfil === 'en' ? 'on' : '') + '">EN</button></div>' : '') +
+        '</div>' +
+        '<div class="pp2-hero">' +
+          '<div class="pp2-hero-info">' +
+            '<span class="pp2-badge' + (p.tipo === 'marca' ? ' is-marca' : '') + '">' + (p.tipo === 'marca' ? T.marca : T.creador) + '</span>' +
+            '<h1 class="pp2-name">' + esc(nombreMostrado) + '</h1>' +
+            (titulo ? '<p class="pp2-titulo">' + esc(titulo) + '</p>' : '') +
+            (roles.length ? '<p class="pp2-roles">' + roles.map(esc).join(' &nbsp;•&nbsp; ') + '</p>' : '') +
+            (frase ? '<blockquote class="pp2-quote">“' + esc(frase) + '”</blockquote>' : '') +
+            (metaParts.length ? '<div class="pp2-meta">' + metaParts.join(' &nbsp;|&nbsp; ') + '</div>' : '') +
+            '<div class="pp2-actions">' +
+              '<button type="button" class="btn btn--rainbow" id="btnConectarPerfil">' + T.conectar + '</button>' +
+              (socialsDef.length ? '<div class="pp2-socials">' + socialsDef.map(s => '<a class="pp2-soc" style="--c:' + s.c + '" target="_blank" rel="noopener" href="' + esc(s.url) + '"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">' + s.svg + '</svg></a>').join('') + '</div>' : '') +
+              '<button type="button" class="pp2-share" id="btnCompartirPerfil"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.6 15.4 7M8.6 13.4l6.8 3.6"/></svg> ' + T.compartir + '</button>' +
+            '</div>' +
+            (bio ? '<div class="pp2-sobre"><h2>' + T.sobre + esc(nombreMostrado) + '</h2><div class="pp2-bio">' + parrafos(bio) + '</div></div>' : '') +
           '</div>' +
-          '<div class="pp2-sobre"><h2>Sobre ' + esc(nombreMostrado) + '</h2><div class="pp2-bio">' +
-            (p.bio_larga ? p.bio_larga.split(/\n+/).map(par => '<p>' + esc(par) + '</p>').join('') : '<p class="pp2-empty">Todavía no cargó una bio más larga.</p>') +
-          '</div></div>' +
+          (fotoUrl
+            ? '<div class="pp2-hero-photo"><img src="' + esc(fotoUrl) + '" alt="' + esc(nombreMostrado) + '" style="' + fotoStyle + '"></div>'
+            : '<div class="pp2-hero-photo is-placeholder"><img src="/assets/isotipo.png?v=2" alt=""></div>') +
         '</div>' +
-        (sanitizeUrl(p.foto_url)
-          ? '<div class="pp2-hero-photo"><img src="' + esc(sanitizeUrl(p.foto_url)) + '" alt="' + esc(nombreMostrado) + '"></div>'
-          : '<div class="pp2-hero-photo is-placeholder"><img src="/assets/isotipo.png?v=2" alt=""></div>') +
-      '</div>' +
 
-      '<div class="pp2-row3">' +
-        '<div class="pp2-card"><h2>🌿 Servicios</h2><div class="pp2-servicios">' + serviciosHtml + '</div></div>' +
-        '<div class="pp2-card">' +
-          '<div class="pp2-card-head"><h2>Próximos encuentros</h2><a class="pp2-ver-todo" href="/agenda/">Ver toda la agenda →</a></div>' +
-          (proximos.length ? proximos.map(evCard).join('') : '<p class="pp2-empty">Todavía no tiene próximos encuentros publicados.</p>') +
-        '</div>' +
-        '<div class="pp2-card">' +
-          '<div class="pp2-card-head"><h2>Historias destacadas</h2></div>' +
-          (historias.length ? historias.map(historiaCard).join('') : '<p class="pp2-empty">Todavía no tiene historias destacadas.</p>') +
-        '</div>' +
-      '</div>' +
+        (esperar ? '<div class="pp2-card pp2-esperar"><h2>' + T.esperar + '</h2>' + parrafos(esperar) + '</div>' : '') +
+        (tarjetas.length ? '<div class="pp2-row3 n' + tarjetas.length + '">' + tarjetas.join('') + '</div>' : '') +
 
-      '<div class="pp2-stats">' +
-        '<div class="pp2-stat is-green"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-3 2.5-5 6-5s6 2 6 5M14.5 15.3c2.8.2 5 2 5 4.7"/></svg></div><b>' + (p.categorias ? p.categorias.length : 0) + '</b><span>Comunidades</span></div>' +
-        '<div class="pp2-stat is-red"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5 5 0 0 0-7.1 0L12 5.3l-1.7-.7a5 5 0 0 0-7.1 7.1L12 20.3l8.8-8.6a5 5 0 0 0 0-7.1z"/></svg></div><b>' + (participaciones ? participaciones.length : 0) + '</b><span>Colaboraciones</span></div>' +
-        '<div class="pp2-stat is-purple"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></div><b>' + (experiencias ? experiencias.length : 0) + '</b><span>Experiencias</span></div>' +
-        '<div class="pp2-stat is-teal"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div><b>' + historias.length + '</b><span>Historias</span></div>' +
-      '</div>';
+        '<div class="pp2-stats">' +
+          '<div class="pp2-stat is-green"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M2 20c0-3 2.5-5 6-5s6 2 6 5M14.5 15.3c2.8.2 5 2 5 4.7"/></svg></div><b>' + (p.categorias ? p.categorias.length : 0) + '</b><span>' + T.comunidades + '</span></div>' +
+          '<div class="pp2-stat is-red"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.8 4.6a5 5 0 0 0-7.1 0L12 5.3l-1.7-.7a5 5 0 0 0-7.1 7.1L12 20.3l8.8-8.6a5 5 0 0 0 0-7.1z"/></svg></div><b>' + (participaciones ? participaciones.length : 0) + '</b><span>' + T.colaboraciones + '</span></div>' +
+          '<div class="pp2-stat is-purple"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M3 10h18M8 2v4M16 2v4"/></svg></div><b>' + (experiencias ? experiencias.length : 0) + '</b><span>' + T.experiencias + '</span></div>' +
+          '<div class="pp2-stat is-teal"><div class="ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div><b>' + historias.length + '</b><span>' + T.hist + '</span></div>' +
+        '</div>';
+
+      document.getElementById('btnConectarPerfil').addEventListener('click', abrirConectar);
+      document.getElementById('btnCompartirPerfil').addEventListener('click', compartirPerfil);
+      document.querySelectorAll('.pp2-lang [data-lang]').forEach(b => b.addEventListener('click', () => {
+        langPerfil = b.dataset.lang;
+        try{ localStorage.setItem('tribu_perfil_lang', langPerfil); }catch(e){}
+        document.documentElement.lang = langPerfil === 'en' ? 'en' : 'es-AR';
+        pintar();
+      }));
+    }
 
     document.getElementById('cpNombre').textContent = nombreMostrado;
     const cpTitle = document.getElementById('cpTitle');
     cpTitle.classList.remove('len-s', 'len-m', 'len-l');
     cpTitle.classList.add(nombreMostrado.length <= 14 ? 'len-s' : nombreMostrado.length <= 24 ? 'len-m' : 'len-l');
-    document.getElementById('btnConectarPerfil').addEventListener('click', abrirConectar);
-    document.getElementById('btnCompartirPerfil').addEventListener('click', compartirPerfil);
+    pintar();
   }
 
   function compartirPerfil(){

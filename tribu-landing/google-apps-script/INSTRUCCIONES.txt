@@ -88,3 +88,20 @@ NOTAS
    - La cabecera Content-Security-Policy del .htaccess incluye
      script.google.com y script.googleusercontent.com. Si se edita esa
      cabecera, hay que conservarlos o los formularios dejan de enviar.
+
+PORTAL DEL CREADOR/A: PEDIDOS DE CAMBIO Y MAIL DE AVISO (octubre 2026)
+   Esta versión agrega dos cosas:
+     - "CambioPerfil": cada vez que alguien pide cambiar un texto de su
+       landing desde su portal, queda una fila en la pestaña nueva
+       "Cambios de perfil" y llega un mail a contacto@ con el link al panel
+       /cuenta/admin-cambios/.
+     - "NotificarCambio": cuando el equipo publica o rechaza un pedido desde
+       ese panel, le llega a la persona un mail con la estética de Tribu
+       ("¡Tu cambio ya está publicado!" / "Revisamos tu pedido de cambio").
+       El Apps Script le pregunta a Supabase a quién avisar, así que pide un
+       permiso nuevo: "conectarse a un servicio externo".
+   Para activarlo: pegá el Code.gs nuevo en el editor → Implementar →
+   Gestionar implementaciones → lápiz → Versión: "Nueva versión" →
+   Implementar, y aceptá el permiso nuevo cuando lo pida. La URL /exec no
+   cambia. Hasta que no se haga, el panel muestra "el mail de aviso no salió"
+   y deja reenviarlo después.
