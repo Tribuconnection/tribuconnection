@@ -368,9 +368,9 @@
 <div class="pt-toast" id="toast" role="status" aria-live="polite"></div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=12"></script>
+<script src="/assets/supabase-client.js?v=13"></script>
 <script src="/assets/site.js?v=18"></script>
-<script src="/assets/placas.js?v=1"></script>
+<script src="/assets/placas.js?v=2"></script>
 <script>
 (function(){
   /* ===================== Textos ES / EN ===================== */
@@ -492,12 +492,7 @@
   const ROL_CAT = { organiza_eventos:'creador', facilita_actividades:'creador', ofrece_servicios:'creador', quiere_colaborar:'creador', tiene_marca:'marca', tiene_lugar:'lugar', tiene_comunidad:'comunidad' };
   const TAG_OSCURO = { comunidad:true, lugar:true };
 
-  function categoria(p){
-    if(!p) return 'creador';
-    if(p.tipo === 'marca') return 'marca';
-    const cats = (p.roles || []).map(r => ROL_CAT[r]).filter(Boolean);
-    return ['creador','marca','lugar','comunidad'].find(c => cats.includes(c)) || 'creador';
-  }
+  const categoria = p => tribuCategoriaPerfil(p);
   const campoNombre = () => (perfil && perfil.tipo === 'marca') ? 'nombre_marca' : 'nombre';
   function nombreVisible(){
     if(perfil){ const n = perfil.tipo === 'marca' ? (perfil.nombre_marca || perfil.nombre) : perfil.nombre; if(n) return n; }
@@ -528,11 +523,11 @@
     $('hdRol').textContent = esEquipo ? t('rol_equipo') : t('rol_' + cat);
     const av = $('hdAvatar'); av.innerHTML = '';
     if(foto){ const i = document.createElement('img'); i.src = foto.src; i.alt = ''; estiloFoto(i, encGuardado); av.appendChild(i); }
-    else { const b = document.createElement('b'); b.textContent = (n || '?').trim().charAt(0).toUpperCase(); av.appendChild(b); }
+    else { const i = document.createElement('img'); i.src = tribuAvatarVacio(cat); i.alt = ''; av.appendChild(i); }
 
-    const hf = $('heroFoto'); hf.innerHTML = ''; hf.classList.toggle('is-ph', !foto);
+    const hf = $('heroFoto'); hf.innerHTML = '';
     const hi = document.createElement('img'); hi.alt = n;
-    if(foto){ hi.src = foto.src; estiloFoto(hi, editando ? enc : encGuardado); } else hi.src = '/assets/isotipo.png?v=2';
+    if(foto){ hi.src = foto.src; estiloFoto(hi, editando ? enc : encGuardado); } else hi.src = tribuAvatarVacio(cat);
     hf.appendChild(hi);
     $('heroRol').textContent = t('rol_' + cat);
     $('heroNombre').textContent = n;
@@ -556,7 +551,7 @@
   function datosPlaca(img, e){
     const cat = categoria(perfil);
     return {
-      img, x:e.x, y:e.y, zoom:e.zoom,
+      img, vacio: img ? null : CATEGORIA_COLOR[cat], x:e.x, y:e.y, zoom:e.zoom,
       nombre: nombreVisible(), titulo: tituloVisible(),
       etiqueta: t('rol_' + cat).toUpperCase(), color: CATEGORIA_COLOR[cat], etiquetaOscura: !!TAG_OSCURO[cat],
       link: linkCorto(), bajada: t('bajada')

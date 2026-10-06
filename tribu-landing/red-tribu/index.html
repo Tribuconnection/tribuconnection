@@ -474,7 +474,7 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=12"></script>
+<script src="/assets/supabase-client.js?v=13"></script>
 <script src="/assets/site.js?v=18"></script>
 <script>
 /* Directorio Red Tribu: perfiles + experiencias reales de Supabase + eventos
@@ -541,7 +541,7 @@
     ['lugar', 'Espacio Om', 'Sala para círculos, sonido y encuentros holísticos.', 'Palermo, CABA', null],
     ['lugar', 'Parque Centenario', 'Espacio verde para ferias y encuentros al aire libre.', 'CABA', null]
   ].forEach(([cat, nombre, desc, ciudad, logo]) => {
-    fijos.appendChild(ficha({ cats:[cat], principal:cat, nombre, desc, ciudad, img:logo, imgTipo: logo ? 'logo' : 'ph', href:'#', attrs:{ 'data-connect':'' } }));
+    fijos.appendChild(ficha({ cats:[cat], principal:cat, nombre, desc, ciudad, img: logo || tribuAvatarVacio(cat, 'busto'), imgTipo: logo ? 'logo' : 'foto', href:'#', attrs:{ 'data-connect':'' } }));
   });
 
   const ROL_CAT = { organiza_eventos:'creador', facilita_actividades:'creador', ofrece_servicios:'creador', quiere_colaborar:'creador', tiene_marca:'marca', tiene_lugar:'lugar', tiene_comunidad:'comunidad' };
@@ -555,7 +555,7 @@
     const desc = (p.tipo_creador && p.tipo_creador.length ? p.tipo_creador.join(' · ') : '') || p.categoria_principal || (p.categorias || []).slice(0, 2).join(' · ') || p.mini_bio || '';
     const foto = sanitizeUrl(p.foto_url);
     return ficha({
-      cats, principal, nombre, desc, ciudad:p.ciudad || '', img:foto, imgTipo: foto ? 'foto' : 'ph',
+      cats, principal, nombre, desc, ciudad:p.ciudad || '', img: foto || tribuAvatarVacio(principal, 'busto'), imgTipo:'foto',
       encuadre: foto ? (() => { const x = p.foto_pos_x == null ? 50 : Number(p.foto_pos_x), y = p.foto_pos_y == null ? 50 : Number(p.foto_pos_y), z = Number(p.foto_zoom) || 1; return 'object-position:' + x + '% ' + y + '%;transform-origin:' + x + '% ' + y + '%;transform:scale(' + z + ')'; })() : '',
       href: p.slug ? '/' + encodeURIComponent(p.slug) + '/' : '#',
       extraTexto: [...(p.categorias || []), ...(p.servicios || []), ...(p.tipo_creador || []), ...(p.que_ofrece || [])],

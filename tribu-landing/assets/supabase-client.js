@@ -61,6 +61,36 @@ const QUE_OFRECE = ['Sesión', 'Clase', 'Taller', 'Ceremonia', 'Consulta', 'Perf
 const CATEGORIA_COLOR = { creador:'#D97A88', comunidad:'#F4C76B', experiencia:'#A99BC2', marca:'#63C2CA', lugar:'#A8CC74' };
 const CATEGORIA_LABEL = { creador:'Creador/a', comunidad:'Comunidad', experiencia:'Experiencia', marca:'Marca', lugar:'Lugar' };
 
+/* Categoría principal de un perfil (misma prioridad que las fichas de Red
+   Tribu): un perfil puede tener varios roles, pero muestra uno solo. */
+const ROL_CATEGORIA = { organiza_eventos:'creador', facilita_actividades:'creador', ofrece_servicios:'creador', quiere_colaborar:'creador', tiene_marca:'marca', tiene_lugar:'lugar', tiene_comunidad:'comunidad' };
+function tribuCategoriaPerfil(p){
+  if(!p) return 'creador';
+  if(p.tipo === 'marca') return 'marca';
+  const cats = (p.roles || []).map(r => ROL_CATEGORIA[r]).filter(Boolean);
+  return ['creador', 'marca', 'lugar', 'comunidad'].find(c => cats.includes(c)) || 'creador';
+}
+
+/* Foto de perfil vacía: la silueta de torso de siempre, en el color de la
+   categoría (Creador/a, Comunidad, Marca, Lugar...). Es un SVG en data: URI,
+   así sirve igual en un <img>, en un fondo o dibujado en las placas.
+   forma 'busto': la figura más chica y arriba, para fichas y placas donde el
+   texto ocupa la parte de abajo (si no, el torso queda tapado). */
+const _avataresVacios = {};
+function tribuAvatarVacio(cat, forma){
+  const k = (CATEGORIA_COLOR[cat] ? cat : 'creador') + (forma === 'busto' ? '-busto' : '');
+  if(_avataresVacios[k]) return _avataresVacios[k];
+  const c = CATEGORIA_COLOR[k.replace('-busto', '')];
+  const figura = forma === 'busto'
+    ? '<circle cx="100" cy="58" r="25"/><path d="M50 138c0-27 22-46 50-46s50 19 50 46z"/>'
+    : '<circle cx="100" cy="80" r="33"/><path d="M34 200c0-46 29.5-74 66-74s66 28 66 74z"/>';
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">' +
+    '<defs><radialGradient id="g" cx="50%" cy="42%" r="70%"><stop offset="0" stop-color="' + c + '" stop-opacity=".34"/><stop offset="1" stop-color="' + c + '" stop-opacity=".07"/></radialGradient></defs>' +
+    '<rect width="200" height="200" fill="#15171F"/><rect width="200" height="200" fill="url(#g)"/>' +
+    '<g fill="' + c + '" fill-opacity=".92">' + figura + '</g></svg>';
+  return (_avataresVacios[k] = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg));
+}
+
 /* Listas del onboarding (pasos 2 y 3) — mismas opciones que el mockup. */
 const INTERESES_TRIBU = ['Conectar', 'Bailar', 'Naturaleza', 'Música', 'Bienestar', 'Aprender', 'Conocer gente'];
 const INTERES_EN_TRIBU = ['Experiencias', 'Talleres', 'Retiros', 'Productos', 'Lugares', 'Comunidad'];
@@ -142,14 +172,14 @@ async function tribuInitAuthNav(){
   });
   if(!session) return;
 
-  const { data: p } = await sb.from('profiles').select('nombre, nombre_marca, tipo, foto_url').eq('id', session.user.id).maybeSingle();
+  const { data: p } = await sb.from('profiles').select('nombre, nombre_marca, tipo, roles, foto_url').eq('id', session.user.id).maybeSingle();
   const meta = session.user.user_metadata || {};
   const nombreCompleto = (p && (p.tipo === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre)) || [meta.nombre, meta.apellido].filter(Boolean).join(' ') || session.user.email.split('@')[0];
   const primerNombre = nombreCompleto.split(' ')[0];
   const esc = s => String(s || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   let foto = p && p.foto_url;
   try{ const u = new URL(foto); if(u.protocol !== 'https:') foto = null; }catch(e){ foto = null; }
-  const avatar = foto ? '<img src="' + esc(foto) + '" alt="">' : esc(primerNombre.charAt(0).toUpperCase());
+  const avatar = '<img src="' + esc(foto || tribuAvatarVacio(tribuCategoriaPerfil(p))) + '" alt="">';
 
   document.querySelectorAll('.nav .nav-cta').forEach(cta => {
     cta.querySelectorAll('[data-auth-nav], [data-signup]').forEach(el => el.style.display = 'none');

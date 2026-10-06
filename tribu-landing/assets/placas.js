@@ -151,6 +151,20 @@ const TribuPlacas = (function(){
       ctx.fillStyle = C.ink; ctx.fillRect(0, 0, W, H);
       const r = cubrir(d.img, W, H, d.x == null ? 50 : d.x, d.y == null ? 50 : d.y, d.zoom || 1);
       ctx.drawImage(d.img, r.dx, r.dy, r.dw, r.dh);
+    } else if(d.vacio){
+      // Sin foto: la silueta de perfil en el color de la categoría, chica y
+      // arriba para que no choque con el nombre.
+      ctx.fillStyle = '#15171F'; ctx.fillRect(0, 0, W, H);
+      const yCab = H * (formato === 'story' ? .34 : .25);
+      const rg = ctx.createRadialGradient(W / 2, yCab, 0, W / 2, yCab, W * .85);
+      rg.addColorStop(0, hexA(d.vacio, .34)); rg.addColorStop(1, hexA(d.vacio, .05));
+      ctx.fillStyle = rg; ctx.fillRect(0, 0, W, H);
+      const k = W * (formato === 'story' ? .0046 : .004);
+      ctx.save(); ctx.translate(W / 2 - 100 * k, yCab - 58 * k); ctx.scale(k, k);
+      ctx.fillStyle = hexA(d.vacio, .92);
+      ctx.beginPath(); ctx.arc(100, 58, 25, 0, Math.PI * 2); ctx.fill();
+      ctx.fill(new Path2D('M50 138c0-27 22-46 50-46s50 19 50 46z'));
+      ctx.restore();
     } else {
       fondoAurora(ctx, W, H);
       if(imgs.iso){ const s = W * .42; ctx.globalAlpha = .9; ctx.drawImage(imgs.iso, (W - s) / 2, H * .3, s, s * imgs.iso.naturalHeight / imgs.iso.naturalWidth); ctx.globalAlpha = 1; }

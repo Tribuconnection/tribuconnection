@@ -111,7 +111,7 @@
     <!-- ===== ENCABEZADO DE PERFIL ===== -->
     <div class="prof-header reveal d1">
       <div class="prof-cover" id="coverPerfil">
-        <img id="avatar" class="prof-avatar" src="/assets/isotipo.png?v=2" alt="">
+        <img id="avatar" class="prof-avatar" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
       </div>
       <div class="prof-body">
         <div class="prof-editrow">
@@ -204,7 +204,7 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=12"></script>
+<script src="/assets/supabase-client.js?v=13"></script>
 <script src="/assets/site.js?v=18"></script>
 <script>
 (function(){
@@ -231,7 +231,8 @@
 
   function pintarPerfil(p){
     document.getElementById('nombre').textContent = (p.tipo === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre) || session.user.email;
-    if(p.foto_url){ const f = sanitizeUrl(p.foto_url); if(f) document.getElementById('avatar').src = f; }
+    const fotoPerfil = p.foto_url && sanitizeUrl(p.foto_url);
+    document.getElementById('avatar').src = fotoPerfil || tribuAvatarVacio(tribuCategoriaPerfil(p));
     if(p.banner_url){ const b = sanitizeUrl(p.banner_url); if(b) document.getElementById('coverPerfil').style.backgroundImage = "url('" + b + "')"; }
 
     const metaParts = [];

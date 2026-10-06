@@ -77,7 +77,7 @@
         </div>
 
         <div class="field" style="display:flex;align-items:center;gap:1.2rem">
-          <img id="fotoPreview" class="foto-preview" src="/assets/isotipo.png?v=2" alt="">
+          <img id="fotoPreview" class="foto-preview" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="">
           <div>
             <label class="file-label" for="foto" style="cursor:pointer">📎 Subir foto de perfil</label>
             <input type="file" id="foto" accept="image/png,image/jpeg,image/webp" style="display:none">
@@ -250,7 +250,7 @@
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=12"></script>
+<script src="/assets/supabase-client.js?v=13"></script>
 <script src="/assets/site.js?v=18"></script>
 <script>
 (function(){
@@ -367,8 +367,13 @@
   });
 
   const rolesBox = document.getElementById('roles');
+  let tieneFoto = false;
+  function actualizarAvatarVacio(){
+    if(!tieneFoto) document.getElementById('fotoPreview').src = tribuAvatarVacio(tribuCategoriaPerfil({ roles: rolesSel }));
+  }
   function actualizarCampoMarca(){
     document.getElementById('campoMarca').style.display = rolesSel.includes('tiene_marca') ? '' : 'none';
+    actualizarAvatarVacio();
   }
   ROLES_PARTICIPACION.forEach(r => {
     const chip = document.createElement('button');
@@ -381,6 +386,7 @@
     });
     rolesBox.appendChild(chip);
   });
+  actualizarAvatarVacio();
 
   document.querySelectorAll('.modalidad-toggle button').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -397,7 +403,7 @@
   document.getElementById('foto').addEventListener('change', (e) => {
     const f = e.target.files[0];
     if(!f) return;
-    fotoFile = f;
+    fotoFile = f; tieneFoto = true;
     document.getElementById('fotoPreview').src = URL.createObjectURL(f);
   });
 
@@ -441,7 +447,7 @@
     pintarHistorias();
     document.getElementById('categoriaPrincipal').value = data.categoria_principal || '';
     document.getElementById('visible').checked = data.publicado !== false;
-    if(data.foto_url) document.getElementById('fotoPreview').src = data.foto_url;
+    if(data.foto_url){ tieneFoto = true; document.getElementById('fotoPreview').src = data.foto_url; }
     if(data.banner_url){ bannerActual = data.banner_url; document.getElementById('bannerPreviewWrap').style.backgroundImage = "url('" + data.banner_url + "')"; }
     tipoCreadorSel = data.tipo_creador || [];
     queOfreceSel = data.que_ofrece || [];
@@ -468,7 +474,7 @@
     const btn = document.getElementById('btnGuardar'); btn.textContent = 'Guardando...'; btn.disabled = true;
     try{
       const previewSrc = document.getElementById('fotoPreview').src;
-      let fotoUrl = previewSrc.includes('/assets/isotipo.png') || previewSrc.startsWith('blob:') ? null : previewSrc;
+      let fotoUrl = !tieneFoto || previewSrc.includes('/assets/isotipo.png') || previewSrc.startsWith('blob:') || previewSrc.startsWith('data:') ? null : previewSrc;
       if(fotoFile){
         const ext = fotoFile.name.split('.').pop();
         const path = session.user.id + '/foto.' + ext;

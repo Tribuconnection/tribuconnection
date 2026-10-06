@@ -92,7 +92,7 @@
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=12"></script>
+<script src="/assets/supabase-client.js?v=13"></script>
 <script src="/assets/site.js?v=18"></script>
 <script>
 (function(){
@@ -122,7 +122,7 @@
 
   function quien(p){
     const f = p && fotoOk(p.foto_url);
-    return '<div class="ac-quien">' + (f ? '<img src="' + esc(f) + '" alt="">' : '<b class="av">' + esc(nombreDe(p).charAt(0)) + '</b>') +
+    return '<div class="ac-quien"><img src="' + esc(f || tribuAvatarVacio(tribuCategoriaPerfil(p))) + '" alt="">' +
       '<div><strong>' + esc(nombreDe(p)) + '</strong>' + (p && p.slug ? '<a href="/' + esc(p.slug) + '/" target="_blank" rel="noopener">tribuconnection.com/' + esc(p.slug) + ' ↗</a>' : '') + '</div></div>';
   }
 

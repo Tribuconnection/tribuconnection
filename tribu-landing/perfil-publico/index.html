@@ -345,7 +345,7 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=12"></script>
+<script src="/assets/supabase-client.js?v=13"></script>
 <script src="/assets/site.js?v=18"></script>
 <script>
 (function(){
@@ -455,8 +455,8 @@
     let langPerfil = 'es';
     try{ if(tieneEn && localStorage.getItem('tribu_perfil_lang') === 'en') langPerfil = 'en'; }catch(e){}
     const TX = {
-      es: { volver:'← Volver a Red Tribu', sobre:'Sobre ', esperar:'Qué esperar', servicios:'🌿 Servicios', proximos:'Próximos encuentros', agenda:'Ver toda la agenda →', historias:'Historias destacadas', marca:'Marca', creador:'Creador/a', viajar:'🌐 Disponible para viajar', conectar:'Conectar', compartir:'Compartir', comunidades:'Comunidades', colaboraciones:'Colaboraciones', experiencias:'Experiencias', hist:'Historias' },
-      en: { volver:'← Back to Red Tribu', sobre:'About ', esperar:'What to expect', servicios:'🌿 Services', proximos:'Upcoming gatherings', agenda:'See the full calendar →', historias:'Featured stories', marca:'Brand', creador:'Creator', viajar:'🌐 Available to travel', conectar:'Connect', compartir:'Share', comunidades:'Communities', colaboraciones:'Collaborations', experiencias:'Experiences', hist:'Stories' }
+      es: { volver:'← Volver a Red Tribu', sobre:'Sobre ', esperar:'Qué esperar', servicios:'🌿 Servicios', proximos:'Próximos encuentros', agenda:'Ver toda la agenda →', historias:'Historias destacadas', marca:'Marca', creador:'Creador/a', comunidad:'Comunidad', lugar:'Lugar', viajar:'🌐 Disponible para viajar', conectar:'Conectar', compartir:'Compartir', comunidades:'Comunidades', colaboraciones:'Colaboraciones', experiencias:'Experiencias', hist:'Historias' },
+      en: { volver:'← Back to Red Tribu', sobre:'About ', esperar:'What to expect', servicios:'🌿 Services', proximos:'Upcoming gatherings', agenda:'See the full calendar →', historias:'Featured stories', marca:'Brand', creador:'Creator', comunidad:'Community', lugar:'Venue', viajar:'🌐 Available to travel', conectar:'Connect', compartir:'Share', comunidades:'Communities', colaboraciones:'Collaborations', experiencias:'Experiences', hist:'Stories' }
     };
     const txt = k => (langPerfil === 'en' && p[k + '_en']) ? p[k + '_en'] : p[k];
     const parrafos = s => String(s).split(/\n+/).filter(x => x.trim()).map(par => '<p>' + esc(par) + '</p>').join('');
@@ -500,7 +500,7 @@
         '</div>' +
         '<div class="pp2-hero">' +
           '<div class="pp2-hero-info">' +
-            '<span class="pp2-badge' + (p.tipo === 'marca' ? ' is-marca' : '') + '">' + (p.tipo === 'marca' ? T.marca : T.creador) + '</span>' +
+            '<span class="pp2-badge' + (p.tipo === 'marca' ? ' is-marca' : '') + '">' + T[tribuCategoriaPerfil(p)] + '</span>' +
             '<h1 class="pp2-name">' + esc(nombreMostrado) + '</h1>' +
             (titulo ? '<p class="pp2-titulo">' + esc(titulo) + '</p>' : '') +
             (roles.length ? '<p class="pp2-roles">' + roles.map(esc).join(' &nbsp;•&nbsp; ') + '</p>' : '') +
@@ -515,7 +515,7 @@
           '</div>' +
           (fotoUrl
             ? '<div class="pp2-hero-photo"><img src="' + esc(fotoUrl) + '" alt="' + esc(nombreMostrado) + '" style="' + fotoStyle + '"></div>'
-            : '<div class="pp2-hero-photo is-placeholder"><img src="/assets/isotipo.png?v=2" alt=""></div>') +
+            : '<div class="pp2-hero-photo"><img src="' + tribuAvatarVacio(tribuCategoriaPerfil(p)) + '" alt=""></div>') +
         '</div>' +
 
         (esperar ? '<div class="pp2-card pp2-esperar"><h2>' + T.esperar + '</h2>' + parrafos(esperar) + '</div>' : '') +
