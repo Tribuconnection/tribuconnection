@@ -365,7 +365,7 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .cta-box::after{
   content:""; position:absolute; top:50%; right:min(110px,8vw); transform:translateY(-50%);
   width:min(260px,22vw); height:min(260px,22vw);
-  background:url(/assets/isotipo.png?v=2) no-repeat center/contain;
+  background:url(/assets/isotipo.png?v=3) no-repeat center/contain;
   opacity:.16; pointer-events:none;
 }
 @media (max-width:900px){ .cta-box::after{ display:none; } }
@@ -451,11 +451,28 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .legal-body li{ margin-bottom:.4rem; }
 .legal-updated{ font-size:.78rem; color:var(--muted); margin-bottom:1.2rem; }
 
-/* ===================== REVEAL (animación al scrollear) ===================== */
-.reveal{ opacity:0; transform:translateY(26px); transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
-.reveal.in{ opacity:1; transform:none; }
+/* ===================== REVEAL (animación al scrollear) =====================
+   El opacity:0 vive detrás de html.js (clase que pone un script inline en el
+   <head>). Así, si el JS tarda o falla, el contenido se ve igual en vez de
+   quedar invisible para siempre esperando a site.js. */
+.reveal{ transition:opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+html.js .reveal{ opacity:0; transform:translateY(26px); }
+html.js .reveal.in{ opacity:1; transform:none; }
 .reveal.d1{ transition-delay:.08s; } .reveal.d2{ transition-delay:.16s; }
 .reveal.d3{ transition-delay:.24s; } .reveal.d4{ transition-delay:.32s; }
+
+/* Lo que está arriba del fold usa .reveal-now: misma animación pero 100% CSS,
+   sin esperar a site.js. Esto era el cuello de botella real del primer
+   pintado: el hero quedaba en opacity:0 hasta que bajaban supabase-js y
+   leaflet desde unpkg, o sea ~4,7s. */
+.reveal-now{ animation:tc-reveal-in .8s cubic-bezier(.2,.7,.2,1) both; }
+.reveal-now.d1{ animation-delay:.08s; } .reveal-now.d2{ animation-delay:.16s; }
+.reveal-now.d3{ animation-delay:.24s; } .reveal-now.d4{ animation-delay:.32s; }
+@keyframes tc-reveal-in{ from{ opacity:0; transform:translateY(26px); } to{ opacity:1; transform:none; } }
+@media (prefers-reduced-motion:reduce){
+  .reveal-now{ animation:none; }
+  html.js .reveal{ opacity:1; transform:none; }
+}
 
 :focus-visible{ outline:2px solid var(--teal); outline-offset:3px; border-radius:4px; }
 
@@ -705,6 +722,51 @@ h1,h2,h3{ font-family:var(--font-display); font-weight:600; line-height:1.04; le
 .modal-close:hover{ color:var(--cream); border-color:var(--cream); }
 .modal h2{ font-size:clamp(1.5rem,3.5vw,2rem); margin-bottom:.35rem; }
 .modal .modal-sub{ color:var(--soft); font-size:.95rem; margin-bottom:1.5rem; line-height:1.5; }
+/* ===================== MODAL "SUMÁ TU PROPUESTA" (dos caminos) =====================
+   Primer paso de "Sumá tu propuesta": en vez de tirar un formulario de una,
+   muestra los dos perfiles (CREÁS / IMPULSÁS) y cada uno lleva a su landing.
+   El markup lo arma site.js, así vive una sola vez para todo el sitio. */
+.modal--caminos{ width:min(880px,100%); }
+.caminos-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:1.1rem; }
+.camino-card{
+  --c:var(--red);
+  display:flex; flex-direction:column; text-align:left; text-decoration:none;
+  padding:1.5rem 1.45rem 1.35rem; border-radius:20px;
+  background:linear-gradient(165deg, color-mix(in srgb, var(--c) 16%, var(--ink-2)), var(--ink-2) 72%);
+  border:1px solid color-mix(in srgb, var(--c) 45%, transparent);
+  transition:transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+}
+.camino-card:hover, .camino-card:focus-visible{
+  transform:translateY(-4px);
+  border-color:color-mix(in srgb, var(--c) 80%, transparent);
+  box-shadow:0 20px 44px -22px var(--c);
+}
+.camino-ic{
+  width:48px; height:48px; border-radius:15px; display:grid; place-items:center; flex:none;
+  margin-bottom:1rem; color:#15110f;
+  background:linear-gradient(140deg, color-mix(in srgb, var(--c) 92%, #fff), var(--c));
+}
+.camino-card h3{
+  font-family:var(--font-accent); font-weight:400; letter-spacing:.01em;
+  font-size:1.5rem; color:var(--c); margin-bottom:.3rem;
+}
+.camino-card .camino-que{ font-size:.9rem; font-weight:600; color:var(--cream); margin-bottom:.5rem; line-height:1.35; }
+.camino-card p{ font-size:.86rem; color:var(--soft); line-height:1.5; }
+/* margin-top:auto empuja el CTA al pie de la tarjeta: los dos textos no miden
+   lo mismo y, si no, cada flecha queda a distinta altura. */
+.camino-cta{
+  display:block; margin-top:auto; padding-top:1.15rem;
+  font-size:.86rem; font-weight:600; color:var(--c); line-height:1.4;
+}
+/* La flecha va en el flujo del texto, no como hermana flex: si no, cuando el
+   CTA se parte en dos líneas (pasa en mobile) queda flotando al costado. */
+.camino-cta .arr{ display:inline-block; margin-left:.3rem; transition:transform .22s ease; }
+.camino-card:hover .camino-cta .arr{ transform:translateX(4px); }
+@media (max-width:720px){
+  .caminos-grid{ grid-template-columns:1fr; }
+  .camino-card{ padding:1.25rem 1.2rem 1.1rem; }
+}
+
 .field{ margin-bottom:1.05rem; }
 .field > label{ display:block; font-size:.76rem; letter-spacing:.06em; color:var(--muted); margin-bottom:.5rem; text-transform:uppercase; }
 .field input, .field textarea{ width:100%; background:var(--ink-2); border:1px solid var(--line); border-radius:12px; padding:.8rem 1rem; color:var(--cream); font-family:var(--font-sans); font-size:.98rem; transition:.2s; }

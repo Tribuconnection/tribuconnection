@@ -11,16 +11,16 @@
 <meta property="og:site_name" content="Tribu Connection">
 <meta property="og:title" content="Red Tribu · Tribu Connection">
 <meta property="og:description" content="Descubrí creadores, marcas y lugares que forman parte de la Red Tribu.">
-<meta property="og:image" content="https://tribuconnection.com/assets/og-image.png?v=3">
+<meta property="og:image" content="https://tribuconnection.com/assets/og-image.png?v=4">
 <meta property="og:locale" content="es_AR">
 <link rel="canonical" href="https://tribuconnection.com/red-tribu/">
 
-<link rel="icon" type="image/png" href="/assets/isotipo.png?v=2">
+<link rel="icon" type="image/png" href="/assets/isotipo.png?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=45">
-<link rel="stylesheet" href="/assets/home.css?v=12">
+<link rel="stylesheet" href="/assets/tribu.css?v=47">
+<link rel="stylesheet" href="/assets/home.css?v=13">
 <style>
   .rt-head{ max-width:640px; align-self:flex-start; margin-right:auto; text-align:left; }
   #top .wrap{ width:100%; }
@@ -131,7 +131,7 @@
 <!-- ============================ NAV ============================ -->
 <nav class="nav" id="nav">
   <a href="/" class="brand" aria-label="Tribu Connection — inicio">
-    <img class="brand-full" src="/assets/logo-blanco.png?v=1" alt="Tribu Connection">
+    <img class="brand-full" src="/assets/logo-blanco.png?v=2" alt="Tribu Connection">
   </a>
   <div class="nav-links">
     <a href="/">Inicio</a>
@@ -139,7 +139,7 @@
     <a href="/red-tribu/" class="is-active">Red Tribu</a>
     <a href="/#historias">Historias</a>
     <a href="/club-tribu-connection/">Club Tribu</a>
-    <a href="#" data-connect>Sumá tu propuesta</a>
+    <a href="#" data-caminos>Sumá tu propuesta</a>
   </div>
   <div class="nav-cta">
     <label class="nav-search">
@@ -164,7 +164,7 @@
   <a href="/red-tribu/">Red Tribu</a>
   <a href="/#historias">Historias</a>
   <a href="/club-tribu-connection/">Club Tribu</a>
-  <a href="#" data-connect>Sumá tu propuesta</a>
+  <a href="#" data-caminos>Sumá tu propuesta</a>
   <a href="#" class="btn btn--ghost" data-auth-nav data-auth><span data-auth-label>Ingresar</span></a>
   <a href="#" class="btn btn--rainbow" data-signup>Sumate a la Tribu</a>
 </div>
@@ -243,13 +243,13 @@
   <div class="wrap">
     <div class="mini-cta reveal">
       <div class="mini-cta-left">
-        <div class="mini-cta-ic" aria-hidden="true"><img src="/assets/isotipo.png?v=2" alt="" width="26" height="26"></div>
+        <div class="mini-cta-ic" aria-hidden="true"><img src="/assets/isotipo.png?v=3" alt="" width="26" height="26"></div>
         <div>
           <h3>¿Sos creador/a, marca o tenés un espacio?</h3>
           <p>Sumá tu perfil a la Red Tribu y llegá a más personas.</p>
         </div>
       </div>
-      <a href="#" class="btn btn--ghost" data-connect>Sumá tu propuesta <span class="arr">→</span></a>
+      <a href="#" class="btn btn--ghost" data-caminos>Sumá tu propuesta <span class="arr">→</span></a>
     </div>
   </div>
 </section>
@@ -376,7 +376,7 @@
   <div class="wrap">
     <div class="footer-cols">
       <div class="footer-logo">
-        <img src="/assets/isotipo.png?v=2" alt="Tribu Connection">
+        <img src="/assets/isotipo.png?v=3" alt="Tribu Connection">
         <p class="footer-tag">Historias que conectan.<br>Comunidades que crecen.</p>
         <div class="socials" style="margin-top:1.1rem">
           <a class="soc ig" href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener" aria-label="Instagram">
@@ -474,8 +474,8 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=13"></script>
-<script src="/assets/site.js?v=18"></script>
+<script src="/assets/supabase-client.js?v=14"></script>
+<script src="/assets/site.js?v=20"></script>
 <script>
 /* Directorio Red Tribu: perfiles + experiencias reales de Supabase + eventos
    del calendario, en 5 categorías (Creador/a, Comunidad, Experiencia, Marca,
@@ -518,7 +518,7 @@
     el.dataset.text = [o.nombre, o.desc, o.ciudad, ...(o.extraTexto || [])].join(' ').toLowerCase();
     el.dataset.ciudad = (o.ciudad || '').toLowerCase();
     el._datos = o.datos || null;
-    const img = o.img || '/assets/isotipo.png?v=2';
+    const img = o.img || '/assets/isotipo.png?v=3';
     el.innerHTML =
       '<img class="rt-card-img' + (o.imgTipo === 'logo' ? ' is-logo' : o.imgTipo === 'ph' ? ' is-ph' : '') + '" src="' + esc(img) + '" alt="" loading="lazy"' + (o.encuadre ? ' style="' + o.encuadre + '"' : '') + '>' +
       '<span class="rt-tag">' + esc(CATEGORIA_LABEL[o.principal]) + '</span>' +
@@ -532,12 +532,12 @@
 
   /* ---- Fichas fijas: marcas aliadas y lugares ---- */
   [
-    ['marca', 'Bioferia Argentina', 'Feria de productos orgánicos y conscientes.', '', '/assets/partners/bioferia.png'],
-    ['marca', 'Expo Holística & Bienestar', 'Terapias, bienestar y prácticas holísticas.', '', '/assets/partners/expo-holistica.png'],
-    ['marca', 'Resonar Festival', 'Festival de música consciente.', '', '/assets/partners/resonar-festival.png'],
-    ['marca', 'Sagrada Madre', 'Rituales y encuentros de conexión con la naturaleza.', '', '/assets/partners/sagrada-madre.png'],
-    ['marca', 'Unifungi', 'El mundo de los hongos y la micología consciente.', '', '/assets/partners/unifungi.png'],
-    ['marca', 'Amanita Festival', 'Experiencias conscientes en la naturaleza.', 'Mercedes, Buenos Aires', '/assets/partners/amanita-festival.png'],
+    ['marca', 'Bioferia Argentina', 'Feria de productos orgánicos y conscientes.', '', '/assets/partners/bioferia.png?v=2'],
+    ['marca', 'Expo Holística & Bienestar', 'Terapias, bienestar y prácticas holísticas.', '', '/assets/partners/expo-holistica.png?v=2'],
+    ['marca', 'Resonar Festival', 'Festival de música consciente.', '', '/assets/partners/resonar-festival.png?v=2'],
+    ['marca', 'Sagrada Madre', 'Rituales y encuentros de conexión con la naturaleza.', '', '/assets/partners/sagrada-madre.png?v=2'],
+    ['marca', 'Unifungi', 'El mundo de los hongos y la micología consciente.', '', '/assets/partners/unifungi.png?v=2'],
+    ['marca', 'Amanita Festival', 'Experiencias conscientes en la naturaleza.', 'Mercedes, Buenos Aires', '/assets/partners/amanita-festival.png?v=2'],
     ['lugar', 'Espacio Om', 'Sala para círculos, sonido y encuentros holísticos.', 'Palermo, CABA', null],
     ['lugar', 'Parque Centenario', 'Espacio verde para ferias y encuentros al aire libre.', 'CABA', null]
   ].forEach(([cat, nombre, desc, ciudad, logo]) => {
@@ -565,7 +565,7 @@
 
   /* ---- Eventos del calendario (home/agenda), vía window.TRIBU_EVENTS de site.js ---- */
   const MESES_CORTO = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  const IMG_EV = ['/assets/reels/reel1.jpg', '/assets/stories/musica-en-vivo.jpg', '/assets/reels/reel3.jpg', '/assets/stories/conciencia-festival.jpg'];
+  const IMG_EV = ['/assets/reels/reel1.jpg?v=2', '/assets/stories/musica-en-vivo.jpg?v=2', '/assets/reels/reel3.jpg?v=2', '/assets/stories/conciencia-festival.jpg?v=2'];
   function pintarEventosCalendario(){
     dinamicoEventosCal.innerHTML = '';
     const vistos = new Set(); let i = 0;
@@ -595,7 +595,7 @@
     const rol = misPart[e.id];
     const el = ficha({
       cats:['experiencia'], principal:'experiencia', nombre:e.nombre, desc:[e.tipo || 'Experiencia', fecha].filter(Boolean).join(' · '),
-      ciudad:lugar, img:foto, imgTipo: foto ? 'foto' : 'ph', href:'#',
+      ciudad:lugar, img: foto || tribuAvatarVacio('experiencia', 'busto'), imgTipo:'foto', href:'#',
       extra:'<div class="rt-acc"><button type="button" data-rol="participo" class="' + (rol === 'participo' ? 'on' : '') + '">✓ Fui</button><button type="button" data-rol="organiza" class="' + (rol === 'organiza' ? 'on' : '') + '">★ Lo organicé</button></div>'
     });
     el.addEventListener('click', ev => { const b = ev.target.closest('[data-rol]'); ev.preventDefault(); if(b) marcar(e.id, b.dataset.rol); });
@@ -772,6 +772,6 @@
   aplicar();
 })();
 </script>
-<script defer src="/assets/tribu-chat.js?v=3"></script>
+<script defer src="/assets/tribu-chat.js?v=4"></script>
 </body>
 </html>

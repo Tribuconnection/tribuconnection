@@ -27,14 +27,38 @@
 
 # Cache: el HTML se revalida siempre (si no, el navegador se queda con una copia
 # vieja y los cambios no se ven). Los assets van versionados con ?v=N en la URL,
-# asi que pueden cachearse fuerte sin riesgo.
+# asi que pueden cachearse fuerte sin riesgo. "immutable" evita que el navegador
+# gaste un revalidado por asset al volver a entrar.
 <IfModule mod_headers.c>
   <FilesMatch "\.html$">
     Header set Cache-Control "no-cache, must-revalidate"
   </FilesMatch>
-  <FilesMatch "\.(css|js|png|jpg|jpeg|webp|woff2|mp4)$">
-    Header set Cache-Control "public, max-age=31536000"
+  <FilesMatch "\.(css|js|mjs|png|jpg|jpeg|gif|webp|avif|svg|ico|woff|woff2|ttf|otf|mp4|webm)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
   </FilesMatch>
+</IfModule>
+
+# Compresion. El CDN de Hostinger ya sirve brotli, pero si en algun momento se
+# sirve directo desde el origen (o se cambia de hosting) esto evita mandar el
+# CSS y el JS en crudo: tribu.css pasa de 89 KB a ~19 KB.
+<IfModule mod_brotli.c>
+  AddOutputFilterByType BROTLI_COMPRESS text/html text/plain text/css text/xml \
+    text/javascript application/javascript application/x-javascript \
+    application/json application/xml image/svg+xml application/manifest+json
+</IfModule>
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/css text/xml \
+    text/javascript application/javascript application/x-javascript \
+    application/json application/xml image/svg+xml application/manifest+json
+</IfModule>
+
+# Tipos que algunos Apache no conocen y terminan sirviendo como octet-stream
+# (el navegador entonces no los cachea ni los decodifica bien).
+<IfModule mod_mime.c>
+  AddType image/webp              .webp
+  AddType image/avif              .avif
+  AddType font/woff2              .woff2
+  AddType application/manifest+json .webmanifest
 </IfModule>
 
 # Evitar listado de directorios

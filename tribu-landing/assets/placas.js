@@ -39,8 +39,8 @@ const TribuPlacas = (function(){
     const fuentes = ['400 80px "Protest Strike"', '800 60px Poppins', '700 40px Poppins', '600 40px Poppins', '500 40px Poppins', 'italic 400 40px Poppins'];
     listo = Promise.all([
       ...fuentes.map(f => document.fonts.load(f).catch(() => {})),
-      cargarImg('/assets/logo-white-horizontal.png').then(i => { imgs.logo = i; }).catch(() => {}),
-      cargarImg('/assets/isotipo.png?v=2').then(i => { imgs.iso = i; }).catch(() => {})
+      cargarImg('/assets/logo-white-horizontal.png?v=2').then(i => { imgs.logo = i; }).catch(() => {}),
+      cargarImg('/assets/isotipo.png?v=3').then(i => { imgs.iso = i; }).catch(() => {})
     ]).then(() => document.fonts.ready);
     return listo;
   }

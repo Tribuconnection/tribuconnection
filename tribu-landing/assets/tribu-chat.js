@@ -14,7 +14,7 @@
   const WA_NUMERO = '5491155031180';                 // Andrés — formato internacional, sin + ni espacios
   const WA_TEXTO  = 'Hola Tribu Connection 👋 Me gustaría saber más.';
   const BOT_NOMBRE = 'Tri';
-  const LOGO = '/assets/isotipo.png?v=2';
+  const LOGO = '/assets/isotipo.png?v=3';
 
   /* ── Base de conocimiento ───────────────────────────────────
      Cada entrada: kw (disparadores), go (a dónde lleva la web),

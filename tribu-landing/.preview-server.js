@@ -6,7 +6,8 @@ const port = 5177;
 const types = {
   '.html':'text/html; charset=utf-8', '.css':'text/css', '.js':'text/javascript',
   '.png':'image/png', '.jpg':'image/jpeg', '.jpeg':'image/jpeg', '.svg':'image/svg+xml',
-  '.json':'application/json', '.ico':'image/x-icon', '.gif':'image/gif'
+  '.json':'application/json', '.ico':'image/x-icon', '.gif':'image/gif',
+  '.webp':'image/webp', '.avif':'image/avif', '.mp4':'video/mp4', '.woff2':'font/woff2'
 };
 http.createServer((req, res) => {
   let urlPath = decodeURIComponent(req.url.split('?')[0]);

@@ -71,19 +71,54 @@ function tribuCategoriaPerfil(p){
   return ['creador', 'marca', 'lugar', 'comunidad'].find(c => cats.includes(c)) || 'creador';
 }
 
-/* Foto de perfil vacía: la silueta de torso de siempre, en el color de la
-   categoría (Creador/a, Comunidad, Marca, Lugar...). Es un SVG en data: URI,
-   así sirve igual en un <img>, en un fondo o dibujado en las placas.
-   forma 'busto': la figura más chica y arriba, para fichas y placas donde el
-   texto ocupa la parte de abajo (si no, el torso queda tapado). */
+/* Símbolo de cada categoría para cuando un perfil no subió foto. Todos en el
+   mismo lenguaje: silueta plena, geométrica, dentro de un lienzo de 200x200.
+   Un torso sirve para una persona, pero no para una marca ni para un lugar,
+   así que cada categoría tiene el suyo:
+     creador/a  → torso (la silueta de siempre)
+     comunidad  → tres figuras juntas
+     experiencia→ destello
+     marca      → etiqueta
+     lugar      → montañas
+   Los de 'creador' están dibujados a mano en sus dos tamaños porque el torso
+   recortado abajo no tolera escalarse; el resto son formas cerradas y
+   centradas, así que el tamaño chico sale de escalarlas. */
+const AVATAR_SIMBOLO = {
+  creador: {
+    full:  '<circle cx="100" cy="80" r="33"/><path d="M34 200c0-46 29.5-74 66-74s66 28 66 74z"/>',
+    busto: '<circle cx="100" cy="58" r="25"/><path d="M50 138c0-27 22-46 50-46s50 19 50 46z"/>'
+  },
+  comunidad:
+    '<circle cx="100" cy="74" r="25"/><path d="M60 148c0-23 18-38 40-38s40 15 40 38z"/>' +
+    '<circle cx="44" cy="92" r="18"/><path d="M14 150c0-17 13-29 30-29 5 0 10 1 14 3-8 7-13 16-13 26z"/>' +
+    '<circle cx="156" cy="92" r="18"/><path d="M186 150c0-17-13-29-30-29-5 0-10 1-14 3 8 7 13 16 13 26z"/>',
+  experiencia:
+    '<path d="M100 32c7 40 13 46 53 53-40 7-46 13-53 53-7-40-13-46-53-53 40-7 46-13 53-53z"/>' +
+    '<path d="M160 118c3 17 6 20 23 23-17 3-20 6-23 23-3-17-6-20-23-23 17-3 20-6 23-23z"/>' +
+    '<path d="M44 34c2 12 4 14 16 16-12 2-14 4-16 16-2-12-4-14-16-16 12-2 14-4 16-16z"/>',
+  marca:
+    '<path fill-rule="evenodd" d="M110 28h50a14 14 0 0 1 14 14v50a14 14 0 0 1-4.1 9.9l-62 62a14 14 0 0 1-19.8 0l-56-56a14 14 0 0 1 0-19.8l62-62A14 14 0 0 1 110 28zm36 26a13 13 0 1 0 0 26 13 13 0 0 0 0-26z"/>',
+  lugar:
+    '<circle cx="150" cy="58" r="15"/>' +
+    '<path d="M18 158 76 62l44 72-20 24zM96 158l40-62 46 62z"/>'
+};
+
+/* Foto de perfil vacía: el símbolo de la categoría sobre el fondo oscuro de la
+   marca, teñido con el color de esa categoría. Es un SVG en data: URI, así
+   sirve igual en un <img>, en un fondo o dibujado en las placas.
+   forma 'busto': la figura más chica y más arriba, para fichas y placas donde
+   el texto ocupa la parte de abajo (si no, el símbolo queda tapado). */
 const _avataresVacios = {};
 function tribuAvatarVacio(cat, forma){
-  const k = (CATEGORIA_COLOR[cat] ? cat : 'creador') + (forma === 'busto' ? '-busto' : '');
+  const categoria = AVATAR_SIMBOLO[cat] && CATEGORIA_COLOR[cat] ? cat : 'creador';
+  const busto = forma === 'busto';
+  const k = categoria + (busto ? '-busto' : '');
   if(_avataresVacios[k]) return _avataresVacios[k];
-  const c = CATEGORIA_COLOR[k.replace('-busto', '')];
-  const figura = forma === 'busto'
-    ? '<circle cx="100" cy="58" r="25"/><path d="M50 138c0-27 22-46 50-46s50 19 50 46z"/>'
-    : '<circle cx="100" cy="80" r="33"/><path d="M34 200c0-46 29.5-74 66-74s66 28 66 74z"/>';
+  const c = CATEGORIA_COLOR[categoria];
+  const simbolo = AVATAR_SIMBOLO[categoria];
+  const figura = typeof simbolo === 'string'
+    ? (busto ? '<g transform="translate(100 92) scale(.74) translate(-100 -100)">' + simbolo + '</g>' : simbolo)
+    : simbolo[busto ? 'busto' : 'full'];
   const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">' +
     '<defs><radialGradient id="g" cx="50%" cy="42%" r="70%"><stop offset="0" stop-color="' + c + '" stop-opacity=".34"/><stop offset="1" stop-color="' + c + '" stop-opacity=".07"/></radialGradient></defs>' +
     '<rect width="200" height="200" fill="#15171F"/><rect width="200" height="200" fill="url(#g)"/>' +

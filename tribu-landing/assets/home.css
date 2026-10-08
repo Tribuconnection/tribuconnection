@@ -47,6 +47,10 @@
 }
 .home-hero-actions{ display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.2rem; }
 
+/* Fondos que bajan a demanda (ver data-bg en site.js): color de espera para que
+   la tarjeta no parpadee en blanco mientras llega la foto. */
+[data-bg]{ background-color:var(--ink-2); }
+
 .hero-collage{ position:relative; aspect-ratio:1/.92; }
 .hero-collage-swirl{ position:absolute; inset:-8%; z-index:0; opacity:.9; pointer-events:none; }
 .collage-grid{

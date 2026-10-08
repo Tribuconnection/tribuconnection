@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mi cuenta · Tribu Connection</title>
 <meta name="robots" content="noindex, nofollow">
-<link rel="icon" type="image/png" href="/assets/isotipo.png?v=2">
+<link rel="icon" type="image/png" href="/assets/isotipo.png?v=3">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=45">
-<link rel="stylesheet" href="/assets/home.css?v=12">
+<link rel="stylesheet" href="/assets/tribu.css?v=47">
+<link rel="stylesheet" href="/assets/home.css?v=13">
 <style>
   .prof-header{ border-radius:20px; overflow:hidden; border:1px solid var(--line); background:var(--ink-1); }
   .prof-cover{ height:150px; background:linear-gradient(120deg, rgba(210,75,98,.35), rgba(244,166,35,.3) 45%, rgba(54,183,196,.3)); background-size:cover; background-position:center; position:relative; overflow:hidden; }
@@ -67,7 +67,7 @@
 
 <nav class="nav" id="nav">
   <a href="/" class="brand" aria-label="Tribu Connection — inicio">
-    <img class="brand-full" src="/assets/logo-blanco.png?v=1" alt="Tribu Connection">
+    <img class="brand-full" src="/assets/logo-blanco.png?v=2" alt="Tribu Connection">
   </a>
   <div class="nav-links">
     <a href="/">Inicio</a>
@@ -204,8 +204,8 @@
 </div>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=13"></script>
-<script src="/assets/site.js?v=18"></script>
+<script src="/assets/supabase-client.js?v=14"></script>
+<script src="/assets/site.js?v=20"></script>
 <script>
 (function(){
   let session = null;
@@ -302,7 +302,7 @@
     cont.innerHTML = filas.map(ex => {
       const d = ex.fecha ? new Date(ex.fecha + 'T00:00') : null;
       const fechaTxt = d && !isNaN(d) ? d.getDate() + ' ' + MESES[d.getMonth()] : 'Sin fecha';
-      const thumb = sanitizeUrl(ex.imagen_portada_url) || '/assets/isotipo.png?v=2';
+      const thumb = sanitizeUrl(ex.imagen_portada_url) || '/assets/isotipo.png?v=3';
       return '<div class="ev-mini"><img src="' + esc(thumb) + '" alt=""><div><div class="ev-mini-titulo">' + esc(ex.nombre) + '</div><div class="ev-mini-meta">' + esc(ex.tipo || '') + ' · ' + fechaTxt + '</div></div></div>';
     }).join('');
   }
@@ -328,7 +328,7 @@
     lista.innerHTML = experiencias.map(e => {
       const d = e.fecha ? new Date(e.fecha + 'T00:00') : null;
       const fechaTxt = d && !isNaN(d) ? d.getDate() + ' ' + MESES[d.getMonth()] : 'Sin fecha';
-      const thumb = sanitizeUrl(e.imagen_portada_url) || '/assets/isotipo.png?v=2';
+      const thumb = sanitizeUrl(e.imagen_portada_url) || '/assets/isotipo.png?v=3';
       return '<div class="exp-card">' +
         '<img class="exp-thumb" src="' + esc(thumb) + '" alt="">' +
         '<div>' +

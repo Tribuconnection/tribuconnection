@@ -16,6 +16,50 @@ async function enviarASheets(fd, tipo){
    servir sus tiles gratis sin key en 2026, por eso se usa Esri — no pide key
    y llega a zoom 19, de sobra para lo que usamos acá (barrio/ciudad, nunca
    calle a calle). */
+/* ============ LEAFLET A DEMANDA ============
+   Antes Leaflet venía en el <body> de cada página con mapa: dos pedidos a
+   unpkg bloqueando el parseo del HTML, más los tiles de Esri, incluso en
+   pantallas donde el mapa está muy abajo o no se abre nunca. Ahora se baja
+   recién cuando hace falta dibujar uno. Si una página todavía lo trae por su
+   propio <script>, esto resuelve al instante y no pide nada. */
+const LEAFLET_VER = '1.9.4';
+let leafletPromise = null;
+function tribuLoadLeaflet(){
+  if(typeof L !== 'undefined') return Promise.resolve();
+  if(leafletPromise) return leafletPromise;
+  leafletPromise = new Promise((resolve, reject) => {
+    const css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = 'https://unpkg.com/leaflet@' + LEAFLET_VER + '/dist/leaflet.css';
+    css.integrity = 'sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=';
+    css.crossOrigin = '';
+    document.head.appendChild(css);
+    const js = document.createElement('script');
+    js.src = 'https://unpkg.com/leaflet@' + LEAFLET_VER + '/dist/leaflet.js';
+    js.integrity = 'sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=';
+    js.crossOrigin = '';
+    js.onload = () => resolve();
+    js.onerror = () => { leafletPromise = null; reject(new Error('No se pudo cargar Leaflet')); };
+    document.head.appendChild(js);
+  });
+  return leafletPromise;
+}
+
+/* Igual que tribuLoadLeaflet pero espera a que el elemento esté por entrar en
+   pantalla. Para los mapas que viven abajo del fold. */
+function tribuLeafletWhenVisible(el){
+  if(!('IntersectionObserver' in window)) return tribuLoadLeaflet();
+  return new Promise(resolve => {
+    const io = new IntersectionObserver(entries => {
+      if(entries.some(e => e.isIntersecting)){
+        io.disconnect();
+        resolve(tribuLoadLeaflet());
+      }
+    }, { rootMargin:'300px 0px' });
+    io.observe(el);
+  });
+}
+
 function tribuMapTiles(){
   return L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 19,
@@ -67,6 +111,27 @@ if(reduce){
   }, {threshold:.14, rootMargin:'0px 0px -8% 0px'});
   reveals.forEach(el => io.observe(el));
 }
+
+/* ============ FONDOS A DEMANDA (data-bg) ============
+   Las fotos de fondo que están bien abajo (los "pick-card" y las historias)
+   antes venían como style="background-image:url(...)" en el HTML, así que el
+   navegador las pedía todas con prioridad alta durante la carga inicial: casi
+   400 KB compitiendo con el hero. Ahora bajan recién cuando la tarjeta se
+   acerca a la pantalla. */
+(function(){
+  const lazyBgs = document.querySelectorAll('[data-bg]');
+  if(!lazyBgs.length) return;
+  const show = el => {
+    if(!el.dataset.bg) return;
+    el.style.backgroundImage = 'url(' + el.dataset.bg + ')';
+    delete el.dataset.bg;
+  };
+  if(!('IntersectionObserver' in window)){ lazyBgs.forEach(show); return; }
+  const bgIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ show(e.target); bgIO.unobserve(e.target); } });
+  }, { rootMargin:'400px 0px' });
+  lazyBgs.forEach(el => bgIO.observe(el));
+})();
 
 /* Contador animado de stats */
 const fmt = new Intl.NumberFormat('es-AR');
@@ -237,12 +302,18 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
     });
     if(pts.length) calMap.fitBounds(pts, { padding:[36,36], maxZoom:9 });
   }
+  let mapBooting = false;
   function initMap(){
-    if(calMap) return;
-    calMap = L.map('calMap', { scrollWheelZoom:true }).setView([-38.4, -63.6], 4);
-    tribuMapTiles().addTo(calMap);
-    tribuMapChrome(calMap);
-    renderMap();
+    if(calMap || mapBooting) return;
+    mapBooting = true;
+    const el = document.getElementById('calMap');
+    tribuLeafletWhenVisible(el).then(() => {
+      if(calMap) return;
+      calMap = L.map('calMap', { scrollWheelZoom:true }).setView([-38.4, -63.6], 4);
+      tribuMapTiles().addTo(calMap);
+      tribuMapChrome(calMap);
+      renderMap();
+    }).catch(() => { mapBooting = false; });
   }
   /* Calendario, agenda y mapa se ven siempre juntos (no hay pestañas) — el
      mapa se inicializa de una, no espera a que alguien lo abra. */
@@ -374,18 +445,26 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
    propio destino). */
 (function(){
   const el = document.getElementById('miniMapHome');
-  if(!el || typeof L === 'undefined') return;
-  const map = L.map('miniMapHome', {
-    zoomControl:false, dragging:false, scrollWheelZoom:false, doubleClickZoom:false,
-    touchZoom:false, boxZoom:false, keyboard:false, tap:false
-  }).setView([-34.62, -58.5], 10);
-  tribuMapTiles().addTo(map);
-  tribuMapChrome(map);
+  if(!el) return;
+
+  /* La tarjeta entera lleva a /agenda/ — eso tiene que funcionar desde el
+     primer momento, aunque el mapa decorativo todavía no haya bajado. */
   const wrap = document.getElementById('mapCtaEmbed');
   const ir = () => { window.location.href = '/agenda/'; };
   wrap.addEventListener('click', e => { if(!e.target.closest('.leaflet-control-attribution')) ir(); });
   wrap.addEventListener('keydown', e => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); ir(); } });
-  window.addEventListener('resize', () => map.invalidateSize());
+
+  /* Está bien abajo del fold: Leaflet y los tiles se piden recién cuando la
+     sección se acerca a la pantalla. */
+  tribuLeafletWhenVisible(el).then(() => {
+    const map = L.map('miniMapHome', {
+      zoomControl:false, dragging:false, scrollWheelZoom:false, doubleClickZoom:false,
+      touchZoom:false, boxZoom:false, keyboard:false, tap:false
+    }).setView([-34.62, -58.5], 10);
+    tribuMapTiles().addTo(map);
+    tribuMapChrome(map);
+    window.addEventListener('resize', () => map.invalidateSize());
+  }).catch(() => {});
 })();
 
 /* ============ PROVINCIAS Y CIUDADES (Argentina) ============ */
@@ -505,6 +584,88 @@ const PROVINCIAS_AR = {
   });
 })();
 
+/* ============ MODAL "SUMÁ TU PROPUESTA" (los dos caminos) ============
+   La sección "Sumá tu propuesta" del menú no abre un formulario: abre primero
+   la descripción de los dos perfiles, y desde ahí cada uno lleva a su landing
+   (creadores en rojo, marcas en celeste).
+   El markup lo arma acá y no en cada HTML porque el ítem está en el menú de
+   todas las páginas: así hay una sola copia del texto y del diseño. */
+(function(){
+  const CAMINOS = [
+    {
+      color:'var(--red)', href:'/organizas-experiencias/',
+      titulo:'CREÁS', que:'Experiencias, actividades, eventos, arte, encuentros.',
+      texto:'Si estás dando vida a una propuesta que reúne personas, te ayudamos a hacerla crecer, conectar con más gente y generar un impacto que perdure.',
+      cta:'Conocé cómo podemos acompañarte',
+      /* Destello: el mismo símbolo que identifica a Creadores en la Red Tribu. */
+      ic:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c.9 5 1.6 5.7 6.6 6.6-5 .9-5.7 1.6-6.6 6.6-.9-5-1.6-5.7-6.6-6.6C10.4 7.7 11.1 7 12 2z"/><path d="M18.5 15c.4 2.2.8 2.6 3 3-2.2.4-2.6.8-3 3-.4-2.2-.8-2.6-3-3 2.2-.4 2.6-.8 3-3z"/></svg>'
+    },
+    {
+      color:'var(--teal)', href:'/representas-marca/',
+      titulo:'IMPULSÁS', que:'Una marca, un espacio, un emprendimiento, una organización.',
+      texto:'Creamos conexiones genuinas entre tu marca y comunidades afines, desarrollando estrategias y acciones de colaboración y beneficio mutuo.',
+      cta:'Potenciá tu marca',
+      /* Etiqueta: el mismo símbolo que identifica a Marca en la Red Tribu. */
+      ic:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0l-7.2-7.2A2 2 0 0 1 3 12V5a2 2 0 0 1 2-2h7a2 2 0 0 1 1.4.6l7.2 7.2a2 2 0 0 1 0 2.6z"/><circle cx="7.5" cy="7.5" r="1.5" fill="currentColor" stroke="none"/></svg>'
+    }
+  ];
+
+  let overlay = null;
+
+  function construir(){
+    overlay = document.createElement('div');
+    overlay.className = 'modal-overlay';
+    overlay.id = 'caminosModal';
+    overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML =
+      '<div class="modal modal--caminos" role="dialog" aria-modal="true" aria-labelledby="caminosTitle">' +
+        '<button class="modal-close" type="button" aria-label="Cerrar">✕</button>' +
+        '<h2 id="caminosTitle">Sumá tu propuesta</h2>' +
+        '<p class="modal-sub">Hay dos formas de sumarse a la Tribu. Elegí la que te represente y te contamos cómo podemos acompañarte.</p>' +
+        '<div class="caminos-grid">' +
+          CAMINOS.map(c =>
+            '<a class="camino-card" href="' + c.href + '" style="--c:' + c.color + '">' +
+              '<span class="camino-ic" aria-hidden="true">' + c.ic + '</span>' +
+              '<h3>' + c.titulo + '</h3>' +
+              '<p class="camino-que">' + c.que + '</p>' +
+              '<p>' + c.texto + '</p>' +
+              '<span class="camino-cta">' + c.cta + ' <span class="arr" aria-hidden="true">→</span></span>' +
+            '</a>'
+          ).join('') +
+        '</div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    overlay.querySelector('.modal-close').addEventListener('click', cerrar);
+    overlay.addEventListener('click', e => { if(e.target === overlay) cerrar(); });
+  }
+
+  function abrir(){
+    if(!overlay) construir();
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    /* El foco arranca en la primera tarjeta: se puede elegir con el teclado. */
+    const primera = overlay.querySelector('.camino-card');
+    if(primera) primera.focus();
+  }
+  function cerrar(){
+    if(!overlay) return;
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('click', e => {
+    const trigger = e.target.closest('[data-caminos]');
+    if(!trigger) return;
+    e.preventDefault();
+    abrir();
+  });
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && overlay && overlay.classList.contains('open')) cerrar();
+  });
+})();
+
 /* ============ MODAL PROPUESTA A MEDIDA ============ */
 (function(){
   const overlay = document.getElementById('propuestaModal');
@@ -607,7 +768,9 @@ const PROVINCIAS_AR = {
 
   function showPreview(lat, lng, label){
     previewEl.classList.add('on');
-    setTimeout(()=>{
+    /* El mapita de la dirección aparece recién cuando alguien elige un lugar,
+       así que Leaflet se baja acá y no en la carga del formulario. */
+    tribuLoadLeaflet().then(()=> new Promise(r => setTimeout(r, 50))).then(()=>{
       if(!geoMap){
         geoMap = L.map('evLocMap', { zoomControl:false, attributionControl:false, scrollWheelZoom:true }).setView([lat,lng], 13);
         tribuMapTiles().addTo(geoMap);
@@ -617,7 +780,7 @@ const PROVINCIAS_AR = {
       if(geoMarker) geoMap.removeLayer(geoMarker);
       geoMarker = L.marker([lat,lng]).addTo(geoMap);
       if(label) geoMarker.bindPopup(escHtml(label));
-    }, 50);
+    }).catch(()=>{});
   }
 
   function selectPlace(item){
@@ -897,7 +1060,7 @@ const PROVINCIAS_AR = {
   const today = new Date(); today.setHours(0,0,0,0);
   /* No tenemos foto propia por evento todavía: rotamos fotos reales de la Tribu
      ya usadas en el resto del sitio, en vez de inventar datos. */
-  const IMAGENES = ['/assets/reels/reel1.jpg', '/assets/stories/musica-en-vivo.jpg', '/assets/reels/reel3.jpg', '/assets/stories/conciencia-festival.jpg'];
+  const IMAGENES = ['/assets/reels/reel1.jpg?v=2', '/assets/stories/musica-en-vivo.jpg?v=2', '/assets/reels/reel3.jpg?v=2', '/assets/stories/conciencia-festival.jpg?v=2'];
 
   function pintar(){
     const EVENTS = window.TRIBU_EVENTS || [];

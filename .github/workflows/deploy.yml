@@ -26,3 +26,7 @@ jobs:
           local-dir: ./tribu-landing/
           exclude: |
             **/LEEME.txt
+            **/node_modules/**
+            **/.perf-*
+            **/package.json
+            **/package-lock.json
