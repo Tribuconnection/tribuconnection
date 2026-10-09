@@ -34,7 +34,6 @@
 .nav-links a.is-active::after{
   content:''; position:absolute; left:0; right:0; bottom:-8px; height:2px; background:var(--spectrum);
 }
-.btn--icon{ display:inline-flex; align-items:center; gap:.5rem; }
 
 /* ---------- Hero plataforma ---------- */
 .home-hero{ position:relative; padding-top:clamp(96px,12vw,124px); padding-bottom:clamp(24px,3.5vw,40px); overflow:hidden; }
@@ -202,11 +201,9 @@
 .mini-cta h3{ font-size:1.02rem; font-weight:600; margin-bottom:.2rem; }
 .mini-cta p{ font-size:.85rem; color:var(--soft); }
 
-/* ---------- Footer (v4 columnas) ---------- */
-.footer-cols{ display:grid; grid-template-columns:1.7fr repeat(4,1fr); gap:1.6rem; }
-.footer-col-title{ font-size:.85rem; font-weight:700; color:var(--cream); margin-bottom:.9rem; }
-.footer-col a{ display:block; font-size:.85rem; color:var(--soft); text-decoration:none; margin-bottom:.65rem; }
-.footer-col a:hover{ color:var(--cream); }
+/* El footer de 4 columnas vive en tribu.css: lo usan todas las páginas, no
+   solo la home. Estaba acá y las landings que no cargan home.css
+   (organizás / impulsás / representás) se quedaban sin grilla. */
 
 @media (max-width:980px){
   .home-hero-grid{ grid-template-columns:1fr; }
@@ -216,13 +213,11 @@
   .club-banner{ grid-template-columns:1fr; }
   .club-perks{ grid-template-columns:repeat(2,1fr); }
   .stories-row2{ grid-template-columns:1fr; }
-  .footer-cols{ grid-template-columns:1fr 1fr; }
   .nav-search{ display:none; }
 }
 @media (max-width:640px){
   .agenda-row{ grid-template-columns:1fr 1fr; }
   .club-perks{ grid-template-columns:1fr 1fr; }
-  .footer-cols{ grid-template-columns:1fr; }
 }
 
 /* ============================================================
@@ -240,13 +235,6 @@
 }
 .directory-search input::placeholder{ color:var(--muted); }
 
-.tab-row{ display:flex; flex-wrap:wrap; gap:.6rem; justify-content:center; margin:1.6rem 0 2.2rem; }
-.tab-btn{
-  padding:.5rem 1.1rem; border-radius:999px; border:1px solid var(--line-2); background:transparent;
-  color:var(--soft); font-family:var(--font-sans); font-size:.88rem; cursor:pointer; transition:.2s;
-}
-.tab-btn.active{ background:var(--cream); color:var(--ink); border-color:var(--cream); }
-.tab-btn:not(.active):hover{ border-color:var(--cream); color:var(--cream); }
 
 .directory-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:.75rem; align-items:stretch; }
 .directory-card{
