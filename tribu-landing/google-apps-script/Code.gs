@@ -24,12 +24,24 @@
 
 const NOTIFY_EMAIL = 'contacto@tribuconnection.com';
 
-/* Supabase: la misma clave PÚBLICA que usa la web (assets/supabase-client.js),
-   no es secreta. El Apps Script la usa solo para preguntarle a la base de datos
-   a quién avisar de un pedido de cambio ya resuelto. */
+/* Supabase: el Apps Script le pregunta a la base a quién avisar de un pedido de
+   cambio ya resuelto (cambio_para_notificar).
+
+   Esa función devuelve el MAIL de la persona y además marca el pedido como
+   avisado, así que dejó de ser llamable con la clave pública: antes cualquiera
+   que tuviera un id de pedido podía leer ese mail o quemar el aviso para que
+   nunca saliera. Ahora pide la clave SECRETA (service_role).
+
+   La clave NO va en este archivo: el repositorio es público. Vive en
+   Configuración del proyecto (engranaje) → Propiedades del script, con el
+   nombre SUPABASE_SECRET_KEY. Si falta, el aviso no sale y el panel del equipo
+   deja reenviarlo. */
 const SUPABASE_URL = 'https://dcoazdjqdohiekcsaxor.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_zC1SJUG-5kHTWArEgYIqBw_tuYEqwOf';
 const SITIO = 'https://www.tribuconnection.com';
+
+function supabaseKey_() {
+  return PropertiesService.getScriptProperties().getProperty('SUPABASE_SECRET_KEY') || '';
+}
 
 /* Planilla APARTE (no la de Formularios) donde se registra cada experiencia
    publicada desde "Publicar experiencia" en la cuenta de un usuario. Vive en
@@ -192,9 +204,11 @@ function handleCambioPerfil_(ss, e) {
 function handleNotificarCambio_(e) {
   const id = String(e.parameter.Id || '').trim();
   if (!/^[0-9a-f-]{36}$/i.test(id)) return respond_({ ok: false, error: 'ID inválido' });
+  const key = supabaseKey_();
+  if (!key) return respond_({ ok: false, error: 'Falta la propiedad SUPABASE_SECRET_KEY en el script' });
   const res = UrlFetchApp.fetch(SUPABASE_URL + '/rest/v1/rpc/cambio_para_notificar', {
     method: 'post', contentType: 'application/json', muteHttpExceptions: true,
-    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY },
+    headers: { apikey: key, Authorization: 'Bearer ' + key },
     payload: JSON.stringify({ p_id: id })
   });
   if (res.getResponseCode() !== 200) return respond_({ ok: false, error: 'Supabase ' + res.getResponseCode() });

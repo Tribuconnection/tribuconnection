@@ -75,7 +75,7 @@
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=14"></script>
+<script src="/assets/supabase-client.js?v=15"></script>
 <script src="/assets/site.js?v=20"></script>
 <script>
 (function(){
@@ -137,7 +137,7 @@
   (async () => {
     const session = await tribuRequiereSesion();
     if(!session) return;
-    if(!tribuEsAdmin(session)){
+    if(!await tribuEsAdmin()){
       document.getElementById('sinAcceso').style.display = 'block';
       return;
     }

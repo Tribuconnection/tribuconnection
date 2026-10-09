@@ -149,16 +149,27 @@ async function tribuDestinoPostAuth(session){
   return '/cuenta/perfil/';
 }
 
-/* Mismo mail-a-mail que las políticas RLS de event_submissions en Supabase:
-   si se suma o saca a alguien acá, hay que tocar también esas políticas
-   (son la seguridad real; esta lista solo decide qué se MUESTRA en pantalla). */
-const ADMIN_EMAILS = [
-  'deco.latini@gmail.com', 'auc.spanish@gmail.com', 'anto.gas.camuzzi@gmail.com', 'carlamlandolfi@gmail.com',
-  'andres@tribuconnection.com', 'rodrigo@tribuconnection.com', 'carla@tribuconnection.com',
-  'contacto@tribuconnection.com', 'hola@tribuconnection.com', 'antonella@tribuconnection.com', 'rodri.epb@gmail.com'
-];
-function tribuEsAdmin(session){
-  return !!(session && session.user && ADMIN_EMAILS.includes(session.user.email));
+/* ¿Quien está logueado es del equipo de Tribu?
+
+   Antes acá había una lista de mails copiada a mano, que también estaba
+   repetida en cuatro políticas RLS y en la función es_equipo_tribu(). Sumar a
+   alguien obligaba a tocar las seis, y olvidarse de una dejaba un agujero
+   silencioso. Ahora hay una sola fuente de verdad: la tabla equipo_tribu en
+   Supabase. Para sumar o sacar a alguien del equipo alcanza con una fila ahí,
+   sin tocar código ni deployar.
+
+   Esto sigue siendo solo para la PANTALLA (mostrar u ocultar el panel). La
+   seguridad real son las políticas RLS y el chequeo que hace cada RPC de
+   administración: aunque alguien fuerce esta función a devolver true, la base
+   le sigue diciendo que no.
+
+   Se cachea por carga de página: lo consultan varias pantallas y la respuesta
+   no cambia en el medio. */
+let _esEquipo = null;
+async function tribuEsAdmin(){
+  if(_esEquipo !== null) return _esEquipo;
+  const { data, error } = await sb.rpc('es_equipo_tribu');
+  return (_esEquipo = !error && data === true);
 }
 
 /* Actualiza los botones/links que dependen de si hay sesión iniciada
@@ -215,6 +226,8 @@ async function tribuInitAuthNav(){
   let foto = p && p.foto_url;
   try{ const u = new URL(foto); if(u.protocol !== 'https:') foto = null; }catch(e){ foto = null; }
   const avatar = '<img src="' + esc(foto || tribuAvatarVacio(tribuCategoriaPerfil(p))) + '" alt="">';
+  /* Se resuelve acá y no adentro del forEach: el callback no es async. */
+  const esEquipo = await tribuEsAdmin();
 
   document.querySelectorAll('.nav .nav-cta').forEach(cta => {
     cta.querySelectorAll('[data-auth-nav], [data-signup]').forEach(el => el.style.display = 'none');
@@ -230,7 +243,7 @@ async function tribuInitAuthNav(){
         '<a href="/cuenta/portal/">Mi portal (placas y materiales)</a>' +
         '<a href="/cuenta/perfil/">Mi perfil</a>' +
         '<a href="/cuenta/perfil/editar/">Completar / editar mi perfil</a>' +
-        (tribuEsAdmin(session) ? '<a href="/cuenta/admin-cambios/">Panel del equipo</a>' : '') +
+        (esEquipo ? '<a href="/cuenta/admin-cambios/">Panel del equipo</a>' : '') +
         '<hr><a href="#" data-logout>Cerrar sesión</a>' +
       '</div>';
     const burger = cta.querySelector('.burger');

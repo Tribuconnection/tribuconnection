@@ -62,6 +62,26 @@ nombre de dónde viene:
      "Nueva versión" → "Implementar"
    - La URL /exec se mantiene igual, no hace falta tocar la web de nuevo
 
+CLAVE SECRETA DE SUPABASE (obligatoria para los avisos por mail)
+   El aviso "tu cambio ya está publicado" necesita preguntarle a Supabase a
+   quién escribirle. Esa consulta devuelve el MAIL de la persona, así que dejó
+   de poder hacerse con la clave pública: ahora pide la clave secreta.
+
+   Una sola vez:
+     - En Supabase: Project Settings → API Keys → copiá la clave "secret"
+       (service_role). NO la pegues en ningún archivo del repositorio: es
+       público.
+     - En el editor del script: Configuración del proyecto (engranaje) →
+       Propiedades del script → Agregar propiedad
+         nombre: SUPABASE_SECRET_KEY
+         valor:  la clave secreta
+     - Implementar → Administrar implementaciones → lápiz → Nueva versión →
+       Implementar
+
+   Hasta que se haga, el panel del equipo muestra "el mail de aviso no salió"
+   y deja reenviarlo. No se pierde nada: el pedido queda igual en la base y el
+   botón de reenviar lo vuelve a intentar.
+
 ADMINISTRACIÓN REMOTA (opcional)
    El script permite leer y corregir la planilla a distancia (borrar filas,
    editar celdas) para tareas de mantenimiento. Está apagado por defecto.
