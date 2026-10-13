@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/tribu.css?v=48">
-<link rel="stylesheet" href="/assets/home.css?v=14">
+<link rel="stylesheet" href="/assets/home.css?v=15">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" media="print" onload="this.media='all'">
 <style>
   .cat-chip{ font-family:var(--font-sans); display:inline-flex; align-items:center; padding:.45rem .9rem; border-radius:999px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); font-size:.85rem; cursor:pointer; transition:.15s; margin:0 .4rem .4rem 0; }
@@ -32,6 +32,24 @@
   .final-opt span{ color:var(--muted); font-size:.78rem; }
   .file-drop{ border:1px dashed var(--line-2); border-radius:14px; padding:1.4rem; text-align:center; cursor:pointer; color:var(--soft); font-size:.86rem; }
   .file-drop img{ max-height:90px; border-radius:10px; margin-bottom:.6rem; }
+</style>
+<style>
+  /* Desarrollo completo de la experiencia: un bloque plegado, para no alargar
+     el formulario de quien sólo quiere publicar lo básico. */
+  .xp-des{ border:1px solid var(--line-2); border-radius:16px; padding:0 1.1rem; margin-bottom:1.2rem; }
+  .xp-des[open]{ padding-bottom:1.1rem; }
+  .xp-des > summary{ list-style:none; cursor:pointer; padding:1rem 0; font-weight:600; color:var(--cream); display:flex; align-items:center; gap:.5rem; }
+  .xp-des > summary::-webkit-details-marker{ display:none; }
+  .xp-des > summary span{ color:var(--muted); font-weight:400; font-size:.86rem; }
+  .xp-des > summary::after{ content:"+"; margin-left:auto; font-size:1.3rem; line-height:1; }
+  .xp-des[open] > summary::after{ content:"–"; }
+  .xp-rep-item{ border:1px solid var(--line); border-radius:12px; padding:.7rem; margin-bottom:.6rem; position:relative; }
+  .xp-rep-item input, .xp-rep-item textarea{ margin-bottom:.4rem; }
+  .xp-rep-item button{ position:absolute; top:.45rem; right:.5rem; background:none; border:0; color:var(--muted); cursor:pointer; font-size:1rem; }
+  .xp-rep-item button:hover{ color:var(--red); }
+  .xp-add{ background:none; border:1px dashed var(--line-2); border-radius:10px; color:var(--soft); padding:.5rem .9rem; cursor:pointer; font-family:var(--font-sans); font-size:.85rem; }
+  .xp-add:hover{ border-color:var(--teal); color:var(--cream); }
+  .xp-ayuda{ color:var(--muted); font-size:.8rem; margin:-.4rem 0 1rem; }
 </style>
 </head>
 <body>
@@ -265,6 +283,103 @@
         </div>
       </div>
 
+      <!-- Desarrollo completo: lo que se ve al entrar a la experiencia desde
+           la Red Tribu. Todo opcional: lo que quede vacío no se muestra. -->
+      <details class="xp-des">
+        <summary>Desarrollo completo de la experiencia <span>(opcional)</span></summary>
+
+        <div class="field">
+          <label for="valorTitulo">Titular: por qué darse este tiempo</label>
+          <input id="valorTitulo" placeholder="Ej: Hacés espacio para todo. Esta tarde hacé espacio para vos.">
+        </div>
+        <div class="field">
+          <label for="valorTexto">Texto de apertura</label>
+          <textarea id="valorTexto" style="min-height:80px" placeholder="Contá en dos o tres frases qué resuelve tu propuesta."></textarea>
+        </div>
+        <div class="field">
+          <label>Bloques de valor <span style="text-transform:none;font-weight:400">(título + texto)</span></label>
+          <div id="valorBloques" class="xp-rep"></div>
+          <button type="button" class="xp-add" data-add="valorBloques">+ Agregar bloque</button>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="videoUrl">Video de presentación (link)</label>
+            <input id="videoUrl" placeholder="Link del video o del embed">
+          </div>
+          <div class="field">
+            <label for="galeria">Más fotos (un link por línea)</label>
+            <textarea id="galeria" style="min-height:62px" placeholder="https://…"></textarea>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="comoSeVive">Así se vive el encuentro</label>
+          <textarea id="comoSeVive" style="min-height:80px" placeholder="Cómo empieza, qué pasa en el medio y cómo cierra."></textarea>
+        </div>
+        <div class="field">
+          <label for="queCompartimos">Qué vamos a compartir (uno por línea)</label>
+          <textarea id="queCompartimos" style="min-height:70px" placeholder="Respiración guiada&#10;Meditación&#10;Música en vivo"></textarea>
+        </div>
+        <div class="field">
+          <label for="queCompartimosNota">Aclaración sobre lo anterior</label>
+          <input id="queCompartimosNota" placeholder="Ej: podés participar sin elegir la ceremonia.">
+        </div>
+
+        <div class="field">
+          <label>Testimonios <span style="text-transform:none;font-weight:400">(nombre + lo que contaron)</span></label>
+          <div id="testimonios" class="xp-rep"></div>
+          <button type="button" class="xp-add" data-add="testimonios">+ Agregar testimonio</button>
+        </div>
+
+        <div class="field">
+          <label>Preguntas frecuentes</label>
+          <div id="faq" class="xp-rep"></div>
+          <button type="button" class="xp-add" data-add="faq">+ Agregar pregunta</button>
+        </div>
+
+        <div class="field">
+          <label for="recomendaciones">Para disfrutar plenamente (una por línea)</label>
+          <textarea id="recomendaciones" style="min-height:70px" placeholder="Vení con ropa cómoda&#10;Traé abrigo y agua"></textarea>
+        </div>
+        <div class="field">
+          <label for="mensajeCierre">Mensaje de cierre</label>
+          <textarea id="mensajeCierre" style="min-height:60px" placeholder="Ej: Te mando un fuerte abrazo, nos vemos para compartir esta experiencia."></textarea>
+        </div>
+
+        <div class="field">
+          <label>Quiénes hacen posible la experiencia</label>
+          <div id="equipo" class="xp-rep"></div>
+          <button type="button" class="xp-add" data-add="equipo">+ Agregar persona o espacio</button>
+        </div>
+
+        <div class="row2">
+          <div class="field">
+            <label for="duracionHoras">Duración (horas)</label>
+            <input id="duracionHoras" type="number" step="0.25" min="0.25" placeholder="Ej: 2">
+          </div>
+          <div class="field">
+            <label for="cantidadDias">Cantidad de días</label>
+            <input id="cantidadDias" type="number" step="1" min="1" placeholder="Ej: 1">
+          </div>
+        </div>
+        <div class="row2">
+          <div class="field">
+            <label for="precioNumero">Precio general (sólo el número)</label>
+            <input id="precioNumero" type="number" step="1" min="0" placeholder="Ej: 25000">
+          </div>
+          <div class="field">
+            <label for="precioClub">Precio con Club Tribu</label>
+            <input id="precioClub" type="number" step="1" min="0" placeholder="Ej: 18750">
+          </div>
+        </div>
+        <p class="xp-ayuda">Los dos precios habilitan la reserva online con el beneficio del Club aplicado.</p>
+
+        <div class="field"><label>Público</label><div id="publicoChips"></div></div>
+        <div class="field"><label>Tipo de participación</label><div id="participacionChips"></div></div>
+        <div class="field"><label>Idiomas</label><div id="idiomasChips"></div></div>
+      </details>
+
       <div class="field">
         <label class="visible-check" style="display:flex;align-items:flex-start;gap:.6rem">
           <input type="checkbox" id="ofreceBeneficio" style="margin-top:.2rem">
@@ -297,7 +412,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=15"></script>
+<script src="/assets/supabase-client.js?v=16"></script>
 <script src="/assets/site.js?v=20"></script>
 <script>
 (function(){
@@ -406,6 +521,61 @@
     document.getElementById('portadaTexto').style.display = 'none';
   });
 
+  /* Listas repetibles (bloques de valor, testimonios, preguntas y equipo).
+     Cada una se guarda como jsonb con las claves que lee la página pública. */
+  const REPETIBLES = {
+    valorBloques: { campos:[['titulo','Título','input'], ['texto','Texto','textarea']] },
+    testimonios:  { campos:[['nombre','Nombre','input'], ['texto','Lo que contó','textarea'], ['foto','Foto (link, opcional)','input']] },
+    faq:          { campos:[['pregunta','Pregunta','input'], ['respuesta','Respuesta','textarea']] },
+    equipo:       { campos:[['nombre','Nombre','input'], ['rol','Rol o descripción','input'], ['foto','Foto (link, opcional)','input'], ['slug','Perfil en la Red Tribu (slug, opcional)','input']] }
+  };
+  function filaRepetible(id, valores){
+    const def = REPETIBLES[id];
+    const item = document.createElement('div');
+    item.className = 'xp-rep-item';
+    item.innerHTML = def.campos.map(([k, etq, tipo]) =>
+      tipo === 'textarea'
+        ? '<textarea data-k="' + k + '" style="min-height:58px" placeholder="' + etq + '"></textarea>'
+        : '<input data-k="' + k + '" placeholder="' + etq + '">'
+    ).join('') + '<button type="button" aria-label="Quitar">✕</button>';
+    def.campos.forEach(([k]) => { const c = item.querySelector('[data-k="' + k + '"]'); c.value = (valores && valores[k]) || ''; });
+    item.querySelector('button').addEventListener('click', () => item.remove());
+    document.getElementById(id).appendChild(item);
+  }
+  function leerRepetible(id){
+    return [...document.querySelectorAll('#' + id + ' .xp-rep-item')].map(item => {
+      const o = {};
+      REPETIBLES[id].campos.forEach(([k]) => { const v = item.querySelector('[data-k="' + k + '"]').value.trim(); if(v) o[k] = v; });
+      return o;
+    }).filter(o => Object.keys(o).length);
+  }
+  document.querySelectorAll('.xp-add').forEach(b => b.addEventListener('click', () => filaRepetible(b.dataset.add)));
+
+  /* Etiquetas que usa el filtro de Experiencias de la Red Tribu. */
+  const XP_PUBLICO = ['Todas las edades', 'Infancias', 'Adolescentes', 'Adultos', 'Familias', 'Parejas', 'Profesionales', 'Abierto a todo público'];
+  const XP_PARTICIPACION = ['Individual', 'Grupal', 'Parejas', 'Familias', 'Con inscripción', 'Con reserva', 'Acceso libre', 'Invitación'];
+  const XP_IDIOMAS = ['Español', 'Inglés', 'Portugués'];
+  let publicoSel = [], participacionSel = [], idiomasXpSel = [];
+  function chipsXp(boxId, opciones, getSel){
+    const box = document.getElementById(boxId);
+    opciones.forEach(op => {
+      const chip = document.createElement('button');
+      chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = op;
+      chip.addEventListener('click', () => {
+        const sel = getSel(); const i = sel.indexOf(op);
+        if(i > -1){ sel.splice(i, 1); chip.classList.remove('sel'); } else { sel.push(op); chip.classList.add('sel'); }
+      });
+      box.appendChild(chip);
+    });
+  }
+  chipsXp('publicoChips', XP_PUBLICO, () => publicoSel);
+  chipsXp('participacionChips', XP_PARTICIPACION, () => participacionSel);
+  chipsXp('idiomasChips', XP_IDIOMAS, () => idiomasXpSel);
+  function marcarChipsXp(boxId, sel){
+    document.querySelectorAll('#' + boxId + ' .cat-chip').forEach(c => c.classList.toggle('sel', sel.includes(c.textContent)));
+  }
+  const lineas = id => document.getElementById(id).value.split('\n').map(x => x.trim()).filter(Boolean);
+
   async function cargarExperienciaExistente(){
     const { data: e, error } = await sb.from('experiences').select('*').eq('id', editId).maybeSingle();
     if(error || !e) return;
@@ -427,6 +597,28 @@
       marker = L.marker([lat, lng]).addTo(map);
       map.setView([lat, lng], 13);
     }
+    document.getElementById('valorTitulo').value = e.valor_titulo || '';
+    document.getElementById('valorTexto').value = e.valor_texto || '';
+    document.getElementById('videoUrl').value = e.video_url || '';
+    document.getElementById('galeria').value = (Array.isArray(e.galeria) ? e.galeria : []).join('\n');
+    document.getElementById('comoSeVive').value = e.como_se_vive || '';
+    document.getElementById('queCompartimos').value = (e.que_compartimos || []).join('\n');
+    document.getElementById('queCompartimosNota').value = e.que_compartimos_nota || '';
+    document.getElementById('recomendaciones').value = (e.recomendaciones || []).join('\n');
+    document.getElementById('mensajeCierre').value = e.mensaje_cierre || '';
+    document.getElementById('duracionHoras').value = e.duracion_horas == null ? '' : e.duracion_horas;
+    document.getElementById('cantidadDias').value = e.cantidad_dias == null ? '' : e.cantidad_dias;
+    document.getElementById('precioNumero').value = e.precio_numero == null ? '' : e.precio_numero;
+    document.getElementById('precioClub').value = e.precio_club == null ? '' : e.precio_club;
+    (Array.isArray(e.valor_bloques) ? e.valor_bloques : []).forEach(v => filaRepetible('valorBloques', v));
+    (Array.isArray(e.testimonios) ? e.testimonios : []).forEach(v => filaRepetible('testimonios', v));
+    (Array.isArray(e.faq) ? e.faq : []).forEach(v => filaRepetible('faq', v));
+    (Array.isArray(e.equipo) ? e.equipo : []).forEach(v => filaRepetible('equipo', v));
+    publicoSel = e.publico || []; participacionSel = e.tipo_participacion || []; idiomasXpSel = e.idiomas || [];
+    marcarChipsXp('publicoChips', publicoSel);
+    marcarChipsXp('participacionChips', participacionSel);
+    marcarChipsXp('idiomasChips', idiomasXpSel);
+    if(e.valor_titulo || e.como_se_vive || (e.faq || []).length) document.querySelector('.xp-des').open = true;
     categoriasSel = e.categorias || [];
     document.querySelectorAll('#categorias .cat-chip').forEach(chip => chip.classList.toggle('sel', categoriasSel.includes(chip.textContent)));
 
@@ -509,6 +701,26 @@
         instagram: document.getElementById('instagram2').value.trim() || null,
         colaboradores: document.getElementById('colaboradores').value.trim() || null,
         club_beneficio: document.getElementById('ofreceBeneficio').checked ? (document.getElementById('clubBeneficio').value.trim() || null) : null,
+        valor_titulo: document.getElementById('valorTitulo').value.trim() || null,
+        valor_texto: document.getElementById('valorTexto').value.trim() || null,
+        valor_bloques: leerRepetible('valorBloques'),
+        video_url: document.getElementById('videoUrl').value.trim() || null,
+        galeria: lineas('galeria'),
+        como_se_vive: document.getElementById('comoSeVive').value.trim() || null,
+        que_compartimos: lineas('queCompartimos'),
+        que_compartimos_nota: document.getElementById('queCompartimosNota').value.trim() || null,
+        testimonios: leerRepetible('testimonios'),
+        faq: leerRepetible('faq'),
+        recomendaciones: lineas('recomendaciones'),
+        mensaje_cierre: document.getElementById('mensajeCierre').value.trim() || null,
+        equipo: leerRepetible('equipo'),
+        duracion_horas: document.getElementById('duracionHoras').value ? Number(document.getElementById('duracionHoras').value) : null,
+        cantidad_dias: document.getElementById('cantidadDias').value ? Number(document.getElementById('cantidadDias').value) : null,
+        precio_numero: document.getElementById('precioNumero').value ? Number(document.getElementById('precioNumero').value) : null,
+        precio_club: document.getElementById('precioClub').value ? Number(document.getElementById('precioClub').value) : null,
+        publico: publicoSel,
+        tipo_participacion: participacionSel,
+        idiomas: idiomasXpSel,
         acceso_tipo: acceso,
         estado_publicacion: estadoFinal,
         publicado: true

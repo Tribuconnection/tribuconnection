@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/tribu.css?v=48">
-<link rel="stylesheet" href="/assets/home.css?v=14">
+<link rel="stylesheet" href="/assets/home.css?v=15">
 <style>
   .cat-chip{ font-family:var(--font-sans); display:inline-flex; align-items:center; padding:.45rem .9rem; border-radius:999px; border:1px solid var(--line-2); background:var(--ink-1); color:var(--soft); font-size:.85rem; cursor:pointer; transition:.15s; margin:0 .4rem .4rem 0; }
   .cat-chip.sel{ background:var(--spectrum); color:#15110f; border-color:transparent; font-weight:600; }
@@ -213,6 +213,37 @@
         </div>
 
         <div class="field">
+          <label for="historiaFrase">Mi historia — frase destacada</label>
+          <textarea id="historiaFrase" maxlength="160" style="min-height:56px" placeholder="Ej: Fue en mi propia respiración donde encontré una manera diferente de habitar la vida."></textarea>
+          <p style="color:var(--muted);font-size:.76rem;margin-top:.2rem"><span id="historiaFraseCount">0</span> / 160</p>
+        </div>
+
+        <div class="field">
+          <label for="historiaFoto">Mi historia — foto (link de la imagen, opcional)</label>
+          <input id="historiaFoto" type="url" placeholder="https://…">
+        </div>
+
+        <div class="field">
+          <label for="buscoConectar">Busco conectar con…</label>
+          <textarea id="buscoConectar" maxlength="300" style="min-height:60px" placeholder="Ej: Espacios para encuentros grupales y músicos que quieran acompañar una experiencia de respiración."></textarea>
+        </div>
+
+        <div class="field">
+          <label for="puedoAportar">Lo que puedo aportar</label>
+          <textarea id="puedoAportar" maxlength="300" style="min-height:60px" placeholder="Ej: Facilitación de respiración y yoga para experiencias compartidas."></textarea>
+        </div>
+
+        <div class="field">
+          <label>Formas de colaborar <span style="text-transform:none;font-weight:400">(las que elijas se muestran en "Creemos juntos")</span></label>
+          <div id="colabora"></div>
+        </div>
+
+        <div class="field">
+          <label>Idiomas <span style="text-transform:none;font-weight:400">(se usan en el filtro de la Red Tribu)</span></label>
+          <div id="idiomas"></div>
+        </div>
+
+        <div class="field">
           <label>Tipo de creador/a <span style="text-transform:none;font-weight:400">(podés elegir varios)</span></label>
           <div id="tipoCreador"></div>
         </div>
@@ -250,7 +281,8 @@
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=15"></script>
+<script src="/assets/supabase-client.js?v=16"></script>
+<script src="/assets/red-tribu-filtros.js?v=1"></script>
 <script src="/assets/site.js?v=20"></script>
 <script>
 (function(){
@@ -318,12 +350,18 @@
   document.getElementById('queEsperar').addEventListener('input', (e) => {
     document.getElementById('queEsperarCount').textContent = e.target.value.length;
   });
+  document.getElementById('historiaFrase').addEventListener('input', (e) => {
+    document.getElementById('historiaFraseCount').textContent = e.target.value.length;
+  });
   document.getElementById('bioLarga').addEventListener('input', (e) => {
     document.getElementById('bioLargaCount').textContent = e.target.value.length;
   });
 
+  /* El listado de prácticas sale del catálogo de los cinco filtros, para que
+     lo que cargás acá sea exactamente lo que después se puede filtrar. */
   const catBox = document.getElementById('categorias');
-  Object.entries(DISCIPLINA_GRUPOS).forEach(([grupo, lista]) => {
+  const CATALOGO = typeof DISCIPLINA_GRUPOS_CATALOGO !== 'undefined' ? DISCIPLINA_GRUPOS_CATALOGO : DISCIPLINA_GRUPOS;
+  Object.entries(CATALOGO).forEach(([grupo, lista]) => {
     const t = document.createElement('div');
     t.className = 'cat-grupo'; t.textContent = grupo;
     catBox.appendChild(t);
@@ -340,7 +378,13 @@
   });
 
   /* "Tipo de creador/a" y "Qué ofrecés": alimentan los filtros de Red Tribu. */
-  let tipoCreadorSel = [], queOfreceSel = [];
+  const COLABORA_LABEL = {
+    espacio:'Llevar un encuentro a mi espacio',
+    evento:'Integrarla a un evento',
+    crear:'Crear una experiencia juntos'
+  };
+  const IDIOMAS_PERFIL = ['Español', 'Inglés', 'Portugués'];
+  let tipoCreadorSel = [], queOfreceSel = [], colaboraSel = [], idiomasSel = [];
   function chipsMulti(boxId, opciones, getSel){
     const box = document.getElementById(boxId);
     opciones.forEach(op => {
@@ -356,12 +400,25 @@
   }
   chipsMulti('tipoCreador', TIPOS_CREADOR, () => tipoCreadorSel);
   chipsMulti('queOfrece', QUE_OFRECE, () => queOfreceSel);
+  chipsMulti('idiomas', IDIOMAS_PERFIL, () => idiomasSel);
+  /* Las formas de colaborar se guardan por su id (espacio / evento / crear),
+     no por la etiqueta: el perfil público las dibuja con su propio texto. */
+  Object.entries(COLABORA_LABEL).forEach(([id, label]) => {
+    const chip = document.createElement('button');
+    chip.type = 'button'; chip.className = 'cat-chip'; chip.dataset.id = id; chip.textContent = label;
+    chip.addEventListener('click', () => {
+      const i = colaboraSel.indexOf(id);
+      if(i > -1){ colaboraSel.splice(i, 1); chip.classList.remove('sel'); }
+      else { colaboraSel.push(id); chip.classList.add('sel'); }
+    });
+    document.getElementById('colabora').appendChild(chip);
+  });
   function marcarChips(boxId, sel){
     document.querySelectorAll('#' + boxId + ' .cat-chip').forEach(chip => chip.classList.toggle('sel', sel.includes(chip.textContent)));
   }
 
   const catSelect = document.getElementById('categoriaPrincipal');
-  CATEGORIAS_RED_TRIBU.forEach(cat => {
+  Object.values(CATALOGO).flat().forEach(cat => {
     const opt = document.createElement('option'); opt.value = cat; opt.textContent = cat;
     catSelect.appendChild(opt);
   });
@@ -451,9 +508,36 @@
     if(data.banner_url){ bannerActual = data.banner_url; document.getElementById('bannerPreviewWrap').style.backgroundImage = "url('" + data.banner_url + "')"; }
     tipoCreadorSel = data.tipo_creador || [];
     queOfreceSel = data.que_ofrece || [];
+    colaboraSel = data.colabora || [];
+    idiomasSel = data.idiomas || [];
+    document.getElementById('historiaFrase').value = data.historia_frase || '';
+    document.getElementById('historiaFraseCount').textContent = (data.historia_frase || '').length;
+    document.getElementById('historiaFoto').value = data.historia_foto_url || '';
+    document.getElementById('buscoConectar').value = data.busco_conectar || '';
+    document.getElementById('puedoAportar').value = data.puedo_aportar || '';
     marcarChips('tipoCreador', tipoCreadorSel);
     marcarChips('queOfrece', queOfreceSel);
+    marcarChips('idiomas', idiomasSel);
+    document.querySelectorAll('#colabora .cat-chip').forEach(chip => chip.classList.toggle('sel', colaboraSel.includes(chip.dataset.id)));
     categoriasSel = data.categorias || [];
+    /* Si el perfil tenía cargada una disciplina del listado viejo, se agrega
+       como chip para que no se pierda al guardar. */
+    const enCatalogo = new Set(Object.values(CATALOGO).flat());
+    const viejas = categoriasSel.filter(c => !enCatalogo.has(c));
+    if(viejas.length){
+      const t = document.createElement('div'); t.className = 'cat-grupo'; t.textContent = 'Cargadas antes';
+      catBox.appendChild(t);
+      viejas.forEach(cat => {
+        const chip = document.createElement('button');
+        chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = cat;
+        chip.addEventListener('click', () => {
+          const i = categoriasSel.indexOf(cat);
+          if(i > -1){ categoriasSel.splice(i, 1); chip.classList.remove('sel'); }
+          else if(categoriasSel.length < 5){ categoriasSel.push(cat); chip.classList.add('sel'); }
+        });
+        catBox.appendChild(chip);
+      });
+    }
     document.querySelectorAll('#categorias .cat-chip').forEach(chip => {
       chip.classList.toggle('sel', categoriasSel.includes(chip.textContent));
     });
@@ -518,6 +602,12 @@
         categorias: categoriasSel,
         tipo_creador: tipoCreadorSel,
         que_ofrece: queOfreceSel,
+        colabora: colaboraSel,
+        idiomas: idiomasSel,
+        historia_frase: document.getElementById('historiaFrase').value.trim() || null,
+        historia_foto_url: document.getElementById('historiaFoto').value.trim() || null,
+        busco_conectar: document.getElementById('buscoConectar').value.trim() || null,
+        puedo_aportar: document.getElementById('puedoAportar').value.trim() || null,
         foto_url: fotoUrl,
         banner_url: bannerUrl,
         publicado: document.getElementById('visible').checked
@@ -527,7 +617,7 @@
          también lo garantiza). */
       const pedidos = [];
       if(original && original.publicado_alguna_vez){
-        ['nombre', 'nombre_marca', 'titulo_profesional', 'mini_bio', 'bio_larga', 'que_esperar'].forEach(k => {
+        ['nombre', 'nombre_marca', 'titulo_profesional', 'mini_bio', 'bio_larga', 'que_esperar', 'historia_frase', 'busco_conectar', 'puedo_aportar'].forEach(k => {
           const antes = original[k] || '', ahora = row[k] || '';
           if(antes !== ahora) pedidos.push({ profile_id: session.user.id, campo: k, valor_anterior: antes, valor_nuevo: ahora });
           row[k] = original[k];
@@ -540,7 +630,7 @@
         if(de) throw de;
         const { data: creados, error: ie } = await sb.from('cambios_perfil').insert(pedidos).select();
         if(ie) throw ie;
-        const ETQ = { nombre:'Nombre público', nombre_marca:'Nombre de la marca', titulo_profesional:'Cómo te presentás', mini_bio:'Frase destacada', bio_larga:'Bio completa', que_esperar:'Qué esperar' };
+        const ETQ = { nombre:'Nombre público', nombre_marca:'Nombre de la marca', titulo_profesional:'Cómo te presentás', mini_bio:'Frase destacada', bio_larga:'Bio completa', que_esperar:'Qué esperar', historia_frase:'Mi historia — frase', busco_conectar:'Busco conectar con…', puedo_aportar:'Lo que puedo aportar' };
         (creados || []).forEach(c => {
           const fd = new FormData();
           fd.set('Id', c.id); fd.set('Perfil', row.nombre || original.nombre || ''); fd.set('Email', session.user.email);

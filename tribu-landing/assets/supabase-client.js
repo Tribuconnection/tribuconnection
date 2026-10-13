@@ -103,13 +103,25 @@ const AVATAR_SIMBOLO = {
     '<path d="M18 158 76 62l44 72-20 24zM96 158l40-62 46 62z"/>'
 };
 
-/* Foto de perfil vacía: el símbolo de la categoría sobre el fondo oscuro de la
-   marca, teñido con el color de esa categoría. Es un SVG en data: URI, así
-   sirve igual en un <img>, en un fondo o dibujado en las placas.
-   forma 'busto': la figura más chica y más arriba, para fichas y placas donde
-   el texto ocupa la parte de abajo (si no, el símbolo queda tapado). */
-const _avataresVacios = {};
+/* Foto de perfil vacía: las ilustraciones de la marca (silueta neón sobre el
+   fondo oscuro, teñida con el color de la categoría), en las tres proporciones
+   que preparó diseño. Se usan mientras la persona todavía no subió su foto;
+   la idea es que sean transitorias, no la imagen definitiva de un perfil.
+     forma 'busto'  → cuadrada 1x1  (avatares, fichas chicas)
+     forma 'ancho'  → 4x3           (banners y tarjetas horizontales)
+     por defecto    → 4x5 vertical  (portadas y fichas verticales) */
+const PLACEHOLDER_V = 1;
 function tribuAvatarVacio(cat, forma){
+  const categoria = CATEGORIA_COLOR[cat] ? cat : 'creador';
+  const prop = forma === 'busto' ? '1x1' : forma === 'ancho' ? '4x3' : '4x5';
+  return '/assets/placeholders/' + categoria + '_' + prop + '.png?v=' + PLACEHOLDER_V;
+}
+
+/* Versión dibujada del mismo símbolo, en SVG data: URI. Queda para donde no
+   sirve un archivo (canvas de las placas, correos) o si hiciera falta un
+   fondo liviano. */
+const _avataresVacios = {};
+function tribuAvatarSimbolo(cat, forma){
   const categoria = AVATAR_SIMBOLO[cat] && CATEGORIA_COLOR[cat] ? cat : 'creador';
   const busto = forma === 'busto';
   const k = categoria + (busto ? '-busto' : '');

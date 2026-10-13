@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Experiencia · Tribu Connection</title>
+<meta name="description" content="El desarrollo completo de una experiencia publicada en Tribu Connection.">
+<meta name="robots" content="index, follow">
+
+<link rel="icon" type="image/png" href="/assets/isotipo.png?v=3">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/tribu.css?v=48">
+<link rel="stylesheet" href="/assets/home.css?v=15">
+<style>
+  /* La experiencia tiene su propio color de categoría (violeta) y todo el
+     desarrollo cuelga de él, igual que en los bocetos. */
+  .xp{ --xc:#A99BC2; }
+  .xp-wrap{ max-width:860px; margin-inline:auto; padding-bottom:clamp(90px,14vw,120px); }
+  .xp-top{ display:flex; align-items:center; gap:1rem; margin-bottom:1.3rem; }
+  .xp-top a{ color:var(--soft); text-decoration:none; font-size:.9rem; display:inline-flex; align-items:center; gap:.45rem; }
+  .xp-top a:hover{ color:var(--cream); }
+
+  /* ---- Portada con carrusel (pantalla 1) ---- */
+  .xp-portada{ position:relative; border-radius:22px; overflow:hidden; border:1px solid color-mix(in srgb, var(--xc) 55%, transparent); background:#0d0e12; }
+  .xp-slides{ display:flex; transition:transform .35s ease; }
+  .xp-slides img{ flex:none; width:100%; aspect-ratio:3/4; max-height:70svh; object-fit:cover; display:block; }
+  @media (min-width:760px){ .xp-slides img{ aspect-ratio:16/10; } }
+  .xp-portada-cat{ position:absolute; top:1rem; left:1rem; z-index:3; border:1px solid var(--xc); color:var(--xc); background:rgba(10,11,15,.6); font-size:.68rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:.36rem .8rem; border-radius:999px; }
+  .xp-portada-txt{ position:absolute; left:0; right:0; bottom:0; z-index:3; padding:2.6rem 1.4rem 1.6rem; text-align:center; background:linear-gradient(0deg, rgba(8,9,12,.92), transparent); }
+  .xp-portada-txt h1{ font-family:var(--font-display); font-size:clamp(1.7rem,4.4vw,2.6rem); line-height:1.05; color:#fff; }
+  .xp-portada-txt p{ color:rgba(255,255,255,.9); margin-top:.3rem; }
+  .xp-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:4; width:40px; height:40px; border-radius:50%; border:0; background:rgba(0,0,0,.35); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .xp-nav.prev{ left:.6rem; } .xp-nav.next{ right:.6rem; }
+  .xp-puntos{ position:absolute; left:0; right:0; bottom:.8rem; z-index:4; display:flex; justify-content:center; gap:.4rem; }
+  .xp-puntos i{ width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,.4); }
+  .xp-puntos i.on{ background:var(--xc); }
+
+  .xp-nombre{ font-family:var(--font-display); font-size:clamp(1.4rem,3.4vw,2rem); color:var(--xc); margin-top:1.6rem; }
+  .xp-desc{ color:var(--soft); line-height:1.6; margin-top:.5rem; }
+  .xp-datos{ display:grid; gap:.7rem; margin-top:1.2rem; }
+  .xp-dato{ display:flex; align-items:flex-start; gap:.7rem; color:var(--cream); font-size:.95rem; }
+  .xp-dato svg{ color:var(--xc); flex:none; margin-top:.1rem; }
+
+  /* ---- Bloques de contenido ---- */
+  .xp-sec{ margin-top:clamp(2rem,5vw,3rem); }
+  .xp-sec > h2{ font-family:var(--font-display); font-size:clamp(1.5rem,3.6vw,2.1rem); line-height:1.12; color:var(--xc); margin-bottom:.8rem; }
+  .xp-sec p{ color:var(--soft); line-height:1.65; }
+  .xp-sec p + p{ margin-top:.8rem; }
+  .xp-bloque{ margin-top:1.4rem; }
+  .xp-bloque h3{ font-size:1.1rem; font-weight:700; color:var(--xc); margin-bottom:.25rem; }
+  .xp-lista{ list-style:none; display:grid; gap:.5rem; margin-top:.8rem; }
+  .xp-lista li{ display:flex; gap:.8rem; align-items:flex-start; color:var(--cream); line-height:1.5; }
+  .xp-lista li::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--cream); flex:none; margin-top:.55rem; }
+  .xp-nota{ color:var(--muted); font-size:.9rem; margin-top:.7rem; }
+  .xp-video{ position:relative; border-radius:18px; overflow:hidden; border:1px solid var(--line-2); background:#0d0e12; }
+  .xp-video video, .xp-video iframe{ width:100%; aspect-ratio:16/10; display:block; border:0; }
+
+  .xp-testi{ display:flex; gap:1rem; padding:1.1rem 0; border-bottom:1px solid var(--line); }
+  .xp-testi:last-child{ border-bottom:0; }
+  .xp-testi img{ width:62px; height:62px; border-radius:50%; object-fit:cover; flex:none; border:1px solid var(--line-2); }
+  .xp-testi blockquote{ font-style:italic; color:var(--cream); line-height:1.5; }
+  .xp-testi b{ display:block; color:var(--muted); font-style:normal; font-weight:500; font-size:.85rem; margin-top:.4rem; }
+
+  .xp-faq{ border:1px solid var(--line-2); border-radius:14px; margin-bottom:.6rem; overflow:hidden; }
+  .xp-faq summary{ list-style:none; cursor:pointer; padding:.95rem 1.1rem; display:flex; align-items:center; gap:1rem; color:var(--cream); font-size:.98rem; }
+  .xp-faq summary::-webkit-details-marker{ display:none; }
+  .xp-faq summary::after{ content:"+"; margin-left:auto; color:var(--cream); font-size:1.4rem; line-height:1; }
+  .xp-faq[open] summary::after{ content:"–"; }
+  .xp-faq p{ padding:0 1.1rem 1.1rem; }
+
+  /* ---- Tu lugar en la experiencia (pantalla 6) ---- */
+  .xp-precio{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:.9rem 0; border-bottom:1px solid var(--line); }
+  .xp-precio b{ font-size:1.15rem; font-weight:600; }
+  .xp-precio span{ font-size:1.25rem; font-weight:700; }
+  .xp-club{ padding:.9rem 0; border-bottom:1px solid var(--line); }
+  .xp-club-fila{ display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+  .xp-club-fila b{ color:var(--xc); font-size:1.15rem; display:inline-flex; align-items:center; gap:.5rem; }
+  .xp-club-fila b img{ width:22px; height:22px; }
+  .xp-club-fila span{ color:var(--xc); font-size:1.25rem; font-weight:700; }
+  .xp-club p{ font-size:.92rem; margin-top:.35rem; }
+  .xp-club a{ color:var(--xc); font-weight:600; text-decoration:none; display:inline-flex; align-items:center; gap:.4rem; margin-top:.5rem; }
+  .xp-guia{ display:flex; gap:1rem; align-items:center; padding-top:1.2rem; }
+  .xp-guia img{ width:92px; height:92px; border-radius:50%; object-fit:cover; flex:none; border:1px solid var(--line-2); }
+  .xp-guia h3{ font-size:1.2rem; font-weight:600; }
+  .xp-guia p{ font-size:.92rem; }
+  .xp-guia a{ color:var(--xc); font-weight:600; text-decoration:none; font-size:.92rem; }
+
+  .xp-equipo{ display:flex; align-items:center; gap:1rem; padding:.8rem 0; border-bottom:1px solid var(--line); color:var(--cream); text-decoration:none; }
+  .xp-equipo:last-child{ border-bottom:0; }
+  .xp-equipo img{ width:56px; height:56px; border-radius:50%; object-fit:cover; flex:none; }
+  .xp-equipo b{ display:block; font-size:1.05rem; font-weight:600; }
+  .xp-equipo span{ color:var(--muted); font-size:.88rem; }
+  .xp-equipo svg{ margin-left:auto; color:var(--xc); flex:none; }
+
+  /* ---- Barra fija con el CTA ---- */
+  .xp-barra{
+    position:fixed; left:0; right:0; bottom:0; z-index:60; display:flex; gap:.7rem; align-items:center;
+    padding:.8rem clamp(14px,4vw,24px) calc(.8rem + env(safe-area-inset-bottom));
+    background:linear-gradient(0deg, rgba(8,9,12,.97) 60%, transparent); backdrop-filter:blur(6px);
+  }
+  .xp-barra .btn{ flex:1; justify-content:center; max-width:640px; margin-inline:auto; }
+  .xp-barra .pp-ico-btn{ width:48px; height:48px; border-radius:12px; border:1px solid var(--xc); background:rgba(0,0,0,.4); color:var(--cream); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .btn--xp{ background:var(--xc); color:#15110f; border:0; font-weight:700; }
+  /* La barra fija comparte el borde de abajo con el chat y el botón de
+     WhatsApp: se los sube para que no tapen el botón de compartir. */
+  .xp .tc-wa{ bottom:calc(86px + env(safe-area-inset-bottom)); }
+  .xp .tc-dock{ bottom:calc(146px + env(safe-area-inset-bottom)); }
+  .btn--xp:hover{ filter:brightness(1.08); }
+
+  /* ---- Reserva (pantallas 8A y 8B) ---- */
+  .xp-reserva-paso{ display:none; }
+  .xp-reserva-paso.on{ display:block; }
+  .xp-campo{ margin-bottom:.7rem; }
+  .xp-campo label{ display:block; color:var(--muted); font-size:.78rem; margin-bottom:.25rem; }
+  .xp-campo input, .xp-campo select{
+    width:100%; border:1px solid var(--line-2); border-radius:12px; background:rgba(255,255,255,.02);
+    color:var(--cream); font-family:var(--font-sans); font-size:.95rem; padding:.7rem .85rem;
+  }
+  .xp-campo input:focus, .xp-campo select:focus{ outline:0; border-color:var(--xc); }
+  .xp-pago{ display:flex; align-items:center; gap:.9rem; width:100%; text-align:left; cursor:pointer; border:1px solid var(--line-2); border-radius:14px; padding:.8rem 1rem; margin-bottom:.6rem; background:rgba(255,255,255,.02); color:var(--cream); font-family:var(--font-sans); }
+  .xp-pago.sel{ border-color:var(--xc); box-shadow:0 0 16px -8px var(--xc); }
+  .xp-pago i{ width:20px; height:20px; border-radius:50%; border:2px solid var(--line-2); flex:none; }
+  .xp-pago.sel i{ border-color:var(--xc); background:radial-gradient(circle, var(--xc) 45%, transparent 48%); }
+  .xp-pago b{ display:block; font-weight:600; }
+  .xp-pago span{ color:var(--muted); font-size:.85rem; }
+  .xp-pago[disabled]{ opacity:.45; cursor:not-allowed; }
+  .xp-datos-banco{ border:1px solid var(--line-2); border-radius:14px; overflow:hidden; margin:.8rem 0; }
+  .xp-datos-banco div{ display:flex; align-items:center; gap:1rem; padding:.7rem 1rem; border-bottom:1px solid var(--line); }
+  .xp-datos-banco div:last-child{ border-bottom:0; }
+  .xp-datos-banco small{ color:var(--muted); width:72px; flex:none; }
+  .xp-datos-banco b{ font-weight:600; }
+  .xp-datos-banco button{ margin-left:auto; background:none; border:0; color:var(--xc); cursor:pointer; font-size:.82rem; }
+  .xp-adjuntar{ border:1px dashed var(--line-2); border-radius:14px; padding:1.2rem; text-align:center; color:var(--soft); cursor:pointer; display:block; }
+  .xp-adjuntar:hover{ border-color:var(--xc); color:var(--cream); }
+  .xp-adjuntar b{ display:block; color:var(--cream); font-weight:600; }
+  .xp-resumen{ display:flex; justify-content:space-between; gap:1rem; padding:.55rem 0; }
+  .xp-resumen.total{ border-top:1px solid var(--line); margin-top:.3rem; padding-top:.8rem; font-weight:700; font-size:1.05rem; }
+  .xp-tachado{ text-decoration:line-through; color:var(--muted); }
+  .xp-ok{ display:inline-flex; align-items:center; gap:.5rem; border:1px solid var(--green); color:var(--green); border-radius:999px; padding:.35rem .9rem; font-size:.85rem; }
+</style>
+</head>
+<body class="xp">
+
+<div class="aurora" aria-hidden="true">
+  <span class="a1"></span><span class="a2"></span><span class="a3"></span>
+</div>
+
+<!-- ============================ NAV ============================ -->
+<nav class="nav" id="nav">
+  <a href="/" class="brand" aria-label="Tribu Connection — inicio">
+    <img class="brand-full" src="/assets/logo-blanco.png?v=2" alt="Tribu Connection">
+  </a>
+  <div class="nav-links">
+    <a href="/">Inicio</a>
+    <a href="/agenda/">Agenda</a>
+    <a href="/red-tribu/" class="is-active">Red Tribu</a>
+    <a href="/#historias">Historias</a>
+    <a href="/club-tribu-connection/">Club Tribu</a>
+    <a href="#" data-caminos>Sumá tu propuesta</a>
+  </div>
+  <div class="nav-cta">
+    <a href="/cuenta/" class="btn btn--ghost">Ingresar</a>
+    <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="/">Inicio</a>
+  <a href="/agenda/">Agenda</a>
+  <a href="/red-tribu/">Red Tribu</a>
+  <a href="/#historias">Historias</a>
+  <a href="/club-tribu-connection/">Club Tribu</a>
+  <a href="#" data-caminos>Sumá tu propuesta</a>
+</div>
+
+<section class="section" style="padding-top:clamp(104px,13vw,132px)">
+  <div class="wrap xp-wrap" id="xpContenido">
+    <p style="color:var(--muted)">Cargando experiencia…</p>
+  </div>
+</section>
+
+<!-- ===================== RESERVA (pantallas 8A / 8B) ===================== -->
+<div class="pp-sheet" id="reservaSheet" aria-hidden="true">
+  <div class="pp-sheet-bg" data-cerrar-reserva></div>
+  <div class="pp-sheet-card" role="dialog" aria-modal="true" aria-labelledby="reservaTitulo" style="--pc:#A99BC2">
+    <div class="pp-sheet-asa"></div>
+    <button type="button" class="pp-sheet-close" data-cerrar-reserva aria-label="Cerrar">✕</button>
+
+    <!-- Paso 1: datos + resumen + medio de pago -->
+    <div class="xp-reserva-paso on" id="pasoDatos">
+      <h2 id="reservaTitulo">Reservá tu lugar</h2>
+      <p id="reservaSub">Completá tus datos y elegí cómo pagar.</p>
+      <div id="reservaClub"></div>
+      <div id="reservaCabecera" style="margin-bottom:1rem"></div>
+
+      <h3 style="color:var(--xc);font-size:1.1rem;margin-bottom:.5rem">Tus datos</h3>
+      <div class="xp-campo"><label for="rNombre">Nombre y apellido</label><input id="rNombre" placeholder="Cómo te llamás" autocomplete="name"></div>
+      <div class="xp-campo"><label for="rEmail">Email</label><input id="rEmail" type="email" placeholder="tuemail@example.com" autocomplete="email"></div>
+      <div class="xp-campo"><label for="rWhatsapp">WhatsApp</label><input id="rWhatsapp" placeholder="+54 11…" autocomplete="tel"></div>
+      <div class="xp-campo"><label for="rCantidad">Cantidad de participantes</label>
+        <select id="rCantidad">
+          <option value="1">1 participante</option><option value="2">2 participantes</option>
+          <option value="3">3 participantes</option><option value="4">4 participantes</option>
+          <option value="5">5 participantes</option><option value="6">6 participantes</option>
+        </select>
+      </div>
+
+      <h3 style="color:var(--xc);font-size:1.1rem;margin:1.2rem 0 .3rem">Resumen de tu reserva</h3>
+      <div id="reservaResumen"></div>
+
+      <h3 style="color:var(--xc);font-size:1.1rem;margin:1.2rem 0 .5rem">Elegí cómo pagar</h3>
+      <div id="reservaPagos"></div>
+      <p class="xp-nota" id="reservaNotaPago"></p>
+      <p class="field-error" id="reservaError" style="display:none"></p>
+      <button type="button" class="btn btn--xp" style="width:100%;justify-content:center;margin-top:.6rem" id="btnReservaSeguir">Continuar</button>
+    </div>
+
+    <!-- Paso 2: transferencia + comprobante -->
+    <div class="xp-reserva-paso" id="pasoTransferencia">
+      <h2>Un último paso para participar</h2>
+      <p>Transferí el importe y adjuntá el comprobante.</p>
+      <div id="transferenciaCabecera" style="margin:.8rem 0"></div>
+      <h3 style="color:var(--xc);font-size:1.1rem">Transferencia</h3>
+      <p>Importe a transferir</p>
+      <p style="font-size:1.6rem;font-weight:700;color:var(--cream)" id="transferenciaMonto"></p>
+      <div class="xp-datos-banco" id="transferenciaDatos"></div>
+      <h3 style="color:var(--xc);font-size:1.1rem;margin-top:1.2rem">Adjuntá tu comprobante</h3>
+      <p class="xp-nota">Incluí una imagen o PDF donde se vea el importe y la operación.</p>
+      <label class="xp-adjuntar" for="rComprobante"><b>Seleccionar archivo</b>Foto o PDF</label>
+      <input type="file" id="rComprobante" accept="image/*,application/pdf" hidden>
+      <p class="xp-nota" id="comprobanteNombre"></p>
+      <p class="field-error" id="transferenciaError" style="display:none"></p>
+      <button type="button" class="btn btn--xp" style="width:100%;justify-content:center;margin-top:.8rem" id="btnEnviarComprobante">Enviar comprobante</button>
+      <p class="xp-nota" style="text-align:center">Tu lugar se confirma al verificar el pago.</p>
+    </div>
+
+    <!-- Paso 3: confirmación -->
+    <div class="xp-reserva-paso" id="pasoListo">
+      <h2 id="listoTitulo">Tu lugar está confirmado</h2>
+      <p id="listoSub">Te esperamos para compartir esta experiencia.</p>
+      <div id="listoResumen" style="margin-top:1rem"></div>
+      <button type="button" class="btn btn--xp" style="width:100%;justify-content:center;margin-top:1.2rem" data-cerrar-reserva>Listo</button>
+    </div>
+  </div>
+</div>
+
+<footer class="footer" id="contacto">
+  <div class="wrap">
+    <div class="foot-bottom">
+      <span>© 2026 Tribu Connection. Todos los derechos reservados.</span>
+      <span class="dots">
+        <i style="background:var(--red)"></i><i style="background:var(--amber)"></i><i style="background:var(--green)"></i><i style="background:var(--teal)"></i><i style="background:var(--purple)"></i>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="/assets/supabase-client.js?v=16"></script>
+<script src="/assets/site.js?v=20"></script>
+<script>
+/* Desarrollo completo de una experiencia: las siete pantallas de contenido del
+   boceto y, al final, la reserva (datos → pago → comprobante → confirmación).
+   Todo lo que el creador/a no cargó simplemente no se muestra, igual que en el
+   perfil público: nunca queda un bloque vacío. */
+(function(){
+  const cont = document.getElementById('xpContenido');
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  function sanitizeUrl(url){
+    if(!url) return null;
+    let v = String(url).trim(); if(!v) return null;
+    if(!/^https?:\/\//i.test(v)) v = 'https://' + v;
+    try{ const u = new URL(v); if(u.protocol === 'http:' || u.protocol === 'https:') return u.href; }catch(e){}
+    return null;
+  }
+  const parrafos = s => String(s || '').split(/\n+/).filter(x => x.trim()).map(p => '<p>' + esc(p) + '</p>').join('');
+  const DIAS = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  const plata = n => '$' + Number(n).toLocaleString('es-AR');
+
+  const IC = {
+    cal:'<rect x="3" y="4.5" width="18" height="17" rx="3"/><path d="M3 10h18M8 2.5v4M16 2.5v4"/>',
+    reloj:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/>',
+    casa:'<path d="M4 11 12 4l8 7v9a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/>',
+    pin:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+    mail:'<rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="m3 7 9 6 9-6"/>'
+  };
+  const svg = (d, w) => '<svg width="' + (w || 20) + '" height="' + (w || 20) + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">' + d + '</svg>';
+
+  let EX = null, PERFIL = null, sesion = null;
+
+  async function cargar(){
+    const id = new URLSearchParams(location.search).get('id');
+    if(!id){ cont.innerHTML = vacio('Nos falta saber cuál experiencia querés ver.'); return; }
+    const { data: ex } = await sb.from('experiences').select('*').eq('id', id).maybeSingle();
+    if(!ex || ex.estado_publicacion !== 'publicado'){ cont.innerHTML = vacio('Esta experiencia no está publicada.'); return; }
+    EX = ex;
+    const [{ data: perfil }, ses] = await Promise.all([
+      sb.from('perfiles_publicos').select('*').eq('id', ex.profile_id).maybeSingle(),
+      tribuSesionActual()
+    ]);
+    PERFIL = perfil || null; sesion = ses;
+    document.title = (ex.nombre || 'Experiencia') + ' · Tribu Connection';
+    pintar();
+  }
+  function vacio(txt){
+    return '<div style="text-align:center;padding:3rem 0"><h1 style="font-family:var(--font-display);font-size:1.6rem;margin-bottom:.6rem">Experiencia no encontrada</h1>' +
+      '<p style="color:var(--soft);margin-bottom:1.4rem">' + esc(txt) + '</p>' +
+      '<a class="btn btn--spectrum" href="/red-tribu/">Volver a Red Tribu</a></div>';
+  }
+
+  /* ---------- Las siete pantallas ---------- */
+  function pintar(){
+    const e = EX, p = PERFIL || {};
+    const nombreCreador = p.tipo === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre;
+    const primerNombre = (nombreCreador || '').split(' ')[0];
+    const d = e.fecha ? new Date(e.fecha + 'T00:00') : null;
+    const fechaTxt = d && !isNaN(d) ? DIAS[d.getDay()] + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + String(d.getFullYear()).slice(2) : '';
+    const galeria = [sanitizeUrl(e.imagen_portada_url), ...(Array.isArray(e.galeria) ? e.galeria.map(sanitizeUrl) : [])]
+      .filter(Boolean);
+    const fotos = galeria.length ? galeria : [tribuAvatarVacio('experiencia')];
+    const tags = (e.categorias || []).slice(0, 4).join('  •  ');
+
+    const partes = [];
+
+    /* 1 · Presentación */
+    partes.push('<div class="xp-top">' +
+      (p.slug ? '<a href="/' + encodeURIComponent(p.slug) + '/">' + svg('<path d="M15 6l-6 6 6 6"/>', 18) + 'Perfil de ' + esc(primerNombre) + '</a>'
+              : '<a href="/red-tribu/">' + svg('<path d="M15 6l-6 6 6 6"/>', 18) + 'Red Tribu</a>') +
+    '</div>');
+
+    partes.push('<div class="xp-portada">' +
+      '<span class="xp-portada-cat">Experiencia</span>' +
+      '<div class="xp-slides" id="xpSlides">' + fotos.map(f => '<img src="' + esc(f) + '" alt="' + esc(e.nombre || '') + '">').join('') + '</div>' +
+      (fotos.length > 1 ? '<button type="button" class="xp-nav prev" aria-label="Foto anterior">' + svg('<path d="M15 6l-6 6 6 6"/>', 20) + '</button>' +
+        '<button type="button" class="xp-nav next" aria-label="Foto siguiente">' + svg('<path d="m9 6 6 6-6 6"/>', 20) + '</button>' +
+        '<div class="xp-puntos" id="xpPuntos">' + fotos.map((f, i) => '<i class="' + (i ? '' : 'on') + '"></i>').join('') + '</div>' : '') +
+      '<div class="xp-portada-txt"><h1>' + esc(e.nombre || '') + '</h1>' +
+        (nombreCreador ? '<p>Con ' + esc(nombreCreador) + '</p>' : '') +
+        (tags ? '<p>' + esc(tags) + '</p>' : '') +
+      '</div>' +
+    '</div>');
+
+    partes.push('<h2 class="xp-nombre">' + esc(e.nombre || '') + '</h2>');
+    if(e.descripcion) partes.push('<p class="xp-desc">' + esc(e.descripcion) + '</p>');
+
+    const datos = [];
+    if(fechaTxt) datos.push([IC.cal, fechaTxt + (e.horario ? '   ·   ' + e.horario : '')]);
+    else if(e.horario) datos.push([IC.reloj, e.horario]);
+    if(e.lugar) datos.push([IC.casa, e.lugar]);
+    if(e.ciudad_barrio) datos.push([IC.pin, e.ciudad_barrio]);
+    if(datos.length) partes.push('<div class="xp-datos">' + datos.map(([ic, t]) => '<div class="xp-dato">' + svg(ic) + '<span>' + esc(t) + '</span></div>').join('') + '</div>');
+
+    /* 2 · El valor: por qué darte este tiempo */
+    if(e.valor_titulo || e.valor_texto || (e.valor_bloques || []).length){
+      partes.push('<section class="xp-sec">' +
+        (e.valor_titulo ? '<h2>' + esc(e.valor_titulo) + '</h2>' : '') +
+        parrafos(e.valor_texto) +
+        (Array.isArray(e.valor_bloques) ? e.valor_bloques.map(b => '<div class="xp-bloque"><h3>' + esc(b.titulo || '') + '</h3>' + parrafos(b.texto) + '</div>').join('') : '') +
+      '</section>');
+    }
+
+    /* 3 · Video: conocé a quién te guía */
+    const video = sanitizeUrl(e.video_url);
+    if(video){
+      const esArchivo = /\.(mp4|webm|mov)(\?|$)/i.test(video);
+      partes.push('<section class="xp-sec"><h2>Descubrí lo que vas a vivir</h2>' +
+        '<div class="xp-video">' +
+          (esArchivo
+            ? '<video controls playsinline preload="metadata" poster="' + esc(fotos[0]) + '"><source src="' + esc(video) + '"></video>'
+            : '<iframe src="' + esc(video) + '" title="Video de la experiencia" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>') +
+        '</div></section>');
+    }
+
+    /* 4 · Confianza: cómo se vive, qué se comparte y testimonios */
+    if(e.como_se_vive) partes.push('<section class="xp-sec"><h2>Así se vive el encuentro</h2>' + parrafos(e.como_se_vive) + '</section>');
+    if((e.que_compartimos || []).length){
+      partes.push('<section class="xp-sec"><h2>Qué vamos a compartir</h2>' +
+        '<ul class="xp-lista">' + e.que_compartimos.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' +
+        (e.que_compartimos_nota ? '<p class="xp-nota">' + esc(e.que_compartimos_nota) + '</p>' : '') +
+      '</section>');
+    }
+    if(Array.isArray(e.testimonios) && e.testimonios.length){
+      partes.push('<section class="xp-sec"><h2>Lo que cuentan quienes participaron</h2>' +
+        e.testimonios.map(t => '<div class="xp-testi">' +
+          (sanitizeUrl(t.foto) ? '<img src="' + esc(sanitizeUrl(t.foto)) + '" alt="" loading="lazy">' : '') +
+          '<div><blockquote>“' + esc(t.texto || '') + '”</blockquote>' + (t.nombre ? '<b>' + esc(t.nombre) + '</b>' : '') + '</div>' +
+        '</div>').join('') +
+      '</section>');
+    }
+
+    /* 5 · Dudas */
+    if(Array.isArray(e.faq) && e.faq.length){
+      partes.push('<section class="xp-sec"><h2>Lo que necesitás saber</h2>' +
+        '<p style="margin-bottom:1rem">Antes de reservar, conocé la propuesta y consultá lo que necesites.</p>' +
+        e.faq.map(f => '<details class="xp-faq"><summary>' + esc(f.pregunta || '') + '</summary>' + parrafos(f.respuesta) + '</details>').join('') +
+      '</section>');
+    }
+    if(p.slug && nombreCreador){
+      partes.push('<section class="xp-sec"><h2>Podés conversar con ' + esc(primerNombre) + '</h2>' +
+        '<p>Si es tu primera vez o querés consultar sobre tu participación, escribile antes de reservar.</p>' +
+        '<p style="margin-top:.7rem"><a href="/' + encodeURIComponent(p.slug) + '/#creemos" style="color:var(--xc);font-weight:600">Consultar a ' + esc(primerNombre) + ' →</a></p>' +
+      '</section>');
+    }
+
+    /* 6 · Tu lugar en la experiencia */
+    partes.push(bloquePrecio(e, p, nombreCreador));
+
+    /* 7 · Preparate */
+    if((e.recomendaciones || []).length || e.mensaje_cierre){
+      partes.push('<section class="xp-sec">' +
+        ((e.recomendaciones || []).length ? '<h2>Para disfrutar plenamente</h2><ul class="xp-lista">' + e.recomendaciones.map(r => '<li>' + esc(r) + '</li>').join('') + '</ul>' : '') +
+        (e.mensaje_cierre ? '<p style="margin-top:1rem">' + esc(e.mensaje_cierre) + '</p>' : '') +
+      '</section>');
+    }
+    if(Array.isArray(e.equipo) && e.equipo.length){
+      partes.push('<section class="xp-sec"><h2>Quiénes hacen posible esta experiencia</h2>' +
+        e.equipo.map(m => {
+          const href = m.slug ? '/' + encodeURIComponent(m.slug) + '/' : null;
+          const inner = (sanitizeUrl(m.foto) ? '<img src="' + esc(sanitizeUrl(m.foto)) + '" alt="" loading="lazy">' : '') +
+            '<div><b>' + esc(m.nombre || '') + '</b><span>' + esc(m.rol || '') + '</span></div>' +
+            (href ? svg('<path d="m9 6 6 6-6 6"/>', 18) : '');
+          return href ? '<a class="xp-equipo" href="' + esc(href) + '">' + inner + '</a>' : '<div class="xp-equipo">' + inner + '</div>';
+        }).join('') +
+      '</section>');
+    }
+    else if(e.colaboradores){
+      partes.push('<section class="xp-sec"><h2>Quiénes hacen posible esta experiencia</h2>' + parrafos(e.colaboradores) + '</section>');
+    }
+
+    cont.innerHTML = partes.join('');
+    document.body.insertAdjacentHTML('beforeend',
+      '<div class="xp-barra">' +
+        '<button type="button" class="btn btn--xp" data-reservar>Quiero participar</button>' +
+        '<button type="button" class="pp-ico-btn" id="btnCompartirXp" aria-label="Compartir">' + svg('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.6 15.4 7M8.6 13.4l6.8 3.6"/>', 19) + '</button>' +
+      '</div>');
+
+    carrusel(fotos.length);
+    document.getElementById('btnCompartirXp').addEventListener('click', compartir);
+    document.querySelectorAll('[data-reservar]').forEach(b => b.addEventListener('click', abrirReserva));
+    prepararReserva();
+  }
+
+  function bloquePrecio(e, p, nombreCreador){
+    const general = e.precio_numero != null ? Number(e.precio_numero) : null;
+    const club = e.precio_club != null ? Number(e.precio_club) : null;
+    const foto = sanitizeUrl(p.foto_url) || tribuAvatarVacio('creador', 'busto');
+    const ahorro = general != null && club != null && general > 0 ? Math.round((1 - club / general) * 100) : null;
+    return '<section class="xp-sec" id="participar"><h2>Tu lugar en la experiencia</h2>' +
+      '<p>Reservá tu lugar ahora y regalate este tiempo para vos.' + (e.cupo ? ' ' + esc(e.cupo) : ' Espacios limitados.') + '</p>' +
+      (general != null
+        ? '<div class="xp-precio"><b>Entrada general</b><span>' + plata(general) + '</span></div>'
+        : (e.precio ? '<div class="xp-precio"><b>Entrada</b><span>' + esc(e.precio) + '</span></div>' : '')) +
+      (club != null
+        ? '<div class="xp-club"><div class="xp-club-fila"><b><img src="/assets/isotipo-club-mano.png?v=3" alt="">Con Club Tribu</b><span>' + plata(club) + '</span></div>' +
+            (ahorro ? '<p>Ahorrás ' + ahorro + '% · Beneficio exclusivo para miembros.</p>' : '') +
+            '<p>Ingresá con tu cuenta de Club Tribu para acceder al beneficio.</p>' +
+            '<a href="/club-tribu-connection/">Ingresar a Club Tribu →</a>' +
+          '</div>'
+        : (e.club_beneficio ? '<div class="xp-club"><div class="xp-club-fila"><b><img src="/assets/isotipo-club-mano.png?v=3" alt="">Con Club Tribu</b></div><p>' + esc(e.club_beneficio) + '</p></div>' : '')) +
+      '<div style="padding-top:1rem"><h3 style="color:var(--xc);font-size:1.1rem">Medio de pago</h3>' +
+        '<p style="color:var(--cream);font-size:1.05rem">' + esc(e.modalidad_cobro || 'Transferencia') + '</p>' +
+        '<p class="xp-nota">Antes de pagar, revisás el resumen de tu reserva. Tu lugar se confirma al completar el pago.</p>' +
+      '</div>' +
+      (nombreCreador
+        ? '<div class="xp-guia"><img src="' + esc(foto) + '" alt="' + esc(nombreCreador) + '">' +
+            '<div><h3>' + esc(nombreCreador) + '</h3>' +
+              (p.titulo_profesional ? '<p>' + esc(p.titulo_profesional) + '</p>' : '') +
+              (p.slug ? '<a href="/' + encodeURIComponent(p.slug) + '/">Conocé su historia →</a>' : '') +
+            '</div></div>'
+        : '') +
+    '</section>';
+  }
+
+  function carrusel(n){
+    if(n < 2) return;
+    const slides = document.getElementById('xpSlides');
+    const puntos = document.getElementById('xpPuntos');
+    let i = 0;
+    const ir = k => {
+      i = (k + n) % n;
+      slides.style.transform = 'translateX(-' + (i * 100) + '%)';
+      [...puntos.children].forEach((p, j) => p.classList.toggle('on', j === i));
+    };
+    document.querySelector('.xp-nav.prev').addEventListener('click', () => ir(i - 1));
+    document.querySelector('.xp-nav.next').addEventListener('click', () => ir(i + 1));
+    let x0 = null;
+    slides.addEventListener('touchstart', ev => { x0 = ev.touches[0].clientX; }, { passive:true });
+    slides.addEventListener('touchend', ev => {
+      if(x0 == null) return;
+      const dx = ev.changedTouches[0].clientX - x0;
+      if(Math.abs(dx) > 50) ir(i + (dx < 0 ? 1 : -1));
+      x0 = null;
+    }, { passive:true });
+  }
+
+  function compartir(){
+    const url = location.href;
+    if(navigator.share){ navigator.share({ title: document.title, url }).catch(() => {}); return; }
+    navigator.clipboard.writeText(url).then(() => {
+      const b = document.getElementById('btnCompartirXp');
+      b.textContent = '✓'; setTimeout(() => cargarIconoCompartir(b), 1600);
+    }).catch(() => {});
+  }
+  function cargarIconoCompartir(b){
+    b.innerHTML = svg('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 10.6 15.4 7M8.6 13.4l6.8 3.6"/>', 19);
+  }
+
+  /* ---------- Reserva ---------- */
+  const sheet = document.getElementById('reservaSheet');
+  let medio = null, reservaId = null, reservaCodigo = '', comprobante = null;
+
+  function esMiembroClub(){ return !!sesion; }   /* tener cuenta = estar en el Club */
+  function precioUnitario(){
+    const g = EX.precio_numero != null ? Number(EX.precio_numero) : null;
+    const c = EX.precio_club != null ? Number(EX.precio_club) : null;
+    if(esMiembroClub() && c != null) return c;
+    return g;
+  }
+
+  function prepararReserva(){
+    const e = EX, p = PERFIL || {};
+    const d = e.fecha ? new Date(e.fecha + 'T00:00') : null;
+    const fechaTxt = d && !isNaN(d) ? DIAS[d.getDay()] + ' ' + d.getDate() + '/' + (d.getMonth() + 1) + '/' + String(d.getFullYear()).slice(2) : '';
+    const cabecera =
+      '<b style="display:block;font-size:1.2rem;margin-bottom:.5rem">' + esc(e.nombre || '') + '</b>' +
+      '<div class="xp-datos">' +
+        (fechaTxt ? '<div class="xp-dato">' + svg(IC.cal, 18) + '<span>' + esc(fechaTxt) + (e.horario ? '   ·   ' + esc(e.horario) : '') + '</span></div>' : '') +
+        (e.lugar ? '<div class="xp-dato">' + svg(IC.casa, 18) + '<span>' + esc(e.lugar) + '</span></div>' : '') +
+        (e.ciudad_barrio ? '<div class="xp-dato">' + svg(IC.pin, 18) + '<span>' + esc(e.ciudad_barrio) + '</span></div>' : '') +
+      '</div>';
+    document.getElementById('reservaCabecera').innerHTML = cabecera;
+    document.getElementById('transferenciaCabecera').innerHTML = cabecera;
+
+    /* Miembro del Club: el beneficio ya viene aplicado. Invitado: se ofrece. */
+    document.getElementById('reservaClub').innerHTML = esMiembroClub()
+      ? '<span class="xp-ok">' + svg('<circle cx="12" cy="12" r="9"/><path d="m8.5 12.5 2.5 2.5 4.5-5"/>', 16) + 'Miembro de Club Tribu</span>'
+      : (EX.precio_club != null
+          ? '<p class="xp-nota"><img src="/assets/isotipo-club-mano.png?v=3" alt="" style="width:18px;vertical-align:-3px"> Inscribite gratis en <a href="/club-tribu-connection/" style="color:var(--xc)">Club Tribu</a> y obtené el beneficio en esta experiencia.</p>'
+          : '');
+
+    /* Si ya hay sesión, los datos salen del perfil. */
+    if(sesion){
+      sb.from('profiles').select('nombre, email, telefono').eq('id', sesion.user.id).maybeSingle().then(({ data }) => {
+        if(!data) return;
+        document.getElementById('rNombre').value = data.nombre || '';
+        document.getElementById('rEmail').value = data.email || sesion.user.email || '';
+        document.getElementById('rWhatsapp').value = data.telefono || '';
+      });
+    }
+
+    /* Medios de pago: la transferencia funciona con los datos que cargó quien
+       organiza. La tarjeta sale por el link de cobro propio (Mercado Pago);
+       si no cargó ninguno, no se ofrece. */
+    const linkTarjeta = sanitizeUrl(EX.link_reserva);
+    const pagos = document.getElementById('reservaPagos');
+    pagos.innerHTML = '';
+    const opciones = [];
+    if(linkTarjeta) opciones.push({ id:'tarjeta', b:'Tarjeta con Mercado Pago', s:'Crédito o débito' });
+    if(EX.alias || EX.cbu) opciones.push({ id:'transferencia', b:'Transferencia', s:'Adjuntá el comprobante' });
+    opciones.forEach(op => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'xp-pago'; b.dataset.medio = op.id;
+      b.innerHTML = '<i></i><span><b>' + esc(op.b) + '</b><span>' + esc(op.s) + '</span></span>';
+      b.addEventListener('click', () => {
+        medio = op.id;
+        pagos.querySelectorAll('.xp-pago').forEach(x => x.classList.toggle('sel', x === b));
+      });
+      pagos.appendChild(b);
+    });
+    if(opciones.length === 1){ medio = opciones[0].id; pagos.querySelector('.xp-pago').classList.add('sel'); }
+    document.getElementById('reservaNotaPago').textContent = opciones.length
+      ? 'Tus datos se usan para gestionar esta reserva.'
+      : 'Esta experiencia todavía no tiene pago online: al reservar te escribimos para coordinarlo.';
+
+    document.getElementById('rCantidad').addEventListener('change', resumen);
+    resumen();
+  }
+
+  function resumen(){
+    const n = Number(document.getElementById('rCantidad').value) || 1;
+    const u = precioUnitario();
+    const g = EX.precio_numero != null ? Number(EX.precio_numero) : null;
+    const box = document.getElementById('reservaResumen');
+    if(u == null){
+      box.innerHTML = '<div class="xp-resumen"><span>' + esc(EX.precio || 'A coordinar con quien organiza') + '</span></div>';
+      return;
+    }
+    const conBeneficio = esMiembroClub() && EX.precio_club != null && g != null && g > u;
+    box.innerHTML =
+      '<div class="xp-resumen"><span>Entrada general' + (n > 1 ? ' × ' + n : '') + '</span>' +
+        '<span class="' + (conBeneficio ? 'xp-tachado' : '') + '">' + plata((g != null ? g : u) * n) + '</span></div>' +
+      (conBeneficio ? '<div class="xp-resumen"><span style="color:var(--xc)">Con Club Tribu</span><span style="color:var(--xc)">' + plata(u * n) + '</span></div>' : '') +
+      '<div class="xp-resumen total"><span>Total a pagar</span><span>' + plata(u * n) + '</span></div>';
+  }
+
+  function abrirReserva(){
+    paso('pasoDatos');
+    sheet.classList.add('open'); sheet.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function cerrarReserva(){
+    sheet.classList.remove('open'); sheet.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+  }
+  function paso(id){
+    document.querySelectorAll('.xp-reserva-paso').forEach(x => x.classList.toggle('on', x.id === id));
+    sheet.querySelector('.pp-sheet-card').scrollTop = 0;
+  }
+  document.querySelectorAll('[data-cerrar-reserva]').forEach(b => b.addEventListener('click', cerrarReserva));
+  document.addEventListener('keydown', ev => { if(ev.key === 'Escape') cerrarReserva(); });
+
+  /* La reserva se guarda de una sola vez, con el comprobante ya subido si el
+     pago es por transferencia: quien reserva puede no tener cuenta, así que
+     sólo puede insertar su fila (no leerla ni editarla después). Por eso el id
+     y el código se arman acá y se mandan en el insert. */
+  function nuevoId(){
+    if(crypto.randomUUID) return crypto.randomUUID();
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+      const r = Math.random() * 16 | 0;
+      return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+  }
+  function nuevoCodigo(){ return 'TRB-' + String(Math.floor(Math.random() * 99999)).padStart(5, '0'); }
+
+  function datosReserva(){
+    const n = Number(document.getElementById('rCantidad').value) || 1;
+    const u = precioUnitario();
+    return {
+      id: reservaId, codigo: reservaCodigo,
+      experience_id: EX.id, profile_id: sesion ? sesion.user.id : null,
+      nombre: document.getElementById('rNombre').value.trim(),
+      email: document.getElementById('rEmail').value.trim(),
+      whatsapp: document.getElementById('rWhatsapp').value.trim(),
+      participantes: n, es_club: esMiembroClub(),
+      precio_unitario: u, total: u == null ? null : u * n,
+      medio_pago: medio
+    };
+  }
+
+  document.getElementById('btnReservaSeguir').addEventListener('click', async () => {
+    const err = document.getElementById('reservaError');
+    const nombre = document.getElementById('rNombre').value.trim();
+    const email = document.getElementById('rEmail').value.trim();
+    const n = Number(document.getElementById('rCantidad').value) || 1;
+    const u = precioUnitario();
+    err.style.display = 'none';
+    if(!nombre || !email){ err.textContent = 'Necesitamos tu nombre y tu email para confirmarte la reserva.'; err.style.display = 'block'; return; }
+
+    reservaId = nuevoId(); reservaCodigo = nuevoCodigo();
+
+    /* Por transferencia, la fila se guarda recién con el comprobante. */
+    if(medio === 'transferencia'){ armarTransferencia(n, u); paso('pasoTransferencia'); return; }
+
+    const btn = document.getElementById('btnReservaSeguir');
+    btn.disabled = true; btn.textContent = 'Reservando…';
+    const { error } = await sb.from('reservas').insert(datosReserva());
+    btn.disabled = false; btn.textContent = 'Continuar';
+    if(error){ err.textContent = 'No pudimos guardar la reserva. Probá de nuevo en un momento.'; err.style.display = 'block'; return; }
+
+    if(medio === 'tarjeta'){
+      /* El cobro con tarjeta corre por el link de Mercado Pago del creador/a. */
+      confirmar(reservaCodigo, n, u, 'Te llevamos a Mercado Pago para completar el pago.');
+      window.open(sanitizeUrl(EX.link_reserva), '_blank', 'noopener');
+      return;
+    }
+    confirmar(reservaCodigo, n, u, 'Te escribimos para coordinar el pago y confirmarte el lugar.');
+  });
+
+  function armarTransferencia(n, u){
+    document.getElementById('transferenciaMonto').textContent = u == null ? (EX.precio || 'A coordinar') : plata(u * n);
+    const filas = [['Alias', EX.alias], ['Titular', EX.titular], ['CBU', EX.cbu]].filter(([, v]) => v);
+    document.getElementById('transferenciaDatos').innerHTML = filas.map(([k, v]) =>
+      '<div><small>' + esc(k) + '</small><b>' + esc(v) + '</b><button type="button" data-copiar="' + esc(v) + '">Copiar</button></div>').join('');
+    document.querySelectorAll('[data-copiar]').forEach(b => b.addEventListener('click', () => {
+      navigator.clipboard.writeText(b.dataset.copiar).then(() => { b.textContent = '✓ Copiado'; setTimeout(() => { b.textContent = 'Copiar'; }, 1600); }).catch(() => {});
+    }));
+  }
+
+  document.getElementById('rComprobante').addEventListener('change', ev => {
+    comprobante = ev.target.files[0] || null;
+    document.getElementById('comprobanteNombre').textContent = comprobante ? comprobante.name : '';
+  });
+
+  document.getElementById('btnEnviarComprobante').addEventListener('click', async () => {
+    const err = document.getElementById('transferenciaError');
+    err.style.display = 'none';
+    const btn = document.getElementById('btnEnviarComprobante');
+    const n = Number(document.getElementById('rCantidad').value) || 1;
+    const u = precioUnitario();
+    if(!comprobante){ err.textContent = 'Adjuntá la imagen o el PDF del comprobante.'; err.style.display = 'block'; return; }
+    if(comprobante.size > 8 * 1024 * 1024){ err.textContent = 'El archivo pesa más de 8 MB. Probá con una foto más liviana.'; err.style.display = 'block'; return; }
+    btn.disabled = true; btn.textContent = 'Enviando…';
+    const ext = (comprobante.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+    /* Sin upsert: quien reserva sólo puede crear archivos, no pisarlos, así
+       que cada intento usa su propio nombre. */
+    const ruta = EX.id + '/' + reservaId + '-' + Date.now() + '.' + ext;
+    const { error: errSubida } = await sb.storage.from('comprobantes').upload(ruta, comprobante);
+    if(errSubida){
+      btn.disabled = false; btn.textContent = 'Enviar comprobante';
+      err.textContent = 'No pudimos subir el comprobante. Probá de nuevo.'; err.style.display = 'block'; return;
+    }
+    const { error } = await sb.from('reservas').insert(Object.assign(datosReserva(), { comprobante_url: ruta }));
+    btn.disabled = false; btn.textContent = 'Enviar comprobante';
+    if(error){ err.textContent = 'Subimos el comprobante pero no pudimos guardar la reserva. Escribinos y lo resolvemos.'; err.style.display = 'block'; return; }
+    confirmar(reservaCodigo, n, u, 'Cuando verifiquemos el pago, te enviamos la confirmación y los datos del encuentro.', true);
+  });
+
+  /* El equipo se entera por la misma planilla que el resto de los formularios
+     del sitio; desde ahí sale el mail de confirmación a quien reservó. */
+  function avisarAlEquipo(codigo, n, u, estado){
+    const fd = new FormData();
+    fd.set('Codigo', codigo);
+    fd.set('Experiencia', EX.nombre || '');
+    fd.set('Fecha', EX.fecha || '');
+    fd.set('Nombre', document.getElementById('rNombre').value.trim());
+    fd.set('Email', document.getElementById('rEmail').value.trim());
+    fd.set('WhatsApp', document.getElementById('rWhatsapp').value.trim());
+    fd.set('Participantes', String(n));
+    fd.set('Total', u == null ? '' : String(u * n));
+    fd.set('Medio_Pago', medio || '');
+    fd.set('Club', esMiembroClub() ? 'Si' : 'No');
+    fd.set('Estado', estado);
+    enviarASheets(fd, 'ReservaExperiencia').catch(() => {});
+  }
+
+  function confirmar(codigo, n, u, mensaje, pendiente){
+    avisarAlEquipo(codigo, n, u, pendiente ? 'Comprobante enviado' : 'Pendiente de pago');
+    document.getElementById('listoTitulo').textContent = pendiente ? 'Recibimos tu comprobante' : 'Tu lugar está reservado';
+    document.getElementById('listoSub').textContent = mensaje;
+    const email = document.getElementById('rEmail').value.trim();
+    document.getElementById('listoResumen').innerHTML =
+      '<div class="xp-resumen"><span>' + esc(EX.nombre || '') + '</span><span>' + n + (n === 1 ? ' participante' : ' participantes') + '</span></div>' +
+      (u != null ? '<div class="xp-resumen"><span>Total</span><span>' + plata(u * n) + '</span></div>' : '') +
+      (codigo ? '<div class="xp-resumen"><span>Reserva</span><span>' + esc(codigo) + '</span></div>' : '') +
+      (email ? '<p class="xp-nota" style="margin-top:.8rem">' + svg(IC.mail, 16) + ' Te escribimos a ' + esc(email) + ' con los datos de tu reserva y del encuentro.</p>' : '');
+    paso('pasoListo');
+  }
+
+  cargar();
+})();
+</script>
+<script defer src="/assets/tribu-chat.js?v=4"></script>
+</body>
+</html>

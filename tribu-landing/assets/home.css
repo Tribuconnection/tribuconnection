@@ -249,6 +249,10 @@
   box-shadow:0 2px 10px -4px rgba(0,0,0,.5);
 }
 .directory-card-logo img{ max-width:100%; max-height:100%; object-fit:contain; }
+/* Marca sin logo propio: la ilustración de la categoría llena el cuadro, sin
+   el fondo crema pensado para logos sobre blanco. */
+.directory-card-logo.is-ph{ background:#15171F; padding:0; overflow:hidden; }
+.directory-card-logo.is-ph img{ width:100%; height:100%; max-width:none; max-height:none; object-fit:cover; }
 .directory-card-type{
   font-size:.62rem; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:var(--muted);
 }
@@ -324,3 +328,32 @@
 @media (max-width:860px){
   .evp-grid{ grid-template-columns:1fr; }
 }
+
+
+/* ---------- Hoja inferior compartida (perfil y experiencia) ---------- */
+/* ---------- Hoja "Conectá con X" (pantalla 5 del boceto) ---------- */
+.pp-sheet{ position:fixed; inset:0; z-index:120; display:none; }
+.pp-sheet.open{ display:block; }
+.pp-sheet-bg{ position:absolute; inset:0; background:rgba(5,6,9,.72); backdrop-filter:blur(3px); }
+.pp-sheet-card{
+  position:absolute; left:50%; bottom:0; transform:translateX(-50%); width:min(560px,100%);
+  background:var(--ink-1); border:1px solid var(--line-2); border-bottom:0;
+  border-radius:24px 24px 0 0; padding:1.1rem clamp(1.1rem,4vw,1.8rem) calc(1.6rem + env(safe-area-inset-bottom));
+  max-height:88svh; overflow-y:auto;
+}
+.pp-sheet-asa{ width:54px; height:5px; border-radius:999px; background:rgba(255,255,255,.28); margin:0 auto .9rem; }
+.pp-sheet-card h2{ font-family:var(--font-display); font-size:1.7rem; line-height:1.1; }
+.pp-sheet-card > p{ color:var(--soft); margin:.25rem 0 1.2rem; }
+.pp-sheet-close{ position:absolute; top:1rem; right:1.1rem; background:none; border:0; color:var(--soft); font-size:1.3rem; cursor:pointer; }
+.pp-opcion{
+  width:100%; display:flex; align-items:center; gap:1rem; text-align:left; cursor:pointer;
+  border:1px solid var(--line-2); border-radius:16px; padding:.95rem 1.1rem; margin-bottom:.7rem;
+  background:rgba(255,255,255,.02); color:var(--cream); font-family:var(--font-sans);
+}
+.pp-opcion:hover{ border-color:var(--pc,#D97A88); background:color-mix(in srgb, var(--pc,#D97A88) 10%, transparent); }
+.pp-opcion svg{ color:var(--pc,#D97A88); flex:none; }
+.pp-opcion b{ display:block; font-size:1rem; font-weight:600; }
+.pp-opcion span{ display:block; color:var(--soft); font-size:.85rem; margin-top:.1rem; }
+.pp-opcion .chev{ margin-left:auto; color:var(--pc,#D97A88); }
+.pp-sheet-pie{ color:var(--muted); font-size:.85rem; text-align:center; margin-top:.9rem; }
+

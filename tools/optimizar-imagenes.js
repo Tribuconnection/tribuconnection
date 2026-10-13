@@ -10,6 +10,22 @@ const TARGETS = {
   'assets/isotipo-club-mano.png':         120,
   'assets/isotipo-creadores-estrellas.png':120,
   'assets/isotipo.png':                   null,  // 320x310, se usa a 170px
+  // --- placeholders de perfil: se ven a 215-430px en fichas y portadas ---
+  'assets/placeholders/creador_1x1.png':     600,
+  'assets/placeholders/comunidad_1x1.png':   600,
+  'assets/placeholders/experiencia_1x1.png': 600,
+  'assets/placeholders/marca_1x1.png':       600,
+  'assets/placeholders/lugar_1x1.png':       600,
+  'assets/placeholders/creador_4x3.png':     600,
+  'assets/placeholders/comunidad_4x3.png':   600,
+  'assets/placeholders/experiencia_4x3.png': 600,
+  'assets/placeholders/marca_4x3.png':       600,
+  'assets/placeholders/lugar_4x3.png':       600,
+  'assets/placeholders/creador_4x5.png':     720,
+  'assets/placeholders/comunidad_4x5.png':   720,
+  'assets/placeholders/experiencia_4x5.png': 720,
+  'assets/placeholders/marca_4x5.png':       720,
+  'assets/placeholders/lugar_4x5.png':       720,
   // --- logos ---
   'assets/logo-blanco.png':               420,   // nav: se ve a 133x42
   'assets/logo-white-horizontal.png':     1200,   // emails (180px) + placas.js (canvas)
