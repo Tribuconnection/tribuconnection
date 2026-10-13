@@ -24,8 +24,16 @@ jobs:
           server-dir: /public_html/
           # Solo se sube el contenido del sitio (la carpeta con index.html y assets)
           local-dir: ./tribu-landing/
+          # Lo interno del repo no viaja al servidor (igual .htaccess lo bloquea,
+          # por si quedó una copia vieja subida).
           exclude: |
             **/LEEME.txt
+            **/.git*
+            **/.git*/**
+            **/.claude/**
+            **/.preview-server.js
+            **/google-apps-script/**
+            **/email-templates/**
             **/node_modules/**
             **/.perf-*
             **/package.json

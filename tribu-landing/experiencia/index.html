@@ -44,7 +44,7 @@
   .xp-dato svg{ color:var(--xc); flex:none; margin-top:.1rem; }
 
   /* ---- Bloques de contenido ---- */
-  .xp-sec{ margin-top:clamp(2rem,5vw,3rem); }
+  .xp-sec{ margin-top:clamp(2rem,5vw,3rem); scroll-margin-top:96px; }
   .xp-sec > h2{ font-family:var(--font-display); font-size:clamp(1.5rem,3.6vw,2.1rem); line-height:1.12; color:var(--xc); margin-bottom:.8rem; }
   .xp-sec p{ color:var(--soft); line-height:1.65; }
   .xp-sec p + p{ margin-top:.8rem; }
@@ -161,7 +161,16 @@
     <a href="#" data-caminos>Sumá tu propuesta</a>
   </div>
   <div class="nav-cta">
-    <a href="/cuenta/" class="btn btn--ghost">Ingresar</a>
+    <label class="nav-search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" placeholder="Buscar en Tribu" aria-label="Buscar en Tribu" class="nav-search-input">
+      <div class="nav-search-results"></div>
+    </label>
+    <a href="#" class="btn btn--ghost" data-auth-nav data-auth><span data-auth-label>Ingresar</span></a>
+    <a href="#" class="btn btn--rainbow btn--icon" data-signup>
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4"/></svg>
+      Sumate
+    </a>
     <button class="burger" id="burger" aria-label="Abrir menú" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -175,6 +184,8 @@
   <a href="/#historias">Historias</a>
   <a href="/club-tribu-connection/">Club Tribu</a>
   <a href="#" data-caminos>Sumá tu propuesta</a>
+  <a href="#" class="btn btn--ghost" data-auth-nav data-auth><span data-auth-label>Ingresar</span></a>
+  <a href="#" class="btn btn--rainbow" data-signup>Sumate a la Tribu</a>
 </div>
 
 <section class="section" style="padding-top:clamp(104px,13vw,132px)">
@@ -250,14 +261,270 @@
 
 <footer class="footer" id="contacto">
   <div class="wrap">
+    <div class="footer-cols">
+      <div class="footer-logo">
+        <img src="/assets/isotipo.png?v=3" alt="Tribu Connection">
+        <p class="footer-tag">Historias que conectan.<br>Comunidades que crecen.</p>
+        <div class="socials" style="margin-top:1.1rem">
+          <a class="soc ig" href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg> Instagram
+          </a>
+          <a class="soc yt" href="https://www.youtube.com/@tribuconnection" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10 9.2l5 2.8-5 2.8z" fill="currentColor" stroke="none"/></svg> YouTube
+          </a>
+          <a class="soc tt" href="https://www.tiktok.com/@tribu.connection" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.6 3.7 3.9v2.4c-1.3.1-2.6-.3-3.7-1v6.1c0 3.5-2.6 5.6-5.6 5.6A5.4 5.4 0 0 1 5.5 14c0-3.4 3.1-5.9 6.6-5.1v2.6a2.9 2.9 0 0 0-3.8 2.6c0 1.5 1.2 2.6 2.6 2.6 1.5 0 2.7-1.1 2.7-3V3h2.4z"/></svg> TikTok
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Agenda</p>
+        <a href="/agenda/">Todos los eventos</a>
+        <a href="/agenda/#calendario">Calendario</a>
+        <a href="#" data-connect>Sumá tu evento</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Red Tribu</p>
+        <a href="/red-tribu/">Creadores</a>
+        <a href="/red-tribu/">Marcas</a>
+        <a href="/red-tribu/">Lugares</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Club Tribu</p>
+        <a href="/club-tribu-connection/">Beneficios</a>
+        <a href="#" data-legal="terminos">Términos y condiciones</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Contacto</p>
+        <a href="mailto:contacto@tribuconnection.com">contacto@tribuconnection.com</a>
+        <a href="#" data-connect>Sumate a la Tribu</a>
+      </div>
+    </div>
     <div class="foot-bottom">
       <span>© 2026 Tribu Connection. Todos los derechos reservados.</span>
+      <span class="foot-legal">
+        <a href="#" data-legal="privacidad">Privacidad</a> ·
+        <a href="#" data-legal="terminos">Términos</a>
+      </span>
       <span class="dots">
         <i style="background:var(--red)"></i><i style="background:var(--amber)"></i><i style="background:var(--green)"></i><i style="background:var(--teal)"></i><i style="background:var(--purple)"></i>
       </span>
     </div>
   </div>
 </footer>
+
+<!-- ===================== MODALES COMPARTIDOS (contacto, cookies, legales, ingreso) ===================== -->
+<div class="modal-overlay" id="connectModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="connectTitle">
+    <button class="modal-close" id="connectClose" aria-label="Cerrar">✕</button>
+    <h2 id="connectTitle">Conectarme a la Tribu</h2>
+    <p class="modal-sub">Contanos quién sos y te escribimos con una propuesta pensada para vos.</p>
+    <form id="connectForm">
+      <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <div class="field">
+        <label>¿Cómo te querés conectar?</label>
+        <div class="chips" id="connectChips">
+          <label class="chip"><input type="radio" name="Perfil" value="Creador/a de experiencias"><span>Creás experiencias, eventos o proyectos</span></label>
+          <label class="chip"><input type="radio" name="Perfil" value="Marca / emprendimiento"><span>Impulsás una marca, espacio u organización</span></label>
+        </div>
+        <p class="field-error" id="connectPerfilError">Elegí una opción para continuar.</p>
+      </div>
+      <div class="field">
+        <label for="cName">Nombre</label>
+        <input id="cName" name="Nombre" type="text" required placeholder="Tu nombre">
+      </div>
+      <div class="field">
+        <label for="cBrand">Marca / Proyecto / Evento</label>
+        <input id="cBrand" name="Marca_Evento" type="text" placeholder="¿Cómo se llama?">
+      </div>
+      <div class="field">
+        <label for="cContact">WhatsApp / Email</label>
+        <input id="cContact" name="Contacto" type="text" required placeholder="¿Cómo te contactamos?">
+      </div>
+      <div class="field">
+        <label for="cDetails">Contanos un poco más</label>
+        <textarea id="cDetails" name="Detalles" placeholder="Contanos sobre tu proyecto, marca o idea"></textarea>
+      </div>
+      <div class="field">
+        <label>Fecha de nacimiento</label>
+        <div class="cdate" id="birthDateSel">
+          <button type="button" class="cselect-btn" aria-haspopup="dialog" aria-expanded="false">
+            <span class="cselect-val is-ph" id="birthDateDisplay">dd/mm/aaaa</span>
+            <svg class="cselect-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4.5" width="18" height="16" rx="2.5"/><path d="M3 9h18M8 2.5v4M16 2.5v4"/></svg>
+          </button>
+          <div class="cdate-pop">
+            <div class="cdate-nav cdate-nav--split">
+              <div class="cdate-nav-row">
+                <button type="button" class="cal-arrow" data-nav-month="-1" aria-label="Mes anterior">‹</button>
+                <select class="cdate-month-sel" aria-label="Mes"></select>
+                <button type="button" class="cal-arrow" data-nav-month="1" aria-label="Mes siguiente">›</button>
+              </div>
+              <div class="cdate-nav-row">
+                <button type="button" class="cal-arrow" data-nav-year="-1" aria-label="Año anterior">‹</button>
+                <select class="cdate-year-sel" aria-label="Año"></select>
+                <button type="button" class="cal-arrow" data-nav-year="1" aria-label="Año siguiente">›</button>
+              </div>
+            </div>
+            <div class="cdate-week"><span>Lu</span><span>Ma</span><span>Mi</span><span>Ju</span><span>Vi</span><span>Sá</span><span>Do</span></div>
+            <div class="cdate-days"></div>
+            <div class="cdate-actions">
+              <button type="button" data-clear>Borrar</button>
+            </div>
+          </div>
+          <input type="hidden" name="Fecha_Nacimiento" id="cBirth">
+        </div>
+      </div>
+      <div class="field">
+        <label>Ubicación (opcional)</label>
+        <div class="row2">
+          <select id="cProvincia" name="Provincia">
+            <option value="">Elegí tu provincia</option>
+          </select>
+          <select id="cCiudad" name="Ciudad" disabled>
+            <option value="">Elegí tu provincia primero</option>
+          </select>
+        </div>
+        <input id="cCiudadOtra" name="Ciudad_Otra" type="text" placeholder="Escribí tu localidad" style="display:none; margin-top:.6rem">
+      </div>
+      <button type="submit" class="btn btn--spectrum" id="connectSubmit">Enviar</button>
+      <p class="modal-note">Te respondemos en 24–48 hs con una propuesta. También podés escribirnos a contacto@tribuconnection.com</p>
+    </form>
+    <div class="modal-msg" id="connectMsg">¡Recibido! Gracias 🌟<br>Te vamos a escribir con una propuesta pensada para vos.</div>
+  </div>
+</div>
+
+<!-- ===================== COOKIE BAR + LEGAL ===================== -->
+<div class="cookie-bar" id="cookieBar">
+  <div class="cookie-bar-inner">
+    <p class="cookie-bar-text">🍪 Usamos <b>cookies esenciales</b> para que el sitio funcione correctamente.<br>No usamos cookies de publicidad ni de seguimiento. <a href="#" data-legal="cookies">Ver política de cookies</a>.</p>
+    <button class="btn btn--spectrum" id="cookieAccept" type="button">Aceptar</button>
+  </div>
+</div>
+<div class="modal-overlay" id="legalModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+    <button class="modal-close" id="legalClose" aria-label="Cerrar">✕</button>
+    <h2 id="legalTitle">Información legal</h2>
+    <div class="legal-tabs">
+      <button type="button" data-tab="privacidad">Política de privacidad</button>
+      <button type="button" data-tab="cookies">Cookies</button>
+      <button type="button" data-tab="terminos">Términos y condiciones</button>
+    </div>
+    <div class="legal-body" id="legal-privacidad" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Quiénes somos</h3>
+      <p>Tribu Connection ("nosotros") es responsable del tratamiento de los datos personales que nos compartís a través de <b style="color:var(--cream)">tribuconnection.com</b>.</p>
+    </div>
+    <div class="legal-body" id="legal-cookies" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Qué cookies usamos</h3>
+      <p>Este sitio <b style="color:var(--cream)">no usa cookies de publicidad, seguimiento ni analítica de terceros</b>.</p>
+    </div>
+    <div class="legal-body" id="legal-terminos" style="display:none">
+      <p class="legal-updated">Última actualización: julio de 2026</p>
+      <h3>Calendario de eventos</h3>
+      <p>Las fechas, sedes y horarios publicados en nuestro calendario son informativos y pueden cambiar sin previo aviso. Te recomendamos confirmar los detalles directamente con la organización de cada evento antes de asistir.</p>
+    </div>
+  </div>
+</div>
+
+<footer class="footer" id="contacto">
+  <div class="wrap">
+    <div class="footer-cols">
+      <div class="footer-logo">
+        <img src="/assets/isotipo.png?v=3" alt="Tribu Connection">
+        <p class="footer-tag">Historias que conectan.<br>Comunidades que crecen.</p>
+        <div class="socials" style="margin-top:1.1rem">
+          <a class="soc ig" href="https://www.instagram.com/tribuconnection/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5.5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg> Instagram
+          </a>
+          <a class="soc yt" href="https://www.youtube.com/@tribuconnection" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2.5" y="5.5" width="19" height="13" rx="3.5"/><path d="M10 9.2l5 2.8-5 2.8z" fill="currentColor" stroke="none"/></svg> YouTube
+          </a>
+          <a class="soc tt" href="https://www.tiktok.com/@tribu.connection" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3c.3 2.1 1.6 3.6 3.7 3.9v2.4c-1.3.1-2.6-.3-3.7-1v6.1c0 3.5-2.6 5.6-5.6 5.6A5.4 5.4 0 0 1 5.5 14c0-3.4 3.1-5.9 6.6-5.1v2.6a2.9 2.9 0 0 0-3.8 2.6c0 1.5 1.2 2.6 2.6 2.6 1.5 0 2.7-1.1 2.7-3V3h2.4z"/></svg> TikTok
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Agenda</p>
+        <a href="/agenda/">Todos los eventos</a>
+        <a href="/agenda/#calendario">Calendario</a>
+        <a href="#" data-connect>Sumá tu evento</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Red Tribu</p>
+        <a href="/red-tribu/">Creadores</a>
+        <a href="/red-tribu/">Marcas</a>
+        <a href="/red-tribu/">Lugares</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Club Tribu</p>
+        <a href="/club-tribu-connection/">Beneficios</a>
+        <a href="#" data-legal="terminos">Términos y condiciones</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">Contacto</p>
+        <a href="mailto:contacto@tribuconnection.com">contacto@tribuconnection.com</a>
+        <a href="#" data-connect>Sumate a la Tribu</a>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Tribu Connection. Todos los derechos reservados.</span>
+      <span class="foot-legal">
+        <a href="#" data-legal="privacidad">Privacidad</a> ·
+        <a href="#" data-legal="terminos">Términos</a>
+      </span>
+      <span class="dots">
+        <i style="background:var(--red)"></i><i style="background:var(--amber)"></i><i style="background:var(--green)"></i><i style="background:var(--teal)"></i><i style="background:var(--purple)"></i>
+      </span>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== MODAL INGRESAR / CREAR CUENTA ===================== -->
+<div class="modal-overlay" id="authModal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <button class="modal-close" id="authClose" aria-label="Cerrar">✕</button>
+    <div class="tab-row" id="authTabs" style="margin:0 0 1.2rem">
+      <button type="button" class="tab-btn active" data-tab="ingresar">Ingresar</button>
+      <button type="button" class="tab-btn" data-tab="crear">Crear cuenta</button>
+    </div>
+    <div id="authPanelIngresar">
+      <h2 id="authTitle" style="font-size:1.3rem;margin-bottom:.4rem">Ingresar</h2>
+      <p class="modal-sub">Entrá con tu cuenta para editar tu perfil o publicar una experiencia.</p>
+      <form id="authFormIngresar">
+        <div class="field">
+          <label for="authInEmail">Correo electrónico</label>
+          <input id="authInEmail" type="email" required placeholder="tu@email.com">
+        </div>
+        <div class="field">
+          <label for="authInPass">Contraseña</label>
+          <div class="pw-wrap"><input id="authInPass" type="password" required placeholder="Tu contraseña"><button type="button" class="pw-toggle" aria-label="Mostrar contraseña" tabindex="-1"><svg class="eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+        </div>
+        <p class="field-error" id="authInError" style="display:none"></p>
+        <button type="submit" class="btn btn--spectrum" style="width:100%;justify-content:center" id="authInBtn">Ingresar</button>
+      </form>
+    </div>
+    <div id="authPanelCrear" style="display:none">
+      <h2 style="font-size:1.3rem;margin-bottom:.4rem">Ser parte de la Tribu</h2>
+      <p class="modal-sub">Creá tu cuenta para armar tu perfil de creador/a o marca y publicar tus experiencias.</p>
+      <form id="authFormCrear">
+        <div class="field">
+          <label for="authCrEmail">Correo electrónico</label>
+          <input id="authCrEmail" type="email" required placeholder="tu@email.com">
+        </div>
+        <div class="field">
+          <label for="authCrPass">Contraseña</label>
+          <div class="pw-wrap"><input id="authCrPass" type="password" required minlength="6" placeholder="Mínimo 6 caracteres"><button type="button" class="pw-toggle" aria-label="Mostrar contraseña" tabindex="-1"><svg class="eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.94 10.94 0 0 1 12 19c-7 0-11-7-11-7a18.5 18.5 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 7 11 7a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg></button></div>
+        </div>
+        <p class="field-error" id="authCrError" style="display:none"></p>
+        <button type="submit" class="btn btn--spectrum" style="width:100%;justify-content:center" id="authCrBtn">Crear cuenta</button>
+      </form>
+      <div class="modal-msg" id="authCrMsg" style="display:none">¡Listo! Revisá tu correo para confirmar la cuenta y después iniciá sesión.</div>
+    </div>
+  </div>
+</div>
+
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 <script src="/assets/supabase-client.js?v=16"></script>
@@ -275,6 +542,27 @@
     let v = String(url).trim(); if(!v) return null;
     if(!/^https?:\/\//i.test(v)) v = 'https://' + v;
     try{ const u = new URL(v); if(u.protocol === 'http:' || u.protocol === 'https:') return u.href; }catch(e){}
+    return null;
+  }
+  /* El video lo escribe quien publica: sólo se embebe YouTube o Vimeo (pasando
+     el link común a su versión embed) o un archivo de video subido a la
+     plataforma. Cualquier otro sitio dentro de un iframe queda afuera. */
+  function videoEmbebible(url){
+    const v = sanitizeUrl(url);
+    if(!v) return null;
+    let u; try{ u = new URL(v); }catch(e){ return null; }
+    const host = u.hostname.replace(/^www\.|^m\./, '');
+    let id = null;
+    if(host === 'youtu.be') id = u.pathname.slice(1);
+    else if(host === 'youtube.com' || host === 'youtube-nocookie.com'){
+      id = u.searchParams.get('v') || (u.pathname.match(/^\/(?:embed|shorts|live)\/([^/?#]+)/) || [])[1];
+    }
+    if(id && /^[\w-]{6,20}$/.test(id)) return { tipo:'iframe', src:'https://www.youtube-nocookie.com/embed/' + id };
+    if(host === 'vimeo.com' || host === 'player.vimeo.com'){
+      const vid = (u.pathname.match(/(\d{6,12})/) || [])[1];
+      if(vid) return { tipo:'iframe', src:'https://player.vimeo.com/video/' + vid };
+    }
+    if(/\.supabase\.co$/.test(u.hostname) && /\.(mp4|webm|mov)$/i.test(u.pathname)) return { tipo:'archivo', src:u.href };
     return null;
   }
   const parrafos = s => String(s || '').split(/\n+/).filter(x => x.trim()).map(p => '<p>' + esc(p) + '</p>').join('');
@@ -364,14 +652,13 @@
     }
 
     /* 3 · Video: conocé a quién te guía */
-    const video = sanitizeUrl(e.video_url);
+    const video = videoEmbebible(e.video_url);
     if(video){
-      const esArchivo = /\.(mp4|webm|mov)(\?|$)/i.test(video);
       partes.push('<section class="xp-sec"><h2>Descubrí lo que vas a vivir</h2>' +
         '<div class="xp-video">' +
-          (esArchivo
-            ? '<video controls playsinline preload="metadata" poster="' + esc(fotos[0]) + '"><source src="' + esc(video) + '"></video>'
-            : '<iframe src="' + esc(video) + '" title="Video de la experiencia" loading="lazy" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>') +
+          (video.tipo === 'archivo'
+            ? '<video controls playsinline preload="metadata" poster="' + esc(fotos[0]) + '"><source src="' + esc(video.src) + '"></video>'
+            : '<iframe src="' + esc(video.src) + '" title="Video de la experiencia" loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>') +
         '</div></section>');
     }
 
@@ -624,7 +911,13 @@
       return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
     });
   }
-  function nuevoCodigo(){ return 'TRB-' + String(Math.floor(Math.random() * 99999)).padStart(5, '0'); }
+  /* 8 caracteres sin letras confusas (0/O, 1/I): con 5 dígitos los choques
+     entre reservas eran probables y el insert fallaba por el unique. */
+  function nuevoCodigo(){
+    const L = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+    const r = new Uint32Array(8); crypto.getRandomValues(r);
+    return 'TRB-' + [...r].map(n => L[n % L.length]).join('');
+  }
 
   function datosReserva(){
     const n = Number(document.getElementById('rCantidad').value) || 1;

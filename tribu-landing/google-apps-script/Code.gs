@@ -59,6 +59,7 @@ const TABS = {
   /* La clave interna es ConectarPerfil (Conectar ya la usa "Conectarme a la
      Tribu"), pero la pestaña visible se llama "Conectar". */
   ConectarPerfil: { name: 'Conectar',           headers: ['Fecha de envío', 'Perfil consultado', 'Tipo de propuesta', 'Nombre', 'Proyecto / Marca', 'Email', 'WhatsApp', 'Fecha aproximada', 'Ciudad / País', 'Tipo de experiencia', 'Mensaje'] },
+  ReservaExperiencia: { name: 'Reservas',      headers: ['Fecha de envío', 'Código', 'Experiencia', 'Fecha del encuentro', 'Nombre', 'Email', 'WhatsApp', 'Participantes', 'Total', 'Medio de pago', 'Club Tribu', 'Estado'] },
   CambioPerfil:   { name: 'Cambios de perfil',  headers: ['Fecha de envío', 'Perfil', 'Email de la cuenta', 'Landing', 'Qué cambia', 'Texto publicado', 'Texto propuesto', 'ID del pedido'] }
 };
 
@@ -116,6 +117,7 @@ function doPost(e) {
     if (tipo === 'ConectarPerfil') return handleConectarPerfil_(ss, e);
     if (tipo === 'Experiencia') return handleExperiencia_(e);
     if (tipo === 'CambioPerfil') return handleCambioPerfil_(ss, e);
+    if (tipo === 'ReservaExperiencia') return handleReserva_(ss, e);
     if (tipo === 'NotificarCambio') return handleNotificarCambio_(e);
     if (tipo === 'Admin') return handleAdmin_(ss, e);
     return respond_({ ok: false, error: 'Tipo desconocido' });
@@ -182,6 +184,17 @@ function handleConectarPerfil_(ss, e) {
     e.parameter.Tipo_Experiencia || '', e.parameter.Mensaje || ''
   ];
   agregarFila_(ss, 'ConectarPerfil', row, 'Nueva consulta para ' + (e.parameter.Perfil || '(perfil)') + ': ' + (e.parameter.Nombre || '(sin nombre)'));
+  return respond_({ ok: true });
+}
+
+/* Reserva desde /experiencia/: la fila queda en "Reservas" y el aviso por mail
+   le llega al equipo, que confirma a la persona. La reserva real (con el
+   comprobante) vive en Supabase, tabla reservas: esto es sólo el aviso. */
+function handleReserva_(ss, e) {
+  const p = e.parameter;
+  const row = [new Date(), p.Codigo || '', p.Experiencia || '', p.Fecha || '', p.Nombre || '', p.Email || '',
+    p.WhatsApp || '', p.Participantes || '', p.Total || '', p.Medio_Pago || '', p.Club || '', p.Estado || ''];
+  agregarFila_(ss, 'ReservaExperiencia', row, 'Nueva reserva ' + (p.Codigo || '') + ': ' + (p.Experiencia || '(experiencia)') + ' — ' + (p.Nombre || '(sin nombre)'));
   return respond_({ ok: true });
 }
 

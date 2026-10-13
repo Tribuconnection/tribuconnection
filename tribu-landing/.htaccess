@@ -7,6 +7,14 @@
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
 
+# No exponer archivos internos del repo que viajan en la carpeta del sitio:
+# el código del Apps Script (IDs de planillas y lógica del token de admin),
+# las plantillas de mail, el servidor local de prueba y la config del editor.
+<IfModule mod_rewrite.c>
+  RewriteRule ^(google-apps-script|email-templates|\.claude)(/|$) - [F,L]
+  RewriteRule ^(\.preview-server\.js|LEEME\.txt)$ - [F,L]
+</IfModule>
+
 # Perfiles públicos: /slug-de-la-persona -> /perfil-publico/index.html
 # (solo si no existe un archivo o carpeta real con ese nombre)
 <IfModule mod_rewrite.c>
@@ -22,7 +30,7 @@
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()"
   Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
-  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.arcgisonline.com https://unpkg.com https://*.cdninstagram.com https://*.fbcdn.net https://*.supabase.co; connect-src 'self' https://nominatim.openstreetmap.org https://formsubmit.co https://*.arcgisonline.com https://script.google.com https://script.googleusercontent.com https://www.instagram.com https://*.supabase.co; frame-src 'self' https://www.instagram.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formsubmit.co; frame-ancestors 'self'"
+  Header always set Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com https://cdnjs.cloudflare.com https://www.instagram.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://unpkg.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: blob: https://*.arcgisonline.com https://unpkg.com https://*.cdninstagram.com https://*.fbcdn.net https://*.supabase.co; connect-src 'self' https://nominatim.openstreetmap.org https://formsubmit.co https://*.arcgisonline.com https://script.google.com https://script.googleusercontent.com https://www.instagram.com https://*.supabase.co; frame-src 'self' https://www.instagram.com https://www.youtube-nocookie.com https://www.youtube.com https://player.vimeo.com; media-src 'self' blob: https://*.supabase.co; object-src 'none'; base-uri 'self'; form-action 'self' https://formsubmit.co; frame-ancestors 'self'"
 </IfModule>
 
 # Cache: el HTML se revalida siempre (si no, el navegador se queda con una copia

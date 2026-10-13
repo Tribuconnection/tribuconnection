@@ -109,6 +109,23 @@
   .rt-resumen > span{ font-family:var(--font-sans); font-size:.95rem; color:var(--cream); margin-right:.3rem; }
   .rt-activo{ display:inline-flex; align-items:center; gap:.5rem; border:1px solid var(--fc, #D97A88); color:var(--cream); border-radius:999px; font-family:var(--font-sans); font-size:.76rem; padding:.34rem .75rem; background:rgba(255,255,255,.02); cursor:pointer; }
   .rt-activo span{ color:var(--fc, #D97A88); font-weight:700; }
+  /* En celular las secciones del panel son un acordeón (si no, el panel
+     ocupaba varias pantallas antes de llegar a los resultados) y al pie hay
+     un botón que lleva directo a lo encontrado. */
+  .rt-ver{ display:none; }
+  /* Lo que se alcanza con scrollIntoView no queda debajo de la barra fija. */
+  .rt-panel, .rt-resumen{ scroll-margin-top:96px; }
+  @media (max-width:640px){
+    .rt-col{ gap:0; }
+    .rt-sec{ border-bottom:1px solid var(--line); padding:.75rem 0; }
+    .rt-sec h3{ cursor:pointer; margin-bottom:0; user-select:none; }
+    .rt-sec h3::after{ content:"+"; margin-left:auto; color:var(--soft); font-size:1.2rem; font-weight:400; }
+    .rt-sec.abierta h3{ margin-bottom:.8rem; }
+    .rt-sec.abierta h3::after{ content:"–"; }
+    .rt-sec:not(.abierta) > :not(h3){ display:none !important; }
+    .rt-sec h3 .rt-sec-n{ background:var(--fc); color:#15110f; border-radius:999px; font-size:.68rem; font-weight:700; padding:.05rem .45rem; }
+    .rt-ver{ display:flex; width:100%; justify-content:center; margin-top:1rem; background:var(--fc); color:#15110f; border:0; font-weight:700; }
+  }
 
   .rt-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(215px,1fr)); gap:1rem; margin-top:1.4rem; }
   @media (max-width:520px){
@@ -228,6 +245,7 @@
         <button type="button" class="rt-cerrar" id="btnCerrarFiltros" aria-label="Cerrar filtros"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="m6 15 6-6 6 6"/></svg></button>
       </div>
       <div class="rt-cols" id="panelCols"></div>
+      <button type="button" class="btn rt-ver" id="btnVerResultados">Ver resultados</button>
     </div>
 
     <div class="rt-resumen" id="dirResumen"><span id="dirCount"></span></div>
@@ -563,6 +581,25 @@
     return [...out];
   }
 
+  /* Tipo de experiencia guardado en la base → id del filtro. */
+  const XP_TIPO = { Taller:'taller_curso', Retiro:'retiro', Ceremonia:'ceremonia', Concierto:'concierto', Encuentro:'encuentro', Otro:'otra' };
+  /* Rubro del calendario → tipo del filtro de Experiencia. */
+  const RUBRO_TIPO = { festivales:'festival', ferias:'feria_exposicion', artisticos:'espectaculo', holistico:'encuentro', musica:'concierto', talleres:'taller_curso' };
+  /* Precio en bandas: gratuita / de pago y, si hay número, su rango. */
+  function bandasPrecio(e){
+    const n = e.precio_numero != null ? Number(e.precio_numero) : null;
+    const gratis = e.acceso_tipo === 'gratis' || n === 0;
+    if(gratis) return ['gratuita'];
+    const out = (e.precio || n != null) ? ['de_pago'] : [];
+    if(n != null){
+      if(n <= 10000) out.push('hasta_10000');
+      if(n >= 10000 && n <= 30000) out.push('10000_30000');
+      if(n >= 30000 && n <= 60000) out.push('30000_60000');
+      if(n > 60000) out.push('mas_60000');
+    }
+    return out;
+  }
+
   const ROL_CAT = { organiza_eventos:'creador', facilita_actividades:'creador', ofrece_servicios:'creador', quiere_colaborar:'creador', tiene_marca:'marca', tiene_lugar:'lugar', tiene_comunidad:'comunidad' };
 
   function perfilFicha(p){
@@ -584,10 +621,9 @@
         return {
           rol:ids(p.tipo_creador), practicas, ambitos:ambitosDe(practicas), ofrece:ids(p.que_ofrece),
           modalidad:mod, movilidad:p.disponible_viajar ? ['puede_viajar'] : [], idiomas:ids(p.idiomas),
-          /* Marca y Lugar comparten el mismo perfil: lo que haya cargado sirve
-             también para esos filtros mientras el formulario no pida más. */
-          rubros:practicas, tipo:practicas, quehacer:ids(p.servicios), intereses:practicas,
-          alcance:ids(p.alcance), dirige:ids(p.dirige_a)
+          alcance:ids([p.alcance]), dirige:ids(p.dirige_a)
+          /* Rubros de marca, tipo de lugar o de comunidad todavía no se cargan
+             en el perfil: esos filtros buscan en el texto de la ficha. */
         };
       })()
     });
@@ -609,7 +645,7 @@
         cats:['experiencia'], principal:'experiencia', nombre:e.title,
         desc:[rubro ? rubro.label : '', fecha].filter(Boolean).join(' · '), ciudad:e.place || '',
         img: IMG_EV[i++ % IMG_EV.length], imgTipo:'foto', href:'/agenda/evento/?id=' + encodeURIComponent(slug),
-        datos:{ fecha:e.date || '', tipo:ids([rubro ? rubro.label : '']), ambitos:ids([rubro ? rubro.label : '']), dias:null, duracion:null }
+        datos:{ fecha:e.date || '', tipo:RUBRO_TIPO[e.rubro] ? [RUBRO_TIPO[e.rubro]] : [], dias:null, duracion:null }
       }));
     });
     aplicar();
@@ -628,9 +664,10 @@
       cats:['experiencia'], principal:'experiencia', nombre:e.nombre, desc:[e.tipo || 'Experiencia', fecha].filter(Boolean).join(' · '),
       ciudad:lugar, img: foto || tribuAvatarVacio('experiencia'), imgTipo: foto ? 'foto' : 'ph', href:'/experiencia/?id=' + encodeURIComponent(e.id),
       datos:{
-        tipo:ids([e.tipo]), ambitos:ids(e.categorias || e.temáticas || []), publico:ids(e.publico || []),
-        precio:[e.precio ? 'de_pago' : 'gratuita'], fecha:e.fecha || '',
-        modalidad:ids([e.modalidad]), participacion:ids(e.tipo_participacion || []), idiomas:ids(e.idiomas || []),
+        tipo:XP_TIPO[e.tipo] ? [XP_TIPO[e.tipo]] : [], publico:ids(e.publico || []),
+        precio:bandasPrecio(e), fecha:e.fecha || '',
+        modalidad:e.modalidad === 'Ambas' ? ['presencial', 'online', 'hibrida'] : ids([e.modalidad]),
+        participacion:ids(e.tipo_participacion || []), idiomas:ids(e.idiomas || []),
         duracion:e.duracion_horas == null ? null : Number(e.duracion_horas),
         dias:e.cantidad_dias == null ? null : Number(e.cantidad_dias)
       },
@@ -719,8 +756,16 @@
   function pintarSeccion(cat, sec){
     const box = document.createElement('div');
     box.className = 'rt-sec';
+    /* Acordeón en celular: arranca abierta la primera sección y las que ya
+       tienen algo elegido. En desktop la clase no cambia nada. */
+    const elegidas = Array.isArray(F[cat][sec.id]) ? F[cat][sec.id].length : 0;
+    if(elegidas || sec === secciones(cat)[0]) box.classList.add('abierta');
     box.dataset.sec = sec.id;
-    box.innerHTML = '<h3>' + SVG(FILTRO_ICONOS[sec.icono] || FILTRO_ICONOS.brujula) + esc(sec.titulo) + '</h3>';
+    box.innerHTML = '<h3>' + SVG(FILTRO_ICONOS[sec.icono] || FILTRO_ICONOS.brujula) + esc(sec.titulo) +
+      (elegidas ? ' <span class="rt-sec-n">' + elegidas + '</span>' : '') + '</h3>';
+    box.querySelector('h3').addEventListener('click', () => {
+      if(window.matchMedia('(max-width:640px)').matches) box.classList.toggle('abierta');
+    });
     const estado = F[cat][sec.id];
 
     if(sec.type === 'chips'){
@@ -915,7 +960,24 @@
     pintarPanel(); cambioFiltros();
   }
 
+  /* Número de opciones elegidas al lado del título de cada sección (se ve en
+     el acordeón de celular). */
+  function actualizarContadores(){
+    const cat = catFiltrable(); if(!cat) return;
+    panelCols.querySelectorAll('.rt-sec').forEach(box => {
+      const v = F[cat][box.dataset.sec];
+      const n = Array.isArray(v) ? v.length : 0;
+      let b = box.querySelector('.rt-sec-n');
+      if(n && !b){ b = document.createElement('span'); b.className = 'rt-sec-n'; box.querySelector('h3').appendChild(b); }
+      if(b){ if(n) b.textContent = n; else b.remove(); }
+    });
+  }
+  document.getElementById('btnVerResultados').addEventListener('click', () => {
+    resumen.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+
   function cambioFiltros(){
+    actualizarContadores();
     const n = cuantosFiltros();
     const b = document.getElementById('filtrosCount');
     b.textContent = n; b.classList.toggle('on', n > 0);
@@ -969,7 +1031,7 @@
       if(Array.isArray(v)){
         if(!v.length) continue;
         const valores = d[sec.campo];
-        if(Array.isArray(valores) || typeof valores === 'string'){
+        if((Array.isArray(valores) && valores.length) || (typeof valores === 'string' && valores)){
           const lista = Array.isArray(valores) ? valores : [valores];
           if(!v.some(id => lista.includes(id))) return false;
         } else {
@@ -1065,6 +1127,9 @@
     });
     const empty = document.getElementById('dirEmpty');
     empty.hidden = visibles > 0;
+    document.getElementById('btnVerResultados').textContent = visibles
+      ? 'Ver ' + visibles + ' ' + (visibles === 1 ? 'resultado' : 'resultados')
+      : 'Sin resultados con estos filtros';
     document.getElementById('dirCount').textContent = visibles
       ? visibles + ' ' + (visibles === 1 ? CONTEO[activeTab][0] : CONTEO[activeTab][1])
       : '';
