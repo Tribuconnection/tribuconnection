@@ -27,6 +27,65 @@ sb.auth.onAuthStateChange((event, session) => {
   }
 });
 
+/* Registro con un correo que ya tiene cuenta: Supabase responde "ok" igual
+   (para no revelar qué correos están registrados) pero NO manda ningún mail.
+   Se reconoce porque el usuario vuelve sin identidades. Sin este chequeo la
+   persona veía "revisá tu correo" y se quedaba esperando un mail que nunca
+   iba a llegar. */
+function tribuEsRegistroRepetido(data){
+  return !!(data && data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0);
+}
+const TRIBU_MSG_REPETIDO = 'Ya tenés una cuenta con este correo. Ingresá con tu contraseña o, si no la recordás, tocá "¿Olvidaste tu contraseña?" y te mandamos un link para elegir una nueva.';
+
+/* "¿Olvidaste tu contraseña?": manda el mail de recuperación. El link vuelve
+   al sitio y el evento PASSWORD_RECOVERY de arriba lleva a elegir la nueva.
+   Cualquier botón con data-olvide="#inputDelCorreo" (y opcional
+   data-olvide-msg="#dondeAvisar") funciona sin más cableado. */
+async function tribuPedirNuevaClave(email){
+  return sb.auth.resetPasswordForEmail(email, { redirectTo: location.origin + '/' });
+}
+document.addEventListener('click', async e => {
+  const b = e.target.closest('[data-olvide]');
+  if(!b) return;
+  e.preventDefault();
+  const input = document.querySelector(b.dataset.olvide);
+  const msg = b.dataset.olvideMsg ? document.querySelector(b.dataset.olvideMsg) : null;
+  const avisar = (t, ok) => {
+    if(!msg){ alert(t); return; }
+    msg.textContent = t; msg.style.display = 'block';
+    msg.style.color = ok ? 'var(--green, #9BCB46)' : '';
+  };
+  const email = (input && input.value || '').trim();
+  if(!/^\S+@\S+\.\S+$/.test(email)){ avisar('Escribí tu correo en el campo de arriba y volvé a tocar "¿Olvidaste tu contraseña?".'); input && input.focus(); return; }
+  const txt = b.textContent; b.disabled = true; b.textContent = 'Enviando…';
+  const { error } = await tribuPedirNuevaClave(email);
+  b.disabled = false; b.textContent = txt;
+  if(error && /rate|seconds|many/i.test(error.message)){ avisar('Ya te mandamos un link hace muy poco. Esperá unos minutos y revisá también la carpeta de spam.'); return; }
+  if(error){ avisar('No pudimos mandar el mail. Probá de nuevo en un rato.'); return; }
+  avisar('Listo: si hay una cuenta con ' + email + ', te llega un mail para elegir una contraseña nueva. Revisá también spam o promociones.', true);
+});
+
+/* Agrega el link "¿Olvidaste tu contraseña?" debajo del error de cada
+   formulario de ingreso (el modal de ingreso está repetido en muchas páginas;
+   así no hay que tocarlas una por una). */
+function tribuSumarOlvide(errId, emailId){
+  const err = document.getElementById(errId);
+  if(!err || err.parentNode.querySelector('[data-olvide]')) return;
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'olvide-link';
+  b.dataset.olvide = '#' + emailId; b.dataset.olvideMsg = '#' + errId;
+  b.textContent = '¿Olvidaste tu contraseña?';
+  b.style.cssText = 'background:none;border:0;padding:0;margin:.2rem 0 .8rem;color:var(--soft);font:inherit;font-size:.84rem;text-decoration:underline;cursor:pointer;display:block';
+  err.parentNode.insertBefore(b, err);
+}
+function tribuSumarOlvides(){
+  tribuSumarOlvide('authInError', 'authInEmail');
+  tribuSumarOlvide('inError', 'inEmail');
+  tribuSumarOlvide('suLoginErr', 'suLoginEmail');
+}
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', tribuSumarOlvides);
+else tribuSumarOlvides();
+
 /* Botón de ojo para mostrar/ocultar contraseña: delegado en document, así
    funciona en cualquier .pw-wrap de cualquier página/modal sin wiring extra. */
 document.addEventListener('click', e => {
@@ -319,6 +378,11 @@ if(document.readyState === 'loading'){
     const { data, error } = await sb.auth.signUp({ email, password });
     btn.textContent = 'Crear cuenta'; btn.disabled = false;
     if(error){ err.textContent = error.message; err.style.display = 'block'; return; }
+    if(tribuEsRegistroRepetido(data)){
+      err.textContent = TRIBU_MSG_REPETIDO; err.style.display = 'block';
+      const inEmail = document.getElementById('authInEmail'); if(inEmail) inEmail.value = email;
+      return;
+    }
     if(data.session){
       window.location.href = await tribuDestinoPostAuth(data.session);
     } else {
@@ -466,6 +530,7 @@ if(document.readyState === 'loading'){
               '<p class="su-sub">Entrá con tu cuenta para editar tu perfil, publicar experiencias y acceder a tus beneficios.</p>' +
               '<div class="su-in">' + I.mail + '<input id="suLoginEmail" type="email" placeholder="Correo electrónico" autocomplete="email"></div>' +
               pw('suLoginPass', 'Contraseña', 'current-password') +
+              '<button type="button" class="olvide-link" data-olvide="#suLoginEmail" data-olvide-msg="#suLoginErr" style="background:none;border:0;padding:0;margin:.1rem 0 .6rem;color:var(--soft);font:inherit;font-size:.84rem;text-decoration:underline;cursor:pointer;align-self:flex-start">¿Olvidaste tu contraseña?</button>' +
               '<p class="su-err" id="suLoginErr"></p>' +
               '<button type="submit" class="btn btn--spectrum su-btn" id="suLoginBtn"><span>Ingresar</span> <span class="arr">→</span></button>' +
               '<button type="button" class="btn btn--ghost su-alt" data-su-modo="registro">Crear una cuenta nueva</button>' +
@@ -520,6 +585,13 @@ if(document.readyState === 'loading'){
       });
       btn.disabled = false; lbl.textContent = 'Continuar';
       if(error) return fallo(/registered|already/i.test(error.message) ? 'Ya existe una cuenta con ese correo. Probá con "Ya tengo cuenta".' : error.message);
+      if(tribuEsRegistroRepetido(data)){
+        /* Pasa directo a "Ingresar" con el correo ya escrito y el aviso. */
+        modo('login');
+        $('#suLoginEmail').value = v('suEmail');
+        const le = $('#suLoginErr'); le.textContent = TRIBU_MSG_REPETIDO; le.style.display = 'block';
+        return;
+      }
       if(data.session){ window.location.href = await tribuDestinoPostAuth(data.session); return; }
       $('#suDoneTxt').textContent = 'Te mandamos un mail a ' + v('suEmail') + ' para confirmar tu cuenta. Abrilo y tocá el link para seguir.';
       modo('listo');

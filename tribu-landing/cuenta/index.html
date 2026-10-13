@@ -88,7 +88,7 @@
 </section>
 
 <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-<script src="/assets/supabase-client.js?v=16"></script>
+<script src="/assets/supabase-client.js?v=17"></script>
 <script src="/assets/site.js?v=20"></script>
 <script>
 (function(){
@@ -122,6 +122,11 @@
     const { data, error } = await sb.auth.signUp({ email, password });
     btn.textContent = 'Crear cuenta'; btn.disabled = false;
     if(error){ err.textContent = error.message; err.style.display = 'block'; return; }
+    if(tribuEsRegistroRepetido(data)){
+      err.textContent = TRIBU_MSG_REPETIDO; err.style.display = 'block';
+      const inEmail = document.getElementById('inEmail'); if(inEmail) inEmail.value = email;
+      return;
+    }
     if(data.session){
       window.location.href = await destino(data.session);
     } else {
