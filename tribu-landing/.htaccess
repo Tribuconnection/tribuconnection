@@ -69,6 +69,18 @@
   AddType application/manifest+json .webmanifest
 </IfModule>
 
+# El servidor local de prueba: la regla de arriba no alcanza en Hostinger
+# (sirve los .js estáticos antes de reescribir), así que va también por nombre.
+<FilesMatch "^(\.preview-server\.js|LEEME\.txt)$">
+  <IfModule mod_authz_core.c>
+    Require all denied
+  </IfModule>
+  <IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+  </IfModule>
+</FilesMatch>
+
 # Evitar listado de directorios
 Options -Indexes
 
