@@ -404,20 +404,35 @@ if(document.readyState === 'loading'){
   });
 })();
 
-/* Modal "Solicitud Comunidad": formulario de inscripción a la Comunidad de
-   Creadores / Programa de Marcas Aliadas (paga), en organizas-experiencias y
-   representas-marca. Guarda en solicitudes_comunidad; el equipo hace el
-   seguimiento y coordina el pago de la suscripción a mano (todavía no hay
-   cobro automático por Mercado Pago integrado). Dispara con
-   [data-solicitud="creador"] o [data-solicitud="marca"]. */
+/* Modal "Crear perfil de Creador/a / de marca" (ronda 3): inscripción al
+   Programa para Creadores o al de Marcas aliadas, en organizas-experiencias y
+   representas-marca. Se dispara con [data-solicitud="creador"|"marca"].
+   - Los datos van a solicitudes_comunidad (Supabase), como siempre.
+   - La foto viaja al Apps Script, que la guarda en Drive junto con la fila:
+     quien completa esto puede no tener cuenta, y el storage de Supabase sólo
+     acepta fotos de usuarios con sesión.
+   - Al final, el link de pago de Mercado Pago de la suscripción. */
+const TRIBU_PAGO_SUSCRIPCION = {
+  /* 🔧 EDITABLE: link de suscripción de Mercado Pago de cada programa. Vacío =
+     se avisa que el link llega por WhatsApp. */
+  creador: '',
+  marca: ''
+};
 (function(){
   const overlay = document.getElementById('solicitudModal');
   if(!overlay) return;
-  const form = document.getElementById('solicitudForm');
-  const catBox = document.getElementById('solCategorias');
+  const $ = id => document.getElementById(id);
+  const form = $('solicitudForm');
+  const catBox = $('solCategorias');
   const categoriasSel = [];
+  let fotoDataUrl = '';
 
-  (typeof CATEGORIAS_RED_TRIBU !== 'undefined' ? CATEGORIAS_RED_TRIBU : []).forEach(cat => {
+  /* Las categorías son las mismas prácticas que usa el filtro de la Red
+     Tribu (si el catálogo está cargado); si no, el listado corto de siempre. */
+  const catalogo = typeof DISCIPLINA_GRUPOS_CATALOGO !== 'undefined'
+    ? Object.values(DISCIPLINA_GRUPOS_CATALOGO).flat()
+    : (typeof CATEGORIAS_RED_TRIBU !== 'undefined' ? CATEGORIAS_RED_TRIBU : []);
+  catalogo.forEach(cat => {
     const chip = document.createElement('button');
     chip.type = 'button'; chip.className = 'cat-chip'; chip.textContent = cat;
     chip.addEventListener('click', () => {
@@ -427,11 +442,42 @@ if(document.readyState === 'loading'){
     });
     catBox.appendChild(chip);
   });
+  const norm = s => String(s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  $('solCatBuscar').addEventListener('input', e => {
+    const q = norm(e.target.value.trim());
+    catBox.querySelectorAll('.cat-chip').forEach(c => c.style.display = !q || norm(c.textContent).includes(q) || c.classList.contains('sel') ? '' : 'none');
+  });
+
+  $('solBio').addEventListener('input', e => { $('solBioCount').textContent = e.target.value.length; });
+
+  /* La foto se achica en el navegador (máx. 1200 px, JPEG) antes de mandarla:
+     una foto de celular pesa varios MB y el Apps Script tiene límite. */
+  $('solFoto').addEventListener('change', async e => {
+    const f = e.target.files[0];
+    fotoDataUrl = '';
+    if(!f) return;
+    if(!/^image\//.test(f.type)){ $('solFotoTxt').textContent = 'Ese archivo no es una imagen.'; return; }
+    try{
+      const img = await new Promise((ok, mal) => { const i = new Image(); i.onload = () => ok(i); i.onerror = mal; i.src = URL.createObjectURL(f); });
+      const k = Math.min(1, 1200 / Math.max(img.width, img.height));
+      const c = document.createElement('canvas');
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+      fotoDataUrl = c.toDataURL('image/jpeg', 0.85);
+      $('solFotoPrev').src = fotoDataUrl; $('solFotoPrev').hidden = false;
+      $('solFotoTxt').textContent = f.name + ' · tocá para cambiarla';
+    }catch(ex){ $('solFotoTxt').textContent = 'No pudimos leer esa imagen. Probá con otra.'; }
+  });
 
   const open = (tipo) => {
-    document.getElementById('solTipo').value = tipo;
-    document.getElementById('solCampoMarca').style.display = tipo === 'marca' ? '' : 'none';
-    document.getElementById('solicitudTitle').textContent = tipo === 'marca' ? 'Sumate al Programa de Marcas Aliadas' : 'Sumate al Programa para Creadores';
+    const marca = tipo === 'marca';
+    $('solTipo').value = tipo;
+    $('solCampoMarca').style.display = marca ? '' : 'none';
+    $('solicitudTitle').textContent = marca ? 'Crear perfil de marca' : 'Crear perfil de Creador/a';
+    $('solicitudSub').textContent = marca ? 'Completá tus datos para sumarte al Programa de Marcas aliadas Tribu.' : 'Completá tus datos para sumarte al Programa para Creadores.';
+    $('solFotoLabel').textContent = marca ? 'Foto para tu perfil de marca' : 'Foto para tu perfil de Creador/a';
+    $('solNombreMarca').required = marca;
+    form.style.display = ''; $('solMsg').style.display = 'none';
     overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
   };
   const close = () => { overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; };
@@ -442,35 +488,149 @@ if(document.readyState === 'loading'){
     e.preventDefault();
     open(trigger.dataset.solicitud);
   });
-  document.getElementById('solicitudClose').addEventListener('click', close);
+  $('solicitudClose').addEventListener('click', close);
   overlay.addEventListener('click', e => { if(e.target === overlay) close(); });
   document.addEventListener('keydown', e => { if(e.key === 'Escape' && overlay.classList.contains('open')) close(); });
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
-    const err = document.getElementById('solError'); err.style.display = 'none';
-    const btn = document.getElementById('solBtn'); btn.textContent = 'Enviando...'; btn.disabled = true;
+    const err = $('solError'); err.style.display = 'none';
+    const fallo = t => { err.textContent = t; err.style.display = 'block'; };
+    const tipo = $('solTipo').value;
+    const v = id => $(id).value.trim();
+    if(!v('solNombre')) return fallo('Completá tu nombre y apellido.');
+    if(!v('solTelefono')) return fallo('Dejanos un teléfono para escribirte.');
+    if(!/^\S+@\S+\.\S+$/.test(v('solEmail'))) return fallo('Revisá el mail.');
+    if(tipo === 'marca' && !v('solNombreMarca')) return fallo('Contanos cómo se llama la marca.');
+    if(!fotoDataUrl) return fallo('Sumá una foto para tu perfil.');
+    if(!categoriasSel.length) return fallo('Elegí al menos una opción de lo que ofrecés.');
+    const btn = $('solBtn'); btn.textContent = 'Enviando...'; btn.disabled = true;
     try{
       const row = {
-        tipo: document.getElementById('solTipo').value,
-        nombre: document.getElementById('solNombre').value.trim(),
-        nombre_marca: document.getElementById('solNombreMarca').value.trim() || null,
-        telefono: document.getElementById('solTelefono').value.trim(),
-        email: document.getElementById('solEmail').value.trim(),
-        instagram: document.getElementById('solInstagram').value.trim() || null,
-        sitio_web: document.getElementById('solWeb').value.trim() || null,
-        mini_bio: document.getElementById('solBio').value.trim() || null,
-        categorias: categoriasSel.slice()
+        tipo, nombre: v('solNombre'), nombre_marca: v('solNombreMarca') || null,
+        telefono: v('solTelefono'), email: v('solEmail'),
+        instagram: v('solInstagram') || null, sitio_web: v('solWeb') || null,
+        mini_bio: v('solBio') || null, categorias: categoriasSel.slice()
       };
       const { error } = await sb.from('solicitudes_comunidad').insert(row);
       if(error) throw error;
+      /* Copia a la planilla con la foto: si falla, la solicitud igual quedó
+         guardada y la foto se pide después. */
+      if(typeof enviarASheets === 'function'){
+        const fd = new FormData();
+        fd.set('Programa', tipo === 'marca' ? 'Marcas aliadas' : 'Creadores');
+        fd.set('Nombre', row.nombre); fd.set('Marca', row.nombre_marca || '');
+        fd.set('Telefono', row.telefono); fd.set('Email', row.email);
+        fd.set('RRSS', row.instagram || ''); fd.set('Web', row.sitio_web || '');
+        fd.set('MiniBio', row.mini_bio || ''); fd.set('Ofrece', row.categorias.join(', '));
+        fd.set('Foto', fotoDataUrl);
+        enviarASheets(fd, 'SolicitudPrograma').catch(() => {});
+      }
       form.style.display = 'none';
-      document.getElementById('solMsg').style.display = 'block';
+      const link = TRIBU_PAGO_SUSCRIPCION[tipo];
+      $('solMsgTxt').textContent = link
+        ? 'Último paso: activá tu suscripción con Mercado Pago. Apenas se acredite, publicamos tu perfil.'
+        : 'Te enviamos por WhatsApp el link de pago de Mercado Pago para activar tu suscripción. Apenas se acredite, publicamos tu perfil.';
+      $('solPagar').hidden = !link; if(link) $('solPagar').href = link;
+      $('solMsg').style.display = 'block';
     }catch(ex){
-      err.textContent = 'No se pudo enviar: ' + ex.message; err.style.display = 'block';
+      fallo('No se pudo enviar. Probá de nuevo en un momento.');
     }finally{
-      btn.textContent = 'Enviar solicitud'; btn.disabled = false;
+      btn.textContent = 'Crear mi perfil'; btn.disabled = false;
     }
+  });
+})();
+
+/* Formulario "Quiero cotizar un servicio especial / un Plan de Comunicación
+   Continua" (ronda 3). Un solo modal para las dos landings: los campos
+   cambian según [data-cotizar="creador"|"marca"], como pide el documento. Va a
+   la planilla (pestaña "Cotizaciones") y avisa por mail al equipo. */
+(function(){
+  let overlay = null, tipo = 'creador', que = '';
+  const CAMPOS = {
+    creador: [
+      ['Nombre', 'Nombre y apellido', 'input', true],
+      ['WhatsApp', 'WhatsApp', 'input', true],
+      ['Email', 'Mail', 'email', true],
+      ['Instagram', 'Instagram', 'input'],
+      ['Web', 'Web', 'input'],
+      ['Ofrece', '¿Qué ofrecés? Contanos brevemente sobre tu propuesta.', 'textarea', true],
+      ['Donde', 'Si es un evento por favor contanos en donde es.', 'input'],
+      ['Busca', '¿Qué estás buscando?', 'textarea']
+    ],
+    marca: [
+      ['Nombre', 'Nombre y apellido', 'input', true],
+      ['WhatsApp', 'Teléfono', 'input', true],
+      ['Email', 'Mail', 'email', true],
+      ['Instagram', 'Instagram', 'input'],
+      ['Web', 'Web', 'input'],
+      ['Ofrece', '¿Qué ofrecés? Contanos brevemente sobre tu propuesta', 'textarea', true],
+      ['Busca', '¿Qué servicio te interesa?', 'textarea']
+    ]
+  };
+  function armar(){
+    overlay = document.createElement('div');
+    overlay.className = 'modal-overlay'; overlay.id = 'cotizarModal'; overlay.setAttribute('aria-hidden', 'true');
+    overlay.innerHTML =
+      '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="cotTitulo">' +
+        '<button class="modal-close" type="button" data-cot-cerrar aria-label="Cerrar">✕</button>' +
+        '<h2 id="cotTitulo"></h2><p class="modal-sub" id="cotSub"></p>' +
+        '<form id="cotForm" novalidate><div id="cotCampos"></div>' +
+          '<p class="field-error" id="cotError" style="display:none"></p>' +
+          '<button type="submit" class="btn btn--spectrum" id="cotBtn" style="width:100%;justify-content:center">Enviar</button>' +
+        '</form>' +
+        '<div class="cot-ok" id="cotOk" hidden><b>¡Gracias!</b><p>Nos pondremos en contacto a la brevedad.</p></div>' +
+      '</div>';
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', e => { if(e.target === overlay || e.target.closest('[data-cot-cerrar]')) cerrar(); });
+    document.addEventListener('keydown', e => { if(e.key === 'Escape' && overlay.classList.contains('open')) cerrar(); });
+    overlay.querySelector('#cotForm').addEventListener('submit', enviar);
+  }
+  function abrir(t, q){
+    if(!overlay) armar();
+    tipo = t === 'marca' ? 'marca' : 'creador'; que = q || 'Servicio especial';
+    overlay.querySelector('#cotTitulo').textContent = 'Quiero cotizar ' + (que === 'Plan de Comunicación Continua' ? 'un Plan de Comunicación Continua' : 'un servicio especial');
+    overlay.querySelector('#cotSub').textContent = 'Contanos sobre tu propuesta y te respondemos con opciones y valores.';
+    overlay.querySelector('#cotCampos').innerHTML = CAMPOS[tipo].map(([k, etq, ctl, req]) =>
+      '<div class="field"><label for="cot' + k + '">' + etq + '</label>' +
+      (ctl === 'textarea'
+        ? '<textarea id="cot' + k + '" maxlength="800"' + (req ? ' required' : '') + '></textarea>'
+        : '<input id="cot' + k + '" type="' + (ctl === 'email' ? 'email' : 'text') + '"' + (req ? ' required' : '') + '>') +
+      '</div>').join('');
+    overlay.querySelector('#cotForm').hidden = false;
+    overlay.querySelector('#cotOk').hidden = true;
+    overlay.querySelector('#cotError').style.display = 'none';
+    overlay.classList.add('open'); overlay.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden';
+    setTimeout(() => { const f = overlay.querySelector('#cotNombre'); if(f) f.focus(); }, 60);
+  }
+  function cerrar(){ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; }
+  async function enviar(e){
+    e.preventDefault();
+    const err = overlay.querySelector('#cotError'); err.style.display = 'none';
+    const val = k => (overlay.querySelector('#cot' + k) || {}).value?.trim() || '';
+    const falta = CAMPOS[tipo].find(([k, , , req]) => req && !val(k));
+    if(falta){ err.textContent = 'Completá: ' + falta[1].replace(/[.?¿]/g, '').trim() + '.'; err.style.display = 'block'; return; }
+    if(!/^\S+@\S+\.\S+$/.test(val('Email'))){ err.textContent = 'Revisá el mail.'; err.style.display = 'block'; return; }
+    const btn = overlay.querySelector('#cotBtn'); btn.disabled = true; btn.textContent = 'Enviando…';
+    const fd = new FormData();
+    fd.set('Perfil', tipo === 'marca' ? 'Marca' : 'Creador/a');
+    fd.set('Cotiza', que);
+    ['Nombre', 'WhatsApp', 'Email', 'Instagram', 'Web', 'Ofrece', 'Donde', 'Busca'].forEach(k => fd.set(k, val(k)));
+    try{
+      await enviarASheets(fd, 'Cotizacion');
+      overlay.querySelector('#cotForm').hidden = true;
+      overlay.querySelector('#cotOk').hidden = false;
+    }catch(ex){
+      /* Mismo respaldo que el resto de los formularios: mail prellenado. */
+      const cuerpo = CAMPOS[tipo].map(([k, etq]) => etq + ' ' + val(k)).join('\n');
+      location.href = 'mailto:contacto@tribuconnection.com?subject=' + encodeURIComponent('Cotización: ' + que) + '&body=' + encodeURIComponent(cuerpo);
+    }finally{ btn.disabled = false; btn.textContent = 'Enviar'; }
+  }
+  document.addEventListener('click', e => {
+    const t = e.target.closest('[data-cotizar]');
+    if(!t) return;
+    e.preventDefault();
+    abrir(t.dataset.cotizar, t.dataset.cotizarQue);
   });
 })();
 

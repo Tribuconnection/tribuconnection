@@ -59,6 +59,8 @@ const TABS = {
   /* La clave interna es ConectarPerfil (Conectar ya la usa "Conectarme a la
      Tribu"), pero la pestaña visible se llama "Conectar". */
   ConectarPerfil: { name: 'Conectar',           headers: ['Fecha de envío', 'Perfil consultado', 'Tipo de propuesta', 'Nombre', 'Proyecto / Marca', 'Email', 'WhatsApp', 'Fecha aproximada', 'Ciudad / País', 'Tipo de experiencia', 'Mensaje'] },
+  Cotizacion:     { name: 'Cotizaciones',       headers: ['Fecha de envío', 'Perfil', 'Qué cotiza', 'Nombre y apellido', 'WhatsApp / Teléfono', 'Mail', 'Instagram', 'Web', 'Qué ofrece', 'Dónde es el evento', 'Qué busca'] },
+  SolicitudPrograma: { name: 'Solicitudes de programa', headers: ['Fecha de envío', 'Programa', 'Nombre y apellido', 'Marca', 'Teléfono', 'Mail', 'RRSS', 'Web', 'Mini bio', 'Qué ofrece', 'Foto'] },
   ReservaExperiencia: { name: 'Reservas',      headers: ['Fecha de envío', 'Código', 'Experiencia', 'Fecha del encuentro', 'Nombre', 'Email', 'WhatsApp', 'Participantes', 'Total', 'Medio de pago', 'Club Tribu', 'Estado'] },
   CambioPerfil:   { name: 'Cambios de perfil',  headers: ['Fecha de envío', 'Perfil', 'Email de la cuenta', 'Landing', 'Qué cambia', 'Texto publicado', 'Texto propuesto', 'ID del pedido'] }
 };
@@ -118,6 +120,8 @@ function doPost(e) {
     if (tipo === 'Experiencia') return handleExperiencia_(e);
     if (tipo === 'CambioPerfil') return handleCambioPerfil_(ss, e);
     if (tipo === 'ReservaExperiencia') return handleReserva_(ss, e);
+    if (tipo === 'Cotizacion') return handleCotizacion_(ss, e);
+    if (tipo === 'SolicitudPrograma') return handleSolicitudPrograma_(ss, e);
     if (tipo === 'NotificarCambio') return handleNotificarCambio_(e);
     if (tipo === 'Admin') return handleAdmin_(ss, e);
     return respond_({ ok: false, error: 'Tipo desconocido' });
@@ -196,6 +200,41 @@ function handleReserva_(ss, e) {
     p.WhatsApp || '', p.Participantes || '', p.Total || '', p.Medio_Pago || '', p.Club || '', p.Estado || ''];
   agregarFila_(ss, 'ReservaExperiencia', row, 'Nueva reserva ' + (p.Codigo || '') + ': ' + (p.Experiencia || '(experiencia)') + ' — ' + (p.Nombre || '(sin nombre)'));
   return respond_({ ok: true });
+}
+
+/* "Quiero cotizar un servicio especial / un Plan de Comunicación Continua"
+   de las landings de Creadores y Marcas. */
+function handleCotizacion_(ss, e) {
+  const p = e.parameter;
+  const row = [new Date(), p.Perfil || '', p.Cotiza || '', p.Nombre || '', p.WhatsApp || '', p.Email || '',
+    p.Instagram || '', p.Web || '', p.Ofrece || '', p.Donde || '', p.Busca || ''];
+  agregarFila_(ss, 'Cotizacion', row, 'Nueva cotización (' + (p.Cotiza || 'servicio') + '): ' + (p.Nombre || '(sin nombre)'));
+  return respond_({ ok: true });
+}
+
+/* "Crear perfil de Creador/a / de marca": la foto llega como data URL y se
+   guarda en una carpeta de Drive junto a la planilla; en la fila queda el link. */
+function handleSolicitudPrograma_(ss, e) {
+  const p = e.parameter;
+  let fotoUrl = '';
+  try {
+    const m = String(p.Foto || '').match(/^data:(image\/[a-z+]+);base64,(.+)$/);
+    if (m) {
+      const nombre = (p.Programa || 'Programa') + ' - ' + (p.Marca || p.Nombre || 'sin nombre') + '.jpg';
+      const blob = Utilities.newBlob(Utilities.base64Decode(m[2]), m[1], nombre);
+      fotoUrl = carpetaFotos_(ss).createFile(blob).getUrl();
+    }
+  } catch (err) { fotoUrl = 'No se pudo guardar: ' + err; }
+  const row = [new Date(), p.Programa || '', p.Nombre || '', p.Marca || '', p.Telefono || '', p.Email || '',
+    p.RRSS || '', p.Web || '', p.MiniBio || '', p.Ofrece || '', fotoUrl];
+  agregarFila_(ss, 'SolicitudPrograma', row, 'Nueva solicitud al Programa ' + (p.Programa || '') + ': ' + (p.Nombre || '(sin nombre)'));
+  return respond_({ ok: true });
+}
+
+function carpetaFotos_(ss) {
+  const padre = DriveApp.getFileById(ss.getId()).getParents().next();
+  const it = padre.getFoldersByName('Fotos de solicitudes');
+  return it.hasNext() ? it.next() : padre.createFolder('Fotos de solicitudes');
 }
 
 function handleCambioPerfil_(ss, e) {
