@@ -1326,7 +1326,7 @@ body.tc-lift .tc-dock{ bottom:calc(96px + var(--tc-lift,118px)); }
 /* Historias destacadas con imagen: la foto arriba, el texto abajo. */
 .cases--foto .case--foto{ padding:0; overflow:hidden; color:inherit; text-decoration:none; }
 .case--foto h4{ color:var(--cream); }
-.case--foto img{ width:100%; aspect-ratio:4/5; object-fit:cover; display:block; transition:transform .5s ease; }
+.case--foto img{ width:100%; height:auto; aspect-ratio:4/5; object-fit:cover; display:block; transition:transform .5s ease; }
 .case--foto:hover img{ transform:scale(1.04); }
 .case--foto .tag{ margin:1rem 1.2rem .6rem; align-self:flex-start; }
 .case--foto h4{ padding:0 1.2rem; min-height:0; }
@@ -1378,3 +1378,57 @@ body.tc-lift .tc-dock{ bottom:calc(96px + var(--tc-lift,118px)); }
 .sol-listo{ text-align:center; }
 .sol-listo b{ display:block; font-family:var(--font-display); font-size:1.4rem; margin-bottom:.5rem; }
 .sol-listo p{ color:var(--soft); margin-bottom:1.1rem; }
+
+/* ===================== Tarjetas con foto real =====================
+   Las tarjetas de ícono en un círculo con texto centrado se veían como una
+   plantilla genérica. Ahora llevan una foto de la propia Tribu arriba
+   (fotogramas de las coberturas) y el texto alineado a la izquierda. */
+.challenge.con-foto{ padding:0; overflow:hidden; text-align:left; display:flex; flex-direction:column; }
+.challenge.con-foto .ch-img{ width:100%; height:auto; aspect-ratio:4/3; object-fit:cover; display:block; border-bottom:3px solid var(--c,var(--teal)); }
+.challenge.con-foto b{ margin:1.05rem 1.2rem .45rem; min-height:0 !important; }
+.challenge.con-foto p{ margin:0 1.2rem 1.3rem; font-size:.88rem; line-height:1.55; }
+.challenge.con-foto p:first-of-type:last-child{ margin-top:1rem; }
+.challenges:not(.challenges--3) .challenge.con-foto .ch-img{ aspect-ratio:1/1; }
+
+.perk-lg.con-foto{ padding:0; overflow:hidden; text-align:left; display:flex; flex-direction:column; }
+.perk-lg.con-foto .perk-img{ width:100%; height:auto; aspect-ratio:4/3; object-fit:cover; display:block; border-bottom:3px solid var(--c,var(--amber)); }
+.perk-lg.con-foto h4{ margin:1.05rem 1.3rem .4rem; }
+.perk-lg.con-foto p{ margin:0 1.3rem 1.4rem; }
+
+.svc.con-foto{ padding:0; overflow:hidden; }
+.svc.con-foto .svc-img{ width:100%; height:auto; aspect-ratio:16/10; object-fit:cover; display:block; }
+.svc.con-foto > :not(.svc-img){ margin-left:1.2rem; margin-right:1.2rem; }
+.svc.con-foto h3{ margin-top:1.1rem; }
+.svc.con-foto > :last-child{ margin-bottom:1.2rem; }
+
+.path.con-foto{ padding-top:0; }
+.path.con-foto .path-img{ width:calc(100% + 3rem); height:auto; margin:0 -1.5rem .2rem; aspect-ratio:16/9; object-fit:cover; display:block; }
+.path.con-foto::before{ z-index:1; }
+
+.camino-card.con-foto{ padding-top:0; overflow:hidden; }
+.camino-card.con-foto .camino-img{ width:calc(100% + 2.9rem); height:auto; margin:0 -1.45rem 1.1rem; aspect-ratio:16/9; object-fit:cover; display:block; border-bottom:3px solid var(--c); }
+@media (max-width:640px){ .camino-card.con-foto .camino-img{ width:calc(100% + 2.4rem); margin:0 -1.2rem .9rem; aspect-ratio:21/9; } }
+
+/* ===================== Landings: ajustes del 14/10 ===================== */
+/* Lista de Comunidad de Creadores / Aliados: se reparte en todo el alto de la
+   tarjeta en lugar de dejar un hueco debajo. */
+.plan--plus ul{ justify-content:space-between; }
+/* Packs centrados */
+.pack-grid--texto .pack-card{ text-align:center; align-items:center; }
+/* Plan de Comunicación Continua: el isotipo grande y tenue de la derecha, el
+   mismo recurso de las cajas de cierre (.cta-box). */
+.plan-continua{ position:relative; overflow:hidden; }
+.plan-continua > *{ position:relative; z-index:1; }
+.plan-continua::after{
+  content:""; position:absolute; top:50%; right:min(110px,8vw); transform:translateY(-50%);
+  width:min(300px,24vw); height:min(300px,24vw);
+  background:url(/assets/isotipo.png?v=3) no-repeat center/contain; opacity:.16; pointer-events:none;
+}
+@media (max-width:900px){ .plan-continua::after{ display:none; } }
+/* Preguntas frecuentes en dos columnas */
+.faq.faq--2col{ max-width:none; display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.9rem 1.1rem; align-items:start; }
+.faq.faq--2col details{ margin:0; }
+@media (max-width:860px){ .faq.faq--2col{ grid-template-columns:1fr; } }
+/* Botón destacado (Plan de Comunicación Continua) */
+.btn--destacado{ padding:1rem 1.7rem; font-size:1rem; box-shadow:0 14px 36px -14px rgba(232,69,122,.75); }
+.h2--cierre{ max-width:none !important; }

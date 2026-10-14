@@ -593,7 +593,7 @@ const PROVINCIAS_AR = {
 (function(){
   const CAMINOS = [
     {
-      color:'var(--red)', href:'/organizas-experiencias/',
+      color:'var(--red)', href:'/organizas-experiencias/', foto:'/assets/tarjetas/camino-creas.jpg?v=1', alt:'Público de un festival levantando las manos',
       titulo:'CREÁS', que:'Experiencias, actividades, eventos, arte, encuentros.',
       texto:'Si estás dando vida a una propuesta que reúne personas, te ayudamos a hacerla crecer, conectar con más gente y generar un impacto que perdure.',
       cta:'Conocé cómo podemos acompañarte',
@@ -601,7 +601,7 @@ const PROVINCIAS_AR = {
       ic:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c.9 5 1.6 5.7 6.6 6.6-5 .9-5.7 1.6-6.6 6.6-.9-5-1.6-5.7-6.6-6.6C10.4 7.7 11.1 7 12 2z"/><path d="M18.5 15c.4 2.2.8 2.6 3 3-2.2.4-2.6.8-3 3-.4-2.2-.8-2.6-3-3 2.2-.4 2.6-.8 3-3z"/></svg>'
     },
     {
-      color:'var(--teal)', href:'/representas-marca/',
+      color:'var(--teal)', href:'/representas-marca/', foto:'/assets/tarjetas/camino-impulsas.jpg?v=1', alt:'Entrevista de Tribu a una marca en su stand',
       titulo:'IMPULSÁS', que:'Una marca, un espacio, un emprendimiento, una organización.',
       texto:'Creamos conexiones genuinas entre tu marca y comunidades afines, desarrollando estrategias y acciones de colaboración y beneficio mutuo.',
       cta:'Potenciá tu marca',
@@ -624,8 +624,8 @@ const PROVINCIAS_AR = {
         '<p class="modal-sub">Hay dos formas de sumarse a la Tribu. Elegí la que te represente y te contamos cómo podemos acompañarte.</p>' +
         '<div class="caminos-grid">' +
           CAMINOS.map(c =>
-            '<a class="camino-card" href="' + c.href + '" style="--c:' + c.color + '">' +
-              '<span class="camino-ic" aria-hidden="true">' + c.ic + '</span>' +
+            '<a class="camino-card con-foto" href="' + c.href + '" style="--c:' + c.color + '">' +
+              '<img class="camino-img" src="' + c.foto + '" alt="' + c.alt + '" width="720" height="540">' +
               '<h3>' + c.titulo + '</h3>' +
               '<p class="camino-que">' + c.que + '</p>' +
               '<p>' + c.texto + '</p>' +
@@ -639,8 +639,28 @@ const PROVINCIAS_AR = {
     overlay.addEventListener('click', e => { if(e.target === overlay) cerrar(); });
   }
 
+  /* Al abrir la ventana se precargan las dos landings: en Chrome/Edge quedan
+     pre-renderizadas (speculation rules) y en el resto al menos descargadas
+     (prefetch). Así, cuando la persona elige un camino, la página aparece al
+     instante en vez de empezar a bajar recién con el clic. */
+  let precargado = false;
+  function precargar(){
+    if(precargado) return;
+    precargado = true;
+    const urls = CAMINOS.map(c => c.href).filter(h => h !== location.pathname);
+    if(HTMLScriptElement.supports && HTMLScriptElement.supports('speculationrules')){
+      const s = document.createElement('script');
+      s.type = 'speculationrules';
+      s.textContent = JSON.stringify({ prerender: [{ source:'list', urls }] });
+      document.head.appendChild(s);
+    } else {
+      urls.forEach(u => { const l = document.createElement('link'); l.rel = 'prefetch'; l.href = u; document.head.appendChild(l); });
+    }
+  }
+
   function abrir(){
     if(!overlay) construir();
+    precargar();
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
@@ -661,6 +681,8 @@ const PROVINCIAS_AR = {
     e.preventDefault();
     abrir();
   });
+  /* Con el mouse encima de "Sumá tu propuesta" ya se empiezan a precargar. */
+  document.addEventListener('pointerover', e => { if(e.target.closest && e.target.closest('[data-caminos]')) precargar(); }, { passive:true });
   document.addEventListener('keydown', e => {
     if(e.key === 'Escape' && overlay && overlay.classList.contains('open')) cerrar();
   });

@@ -19,7 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=49">
+<link rel="stylesheet" href="/assets/tribu.css?v=50">
 <link rel="stylesheet" href="/assets/home.css?v=15">
 </head>
 <body data-accent="red">
@@ -67,12 +67,11 @@
 <!-- ============================ HERO ============================ -->
 <header class="hero" id="top" style="min-height:auto;padding-top:140px;padding-bottom:48px">
   <div class="wrap hero-inner">
-    <a href="#" data-caminos class="backhome reveal" style="margin-bottom:1.2rem">← Ver los dos caminos</a>
-    <p class="eyebrow reveal">Para organizadores, facilitadores y prestadores de servicios</p>
-    <h1 class="display reveal d1">Tu experiencia merece ser <span class="grad">vista, comprendida y elegida</span>.</h1>
+    <p class="eyebrow reveal-now">Para organizadores, facilitadores y prestadores de servicios</p>
+    <h1 class="display reveal-now d1">Tu experiencia merece ser <span class="grad">vista, comprendida y elegida</span>.</h1>
     <!-- max-width inline a proposito: garantiza los 2 renglones aunque el navegador
          tenga cacheada una version vieja de tribu.css (sin la regla .lead--2l). -->
-    <p class="lead lead--2l reveal d2" style="max-width:none">Te ayudamos a dar visibilidad a tu propuesta con estrategia,<br class="br-desk">sensibilidad y conexión real, para que más personas puedan ser parte.</p>
+    <p class="lead lead--2l reveal-now d2" style="max-width:none">Te ayudamos a dar visibilidad a tu propuesta con estrategia,<br class="br-desk">sensibilidad y conexión real, para que más personas puedan ser parte.</p>
   </div>
 </header>
 
@@ -84,18 +83,18 @@
       <h2 class="h2">Sabemos que hoy estás viviendo alguno de estos desafíos:</h2>
     </div>
     <div class="challenges challenges--3 challenges--eq">
-      <div class="challenge is-red reveal">
-        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3.2"/><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/></svg></div>
+      <div class="challenge is-red reveal con-foto">
+        <img class="ch-img" src="/assets/tarjetas/cre-visible.jpg?v=1" alt="Público bailando en un festival al aire libre" loading="lazy" width="720" height="540">
         <b>1. Hacer visible una propuesta valiosa</b>
         <p>No siempre alcanza con ofrecer una experiencia transformadora. Muchas veces, el desafío inicial es simplemente lograr que las personas correctas sepan que existís, conozcan tu propuesta y se crucen con ella en el momento indicado.</p>
       </div>
-      <div class="challenge is-amber reveal d1">
-        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 20l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></div>
+      <div class="challenge is-amber reveal d1 con-foto">
+        <img class="ch-img" src="/assets/tarjetas/cre-comunicar.jpg?v=1" alt="Entrevista de Tribu a un músico" loading="lazy" width="720" height="540">
         <b>2. Comunicar con claridad lo que ofrecés</b>
         <p>Cuando alguien descubre tu evento o servicio, necesita entender rápidamente de qué se trata, qué lo hace especial y por qué podría interesarle. Una comunicación clara, atractiva y sensible puede transformar la curiosidad en deseo real de participar.</p>
       </div>
-      <div class="challenge is-green reveal d2">
-        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9.5l3.5 3.5L14 5.5"/><path d="M14 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg></div>
+      <div class="challenge is-green reveal d2 con-foto">
+        <img class="ch-img" src="/assets/tarjetas/cre-participacion.jpg?v=1" alt="Público con las manos arriba en un show nocturno" loading="lazy" width="720" height="540">
         <b>3. Convertir el interés en participación</b>
         <p>Generar atención es importante, pero el paso decisivo es lograr que esa persona finalmente se inscriba, reserve o compre. Para eso, ayudan mucho una propuesta bien presentada, beneficios concretos y recursos que acompañen la decisión.</p>
       </div>
@@ -140,18 +139,18 @@
       <h2 class="h2">¿Cómo podemos ayudarte?</h2>
     </div>
     <div class="challenges challenges--3 challenges--eq">
-      <div class="challenge is-red reveal">
-        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M16 8.5a4 4 0 0 1 0 7"/><path d="M19 6a8 8 0 0 1 0 12"/></svg></div>
+      <div class="challenge is-red reveal con-foto">
+        <img class="ch-img" src="/assets/tarjetas/ayu-visible.jpg?v=1" alt="Meditación grupal al aire libre" loading="lazy" width="720" height="540">
         <b>1. Hacemos visible tu propuesta</b>
         <p>Te damos presencia sostenida dentro del ecosistema Tribu: incluimos tus propuestas en nuestra Agenda de Instagram y Calendario web, y construimos un perfil digital para que más personas puedan descubrirte.</p>
       </div>
-      <div class="challenge is-amber reveal d1">
-        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v12H8l-4 4z"/></svg></div>
+      <div class="challenge is-amber reveal d1 con-foto">
+        <img class="ch-img" src="/assets/tarjetas/ayu-unico.jpg?v=1" alt="Entrevista de Tribu a Michelle Gibson" loading="lazy" width="720" height="540">
         <b>2. Contamos lo que te hace único</b>
         <p>Creamos contenidos que ponen en palabras y en imágenes el valor de lo que hacés. Entrevistas, notas y publicaciones ayudan a explicar tu propuesta, generar confianza y construir una conexión más profunda con tu audiencia.</p>
       </div>
-      <div class="challenge is-green reveal d2">
-        <div class="ch-ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21v-8"/><path d="M12 13c0-3.5-3-5-7-5 0 4 2 6.5 7 5z"/><path d="M12 13c0-4 3-6.5 7-6.5 0 4.5-2.5 7-7 6.5z"/></svg></div>
+      <div class="challenge is-green reveal d2 con-foto">
+        <img class="ch-img" src="/assets/tarjetas/ayu-participacion.jpg?v=1" alt="Personas bailando en un encuentro al aire libre" loading="lazy" width="720" height="540">
         <b>3. Convertimos el interés en participación</b>
         <p>Te ayudamos a transformar esa conexión en acción con beneficios para el Club Tribu, sorteos, coberturas y servicios especiales con 25% de descuento. Además, accedés a una comunidad de creadores, colaboraciones y acompañamiento estratégico.</p>
       </div>
@@ -201,12 +200,12 @@
         <div class="pack-grid pack-grid--texto">
           <div class="pack-card">
             <div class="pack-title">1. Pack “Media Partner para tu evento”</div>
-            <div class="pack-combo">Entrevista + Sorteo + Cobertura audiovisual del evento</div>
+            <div class="pack-combo">Entrevista + Sorteo +<br>Cobertura audiovisual del evento</div>
             <div class="pack-desc">Una propuesta integral para generar expectativa antes del evento, acompañarlo durante su realización y extender su impacto a través de contenido posterior.</div>
           </div>
           <div class="pack-card">
             <div class="pack-title">2. Pack “Contenido Patrocinado”</div>
-            <div class="pack-combo">Entrevista + Sorteo + Carrusel editorial en Instagram</div>
+            <div class="pack-combo">Entrevista + Sorteo +<br>Carrusel editorial en Instagram</div>
             <div class="pack-desc">Una combinación pensada para dar a conocer tu propuesta, contar su valor y generar interacción con nuevas audiencias dentro de la comunidad Tribu.</div>
           </div>
         </div>
@@ -223,7 +222,7 @@
       <p>Un servicio a medida para marcas, espacios y proyectos que buscan comunicar de forma sostenida. Definimos juntos los objetivos, desarrollamos un calendario y producimos contenidos mensuales listos para publicar.</p>
       <p class="plan-nota">Contratación mínima: 6 meses. Propuesta y presupuesto personalizados.</p>
       <p class="plan-nota"><b>Consultanos por valores y opciones disponibles.</b></p>
-      <a href="#" class="btn btn--ghost" data-cotizar="creador" data-cotizar-que="Plan de Comunicación Continua">Quiero cotizar un Plan de Comunicación Continua</a>
+      <a href="#" class="btn btn--spectrum btn--destacado" data-cotizar="creador" data-cotizar-que="Plan de Comunicación Continua">Quiero cotizar un Plan de Comunicación Continua</a>
     </div>
   </div>
 </section>
@@ -232,7 +231,7 @@
 <section class="section section--tight" id="faq">
   <div class="wrap">
     <div class="sec-head reveal"><p class="eyebrow">Preguntas frecuentes</p><h2 class="h2">Antes de dar el paso.</h2></div>
-    <div class="faq reveal">
+    <div class="faq faq--2col reveal">
       <details><summary>¿Qué diferencia hay entre la Comunidad de Creadores y los Servicios especiales?</summary><div class="faq-a">La Comunidad de Creadores es una membresía mensual con presencia sostenida en todo el ecosistema Tribu (agenda, calendario, perfil digital, comunidad de WhatsApp). Los Servicios especiales son acciones puntuales —entrevista, sorteo, cobertura— sin compromiso mensual, ideales para un evento o lanzamiento específico.</div></details>
       <details><summary>¿Puedo combinar servicios especiales en un pack?</summary><div class="faq-a">Sí. El Pack "Media Partner para tu evento" combina entrevista, sorteo y cobertura audiovisual. El Pack "Contenido Patrocinado" combina entrevista, sorteo y un carrusel editorial en Instagram.</div></details>
       <details><summary>¿Qué es el Plan de Comunicación Continua?</summary><div class="faq-a">Es un servicio a medida para quienes buscan un equipo que acompañe su comunicación de forma sostenida: estrategia, planificación y producción mensual de contenidos, con un mínimo de 6 meses de contratación.</div></details>
@@ -247,7 +246,7 @@
   <div class="wrap">
     <div class="cta-box reveal">
       <p class="eyebrow">Hablemos de tu proyecto</p>
-      <h2 class="h2">Queremos conocer tu propuesta, tus objetivos y cómo ayudarte a crecer.</h2>
+      <h2 class="h2 h2--cierre">Queremos conocer tu propuesta,<br>tus objetivos y cómo ayudarte a crecer.</h2>
       <div class="cta-actions">
         <a href="https://wa.me/5491155031180?text=Hola%20Tribu!%20Quiero%20conversar%20sobre%20mi%20proyecto." target="_blank" rel="noopener" class="btn btn--light">Quiero conversar sobre mi proyecto <span class="arr">→</span></a>
         <span class="note">Primera conversación sin compromiso.</span>
@@ -255,8 +254,8 @@
     </div>
 
     <div class="paths paths--2" style="margin-top:2.4rem">
-      <a class="path is-teal reveal" href="/representas-marca/"><div class="path-ic">📣</div><span class="path-kicker">¿No es tu caso?</span><h3>Impulsás una marca, un espacio o una organización</h3><span class="path-go">Ver ese camino <span class="arr">→</span></span></a>
-      <a class="path reveal d1" href="/" style="--c:var(--purple)"><div class="path-ic">🏠</div><span class="path-kicker">Volver</span><h3>Conocé qué es Tribu Connection</h3><span class="path-go">Ir a la Home <span class="arr">→</span></span></a>
+      <a class="path is-teal reveal con-foto" href="/representas-marca/"><img class="path-img" src="/assets/tarjetas/camino-impulsas.jpg?v=1" alt="Entrevista a una marca en su stand" loading="lazy" width="720" height="540"><span class="path-kicker">¿No es tu caso?</span><h3>Impulsás una marca, un espacio o una organización</h3><span class="path-go">Ver ese camino <span class="arr">→</span></span></a>
+      <a class="path reveal d1 con-foto" href="/" style="--c:var(--purple)"><img class="path-img" src="/assets/tarjetas/camino-home.jpg?v=1" alt="Entrevista de Tribu en Conciencia Festival" loading="lazy" width="720" height="540"><span class="path-kicker">Volver</span><h3>Conocé qué es Tribu Connection</h3><span class="path-go">Ir a la Home <span class="arr">→</span></span></a>
     </div>
   </div>
 </section>
@@ -542,10 +541,10 @@
   </div>
 </div>
 
-<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="/assets/vendor/supabase-js-2.117.3.min.js"></script>
 <script src="/assets/red-tribu-filtros.js?v=1"></script>
 <script src="/assets/supabase-client.js?v=18"></script>
-<script src="/assets/site.js?v=20"></script>
+<script src="/assets/site.js?v=21"></script>
 <script defer src="/assets/tribu-chat.js?v=4"></script>
 </body>
 </html>
