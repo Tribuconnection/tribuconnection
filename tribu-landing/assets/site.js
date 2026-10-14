@@ -1209,3 +1209,26 @@ const PROVINCIAS_AR = {
   document.addEventListener('DOMContentLoaded', () => enhanceAll());
   window.tribuEnhanceSelects = enhanceAll;
 })();
+
+/* ============ FAQ EN DOS COLUMNAS: UNA PREGUNTA, UN RENGLÓN ============
+   En desktop ancho las preguntas van en un solo renglón. Si con la letra
+   normal las dos columnas no entran, se achica de a poco (hasta un mínimo
+   legible); si ni así entran, se deja partir la línea. */
+(function(){
+  const listas = document.querySelectorAll(".faq--2col");
+  if(!listas.length) return;
+  function ajustar(){
+    listas.forEach(l => {
+      l.classList.remove("parte"); l.style.removeProperty("--faq-fs");
+      if(window.innerWidth < 1200) return;
+      const desborda = () => l.scrollWidth > l.clientWidth + 1 || [...l.querySelectorAll("summary")].some(s => s.scrollWidth > s.clientWidth + 1);
+      let fs = 0.98;
+      while(desborda() && fs > 0.8){ fs = Math.round((fs - 0.02) * 100) / 100; l.style.setProperty("--faq-fs", fs + "rem"); }
+      if(desborda()) l.classList.add("parte");
+    });
+  }
+  let t = null;
+  window.addEventListener("resize", () => { clearTimeout(t); t = setTimeout(ajustar, 120); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(ajustar); else ajustar();
+  ajustar();
+})();

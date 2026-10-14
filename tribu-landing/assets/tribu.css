@@ -1432,3 +1432,13 @@ body.tc-lift .tc-dock{ bottom:calc(96px + var(--tc-lift,118px)); }
 /* Botón destacado (Plan de Comunicación Continua) */
 .btn--destacado{ padding:1rem 1.7rem; font-size:1rem; box-shadow:0 14px 36px -14px rgba(232,69,122,.75); }
 .h2--cierre{ max-width:none !important; }
+/* FAQ en dos columnas: las dos tarjetas de cada fila con el mismo alto.
+   Desde 1200px cada pregunta va en un solo renglón: cada columna toma el ancho
+   de su pregunta más larga y site.js achica apenas la letra si las dos no
+   entran juntas (si ni así entran, recién ahí se permite partir la línea). */
+@media (min-width:861px){ .faq.faq--2col{ align-items:stretch; } }
+@media (min-width:1200px){
+  .faq.faq--2col{ grid-template-columns:auto auto; }
+  .faq.faq--2col summary{ white-space:nowrap; font-size:var(--faq-fs,.98rem); }
+  .faq.faq--2col.parte summary{ white-space:normal; }
+}
