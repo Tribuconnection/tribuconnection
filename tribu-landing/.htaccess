@@ -15,6 +15,12 @@
   RewriteRule ^(\.preview-server\.js|LEEME\.txt)$ - [F,L]
 </IfModule>
 
+# La landing vieja "Impulsás una comunidad o proyecto" se dio de baja (la
+# ronda 3 quitó esa categoría): IMPULSÁS es una sola, la de marcas.
+<IfModule mod_rewrite.c>
+  RewriteRule ^impulsas-comunidad(/.*)?$ /representas-marca/ [R=301,L]
+</IfModule>
+
 # Perfiles públicos: /slug-de-la-persona -> /perfil-publico/index.html
 # (solo si no existe un archivo o carpeta real con ese nombre)
 <IfModule mod_rewrite.c>
