@@ -20,7 +20,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/tribu.css?v=52">
-<link rel="stylesheet" href="/assets/home.css?v=15">
+<link rel="stylesheet" href="/assets/home.css?v=16">
 <style>
   .rt-head{ max-width:640px; align-self:flex-start; margin-right:auto; text-align:left; }
   #top .wrap{ width:100%; }
@@ -173,7 +173,6 @@
     <a href="/">Inicio</a>
     <a href="/agenda/">Agenda</a>
     <a href="/red-tribu/" class="is-active">Red Tribu</a>
-    <a href="/#historias">Historias</a>
     <a href="/club-tribu-connection/">Club Tribu</a>
     <a href="#" data-caminos>Sumá tu propuesta</a>
   </div>
@@ -198,7 +197,6 @@
   <a href="/">Inicio</a>
   <a href="/agenda/">Agenda</a>
   <a href="/red-tribu/">Red Tribu</a>
-  <a href="/#historias">Historias</a>
   <a href="/club-tribu-connection/">Club Tribu</a>
   <a href="#" data-caminos>Sumá tu propuesta</a>
   <a href="#" class="btn btn--ghost" data-auth-nav data-auth><span data-auth-label>Ingresar</span></a>
@@ -502,7 +500,7 @@
 <script src="/assets/vendor/supabase-js-2.117.3.min.js"></script>
 <script src="/assets/supabase-client.js?v=18"></script>
 <script src="/assets/red-tribu-filtros.js?v=1"></script>
-<script src="/assets/site.js?v=23"></script>
+<script src="/assets/site.js?v=24"></script>
 <script>
 /* Directorio Red Tribu: perfiles + experiencias reales de Supabase + eventos
    del calendario, en 5 categorías (Creador/a, Comunidad, Experiencia, Marca,
@@ -518,6 +516,8 @@
   const search = document.getElementById('dirSearch');
   const tabs = document.querySelectorAll('#dirTabs .rt-tab');
   let activeTab = 'todos', ubicacion = '';
+  /* Para buscar sin importar tildes ni mayúsculas ("meditacion" encuentra "Meditación"). */
+  const pliega = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
 
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   /* Perfiles y experiencias los escribe cualquier usuario: se escapan antes de
@@ -543,6 +543,7 @@
     el.dataset.cats = o.cats.join(' ');
     el.dataset.text = [o.nombre, o.desc, o.ciudad, ...(o.extraTexto || [])].join(' ').toLowerCase();
     el.dataset.ciudad = (o.ciudad || '').toLowerCase();
+    el.dataset.busca = pliega(el.dataset.text);
     el._datos = o.datos || null;
     const img = o.img || '/assets/isotipo.png?v=3';
     el.innerHTML =
@@ -1112,14 +1113,14 @@
   search.addEventListener('input', aplicar);
 
   function aplicar(){
-    const q = search.value.trim().toLowerCase();
+    const palabras = pliega(search.value).split(' ').filter(Boolean);
     const ubi = ubicacion.toLowerCase();
     const cat = catFiltrable();
     let visibles = 0;
     grid.querySelectorAll('.rt-card').forEach(c => {
       const cats = c.dataset.cats.split(' ');
       let ok = (activeTab === 'todos' || cats.includes(activeTab))
-        && (!q || c.dataset.text.includes(q))
+        && palabras.every(p => (c.dataset.busca || '').includes(p))
         && (!ubi || c.dataset.ciudad.includes(ubi));
       if(ok && cat && cuantosFiltros(cat)) ok = pasaFiltros(cat, c);
       c.style.display = ok ? '' : 'none';
@@ -1162,6 +1163,13 @@
   })();
   pintarPanel();
   aplicar();
+
+  /* Llegadas desde el buscador del sitio: /red-tribu/?tab=marca&q=Resonar */
+  const params = new URLSearchParams(location.search);
+  if(params.get('q')) search.value = params.get('q');
+  const tabUrl = params.get('tab');
+  if(tabUrl && document.querySelector('#dirTabs .rt-tab[data-tab="' + tabUrl.replace(/[^a-z]/g, '') + '"]')) elegirTab(tabUrl.replace(/[^a-z]/g, ''));
+  else if(params.get('q')) aplicar();
 })();
 </script>
 <script defer src="/assets/tribu-chat.js?v=4"></script>

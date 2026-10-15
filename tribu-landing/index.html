@@ -31,7 +31,7 @@
 
 <!-- El CSS propio es lo único que bloquea el primer pintado. -->
 <link rel="stylesheet" href="/assets/tribu.css?v=52">
-<link rel="stylesheet" href="/assets/home.css?v=15">
+<link rel="stylesheet" href="/assets/home.css?v=16">
 
 <!-- La foto grande del collage es el LCP: que empiece a bajar ya, desde el HTML. -->
 <link rel="preload" as="image" href="/assets/stories/meditacion-grupal.jpg?v=2" fetchpriority="high">
@@ -64,7 +64,6 @@
     <a href="#top" class="is-active">Inicio</a>
     <a href="/agenda/">Agenda</a>
     <a href="/red-tribu/">Red Tribu</a>
-    <a href="#historias">Historias</a>
     <a href="/club-tribu-connection/">Club Tribu</a>
     <a href="#" data-caminos>Sumá tu propuesta</a>
   </div>
@@ -90,7 +89,6 @@
   <a href="#top">Inicio</a>
   <a href="/agenda/">Agenda</a>
   <a href="/red-tribu/">Red Tribu</a>
-  <a href="#historias">Historias</a>
   <a href="/club-tribu-connection/">Club Tribu</a>
   <a href="#" data-caminos>Sumá tu propuesta</a>
   <a href="#" class="btn btn--ghost" data-auth-nav data-auth><span data-auth-label>Ingresar</span></a>
@@ -138,7 +136,7 @@
 </section>
 
 <!-- ===================== ELEGIDOS POR TRIBU ===================== -->
-<section class="section" style="padding-top:clamp(20px,3vw,36px);padding-bottom:clamp(20px,3vw,36px)">
+<section class="section" id="elegidos" style="padding-top:clamp(20px,3vw,36px);padding-bottom:clamp(20px,3vw,36px)">
   <div class="wrap">
     <div class="row-head reveal">
       <h2>Elegidos por Tribu <span aria-hidden="true">🤚</span></h2>
@@ -171,7 +169,7 @@
 </section>
 
 <!-- ===================== CLUB TRIBU ===================== -->
-<section class="section" style="padding-top:clamp(20px,3vw,36px);padding-bottom:clamp(20px,3vw,36px)">
+<section class="section" id="club" style="padding-top:clamp(20px,3vw,36px);padding-bottom:clamp(20px,3vw,36px)">
   <div class="wrap">
     <div class="club-banner reveal">
       <div class="club-intro">
@@ -255,7 +253,7 @@
 </section>
 
 <!-- ===================== EXPLORÁ POR MAPA ===================== -->
-<section class="section" style="padding-top:clamp(20px,3vw,36px);padding-bottom:clamp(20px,3vw,36px)">
+<section class="section" id="mapa" style="padding-top:clamp(20px,3vw,36px);padding-bottom:clamp(20px,3vw,36px)">
   <div class="wrap">
     <div class="map-cta reveal">
       <div class="map-cta-copy">
@@ -730,7 +728,7 @@
      unpkg más los tiles de Esri en la carga inicial. -->
 <script defer src="/assets/vendor/supabase-js-2.117.3.min.js"></script>
 <script defer src="/assets/supabase-client.js?v=18"></script>
-<script defer src="/assets/site.js?v=23"></script>
+<script defer src="/assets/site.js?v=24"></script>
 <script defer src="/assets/tribu-chat.js?v=4"></script>
 </body>
 </html>

@@ -95,7 +95,7 @@ if(burger && menu){
 }
 /* Cerrar el menú suavemente si se scrollea la página detrás */
 window.addEventListener('scroll', () => {
-  if(menu && menu.classList.contains('open') && Math.abs(window.scrollY - menuOpenScrollY) > 4){
+  if(menu && menu.classList.contains('open') && Math.abs(window.scrollY - menuOpenScrollY) > 4 && !menu.contains(document.activeElement)){
     toggleMenu(false);
   }
 }, {passive:true});
@@ -731,6 +731,8 @@ const PROVINCIAS_AR = {
   const open = ()=>{ overlay.classList.add('open'); overlay.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; };
   const close = ()=>{ overlay.classList.remove('open'); overlay.setAttribute('aria-hidden','true'); document.body.style.overflow=''; };
   if(openBtn) openBtn.addEventListener('click', open);
+  /* El buscador lleva a /agenda/#agregar-evento: abre el formulario directo. */
+  if(location.hash === '#agregar-evento') open();
   document.getElementById('eventClose').addEventListener('click', close);
   overlay.addEventListener('click', e=>{ if(e.target===overlay) close(); });
   document.addEventListener('keydown', e=>{ if(e.key==='Escape' && overlay.classList.contains('open')) close(); });
@@ -991,83 +993,320 @@ const PROVINCIAS_AR = {
   document.addEventListener('keydown', e=>{ if(e.key==='Escape' && legalOverlay.classList.contains('open')) closeLegal(); });
 })();
 
-/* ============ BUSCADOR (nav) ============ */
+/* ============ BUSCADOR (nav) ============
+   Busca en todo el sitio y lleva directo a lo que se elija:
+   - secciones y páginas (con sus anclas),
+   - personas y marcas de la Red Tribu (perfiles publicados),
+   - experiencias publicadas y eventos de la agenda,
+   - lugares (salen de los eventos, las experiencias y los perfiles),
+   - marcas aliadas, historias destacadas y disciplinas del catálogo.
+   Lo de Supabase y el catálogo de disciplinas se cargan recién la primera vez
+   que alguien toca el buscador, así no pesan en la carga de la página. */
 (function(){
-  const boxes = document.querySelectorAll('.nav-search');
-  if(!boxes.length) return;
-
-  /* Páginas fijas del sitio: siempre entran en los resultados si el texto matchea. */
-  const PAGES = [
-    { title:'Inicio', sub:'Home', url:'/' },
-    { title:'Agenda', sub:'Calendario de eventos', url:'/agenda/' },
-    { title:'Red Tribu', sub:'Creadores, marcas y lugares', url:'/red-tribu/' },
-    { title:'Historias que inspiran', sub:'Entrevistas y reels', url:'/#historias' },
-    { title:'Club Tribu', sub:'Sorteos, descuentos y beneficios', url:'/club-tribu-connection/' },
-  ];
-
-  const norm = s => String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'');
+  const norm = s => String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\s+/g,' ').trim();
   const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const MESES_ABR = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  const rt = (q, tab) => '/red-tribu/?' + (tab ? 'tab=' + tab + '&' : '') + 'q=' + encodeURIComponent(q);
 
-  function eventResults(q){
-    const events = window.TRIBU_EVENTS || [];
-    const slugFn = window.TRIBU_SLUG || (s=>norm(s));
-    const seen = new Set();
-    const out = [];
-    events.forEach(e=>{
+  /* ---- Íconos por tipo de resultado ---- */
+  const IC = {
+    seccion:'<path d="M4 5h16M4 12h16M4 19h10"/>',
+    persona:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+    marca:'<path d="M20.6 13.4 13.4 20.6a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z"/><circle cx="7.5" cy="7.5" r="1.4"/>',
+    lugar:'<path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+    evento:'<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+    experiencia:'<rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4M8 14h.01M12 14h.01M16 14h.01"/>',
+    historia:'<rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="m10.5 9 4 3-4 3z"/>',
+    disciplina:'<path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/>',
+    comunidad:'<circle cx="12" cy="8" r="3"/><circle cx="5" cy="10.5" r="2.2"/><circle cx="19" cy="10.5" r="2.2"/><path d="M7 20a5 5 0 0 1 10 0"/>',
+    accion:'<path d="M5 12h14M13 6l6 6-6 6"/>'
+  };
+  const TIPO_LABEL = { seccion:'Sección', persona:'Creador/a', marca:'Marca', lugar:'Lugar', evento:'Evento', experiencia:'Experiencia', historia:'Historia', disciplina:'Disciplina', comunidad:'Comunidad', accion:'Acción' };
+
+  /* ---- Lo fijo del sitio: páginas, secciones y acciones ----
+     k = otras palabras con las que también se encuentra (cómo lo diría la gente). */
+  const FIJOS = [
+    { tipo:'seccion', t:'Inicio', s:'Página principal', u:'/', k:'home portada principal tribu connection' },
+    { tipo:'seccion', t:'Este finde en Tribu', s:'Inicio', u:'/#agenda', k:'fin de semana finde eventos proximos que hacer hoy' },
+    { tipo:'seccion', t:'Elegidos por Tribu', s:'Inicio', u:'/#elegidos', k:'selecciones recomendados imperdibles destacados' },
+    { tipo:'seccion', t:'Historias que inspiran', s:'Inicio', u:'/#historias', k:'historias entrevistas reels articulos videos' },
+    { tipo:'seccion', t:'Explorá por mapa', s:'Inicio', u:'/#mapa', k:'mapa cerca ubicacion donde' },
+    { tipo:'seccion', t:'Agenda', s:'Calendario de eventos', u:'/agenda/', k:'calendario eventos fechas festivales ferias talleres' },
+    { tipo:'seccion', t:'Red Tribu', s:'Creadores, comunidades, experiencias, marcas y lugares', u:'/red-tribu/', k:'red directorio personas facilitadores terapeutas profesionales' },
+    { tipo:'seccion', t:'Creadores/as', s:'Red Tribu', u:'/red-tribu/?tab=creador', k:'facilitadores facilitadoras terapeutas profesores talleristas artistas musicos creador creadora' },
+    { tipo:'seccion', t:'Comunidades', s:'Red Tribu', u:'/red-tribu/?tab=comunidad', k:'comunidad grupos colectivos' },
+    { tipo:'seccion', t:'Experiencias', s:'Red Tribu', u:'/red-tribu/?tab=experiencia', k:'experiencias talleres retiros encuentros ceremonias eventos' },
+    { tipo:'seccion', t:'Marcas', s:'Red Tribu', u:'/red-tribu/?tab=marca', k:'marcas emprendimientos productos tiendas' },
+    { tipo:'seccion', t:'Lugares', s:'Red Tribu', u:'/red-tribu/?tab=lugar', k:'lugares espacios salas centros sedes' },
+    { tipo:'seccion', t:'Club Tribu', s:'Sorteos, descuentos y beneficios', u:'/club-tribu-connection/', k:'club beneficios socios membresia' },
+    { tipo:'seccion', t:'Beneficios del Club', s:'Club Tribu', u:'/club-tribu-connection/#beneficios', k:'sorteos descuentos whatsapp cumpleanos regalo beneficio' },
+    { tipo:'seccion', t:'Marcas y espacios aliados', s:'Club Tribu', u:'/club-tribu-connection/#aliados', k:'aliados aliadas partners descuentos marcas' },
+    { tipo:'seccion', t:'Sorteos del Club', s:'Club Tribu', u:'/club-tribu-connection/#sorteos', k:'sorteo sorteos entradas ganar' },
+    { tipo:'seccion', t:'Sumá tu propuesta · Creás', s:'Para organizadores, facilitadores y prestadores de servicios', u:'/organizas-experiencias/', k:'creas organizo organizas difusion difundir mi evento visibilidad promocionar publicitar trabajar con tribu' },
+    { tipo:'seccion', t:'Desafíos de quien organiza', s:'Creás', u:'/organizas-experiencias/#desafio', k:'desafio visible comunicar participacion' },
+    { tipo:'seccion', t:'Proyectos reales en cada etapa', s:'Creás', u:'/organizas-experiencias/#casos', k:'casos historias proyectos ejemplos' },
+    { tipo:'seccion', t:'¿Cómo podemos ayudarte?', s:'Creás', u:'/organizas-experiencias/#ayuda', k:'ayuda servicios como ayudan' },
+    { tipo:'seccion', t:'Formas de trabajo para creadores', s:'Comunidad de Creadores · Servicios especiales · Packs', u:'/organizas-experiencias/#planes', k:'planes precios packs comunidad de creadores servicios especiales cobertura audiovisual entrevista sorteo carrusel plan de comunicacion continua cotizar' },
+    { tipo:'seccion', t:'Preguntas frecuentes · Creás', s:'Creás', u:'/organizas-experiencias/#faq', k:'faq preguntas dudas' },
+    { tipo:'seccion', t:'Sumá tu propuesta · Impulsás', s:'Para marcas y emprendimientos', u:'/representas-marca/', k:'impulsas marca empresa emprendimiento sponsor auspicio publicidad visibilidad' },
+    { tipo:'seccion', t:'Historias de marcas', s:'Impulsás', u:'/representas-marca/#casos', k:'casos historias marcas' },
+    { tipo:'seccion', t:'Formas de trabajo para marcas', s:'Packs y Plan de Comunicación Continua', u:'/representas-marca/#planes', k:'planes precios packs cotizar plan de comunicacion continua' },
+    { tipo:'seccion', t:'Preguntas frecuentes · Impulsás', s:'Impulsás', u:'/representas-marca/#faq', k:'faq preguntas dudas' },
+    { tipo:'seccion', t:'Auto-diagnóstico financiero de tu evento', s:'Herramienta gratuita', u:'/autodiagnostico-financiero-de-mi-evento/', k:'autodiagnostico finanzas costos presupuesto calculadora herramienta' },
+    { tipo:'seccion', t:'Un Instante Eterno', s:'Ciclo de Encuentros · El Beso del Árbol', u:'/un-instante-eterno/', k:'instante eterno beso del arbol ciclo encuentros' },
+    { tipo:'seccion', t:'Mi cuenta', s:'Ingresar o ver tu perfil', u:'/cuenta/', k:'cuenta ingresar login iniciar sesion entrar mi perfil' },
+    { tipo:'seccion', t:'Publicar una experiencia', s:'Mi cuenta', u:'/cuenta/publicar/', k:'publicar experiencia cargar subir crear evento' },
+    { tipo:'seccion', t:'Editar mi perfil', s:'Mi cuenta', u:'/cuenta/perfil/editar/', k:'editar perfil foto datos' },
+    { tipo:'accion', t:'Sumate a la Tribu', s:'Creá tu cuenta gratis', act:'signup', k:'sumarme registrarme registro crear cuenta unirme' },
+    { tipo:'accion', t:'Agregar mi evento a la agenda', s:'Agenda', u:'/agenda/#agregar-evento', k:'agregar cargar sumar publicar mi evento agenda' },
+    { tipo:'accion', t:'Escribinos por WhatsApp', s:'Contacto', u:'https://wa.me/5491155031180', k:'contacto whatsapp hablar consultar telefono' },
+    { tipo:'accion', t:'Política de privacidad', s:'Información legal', act:'legal:privacidad', k:'privacidad datos legal' },
+    { tipo:'accion', t:'Política de cookies', s:'Información legal', act:'legal:cookies', k:'cookies legal' },
+    { tipo:'accion', t:'Términos y condiciones', s:'Información legal', act:'legal:terminos', k:'terminos condiciones legal' },
+    /* Marcas aliadas y lugares fijos de la Red Tribu */
+    { tipo:'marca', t:'Bioferia Argentina', s:'Marca aliada · Club Tribu', u:rt('Bioferia', 'marca'), k:'feria organicos productos', img:'/assets/partners/bioferia.png?v=2' },
+    { tipo:'marca', t:'Expo Holística & Bienestar', s:'Marca aliada · Club Tribu', u:rt('Expo Holística', 'marca'), k:'expo holistica bienestar terapias', img:'/assets/partners/expo-holistica.png?v=2' },
+    { tipo:'marca', t:'Resonar Festival', s:'Marca aliada · Club Tribu', u:rt('Resonar', 'marca'), k:'festival musica consciente', img:'/assets/partners/resonar-festival.png?v=2' },
+    { tipo:'marca', t:'Sagrada Madre', s:'Marca aliada · Club Tribu', u:rt('Sagrada Madre', 'marca'), k:'rituales naturaleza', img:'/assets/partners/sagrada-madre.png?v=2' },
+    { tipo:'marca', t:'Unifungi', s:'Marca aliada · Club Tribu', u:rt('Unifungi', 'marca'), k:'hongos micologia' },
+    { tipo:'marca', t:'Amanita Festival', s:'Marca aliada · Mercedes, Buenos Aires', u:rt('Amanita', 'marca'), k:'festival el portal mercedes' },
+    { tipo:'lugar', t:'Espacio Om', s:'Lugar · Palermo, CABA', u:rt('Espacio Om', 'lugar'), k:'sala circulos sonido holistico palermo' },
+    { tipo:'lugar', t:'Parque Centenario', s:'Lugar · CABA', u:rt('Parque Centenario', 'lugar'), k:'parque aire libre ferias' },
+    /* Historias destacadas (abren el reel en Instagram) */
+    { tipo:'historia', t:'Conciencia Festival · Michelle Gibson', s:'Entrevista · Instagram', u:'https://www.instagram.com/reel/DX-HV1RAk43/', k:'michelle gibson conciencia festival entrevista danza', img:'/assets/historias/conciencia-michelle-gibson.jpg?v=2' },
+    { tipo:'historia', t:'Fiesta Clapper', s:'Sorteo de entradas · Instagram', u:'https://www.instagram.com/reel/DZYaexfgHE5/', k:'clapper fiesta sorteo', img:'/assets/historias/fiesta-clapper.jpg?v=2' },
+    { tipo:'historia', t:'Meeting Point · Resonar Festival', s:'Cobertura · Instagram', u:'https://www.instagram.com/reel/DakrN-bg84K/', k:'meeting point resonar cobertura', img:'/assets/historias/meeting-point-resonar.jpg?v=2' },
+    { tipo:'historia', t:'Vino, Tarot y Disfrute', s:'Experiencia · Instagram', u:'https://www.instagram.com/reel/DZ-8fJpASJ-/', k:'vino tarot disfrute', img:'/assets/historias/vino-tarot-disfrute.jpg?v=2' },
+    { tipo:'historia', t:'Sagrada Madre', s:'Historia de marca · Instagram', u:'https://www.instagram.com/reel/Db5pnPMATSC/', k:'sagrada madre marca', img:'/assets/historias/sagrada-madre.jpg?v=2' },
+    { tipo:'historia', t:'SkyddSpine', s:'Historia de marca · Instagram', u:'https://www.instagram.com/reel/DbrNLhuAjFJ/', k:'skydd spine skyddspine marca', img:'/assets/historias/skyddspine.jpg?v=2' },
+    { tipo:'historia', t:'Unifungi', s:'Historia de marca · Instagram', u:'https://www.instagram.com/reel/DYXDEb9gNlJ/', k:'unifungi hongos marca', img:'/assets/historias/unifungi.jpg?v=3' },
+    { tipo:'historia', t:'Hawka', s:'Historia de marca', u:'/representas-marca/#casos', k:'hawka marca', img:'/assets/historias/hawka.jpg?v=2' }
+  ];
+
+  /* ---- Índice: lo fijo + lo que llega después (Supabase, catálogo) ---- */
+  let dinamicos = [];      // perfiles + experiencias publicadas
+  let disciplinas = [];    // prácticas y ámbitos del catálogo de la Red Tribu
+  let cargado = false;
+
+  function eventos(){
+    const slugFn = window.TRIBU_SLUG || norm;
+    const rubros = window.TRIBU_RUBROS || {};
+    const vistos = {}, out = [];
+    (window.TRIBU_EVENTS || []).slice().sort((a, b) => String(a.date).localeCompare(String(b.date))).forEach(e => {
       const slug = slugFn(e.title);
-      if(seen.has(slug)) return;
-      if(!norm(e.title).includes(q) && !norm(e.place).includes(q)) return;
-      seen.add(slug);
-      const d = new Date(e.date+'T00:00');
-      out.push({
-        title: e.title,
-        sub: d.getDate()+' '+MESES_ABR[d.getMonth()]+' · '+(e.place||'Agenda'),
-        url: '/agenda/evento/?id='+encodeURIComponent(slug)
+      if(vistos[slug]) return;
+      vistos[slug] = 1;
+      const d = new Date(e.date + 'T00:00');
+      const fecha = isNaN(d) ? '' : d.getDate() + ' ' + MESES_ABR[d.getMonth()];
+      out.push({ tipo:'evento', t:e.title, s:[fecha, e.place].filter(Boolean).join(' · '), u:'/agenda/evento/?id=' + encodeURIComponent(slug),
+        k:[e.place, (rubros[e.rubro] || {}).label, e.rubro].join(' '), lugar:e.place });
+    });
+    return out;
+  }
+
+  /* Lugares: cada nombre de lugar que aparece en eventos, experiencias y perfiles.
+     Si hay una sola cosa en ese lugar lleva directo a ella; si hay varias, a la
+     Red Tribu filtrada por ese lugar. */
+  function lugares(items){
+    const mapa = {};
+    items.forEach(it => {
+      if(!it.lugar || it.tipo === 'lugar') return;
+      String(it.lugar).split(/,|·|\(/).map(x => x.replace(/\)/g, '').trim()).filter(x => x.length > 2 && !/^online$/i.test(x) && !/\d/.test(x)).forEach(nombre => {
+        const key = norm(nombre);
+        const m = (mapa[key] = mapa[key] || { nombre, cosas:[] });
+        if(!m.cosas.includes(it)) m.cosas.push(it);
       });
     });
-    return out.slice(0,5);
+    return Object.values(mapa).map(({ nombre, cosas }) => ({
+      tipo:'lugar', t:nombre,
+      s:cosas.length === 1 ? cosas[0].t : cosas.length + ' resultados en este lugar',
+      u:cosas.length === 1 ? cosas[0].u : rt(nombre), k:'', peso:-4
+    }));
   }
 
-  function pageResults(q){
-    return PAGES.filter(p => norm(p.title).includes(q) || norm(p.sub).includes(q));
+  function indice(){
+    const base = [...FIJOS, ...eventos(), ...dinamicos];
+    return [...base, ...lugares(base), ...disciplinas];
   }
 
-  boxes.forEach(box=>{
+  function refrescar(){
+    document.querySelectorAll('.nav-search-input').forEach(i => {
+      if(i === document.activeElement && i.value.trim()) i.dispatchEvent(new Event('input'));
+    });
+  }
+
+  /* ---- Carga perezosa: Supabase + catálogo de disciplinas ---- */
+  function cargarTodo(){
+    if(cargado) return;
+    cargado = true;
+
+    if(typeof sb !== 'undefined'){
+      Promise.all([
+        sb.from('perfiles_publicos').select('nombre,nombre_marca,slug,tipo,roles,categorias,tipo_creador,categoria_principal,titulo_profesional,servicios,ciudad,foto_url').eq('publicado', true).eq('comparte_perfil', true),
+        sb.from('experiences').select('id,nombre,tipo,fecha,lugar,ciudad_barrio,modalidad,categorias,organiza_nombre,proyecto_nombre,imagen_portada_url').eq('estado_publicacion', 'publicado')
+      ]).then(([perfiles, experiencias]) => {
+        const out = [];
+        (perfiles.data || []).forEach(p => {
+          if(!p.slug) return;
+          const roles = p.roles || [];
+          const crea = roles.some(r => /organiza|facilita|ofrece|colaborar/.test(r)) || (!roles.length && p.tipo !== 'marca');
+          const tipo = crea ? 'persona' : roles.includes('tiene_marca') || p.tipo === 'marca' ? 'marca' : roles.includes('tiene_lugar') ? 'lugar' : roles.includes('tiene_comunidad') ? 'comunidad' : 'persona';
+          const nombre = tipo === 'marca' ? (p.nombre_marca || p.nombre) : p.nombre;
+          const que = (p.tipo_creador && p.tipo_creador.length ? p.tipo_creador.join(' · ') : '') || p.titulo_profesional || p.categoria_principal || (p.categorias || []).slice(0, 2).join(' · ');
+          out.push({ tipo, t:nombre, s:[que, p.ciudad].filter(Boolean).join(' · '), u:'/' + encodeURIComponent(p.slug),
+            k:[p.nombre, p.nombre_marca, p.categoria_principal, p.titulo_profesional, ...(p.categorias || []), ...(p.tipo_creador || []), ...(p.servicios || [])].join(' '),
+            img:/^https:\/\//.test(p.foto_url || '') ? p.foto_url : '', lugar:p.ciudad, peso:8 });
+        });
+        (experiencias.data || []).forEach(e => {
+          const d = e.fecha ? new Date(e.fecha + 'T00:00') : null;
+          const fecha = d && !isNaN(d) ? d.getDate() + ' ' + MESES_ABR[d.getMonth()] : '';
+          const lugar = e.modalidad === 'Online' ? 'Online' : [e.lugar, e.ciudad_barrio].filter(Boolean).join(', ');
+          out.push({ tipo:'experiencia', t:e.nombre, s:[e.tipo || 'Experiencia', fecha, lugar].filter(Boolean).join(' · '), u:'/experiencia/?id=' + encodeURIComponent(e.id),
+            k:[e.tipo, e.organiza_nombre, e.proyecto_nombre, lugar, ...(e.categorias || [])].join(' '),
+            img:/^https:\/\//.test(e.imagen_portada_url || '') ? e.imagen_portada_url : '', lugar, peso:6 });
+        });
+        dinamicos = out;
+        refrescar();
+      }).catch(() => {});
+    }
+
+    const armarDisciplinas = () => {
+      if(typeof TRIBU_PRACTICAS === 'undefined') return;
+      const ambito = {};
+      (typeof TRIBU_AMBITOS !== 'undefined' ? TRIBU_AMBITOS : []).forEach(a => { ambito[a.id] = a.es; });
+      disciplinas = [
+        ...Object.values(ambito).map(es => ({ tipo:'disciplina', t:es, s:'Ámbito · ver en la Red Tribu', u:rt(es), k:'', peso:-8 })),
+        ...TRIBU_PRACTICAS.map(p => ({ tipo:'disciplina', t:p.es, s:(ambito[p.ambitos[0]] || 'Disciplina') + ' · ver en la Red Tribu', u:rt(p.es.split(' / ')[0]), k:'', peso:-8 }))
+      ];
+      refrescar();
+    };
+    if(typeof TRIBU_PRACTICAS !== 'undefined') armarDisciplinas();
+    else {
+      const s = document.createElement('script');
+      s.src = '/assets/red-tribu-filtros.js?v=1';
+      s.onload = armarDisciplinas;
+      document.head.appendChild(s);
+    }
+  }
+  document.addEventListener('tribu:events-updated', refrescar);
+
+  /* ---- Búsqueda: todas las palabras tienen que aparecer; pesa más el título ---- */
+  const ORDEN_TIPO = { persona:6, marca:5, experiencia:5, evento:5, comunidad:4, lugar:3, seccion:2, historia:1, accion:0, disciplina:0 };
+  function buscar(qRaw){
+    const q = norm(qRaw);
+    const palabras = q.split(' ').filter(Boolean);
+    const res = [], vistos = new Set();
+    indice().forEach(it => {
+      const titulo = norm(it.t);
+      const pajar = titulo + ' ' + norm(it.s) + ' ' + norm(it.k);
+      if(!palabras.every(p => pajar.includes(p))) return;
+      const clave = it.tipo + '|' + titulo + '|' + (it.u || it.act);
+      if(vistos.has(clave)) return;
+      vistos.add(clave);
+      let score = titulo === q ? 120 : titulo.startsWith(q) ? 100 : (' ' + titulo).includes(' ' + q) ? 80 : titulo.includes(q) ? 60
+        : palabras.every(p => titulo.includes(p)) ? 50 : norm(it.s).includes(q) ? 30 : 15;
+      score += (ORDEN_TIPO[it.tipo] || 0) + (it.peso || 0);
+      res.push({ it, score });
+    });
+    return res.sort((a, b) => b.score - a.score).slice(0, 12).map(r => r.it);
+  }
+
+  function filaHTML(it, i){
+    const thumb = it.img
+      ? '<span class="ns-thumb' + (it.img.includes('/partners/') ? ' ns-logo' : '') + '"><img src="' + esc(it.img) + '" alt="" loading="lazy"></span>'
+      : '<span class="ns-thumb ns-ic ns-' + it.tipo + '"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">' + (IC[it.tipo] || IC.seccion) + '</svg></span>';
+    const externo = /^https?:/.test(it.u || '');
+    return '<a href="' + esc(it.u || '#') + '"' + (externo ? ' target="_blank" rel="noopener"' : '') + ' data-i="' + i + '" role="option">' + thumb +
+      '<span class="ns-txt"><span class="ns-t">' + esc(it.t) + '</span>' + (it.s ? '<small>' + esc(it.s) + '</small>' : '') + '</span>' +
+      '<span class="ns-tipo">' + esc(TIPO_LABEL[it.tipo] || '') + '</span></a>';
+  }
+
+  function ejecutar(it, e){
+    if(!it || !it.act) return false;
+    if(e) e.preventDefault();
+    if(it.act === 'signup'){
+      const b = document.querySelector('[data-signup]');
+      if(b) b.click(); else location.href = '/cuenta/';
+    } else if(it.act.startsWith('legal:') && document.getElementById('legalModal')){
+      const a = document.createElement('a');
+      a.dataset.legal = it.act.slice(6); a.hidden = true;
+      document.body.appendChild(a); a.click(); a.remove();
+    }
+    return true;
+  }
+
+  /* ---- Cajas: la del nav (se agrega si la página no la trae) y, en celular,
+     una arriba de todo en el menú ---- */
+  const LUPA = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>';
+  const cajaHTML = extra => '<label class="nav-search' + extra + '">' + LUPA +
+    '<input type="search" placeholder="Buscar en Tribu" aria-label="Buscar en Tribu" class="nav-search-input">' +
+    '<div class="nav-search-results" role="listbox"></div></label>';
+  /* Solo donde está el estilo del buscador (home.css). */
+  const conEstilo = !!document.querySelector('link[href*="home.css"]');
+  const navCta = conEstilo && document.querySelector('.nav .nav-cta');
+  if(navCta && !navCta.querySelector('.nav-search')) navCta.insertAdjacentHTML('afterbegin', cajaHTML(''));
+  const menu = conEstilo && document.getElementById('mobileMenu');
+  if(menu && !menu.querySelector('.nav-search')) menu.insertAdjacentHTML('afterbegin', cajaHTML(' nav-search--menu'));
+
+  document.querySelectorAll('.nav-search').forEach(box => {
     const input = box.querySelector('.nav-search-input');
     const results = box.querySelector('.nav-search-results');
     if(!input || !results) return;
+    input.setAttribute('autocomplete', 'off');
+    input.setAttribute('enterkeyhint', 'search');
+    let actuales = [], activo = -1;
 
-    function render(q){
-      const items = [...pageResults(q), ...eventResults(q)];
-      if(!items.length){
-        results.innerHTML = '<div class="nav-search-empty">Sin resultados para "'+esc(q)+'"</div>';
-        results.classList.add('open');
-        return;
-      }
-      results.innerHTML = items.map(it=>
-        '<a href="'+esc(it.url)+'">'+esc(it.title)+'<small>'+esc(it.sub)+'</small></a>'
-      ).join('');
+    function marcarActivo(n){
+      const filas = results.querySelectorAll('a[data-i]');
+      if(!filas.length) return;
+      activo = (n + filas.length) % filas.length;
+      filas.forEach((f, i) => f.classList.toggle('is-active-result', i === activo));
+      filas[activo].scrollIntoView({ block:'nearest' });
+    }
+
+    function render(){
+      const q = input.value.trim();
+      if(!q){ results.classList.remove('open'); results.innerHTML = ''; actuales = []; return; }
+      actuales = buscar(q);
+      activo = -1;
+      const mas = '<a class="ns-mas" href="' + esc(rt(q)) + '">Buscar «' + esc(q) + '» en toda la Red Tribu →</a>';
+      results.innerHTML = actuales.length
+        ? actuales.map(filaHTML).join('') + mas
+        : '<div class="nav-search-empty">Sin resultados para «' + esc(q) + '».<br>Probá con un nombre, una disciplina o un lugar.</div>' + mas;
       results.classList.add('open');
     }
 
-    input.addEventListener('input', ()=>{
-      const q = norm(input.value.trim());
-      if(!q){ results.classList.remove('open'); results.innerHTML=''; return; }
-      render(q);
-    });
-    input.addEventListener('focus', ()=>{ if(input.value.trim()) render(norm(input.value.trim())); });
-    input.addEventListener('keydown', e=>{
-      if(e.key==='Enter'){
+    input.addEventListener('input', () => { cargarTodo(); render(); });
+    input.addEventListener('focus', () => { cargarTodo(); if(input.value.trim()) render(); });
+    input.addEventListener('pointerenter', cargarTodo, { once:true });
+    input.addEventListener('keydown', e => {
+      if(e.key === 'ArrowDown'){ e.preventDefault(); marcarActivo(activo + 1); }
+      else if(e.key === 'ArrowUp'){ e.preventDefault(); marcarActivo(activo - 1); }
+      else if(e.key === 'Enter'){
         e.preventDefault();
-        const first = results.querySelector('a');
-        if(first) window.location.href = first.getAttribute('href');
+        const fila = results.querySelectorAll('a[data-i]')[activo < 0 ? 0 : activo] || results.querySelector('a.ns-mas');
+        if(fila) fila.click();
       }
-      if(e.key==='Escape'){ results.classList.remove('open'); input.blur(); }
+      else if(e.key === 'Escape'){ results.classList.remove('open'); input.blur(); }
     });
-    document.addEventListener('click', e=>{
-      if(!box.contains(e.target)) results.classList.remove('open');
+    results.addEventListener('click', e => {
+      const a = e.target.closest('a');
+      if(!a) return;
+      results.classList.remove('open');
+      /* Desde el menú del celular: se cierra, así se ve a dónde llegó (sobre
+         todo con anclas de la misma página, que no recargan). */
+      const m = document.getElementById('mobileMenu');
+      if(m && m.contains(box) && m.classList.contains('open')) document.getElementById('burger')?.click();
+      if(a.dataset.i != null) ejecutar(actuales[+a.dataset.i], e);
     });
+    document.addEventListener('click', e => { if(!box.contains(e.target)) results.classList.remove('open'); });
+  });
+
+  /* Atajo: "/" lleva al buscador (si no se está escribiendo en otro campo). */
+  document.addEventListener('keydown', e => {
+    if(e.key !== '/' || /^(input|textarea|select)$/i.test(e.target.tagName || '') || e.target.isContentEditable) return;
+    const i = document.querySelector('.nav .nav-search-input');
+    if(i && i.offsetParent){ e.preventDefault(); i.focus(); }
   });
 })();
 
