@@ -1,1 +1,4 @@
 node_modules/
+
+# Fotogramas sin compresión (cientos de MB): quedan solo en disco
+tools/originales-imagenes/**/*.png

@@ -593,7 +593,7 @@ const PROVINCIAS_AR = {
 (function(){
   const CAMINOS = [
     {
-      color:'var(--red)', href:'/organizas-experiencias/', foto:'/assets/tarjetas/camino-creas.jpg?v=1', alt:'Público de un festival levantando las manos',
+      color:'var(--red)', href:'/organizas-experiencias/', foto:'/assets/tarjetas/camino-creas.jpg?v=2', alt:'Público de un festival levantando las manos',
       titulo:'CREÁS', que:'Experiencias, actividades, eventos, arte, encuentros.',
       texto:'Si estás dando vida a una propuesta que reúne personas, te ayudamos a hacerla crecer, conectar con más gente y generar un impacto que perdure.',
       cta:'Conocé cómo podemos acompañarte',
@@ -601,7 +601,7 @@ const PROVINCIAS_AR = {
       ic:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c.9 5 1.6 5.7 6.6 6.6-5 .9-5.7 1.6-6.6 6.6-.9-5-1.6-5.7-6.6-6.6C10.4 7.7 11.1 7 12 2z"/><path d="M18.5 15c.4 2.2.8 2.6 3 3-2.2.4-2.6.8-3 3-.4-2.2-.8-2.6-3-3 2.2-.4 2.6-.8 3-3z"/></svg>'
     },
     {
-      color:'var(--teal)', href:'/representas-marca/', foto:'/assets/tarjetas/camino-impulsas.jpg?v=1', alt:'Entrevista de Tribu a una marca en su stand',
+      color:'var(--teal)', href:'/representas-marca/', foto:'/assets/tarjetas/camino-impulsas.jpg?v=2', alt:'Entrevista de Tribu a una marca en su stand',
       titulo:'IMPULSÁS', que:'Una marca, un espacio, un emprendimiento, una organización.',
       texto:'Creamos conexiones genuinas entre tu marca y comunidades afines, desarrollando estrategias y acciones de colaboración y beneficio mutuo.',
       cta:'Potenciá tu marca',
@@ -1082,7 +1082,7 @@ const PROVINCIAS_AR = {
   const today = new Date(); today.setHours(0,0,0,0);
   /* No tenemos foto propia por evento todavía: rotamos fotos reales de la Tribu
      ya usadas en el resto del sitio, en vez de inventar datos. */
-  const IMAGENES = ['/assets/reels/reel1.jpg?v=2', '/assets/stories/musica-en-vivo.jpg?v=2', '/assets/reels/reel3.jpg?v=2', '/assets/stories/conciencia-festival.jpg?v=2'];
+  const IMAGENES = ['/assets/reels/reel1.jpg?v=3', '/assets/stories/musica-en-vivo.jpg?v=3', '/assets/reels/reel3.jpg?v=3', '/assets/stories/conciencia-festival.jpg?v=3'];
 
   function pintar(){
     const EVENTS = window.TRIBU_EVENTS || [];

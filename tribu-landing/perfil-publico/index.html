@@ -208,6 +208,12 @@
     overflow:hidden; background:#0b0c10; isolation:isolate;
   }
   .pp-portada-img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:-2; }
+  /* Foto chica para el tamaño de la pantalla (p. ej. 500 px en un monitor ancho):
+     en vez de estirarla hasta que se pixele, va entera y nítida al centro, sobre
+     una versión desenfocada de sí misma que llena el resto. */
+  .pp-portada-fondo{ position:absolute; inset:-40px; z-index:-3; background:center/cover no-repeat; filter:blur(34px) saturate(1.15) brightness(.7); display:none; }
+  .pp-portada.baja-res .pp-portada-fondo{ display:block; }
+  .pp-portada.baja-res .pp-portada-img{ object-fit:contain; object-position:center !important; transform:none !important; }
   .pp-portada::after{
     content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
     background:linear-gradient(180deg, rgba(8,9,12,.72) 0%, rgba(8,9,12,.08) 26%, rgba(8,9,12,.72) 62%, #08090c 96%);
@@ -452,7 +458,7 @@
 
 <script src="/assets/vendor/supabase-js-2.117.3.min.js"></script>
 <script src="/assets/supabase-client.js?v=18"></script>
-<script src="/assets/site.js?v=22"></script>
+<script src="/assets/site.js?v=23"></script>
 <script>
 (function(){
   const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
@@ -708,6 +714,7 @@
 
     cont.innerHTML =
       '<section class="pp-portada" style="--pc:' + color + ';--pc-fg:' + (PC_OSCURO[cat] ? '#15110f' : '#fff') + '">' +
+        '<div class="pp-portada-fondo"></div>' +
         '<img class="pp-portada-img" src="' + esc(datos.fotoPortada) + '" alt="' + esc(nombre) + '"' + (datos.fotoEstilo ? ' style="' + datos.fotoEstilo + '"' : '') + '>' +
         '<div class="pp-portada-top">' +
           '<a href="/red-tribu/"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M15 6l-6 6 6 6"/></svg>Red Tribu</a>' +
@@ -738,6 +745,17 @@
     /* Swipe en celular: horizontal cambia de perfil, vertical entra. */
     let x0 = null, y0 = null;
     const portada = cont.querySelector('.pp-portada');
+    /* Si la foto quedaría agrandada más de 1,5x, pasa al modo "baja resolución". */
+    const pImg = portada.querySelector('.pp-portada-img');
+    const revisarResolucion = () => {
+      if(!pImg.naturalWidth) return;
+      const escala = Math.max(portada.clientWidth / pImg.naturalWidth, portada.clientHeight / pImg.naturalHeight);
+      const baja = escala > 1.5;
+      if(baja) portada.querySelector('.pp-portada-fondo').style.backgroundImage = 'url("' + pImg.currentSrc.replace(/"/g, '%22') + '")';
+      portada.classList.toggle('baja-res', baja);
+    };
+    if(pImg.complete) revisarResolucion(); else pImg.addEventListener('load', revisarResolucion);
+    window.addEventListener('resize', revisarResolucion, { passive:true });
     portada.addEventListener('touchstart', e => { x0 = e.touches[0].clientX; y0 = e.touches[0].clientY; }, { passive:true });
     portada.addEventListener('touchend', e => {
       if(x0 == null) return;
