@@ -589,8 +589,13 @@ const TRIBU_PAGO_SUSCRIPCION = {
   function abrir(t, q){
     if(!overlay) armar();
     tipo = t === 'marca' ? 'marca' : 'creador'; que = q || 'Servicio especial';
-    overlay.querySelector('#cotTitulo').textContent = 'Quiero cotizar ' + (que === 'Plan de Comunicación Continua' ? 'un Plan de Comunicación Continua' : 'un servicio especial');
-    overlay.querySelector('#cotSub').textContent = 'Contanos sobre tu propuesta y te respondemos con opciones y valores.';
+    /* 'Primera conversación': el cierre de las landings (antes iba a un WhatsApp
+       personal; la reunión del 13/10 pidió canalizar las consultas por formulario). */
+    const charla = que === 'Primera conversación';
+    overlay.querySelector('#cotTitulo').textContent = charla ? (tipo === 'marca' ? 'Hablemos de tu marca' : 'Hablemos de tu proyecto')
+      : 'Quiero cotizar ' + (que === 'Plan de Comunicación Continua' ? 'un Plan de Comunicación Continua' : 'un servicio especial');
+    overlay.querySelector('#cotSub').textContent = charla ? 'Contanos lo que estás creando y te escribimos para coordinar una primera conversación, sin compromiso.'
+      : 'Contanos sobre tu propuesta y te respondemos con opciones y valores.';
     overlay.querySelector('#cotCampos').innerHTML = CAMPOS[tipo].map(([k, etq, ctl, req]) =>
       '<div class="field"><label for="cot' + k + '">' + etq + '</label>' +
       (ctl === 'textarea'

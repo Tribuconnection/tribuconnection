@@ -381,3 +381,30 @@
 .pp-opcion .chev{ margin-left:auto; color:var(--pc,#D97A88); }
 .pp-sheet-pie{ color:var(--muted); font-size:.85rem; text-align:center; margin-top:.9rem; }
 
+
+/* ---------- Club: una tarjeta por beneficio (misma familia que las de la Red Tribu) ---------- */
+.benef-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:.9rem; margin-top:2rem; }
+.benef-card{
+  --c:#63C2CA; position:relative; display:flex; flex-direction:column; border-radius:16px; overflow:hidden;
+  border:1px solid color-mix(in srgb, var(--c) 70%, transparent); background:#0d0e12; color:#fff;
+  text-decoration:none; transition:transform .2s, box-shadow .2s;
+}
+.benef-card:hover{ transform:translateY(-3px); box-shadow:0 14px 34px -16px var(--c); }
+.benef-img{ width:100%; aspect-ratio:4/3; display:block; }
+.benef-img.is-logo{ object-fit:contain; background:#fff; padding:14% 18%; }
+.benef-img.is-ph{ object-fit:cover; }
+.benef-tag{
+  position:absolute; top:.65rem; left:.65rem; background:var(--c); color:#15110f; font-size:.62rem; font-weight:700;
+  letter-spacing:.06em; text-transform:uppercase; padding:.3rem .6rem; border-radius:8px;
+}
+.benef-badge{
+  position:absolute; top:.6rem; right:.6rem; background:var(--amber, #F4C76B); color:#15110f;
+  font-family:var(--font-display); font-size:1.05rem; line-height:1; padding:.45rem .7rem; border-radius:10px;
+  box-shadow:0 6px 18px -8px rgba(0,0,0,.6);
+}
+.benef-body{ padding:.85rem 1rem 1rem; display:flex; flex-direction:column; gap:.3rem; flex:1; }
+.benef-body h3{ font-family:var(--font-sans); font-size:1rem; font-weight:600; line-height:1.2; }
+.benef-body p{ color:rgba(244,241,234,.8); font-size:.82rem; line-height:1.4; }
+.benef-loc{ display:flex; align-items:center; gap:.35rem; color:rgba(244,241,234,.7); font-size:.76rem; margin-top:auto; padding-top:.3rem; }
+@media (max-width:980px){ .benef-grid{ grid-template-columns:repeat(2,1fr); } }
+@media (max-width:420px){ .benef-body{ padding:.7rem .75rem .8rem; } .benef-body p{ font-size:.76rem; } .benef-badge{ font-size:.9rem; } }

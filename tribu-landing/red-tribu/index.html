@@ -19,8 +19,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=52">
-<link rel="stylesheet" href="/assets/home.css?v=16">
+<link rel="stylesheet" href="/assets/tribu.css?v=53">
+<link rel="stylesheet" href="/assets/home.css?v=17">
 <style>
   .rt-head{ max-width:640px; align-self:flex-start; margin-right:auto; text-align:left; }
   #top .wrap{ width:100%; }
@@ -498,9 +498,9 @@
 </div>
 
 <script src="/assets/vendor/supabase-js-2.117.3.min.js"></script>
-<script src="/assets/supabase-client.js?v=18"></script>
+<script src="/assets/supabase-client.js?v=19"></script>
 <script src="/assets/red-tribu-filtros.js?v=1"></script>
-<script src="/assets/site.js?v=24"></script>
+<script src="/assets/site.js?v=25"></script>
 <script>
 /* Directorio Red Tribu: perfiles + experiencias reales de Supabase + eventos
    del calendario, en 5 categorías (Creador/a, Comunidad, Experiencia, Marca,
@@ -516,6 +516,11 @@
   const search = document.getElementById('dirSearch');
   const tabs = document.querySelectorAll('#dirTabs .rt-tab');
   let activeTab = 'todos', ubicacion = '';
+  /* Pasada la fecha, una experiencia o evento deja de mostrarse como próximo
+     sin que quien organiza tenga que bajarlo (reunión del 13/10). Sin fecha
+     (clases recurrentes, por ejemplo) sigue visible. */
+  const HOY_ISO = (d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'))(new Date());
+  const vigente = fecha => !fecha || String(fecha).slice(0, 10) >= HOY_ISO;
   /* Para buscar sin importar tildes ni mayúsculas ("meditacion" encuentra "Meditación"). */
   const pliega = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
 
@@ -636,7 +641,7 @@
   function pintarEventosCalendario(){
     dinamicoEventosCal.innerHTML = '';
     const vistos = new Set(); let i = 0;
-    (window.TRIBU_EVENTS || []).slice().sort((a, b) => a.date.localeCompare(b.date)).forEach(e => {
+    (window.TRIBU_EVENTS || []).filter(e => vigente(e.date)).sort((a, b) => a.date.localeCompare(b.date)).forEach(e => {
       if(vistos.has(e.title)) return; vistos.add(e.title);
       const rubro = (window.TRIBU_RUBROS || {})[e.rubro];
       const d = e.date ? new Date(e.date + 'T00:00') : null;
@@ -645,7 +650,7 @@
       dinamicoEventosCal.appendChild(ficha({
         cats:['experiencia'], principal:'experiencia', nombre:e.title,
         desc:[rubro ? rubro.label : '', fecha].filter(Boolean).join(' · '), ciudad:e.place || '',
-        img: IMG_EV[i++ % IMG_EV.length], imgTipo:'foto', href:'/agenda/evento/?id=' + encodeURIComponent(slug),
+        img: window.TRIBU_FOTO_EVENTO ? window.TRIBU_FOTO_EVENTO(e) : IMG_EV[i++ % IMG_EV.length], imgTipo:'foto', href:'/agenda/evento/?id=' + encodeURIComponent(slug),
         datos:{ fecha:e.date || '', tipo:RUBRO_TIPO[e.rubro] ? [RUBRO_TIPO[e.rubro]] : [], dias:null, duracion:null }
       }));
     });
@@ -689,7 +694,7 @@
       misPart[id] = rol;
     }
     dinamicoEventos.innerHTML = '';
-    (window.TRIBU_EXPERIENCIAS || []).forEach(e => dinamicoEventos.appendChild(experienciaFicha(e)));
+    (window.TRIBU_EXPERIENCIAS || []).filter(e => vigente(e.fecha)).forEach(e => dinamicoEventos.appendChild(experienciaFicha(e)));
     aplicar();
   }
 
@@ -1157,7 +1162,7 @@
       (mias || []).forEach(m => { misPart[m.experience_id] = m.rol; });
     }
     (perfiles || []).forEach(p => { const c = perfilFicha(p); if(c) dinamico.appendChild(c); });
-    (experiencias || []).forEach(e => dinamicoEventos.appendChild(experienciaFicha(e)));
+    (experiencias || []).filter(e => vigente(e.fecha)).forEach(e => dinamicoEventos.appendChild(experienciaFicha(e)));
     pintarEventosCalendario();
     armarUbicaciones();
   })();

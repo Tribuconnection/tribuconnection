@@ -195,6 +195,15 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   window.TRIBU_EVENTS = EVENTS;
   window.TRIBU_RUBROS = RUBROS;
   window.TRIBU_SLUG = slugEvent;
+  /* Foto de cada evento: la propia si la tiene; si no, una foto real de la
+     Tribu elegida siempre igual para el mismo evento (por su nombre), así se
+     ve la misma en la agenda, el inicio y la Red Tribu. */
+  const FOTOS_EVENTO = ['/assets/reels/reel1.jpg?v=3', '/assets/stories/musica-en-vivo.jpg?v=3', '/assets/reels/reel3.jpg?v=3', '/assets/stories/conciencia-festival.jpg?v=3', '/assets/reels/reel4.jpg?v=3', '/assets/stories/entrevistas-en-vivo.jpg?v=3', '/assets/stories/resonar-2026.jpg?v=3'];
+  window.TRIBU_FOTO_EVENTO = e => {
+    if(e && e.foto) return e.foto;
+    let h = 0; for(const c of slugEvent((e && e.title) || '')) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    return FOTOS_EVENTO[h % FOTOS_EVENTO.length];
+  };
 
   /* Eventos aprobados desde el panel de moderación (Supabase): se suman acá,
      en TODAS las páginas (no solo la Agenda), porque el home también lee
@@ -373,6 +382,7 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
       '<div class="ev-date">'+(multiDia
         ? '<b class="ev-date-range">'+d.getDate()+'<i>al</i>'+dEnd.getDate()+'</b>'
         : '<b>'+d.getDate()+'</b>')+'<span>'+MES_ABR[d.getMonth()]+'</span></div>'+
+      '<div class="ev-img" style="background-image:url('+window.TRIBU_FOTO_EVENTO(e)+')"></div>'+
       '<div class="ev-body">'+
         '<div class="ev-head"><span class="ev-cat"><i style="background:'+color(e.rubro)+'"></i>'+esc((RUBROS[e.rubro]||{}).label||e.rubro)+'</span>'+st+'</div>'+
         '<div class="ev-title">'+esc(e.title)+'</div>'+
@@ -1092,7 +1102,8 @@ const PROVINCIAS_AR = {
     const slugFn = window.TRIBU_SLUG || norm;
     const rubros = window.TRIBU_RUBROS || {};
     const vistos = {}, out = [];
-    (window.TRIBU_EVENTS || []).slice().sort((a, b) => String(a.date).localeCompare(String(b.date))).forEach(e => {
+    const hoy = (d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'))(new Date());
+    (window.TRIBU_EVENTS || []).filter(e => !e.date || e.date >= hoy).sort((a, b) => String(a.date).localeCompare(String(b.date))).forEach(e => {
       const slug = slugFn(e.title);
       if(vistos[slug]) return;
       vistos[slug] = 1;
@@ -1157,7 +1168,8 @@ const PROVINCIAS_AR = {
             k:[p.nombre, p.nombre_marca, p.categoria_principal, p.titulo_profesional, ...(p.categorias || []), ...(p.tipo_creador || []), ...(p.servicios || [])].join(' '),
             img:/^https:\/\//.test(p.foto_url || '') ? p.foto_url : '', lugar:p.ciudad, peso:8 });
         });
-        (experiencias.data || []).forEach(e => {
+        const hoyX = new Date(); hoyX.setHours(0, 0, 0, 0);
+        (experiencias.data || []).filter(e => !e.fecha || new Date(e.fecha + 'T00:00') >= hoyX).forEach(e => {
           const d = e.fecha ? new Date(e.fecha + 'T00:00') : null;
           const fecha = d && !isNaN(d) ? d.getDate() + ' ' + MESES_ABR[d.getMonth()] : '';
           const lugar = e.modalidad === 'Online' ? 'Online' : [e.lugar, e.ciudad_barrio].filter(Boolean).join(', ');
@@ -1319,9 +1331,6 @@ const PROVINCIAS_AR = {
   const MES_ABR = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
   const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const today = new Date(); today.setHours(0,0,0,0);
-  /* No tenemos foto propia por evento todavía: rotamos fotos reales de la Tribu
-     ya usadas en el resto del sitio, en vez de inventar datos. */
-  const IMAGENES = ['/assets/reels/reel1.jpg?v=3', '/assets/stories/musica-en-vivo.jpg?v=3', '/assets/reels/reel3.jpg?v=3', '/assets/stories/conciencia-festival.jpg?v=3'];
 
   function pintar(){
     const EVENTS = window.TRIBU_EVENTS || [];
@@ -1343,7 +1352,7 @@ const PROVINCIAS_AR = {
     }
     if(section) section.style.display = '';
 
-    row.innerHTML = proximos.map((g, i) => {
+    row.innerHTML = proximos.map(g => {
       const e = g.ev;
       const rubro = RUBROS[e.rubro] || { label: e.rubro, color: '#8A8D98' };
       const d = new Date(g.start+'T00:00');
@@ -1353,7 +1362,7 @@ const PROVINCIAS_AR = {
          animaciones de entrada ya corrió, así que quedarían en opacity:0 para
          siempre si dependieran de esa clase. */
       return '<a class="ev-card" href="/agenda/evento/?id='+encodeURIComponent(slug(e.title))+'">'+
-        '<div class="ev-card-media" style="background-image:url('+IMAGENES[i % IMAGENES.length]+')">'+
+        '<div class="ev-card-media" style="background-image:url('+window.TRIBU_FOTO_EVENTO(e)+')">'+
           '<span class="ev-card-date">'+(multi
             ? '<b class="ev-date-range">'+d.getDate()+'<i>al</i>'+dEnd.getDate()+'</b>'
             : '<b>'+d.getDate()+'</b>')+'<span>'+MES_ABR[d.getMonth()]+'</span></span>'+

@@ -584,6 +584,9 @@ html.js .reveal.in{ opacity:1; transform:none; }
 .ev-date b.ev-date-range{ font-size:1.05rem; line-height:1.15; }
 .ev-date b.ev-date-range i{ display:block; font-style:normal; font-size:.6rem; font-family:var(--font-sans); font-weight:400; color:var(--muted); text-transform:lowercase; line-height:1.4; }
 .ev-body{ flex:1; min-width:0; }
+/* Foto del evento en la lista de la agenda (reunión del 13/10) */
+.ev-img{ flex:none; width:64px; height:64px; border-radius:10px; background:#15171F center/cover no-repeat; }
+@media (max-width:420px){ .ev-img{ width:52px; height:52px; } }
 .ev-cat{ display:inline-flex; align-items:center; gap:.4rem; font-size:.7rem; letter-spacing:.05em; text-transform:uppercase; color:var(--muted); margin-bottom:.15rem; }
 .ev-cat i{ width:7px; height:7px; border-radius:50%; }
 .ev-title{ font-weight:600; color:var(--cream); font-size:.98rem; }
