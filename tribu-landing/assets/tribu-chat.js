@@ -204,7 +204,10 @@
   ];
 
   /* Saludos: se responden aparte para no disparar una ficha entera. */
-  const SALUDOS = ['hola', 'holis', 'buenas', 'buen dia', 'buenas tardes', 'buenas noches', 'hey', 'que tal'];
+  const SALUDOS = ['hola', 'holis', 'buenas', 'buen dia', 'buenas tardes', 'buenas noches', 'hey', 'que tal',
+    'hi', 'hello', 'good morning', 'good afternoon', 'good evening', 'oi', 'ola', 'bom dia', 'boa tarde', 'boa noite', 'tudo bem'];
+  /* Se le puede escribir en español, inglés o portugués (glosario de assets/i18n.js). */
+  const I18N = window.TRIBU_I18N || { variantes: q => [q], cargarGlosario: () => Promise.resolve() };
 
   /* Etiqueta del botón cuando el tema vive en otra página del sitio */
   const DESTINOS = {
@@ -222,7 +225,7 @@
      el keyword más largo (más específico) manda. Así "cuánto sale el club"
      cae en Club y no en Precios genérico. */
   function buscar(texto) {
-    const t = ' ' + norm(texto) + ' ';
+    const t = ' ' + [...new Set([norm(texto)].concat(I18N.variantes(texto).map(norm)))].join(' | ') + ' ';
     let mejor = null, mejorPuntaje = 0;
     for (const entry of KB) {
       let puntaje = 0;
@@ -484,6 +487,7 @@
   let abierto = false;
 
   function abrir(foco) {
+    I18N.cargarGlosario();
     const retoma = msgs.children.length > 0;
     abierto = true;
     panel.hidden = false;

@@ -2,6 +2,7 @@
 <html lang="es-AR">
 <head>
 <meta charset="UTF-8">
+<script src="/assets/i18n.js?v=1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Perfil · Tribu Connection</title>
 <meta name="description" content="Perfil dentro de la comunidad de Tribu Connection.">
@@ -458,7 +459,7 @@
 
 <script src="/assets/vendor/supabase-js-2.117.3.min.js"></script>
 <script src="/assets/supabase-client.js?v=19"></script>
-<script src="/assets/site.js?v=25"></script>
+<script src="/assets/site.js?v=26"></script>
 <script>
 (function(){
   const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
@@ -567,7 +568,11 @@
        esté traducido se sigue mostrando en castellano. */
     const tieneEn = ['titulo_profesional_en', 'mini_bio_en', 'bio_larga_en', 'que_esperar_en'].some(k => p[k]);
     let langPerfil = 'es';
-    try{ if(tieneEn && localStorage.getItem('tribu_perfil_lang') === 'en') langPerfil = 'en'; }catch(e){}
+    /* Manda el idioma del sitio: en inglés se muestra la versión EN del perfil
+       si existe; en portugués, la de español traducida por assets/i18n.js. */
+    const idiomaSitio = (window.TRIBU_I18N || {}).lang;
+    if(idiomaSitio) langPerfil = idiomaSitio === 'en' && tieneEn ? 'en' : 'es';
+    else try{ if(tieneEn && localStorage.getItem('tribu_perfil_lang') === 'en') langPerfil = 'en'; }catch(e){}
     const TX = {
       es: { volver:'← Volver a Red Tribu', sobre:'Sobre ', esperar:'Qué esperar', servicios:'🌿 Servicios', proximos:'Próximos encuentros', agenda:'Ver toda la agenda →', historias:'Historias destacadas', marca:'Marca', creador:'Creador/a', comunidad:'Comunidad', lugar:'Lugar', viajar:'🌐 Disponible para viajar', conectar:'Conectar', compartir:'Compartir', comunidades:'Comunidades', colaboraciones:'Colaboraciones', experiencias:'Experiencias', hist:'Historias', miHistoria:'Mi historia', creemos:'Creemos juntos', verActividades:'Ver mis actividades', buscoConectar:'Busco conectar con…', puedoAportar:'Lo que puedo aportar' },
       en: { volver:'← Back to Red Tribu', sobre:'About ', esperar:'What to expect', servicios:'🌿 Services', proximos:'Upcoming gatherings', agenda:'See the full calendar →', historias:'Featured stories', marca:'Brand', creador:'Creator', comunidad:'Community', lugar:'Venue', viajar:'🌐 Available to travel', conectar:'Connect', compartir:'Share', comunidades:'Communities', colaboraciones:'Collaborations', experiencias:'Experiences', hist:'Stories', miHistoria:'My story', creemos:'Let us create together', verActividades:'See my activities', buscoConectar:'Looking to connect with…', puedoAportar:'What I can bring' }
@@ -610,7 +615,7 @@
 
       document.getElementById('contenido').innerHTML =
         '<div class="pp2-top"><a href="/red-tribu/" class="pp2-back">' + T.volver + '</a>' +
-          (tieneEn ? '<div class="pp2-lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" class="' + (langPerfil === 'es' ? 'on' : '') + '">ES</button><button type="button" data-lang="en" class="' + (langPerfil === 'en' ? 'on' : '') + '">EN</button></div>' : '') +
+          (tieneEn && !idiomaSitio ? '<div class="pp2-lang" role="group" aria-label="Idioma / Language"><button type="button" data-lang="es" class="' + (langPerfil === 'es' ? 'on' : '') + '">ES</button><button type="button" data-lang="en" class="' + (langPerfil === 'en' ? 'on' : '') + '">EN</button></div>' : '') +
         '</div>' +
         '<div class="pp2-hero compacta">' +
           '<div class="pp2-hero-info">' +

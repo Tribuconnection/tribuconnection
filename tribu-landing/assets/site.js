@@ -1150,6 +1150,7 @@ const PROVINCIAS_AR = {
   function cargarTodo(){
     if(cargado) return;
     cargado = true;
+    I18N.cargarGlosario().then(refrescar);
 
     if(typeof sb !== 'undefined'){
       Promise.all([
@@ -1204,19 +1205,26 @@ const PROVINCIAS_AR = {
 
   /* ---- Búsqueda: todas las palabras tienen que aparecer; pesa más el título ---- */
   const ORDEN_TIPO = { persona:6, marca:5, experiencia:5, evento:5, comunidad:4, lugar:3, seccion:2, historia:1, accion:0, disciplina:0 };
+  /* Se puede escribir en español, inglés o portugués: la búsqueda se prueba
+     tal cual y también pasada al español con el glosario (assets/i18n.js), y
+     cada resultado se compara también con su título traducido. */
+  const I18N = window.TRIBU_I18N || { variantes: q => [q], t: s => s, cargarGlosario: () => Promise.resolve() };
   function buscar(qRaw){
-    const q = norm(qRaw);
-    const palabras = q.split(' ').filter(Boolean);
+    const variantes = [...new Set([norm(qRaw)].concat(I18N.variantes(qRaw).map(norm)))].filter(Boolean);
+    const q = variantes[0];  // tal cual la escribió
     const res = [], vistos = new Set();
     indice().forEach(it => {
       const titulo = norm(it.t);
-      const pajar = titulo + ' ' + norm(it.s) + ' ' + norm(it.k);
-      if(!palabras.every(p => pajar.includes(p))) return;
+      const pajar = titulo + ' ' + norm(it.s) + ' ' + norm(it.k) + ' ' + norm(I18N.t(it.t)) + ' ' + norm(I18N.t(it.s));
+      const vale = variantes.find(v => v.split(' ').filter(Boolean).every(p => pajar.includes(p)));
+      if(!vale) return;
+      const palabras = vale.split(' ').filter(Boolean);
       const clave = it.tipo + '|' + titulo + '|' + (it.u || it.act);
       if(vistos.has(clave)) return;
       vistos.add(clave);
-      let score = titulo === q ? 120 : titulo.startsWith(q) ? 100 : (' ' + titulo).includes(' ' + q) ? 80 : titulo.includes(q) ? 60
-        : palabras.every(p => titulo.includes(p)) ? 50 : norm(it.s).includes(q) ? 30 : 15;
+      const nota = (tit, qq, pal) => tit === qq ? 120 : tit.startsWith(qq) ? 100 : (' ' + tit).includes(' ' + qq) ? 80 : tit.includes(qq) ? 60
+        : pal.every(p => tit.includes(p)) ? 50 : norm(it.s).includes(qq) ? 30 : 15;
+      let score = Math.max(nota(titulo, vale, palabras), nota(norm(I18N.t(it.t)), q, q.split(' ')));
       score += (ORDEN_TIPO[it.tipo] || 0) + (it.peso || 0);
       res.push({ it, score });
     });
@@ -1281,10 +1289,10 @@ const PROVINCIAS_AR = {
       if(!q){ results.classList.remove('open'); results.innerHTML = ''; actuales = []; return; }
       actuales = buscar(q);
       activo = -1;
-      const mas = '<a class="ns-mas" href="' + esc(rt(q)) + '">Buscar «' + esc(q) + '» en toda la Red Tribu →</a>';
+      const mas = '<a class="ns-mas" href="' + esc(rt(q)) + '">Buscar «<span data-no-traducir>' + esc(q) + '</span>» en toda la Red Tribu →</a>';
       results.innerHTML = actuales.length
         ? actuales.map(filaHTML).join('') + mas
-        : '<div class="nav-search-empty">Sin resultados para «' + esc(q) + '».<br>Probá con un nombre, una disciplina o un lugar.</div>' + mas;
+        : '<div class="nav-search-empty">Sin resultados para «<span data-no-traducir>' + esc(q) + '</span>».<br>Probá con un nombre, una disciplina o un lugar.</div>' + mas;
       results.classList.add('open');
     }
 

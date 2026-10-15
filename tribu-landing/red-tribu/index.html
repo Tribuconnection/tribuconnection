@@ -2,6 +2,7 @@
 <html lang="es-AR">
 <head>
 <meta charset="UTF-8">
+<script src="/assets/i18n.js?v=1"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Red Tribu · Tribu Connection</title>
 <meta name="description" content="Descubrí creadores, marcas y lugares que forman parte de la Red Tribu: la comunidad de experiencias, espacios y proyectos conscientes.">
@@ -500,7 +501,7 @@
 <script src="/assets/vendor/supabase-js-2.117.3.min.js"></script>
 <script src="/assets/supabase-client.js?v=19"></script>
 <script src="/assets/red-tribu-filtros.js?v=1"></script>
-<script src="/assets/site.js?v=25"></script>
+<script src="/assets/site.js?v=26"></script>
 <script>
 /* Directorio Red Tribu: perfiles + experiencias reales de Supabase + eventos
    del calendario, en 5 categorías (Creador/a, Comunidad, Experiencia, Marca,
@@ -522,6 +523,8 @@
   const HOY_ISO = (d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'))(new Date());
   const vigente = fecha => !fecha || String(fecha).slice(0, 10) >= HOY_ISO;
   /* Para buscar sin importar tildes ni mayúsculas ("meditacion" encuentra "Meditación"). */
+  const I18N = window.TRIBU_I18N || { variantes: q => [q], cargarGlosario: () => Promise.resolve() };
+  I18N.cargarGlosario().then(() => { if(search.value.trim()) aplicar(); });
   const pliega = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/\s+/g, ' ').trim();
 
   const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -821,6 +824,7 @@
         l.className = on ? 'sel' : '';
         l.dataset.v = op.id;
         if(op.ambitos) l.dataset.ambitos = op.ambitos.join(' ');
+        l.dataset.es = tribuFiltroLabel(op);
         l.innerHTML = '<input type="checkbox"' + (on ? ' checked' : '') + '><span>' + esc(tribuFiltroLabel(op)) + '</span>';
         l.querySelector('input').addEventListener('change', ev => {
           toggle(estado, op.id); l.classList.toggle('sel', ev.target.checked); cambioFiltros();
@@ -918,12 +922,15 @@
     const box = panelCols.querySelector('[data-sec="' + secId + '"]');
     if(!box) return;
     const ambitos = (F[cat].ambitos || []).slice();
-    const busca = q == null ? norm(box.querySelector('.rt-disc-search input')?.value) : q;
+    const crudo = box.querySelector('.rt-disc-search input')?.value || '';
+    const busca = q == null ? norm(crudo) : q;
+    /* También en inglés o portugués: se prueba la búsqueda pasada al español. */
+    const variantes = busca ? [...new Set([busca].concat(I18N.variantes(crudo || busca).map(norm)))] : [];
     let visibles = 0;
     box.querySelectorAll('.rt-checks label').forEach(l => {
-      const txt = norm(l.textContent);
+      const txt = norm(l.textContent) + ' ' + norm(l.dataset.es || '');
       const suyos = (l.dataset.ambitos || '').split(' ');
-      const ok = (!busca || txt.includes(busca))
+      const ok = (!busca || variantes.some(v => txt.includes(v)))
         && (!ambitos.length || !l.dataset.ambitos || ambitos.some(a => suyos.includes(a)));
       l.style.display = ok ? '' : 'none';
       if(ok) visibles++;
@@ -1118,14 +1125,14 @@
   search.addEventListener('input', aplicar);
 
   function aplicar(){
-    const palabras = pliega(search.value).split(' ').filter(Boolean);
+    const variantes = [...new Set([pliega(search.value)].concat(I18N.variantes(search.value).map(pliega)))].filter(Boolean).map(v => v.split(' '));
     const ubi = ubicacion.toLowerCase();
     const cat = catFiltrable();
     let visibles = 0;
     grid.querySelectorAll('.rt-card').forEach(c => {
       const cats = c.dataset.cats.split(' ');
       let ok = (activeTab === 'todos' || cats.includes(activeTab))
-        && palabras.every(p => (c.dataset.busca || '').includes(p))
+        && (!variantes.length || variantes.some(pal => pal.every(p => (c.dataset.busca || '').includes(p))))
         && (!ubi || c.dataset.ciudad.includes(ubi));
       if(ok && cat && cuantosFiltros(cat)) ok = pasaFiltros(cat, c);
       c.style.display = ok ? '' : 'none';
@@ -1177,6 +1184,6 @@
   else if(params.get('q')) aplicar();
 })();
 </script>
-<script defer src="/assets/tribu-chat.js?v=4"></script>
+<script defer src="/assets/tribu-chat.js?v=5"></script>
 </body>
 </html>

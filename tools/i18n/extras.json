@@ -1,0 +1,406 @@
+{
+ "Conectar con {*}": [
+  "Connect with {*}",
+  "Conectar com {*}"
+ ],
+ "Conectar con {*} <span>→</span>": [
+  "Connect with {*} <span>→</span>",
+  "Conectar com {*} <span>→</span>"
+ ],
+ "Consultas directas a {*}": [
+  "Direct questions to {*}",
+  "Perguntas diretas para {*}"
+ ],
+ "Entrar al perfil de {*}": [
+  "Go to {*}'s profile",
+  "Entrar no perfil de {*}"
+ ],
+ "Sobre {*}": [
+  "About {*}",
+  "Sobre {*}"
+ ],
+ "Perfil de {*}": [
+  "{*}'s profile",
+  "Perfil de {*}"
+ ],
+ "Quitar filtro {*}": [
+  "Remove filter: {*}",
+  "Remover filtro: {*}"
+ ],
+ "Contanos sobre {*}": [
+  "Tell us about {*}",
+  "Conte sobre {*}"
+ ],
+ "Consulta para {*}": [
+  "Inquiry for {*}",
+  "Consulta para {*}"
+ ],
+ "Ahorrás {0}% · Beneficio exclusivo para miembros.": [
+  "You save {0}% · Exclusive benefit for members.",
+  "Você economiza {0}% · Benefício exclusivo para membros."
+ ],
+ "{0} resultado": [
+  "{0} result",
+  "{0} resultado"
+ ],
+ "{0} resultados": [
+  "{0} results",
+  "{0} resultados"
+ ],
+ "{0} creador/a encontrado/a": [
+  "{0} creator found",
+  "{0} criador(a) encontrado(a)"
+ ],
+ "{0} creadores encontrados": [
+  "{0} creators found",
+  "{0} criadores encontrados"
+ ],
+ "{0} comunidad encontrada": [
+  "{0} community found",
+  "{0} comunidade encontrada"
+ ],
+ "{0} comunidades encontradas": [
+  "{0} communities found",
+  "{0} comunidades encontradas"
+ ],
+ "{0} experiencia encontrada": [
+  "{0} experience found",
+  "{0} experiência encontrada"
+ ],
+ "{0} experiencias encontradas": [
+  "{0} experiences found",
+  "{0} experiências encontradas"
+ ],
+ "{0} marca encontrada": [
+  "{0} brand found",
+  "{0} marca encontrada"
+ ],
+ "{0} marcas encontradas": [
+  "{0} brands found",
+  "{0} marcas encontradas"
+ ],
+ "{0} lugar encontrado": [
+  "{0} venue found",
+  "{0} espaço encontrado"
+ ],
+ "{0} lugares encontrados": [
+  "{0} venues found",
+  "{0} espaços encontrados"
+ ],
+ "Ver {0} resultado": [
+  "See {0} result",
+  "Ver {0} resultado"
+ ],
+ "Ver {0} resultados": [
+  "See {0} results",
+  "Ver {0} resultados"
+ ],
+ "{0} resultados en este lugar": [
+  "{0} results in this place",
+  "{0} resultados neste lugar"
+ ],
+ "{0} evento": [
+  "{0} event",
+  "{0} evento"
+ ],
+ "{0} eventos": [
+  "{0} events",
+  "{0} eventos"
+ ],
+ "Próxima agenda <span>{0} evento</span>": [
+  "Upcoming events <span>{0} event</span>",
+  "Próxima agenda <span>{0} evento</span>"
+ ],
+ "Próxima agenda <span>{0} eventos</span>": [
+  "Upcoming events <span>{0} events</span>",
+  "Próxima agenda <span>{0} eventos</span>"
+ ],
+ "{0} participante": [
+  "{0} participant",
+  "{0} participante"
+ ],
+ "{0} participantes": [
+  "{0} participants",
+  "{0} participantes"
+ ],
+ "{0} día": [
+  "{0} day",
+  "{0} dia"
+ ],
+ "{0} días": [
+  "{0} days",
+  "{0} dias"
+ ],
+ "{0} personas — ganancia de ${1}": [
+  "{0} people — profit of ${1}",
+  "{0} pessoas — lucro de ${1}"
+ ],
+ "{0} personas — pérdida de ${1}": [
+  "{0} people — loss of ${1}",
+  "{0} pessoas — prejuízo de ${1}"
+ ],
+ "✅ Cubrís costos vendiendo {0} entradas ({1}% de la capacidad). A partir de ahí, cada persona extra suma ${2} de ganancia.": [
+  "✅ You cover your costs by selling {0} tickets ({1}% of capacity). From there, each extra person adds ${2} in profit.",
+  "✅ Você cobre os custos vendendo {0} ingressos ({1}% da capacidade). A partir daí, cada pessoa extra soma ${2} de lucro."
+ ],
+ "Sin resultados para «": [
+  "No results for «",
+  "Nenhum resultado para «"
+ ],
+ "».": [
+  "».",
+  "»."
+ ],
+ "Buscar «": [
+  "Search «",
+  "Buscar «"
+ ],
+ "» en toda la Red Tribu →": [
+  "» across the whole Tribu Network →",
+  "» em toda a Rede Tribu →"
+ ],
+ "Probá con un nombre, una disciplina o un lugar.": [
+  "Try a name, a discipline or a place.",
+  "Tente um nome, uma disciplina ou um lugar."
+ ],
+ "Sección": [
+  "Section",
+  "Seção"
+ ],
+ "Mar": [
+  "Mar",
+  "Mar"
+ ],
+ "Ma": [
+  "Tu",
+  "Te"
+ ],
+ "Mi": [
+  "We",
+  "Qua"
+ ],
+ "Ju": [
+  "Th",
+  "Qu"
+ ],
+ "Vi": [
+  "Fr",
+  "Sx"
+ ],
+ "Sá": [
+  "Sa",
+  "Sá"
+ ],
+ "Do": [
+  "Su",
+  "Do"
+ ],
+ "Lu": [
+  "Mo",
+  "Se"
+ ],
+ "Mar del Plata": [
+  "Mar del Plata",
+  "Mar del Plata"
+ ],
+ "Hasta el {0} de {m0} ·": [
+  "Until {m0} {0} ·",
+  "Até {0} de {m0} ·"
+ ],
+ "Del {0} al {1} de {m0} de {2}": [
+  "From {m0} {0} to {1}, {2}",
+  "De {0} a {1} de {m0} de {2}"
+ ],
+ "{0} de {m0} de {1}": [
+  "{m0} {0}, {1}",
+  "{0} de {m0} de {1}"
+ ],
+ "{0} de {m0}": [
+  "{m0} {0}",
+  "{0} de {m0}"
+ ],
+ "{m0} {0}": [
+  "{m0} {0}",
+  "{m0} {0}"
+ ],
+ "{0} {m0}": [
+  "{0} {m0}",
+  "{0} {m0}"
+ ],
+ "Música & Danza · {0} {m0}": [
+  "Music & Dance · {0} {m0}",
+  "Música & Dança · {0} {m0}"
+ ],
+ "Festivales · {0} {m0}": [
+  "Festivals · {0} {m0}",
+  "Festivais · {0} {m0}"
+ ],
+ "Ferias & Expos · {0} {m0}": [
+  "Fairs & Expos · {0} {m0}",
+  "Feiras & Expos · {0} {m0}"
+ ],
+ "Eventos artísticos · {0} {m0}": [
+  "Art events · {0} {m0}",
+  "Eventos artísticos · {0} {m0}"
+ ],
+ "Holístico & Bienestar · {0} {m0}": [
+  "Holistic & Wellbeing · {0} {m0}",
+  "Holístico & Bem-estar · {0} {m0}"
+ ],
+ "Talleres · {0} {m0}": [
+  "Workshops · {0} {m0}",
+  "Oficinas · {0} {m0}"
+ ],
+ "Experiencia · {0} {m0}": [
+  "Experience · {0} {m0}",
+  "Experiência · {0} {m0}"
+ ],
+ "Taller · {0} {m0}": [
+  "Workshop · {0} {m0}",
+  "Oficina · {0} {m0}"
+ ],
+ "{*} · Agenda · Tribu Connection": [
+  "{*} · Calendar · Tribu Connection",
+  "{*} · Agenda · Tribu Connection"
+ ],
+ "Ir al perfil de {*}": [
+  "Go to {*}'s profile",
+  "Ir para o perfil de {*}"
+ ],
+ "Conocé su historia →": [
+  "Discover their story →",
+  "Conheça a história →"
+ ],
+ "Ya se realizó · Ver próximas": [
+  "Already happened · See upcoming",
+  "Já aconteceu · Ver próximas"
+ ],
+ "Consultar por WhatsApp": [
+  "Ask on WhatsApp",
+  "Perguntar pelo WhatsApp"
+ ],
+ "Idioma · Language · Idioma": [
+  "Idioma · Language · Idioma",
+  "Idioma · Language · Idioma"
+ ],
+ "Año": [
+  "Year",
+  "Ano"
+ ],
+ "/ año": [
+  "/ year",
+  "/ ano"
+ ],
+ "Un Instante Eterno · Ciclo de Encuentros — El Beso del Árbol": [
+  "Un Instante Eterno · Cycle of Gatherings — El Beso del Árbol",
+  "Un Instante Eterno · Ciclo de Encontros — El Beso del Árbol"
+ ],
+ "Mes": [
+  "Month",
+  "Mês"
+ ],
+ "/ mes": [
+  "/ month",
+  "/ mês"
+ ],
+ "\"La comunidad que me cambió la vida\"": [
+  "\"The community that changed my life\"",
+  "\"A comunidade que mudou minha vida\""
+ ],
+ "\"Quiero agregar mi evento\"": [
+  "\"I want to add my event\"",
+  "\"Quero adicionar meu evento\""
+ ],
+ "¿Qué proyecto, actividad o evento querés compartir?": [
+  "What project, activity or event would you like to share?",
+  "Que projeto, atividade ou evento você quer compartilhar?"
+ ],
+ "Cómo empieza, qué pasa en el medio y cómo cierra.": [
+  "How it starts, what happens in the middle and how it ends.",
+  "Como começa, o que acontece no meio e como termina."
+ ],
+ "Compartí los detalles de tu idea, el contexto, el tipo de colaboración y cualquier otra información que consideres importante…": [
+  "Share the details of your idea, the context, the type of collaboration and any other information you think is important…",
+  "Compartilhe os detalhes da sua ideia, o contexto, o tipo de colaboração e qualquer outra informação que considere importante…"
+ ],
+ "Contá de qué se trata, para quién es y qué puede esperar quien participe.": [
+  "Tell us what it's about, who it's for and what participants can expect.",
+  "Conte do que se trata, para quem é e o que pode esperar quem participar."
+ ],
+ "Contá en dos o tres frases qué resuelve tu propuesta.": [
+  "Tell us in two or three sentences what your proposal solves.",
+  "Conte em duas ou três frases o que sua proposta resolve."
+ ],
+ "Contá tu trayectoria, tu enfoque y qué te distingue. Podés separar en párrafos.": [
+  "Tell us about your background, your approach and what sets you apart. You can split it into paragraphs.",
+  "Conte sua trajetória, seu enfoque e o que te diferencia. Você pode separar em parágrafos."
+ ],
+ "Contanos de qué se trata": [
+  "Tell us what it's about",
+  "Conte do que se trata"
+ ],
+ "Contanos en pocas líneas qué hacés.": [
+  "Tell us in a few lines what you do.",
+  "Conte em poucas linhas o que você faz."
+ ],
+ "Contanos qué te gustaría que haga Tribu Connection para tu propuesta": [
+  "Tell us what you'd like Tribu Connection to do for your proposal",
+  "Conte o que você gostaria que a Tribu Connection fizesse pela sua proposta"
+ ],
+ "Contanos sobre tu proyecto, marca o idea": [
+  "Tell us about your project, brand or idea",
+  "Conte sobre seu projeto, marca ou ideia"
+ ],
+ "Ej: Creo música para acompañar procesos de transformación, meditación y conexión profunda.": [
+  "E.g.: I create music to accompany processes of transformation, meditation and deep connection.",
+  "Ex.: Crio música para acompanhar processos de transformação, meditação e conexão profunda."
+ ],
+ "Ej: Espacios para encuentros grupales y músicos que quieran acompañar una experiencia de respiración.": [
+  "E.g.: Spaces for group gatherings and musicians who'd like to accompany a breathing experience.",
+  "Ex.: Espaços para encontros em grupo e músicos que queiram acompanhar uma experiência de respiração."
+ ],
+ "Ej: Facilitación de respiración y yoga para experiencias compartidas.": [
+  "E.g.: Breathwork and yoga facilitation for shared experiences.",
+  "Ex.: Facilitação de respiração e yoga para experiências compartilhadas."
+ ],
+ "Ej: Fue en mi propia respiración donde encontré una manera diferente de habitar la vida.": [
+  "E.g.: It was in my own breath that I found a different way of inhabiting life.",
+  "Ex.: Foi na minha própria respiração que encontrei uma maneira diferente de habitar a vida."
+ ],
+ "Ej: Te mando un fuerte abrazo, nos vemos para compartir esta experiencia.": [
+  "E.g.: Sending you a big hug, see you soon to share this experience.",
+  "Ex.: Mando um abraço forte, nos vemos para compartilhar esta experiência."
+ ],
+ "Ej: Un viaje de dos horas de baile libre, sin alcohol ni celulares, con música en vivo y un cierre de relajación.": [
+  "E.g.: A two-hour journey of free dance, no alcohol or phones, with live music and a relaxing close.",
+  "Ex.: Uma viagem de duas horas de dança livre, sem álcool nem celular, com música ao vivo e um encerramento de relaxamento."
+ ],
+ "Elegí una categoría": [
+  "Choose a category",
+  "Escolha uma categoria"
+ ],
+ "Fecha aproximada, tipo de evento, qué buscás lograr…": [
+  "Approximate date, type of event, what you want to achieve…",
+  "Data aproximada, tipo de evento, o que você quer alcançar…"
+ ],
+ "Fecha, ciudad y espacio": [
+  "Date, city and venue",
+  "Data, cidade e espaço"
+ ],
+ "Respiración guiada Meditación Música en vivo": [
+  "Guided breathing\nMeditation\nLive music",
+  "Respiração guiada\nMeditação\nMúsica ao vivo"
+ ],
+ "Vení con ropa cómoda Traé abrigo y agua": [
+  "Wear comfortable clothes\nBring a jacket and water",
+  "Venha com roupa confortável\nTraga agasalho e água"
+ ],
+ "(las usa el equipo de Tribu para conectarte con otras propuestas)": [
+  "(the Tribu team uses them to connect you with other proposals)",
+  "(a equipe da Tribu usa para te conectar com outras propostas)"
+ ],
+ "Formas de colaborar <span>(las usa el equipo de Tribu para conectarte con otras propuestas)</span>": [
+  "Ways to collaborate <span>(the Tribu team uses them to connect you with other proposals)</span>",
+  "Formas de colaborar <span>(a equipe da Tribu usa para te conectar com outras propostas)</span>"
+ ]
+}

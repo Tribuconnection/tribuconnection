@@ -1,0 +1,634 @@
+{
+ "3140": [
+  "Your account is ready. Later you'll be able to edit your profile and add new roles whenever you want.",
+  "Sua conta está pronta. Depois você vai poder editar seu perfil e incluir novas funções quando quiser."
+ ],
+ "3141": [
+  "your experience",
+  "sua experiência"
+ ],
+ "3142": [
+  "Your experience deserves to be",
+  "Sua experiência merece ser"
+ ],
+ "3143": [
+  "Your experience deserves to be <span>seen, understood and chosen</span>.",
+  "Sua experiência merece ser <span>vista, compreendida e escolhida</span>."
+ ],
+ "3144": [
+  "Your experience deserves to be seen and chosen.",
+  "Sua experiência merece ser vista e escolhida."
+ ],
+ "3145": [
+  "Your landing page on the web",
+  "Sua landing na web"
+ ],
+ "3146": [
+  "Your personal landing page",
+  "Sua landing pessoal"
+ ],
+ "3147": [
+  "Your landing page isn't published yet: turn on “visible in the Tribu Network” in your profile so it shows.",
+  "Sua landing ainda não está publicada: ative “visível na Rede Tribu” no seu perfil para que apareça."
+ ],
+ "3148": [
+  "Your spot in the experience",
+  "Sua vaga na experiência"
+ ],
+ "3149": [
+  "Your spot is confirmed",
+  "Sua vaga está confirmada"
+ ],
+ "3150": [
+  "Your spot is reserved",
+  "Sua vaga está reservada"
+ ],
+ "3151": [
+  "Your spot is confirmed once the payment is verified.",
+  "Sua vaga é confirmada quando o pagamento for verificado."
+ ],
+ "3152": [
+  "Your name",
+  "Seu nome"
+ ],
+ "3153": [
+  "Your name *",
+  "Seu nome *"
+ ],
+ "3154": [
+  "Your first and last name",
+  "Seu nome e sobrenome"
+ ],
+ "3155": [
+  "Your profile",
+  "Seu perfil"
+ ],
+ "3156": [
+  "Your profile is ready",
+  "Seu perfil está pronto"
+ ],
+ "3157": [
+  "Your profile isn't published yet, so whatever you save here applies right away. Once published, changes go through a team review.",
+  "Seu perfil ainda não foi publicado, então o que você salvar aqui vale na hora. Depois de publicado, as alterações passam por uma revisão da equipe."
+ ],
+ "3158": [
+  "Your card",
+  "Seu card"
+ ],
+ "3159": [
+  "Your community card",
+  "Seu card de comunidade"
+ ],
+ "3160": [
+  "Your creator card",
+  "Seu card de criador(a)"
+ ],
+ "3161": [
+  "Your venue card",
+  "Seu card de espaço"
+ ],
+ "3162": [
+  "Your brand card",
+  "Seu card de marca"
+ ],
+ "3163": [
+  "your portal",
+  "seu portal"
+ ],
+ "3164": [
+  "Your creator portal",
+  "Seu portal de criador(a)"
+ ],
+ "3165": [
+  "Your portal is built from your profile details: name, photo and texts. Complete it in a couple of minutes and come back.",
+  "Seu portal é montado com os dados do seu perfil: nome, foto e textos. Complete em poucos minutos e volte."
+ ],
+ "3166": [
+  "Your proposal arrives with all the information needed.",
+  "Sua proposta chega com as informações necessárias."
+ ],
+ "3169": [
+  "Tourism and travel",
+  "Turismo e viagens"
+ ],
+ "3170": [
+  "Your details",
+  "Seus dados"
+ ],
+ "3171": [
+  "Your details are received to evaluate your proposal and contact you.",
+  "Seus dados são recebidos para avaliar sua proposta e entrar em contato."
+ ],
+ "3172": [
+  "Your details are used to manage this booking.",
+  "Seus dados são usados para gerenciar esta reserva."
+ ],
+ "3173": [
+  "Your rights",
+  "Seus direitos"
+ ],
+ "3174": [
+  "your goals and how to help you grow.",
+  "seus objetivos e como te ajudar a crescer."
+ ],
+ "3175": [
+  "Your change requests",
+  "Seus pedidos de alteração"
+ ],
+ "3176": [
+  "Your social media cards ready to download, materials to share, your landing page and your profile texts.",
+  "Seus cards para redes prontos para baixar, materiais para compartilhar, sua landing e os textos do seu perfil."
+ ],
+ "3177": [
+  "Your upcoming gatherings are built automatically from the experiences you publish.",
+  "Seus próximos encontros são montados sozinhos a partir das experiências que você publicar."
+ ],
+ "3178": [
+  "Your upcoming gatherings are built automatically from the experiences you publish. <a>Publish an experience →</a>",
+  "Seus próximos encontros são montados sozinhos a partir das experiências que você publicar. <a>Publicar uma experiência →</a>"
+ ],
+ "3180": [
+  "Location",
+  "Localização"
+ ],
+ "3181": [
+  "Location (optional)",
+  "Localização (opcional)"
+ ],
+ "3182": [
+  "Location to be confirmed",
+  "Local a confirmar"
+ ],
+ "3185": [
+  "Location:",
+  "Localização:"
+ ],
+ "3186": [
+  "Last updated: July 2026",
+  "Última atualização: julho de 2026"
+ ],
+ "3187": [
+  "Last step: activate your subscription with Mercado Pago. As soon as it's credited, we'll publish your profile.",
+  "Último passo: ative sua assinatura com o Mercado Pago. Assim que for creditado, publicamos seu perfil."
+ ],
+ "3188": [
+  "Last step: activate your subscription.",
+  "Último passo: ative sua assinatura."
+ ],
+ "3192": [
+  "Un Instante Eterno is a cycle of gatherings.",
+  "Un Instante Eterno é um ciclo de encontros."
+ ],
+ "3194": [
+  "a living room designed for the experience, fire pits lit",
+  "uma sala pensada para a experiência, fogueiras acesas"
+ ],
+ "3195": [
+  "an Ongoing Communication Plan",
+  "um Plano de Comunicação Contínua"
+ ],
+ "3196": [
+  "A bridge for meeting",
+  "Uma ponte de encontros"
+ ],
+ "3197": [
+  "A special gift from the Tribu in your birthday month.",
+  "Um presente especial da Tribu no mês do seu aniversário."
+ ],
+ "3198": [
+  "A gift for you",
+  "Um presente para você"
+ ],
+ "3199": [
+  "A tailored service for brands, venues and projects that want to communicate on an ongoing basis. We define the goals together, build a calendar and produce monthly content ready to publish.",
+  "Um serviço sob medida para marcas, espaços e projetos que buscam comunicar de forma contínua. Definimos juntos os objetivos, montamos um calendário e produzimos conteúdos mensais prontos para publicar."
+ ],
+ "3200": [
+  "a special service",
+  "um serviço especial"
+ ],
+ "3201": [
+  "One last step to take part",
+  "Um último passo para participar"
+ ],
+ "3202": [
+  "A combination designed to make your proposal known, tell its value and spark interaction with new audiences within the Tribu community.",
+  "Uma combinação pensada para divulgar sua proposta, contar seu valor e gerar interação com novos públicos dentro da comunidade Tribu."
+ ],
+ "3203": [
+  "A growing community",
+  "Uma comunidade que cresce"
+ ],
+ "3204": [
+  "A conversation about fragrances ended up revealing a very particular way of understanding creation, art and connection with people.",
+  "Uma conversa sobre aromas acabou revelando uma maneira muito particular de entender a criação, a arte e a conexão com as pessoas."
+ ],
+ "3205": [
+  "An experience of about 4 hours: live music, somatic dynamics and an Ayurvedic infusion.",
+  "Uma experiência de aproximadamente 4 horas: música ao vivo, dinâmicas somáticas e infusão ayurvédica."
+ ],
+ "3206": [
+  "A brand, a venue, a business, an organization.",
+  "Uma marca, um espaço, um empreendimento, uma organização."
+ ],
+ "3207": [
+  "a clearer view of who I am and where I'm going.",
+  "um olhar mais claro sobre quem sou e para onde vou."
+ ],
+ "3208": [
+  "A night to come back",
+  "Uma noite para voltar"
+ ],
+ "3209": [
+  "A night to come back <br>and reconnect with yourself",
+  "Uma noite para voltar <br>a se conectar com você"
+ ],
+ "3210": [
+  "an authentic presence for your brand within like-minded communities.",
+  "uma presença autêntica para sua marca dentro de comunidades afins."
+ ],
+ "3211": [
+  "A comprehensive proposal to build anticipation before the event, support it while it happens and extend its impact through follow-up content.",
+  "Uma proposta integral para gerar expectativa antes do evento, acompanhá-lo durante sua realização e ampliar seu impacto com conteúdo posterior."
+ ],
+ "3212": [
+  "A second card for another post, with any photo you like. It's built right here on your device: the photo isn't uploaded anywhere.",
+  "Um segundo card para outro post, com a foto que você quiser. É montado aqui mesmo, no seu dispositivo: a foto não é enviada para lugar nenhum."
+ ],
+ "3213": [
+  "Once the transfer is done, send us the receipt and we'll confirm your spot.",
+  "Depois de fazer a transferência, envie o comprovante e confirmamos sua vaga."
+ ],
+ "3221": [
+  "Urban",
+  "Urbano"
+ ],
+ "3222": [
+  "Urban<span>✕</span>",
+  "Urbano<span>✕</span>"
+ ],
+ "3225": [
+  "Exclusive use",
+  "Uso exclusivo"
+ ],
+ "3226": [
+  "Exclusive use<span>✕</span>",
+  "Uso exclusivo<span>✕</span>"
+ ],
+ "3227": [
+  "Goes below your name. E.g.: Ecstatic Dance DJ and producer.",
+  "Vai abaixo do seu nome. Ex.: DJ de Ecstatic Dance e produtor."
+ ],
+ "3228": [
+  "Value:",
+  "Valor:"
+ ],
+ "3229": [
+  "You'll receive",
+  "Você vai receber"
+ ],
+ "3230": [
+  "Vegetarian and vegan cooking",
+  "Culinária vegetariana e vegana"
+ ],
+ "3232": [
+  "Direct sales to the public",
+  "Venda direta ao público"
+ ],
+ "3233": [
+  "Direct sales to the public<span>✕</span>",
+  "Venda direta ao público<span>✕</span>"
+ ],
+ "3235": [
+  "See",
+  "Ver"
+ ],
+ "3236": [
+  "See 1 result",
+  "Ver 1 resultado"
+ ],
+ "3237": [
+  "See 11 results",
+  "Ver 11 resultados"
+ ],
+ "3241": [
+  "See previous",
+  "Ver anteriores"
+ ],
+ "3242": [
+  "See how we support your project →",
+  "Veja como acompanhamos seu projeto →"
+ ],
+ "3243": [
+  "See Club Tribu Connection →",
+  "Ver o Club Tribu Connection →"
+ ],
+ "3244": [
+  "Watch the reel on Instagram",
+  "Ver o reel no Instagram"
+ ],
+ "3245": [
+  "Watch the teaser",
+  "Ver o teaser"
+ ],
+ "3246": [
+  "Watch interview",
+  "Ver entrevista"
+ ],
+ "3247": [
+  "Watch interview <span>→</span>",
+  "Ver entrevista <span>→</span>"
+ ],
+ "3248": [
+  "See that section →",
+  "Ver essa seção →"
+ ],
+ "3249": [
+  "See that path",
+  "Ver esse caminho"
+ ],
+ "3250": [
+  "See that path <span>→</span>",
+  "Ver esse caminho <span>→</span>"
+ ],
+ "3251": [
+  "See event details →",
+  "Ver ficha do evento →"
+ ],
+ "3252": [
+  "See story",
+  "Ver história"
+ ],
+ "3253": [
+  "See story <span>→</span>",
+  "Ver história <span>→</span>"
+ ],
+ "3254": [
+  "See real stories",
+  "Ver histórias reais"
+ ],
+ "3255": [
+  "See the calendar",
+  "Ver a agenda"
+ ],
+ "3256": [
+  "See the proposal for brands →",
+  "Ver a proposta para marcas →"
+ ],
+ "3257": [
+  "See the paths",
+  "Ver os caminhos"
+ ],
+ "3258": [
+  "See more stories",
+  "Ver mais histórias"
+ ],
+ "3259": [
+  "See more stories <span>→</span>",
+  "Ver mais histórias <span>→</span>"
+ ],
+ "3260": [
+  "View my landing page",
+  "Ver minha landing"
+ ],
+ "3261": [
+  "See my activities",
+  "Ver minhas atividades"
+ ],
+ "3262": [
+  "See cookie policy",
+  "Ver política de cookies"
+ ],
+ "3263": [
+  "See the Tribu Network",
+  "Ver a Rede Tribu"
+ ],
+ "3264": [
+  "Watch reel",
+  "Ver reel"
+ ],
+ "3265": [
+  "Watch reel <span>→</span>",
+  "Ver reel <span>→</span>"
+ ],
+ "3266": [
+  "See results",
+  "Ver resultados"
+ ],
+ "3267": [
+  "See next",
+  "Ver seguintes"
+ ],
+ "3268": [
+  "See the full calendar",
+  "Ver toda a agenda"
+ ],
+ "3269": [
+  "See the full calendar →",
+  "Ver toda a agenda →"
+ ],
+ "3270": [
+  "See the full calendar <span>→</span>",
+  "Ver toda a agenda <span>→</span>"
+ ],
+ "3271": [
+  "See all selections",
+  "Ver todas as seleções"
+ ],
+ "3272": [
+  "See all selections <span>→</span>",
+  "Ver todas as seleções <span>→</span>"
+ ],
+ "3273": [
+  "See all",
+  "Ver tudo"
+ ],
+ "3274": [
+  "Fr",
+  "Sx"
+ ],
+ "3276": [
+  "Intro video (link)",
+  "Vídeo de apresentação (link)"
+ ],
+ "3277": [
+  "Fri",
+  "Sex"
+ ],
+ "3279": [
+  "Friday",
+  "Sexta-feira"
+ ],
+ "3289": [
+  "Vino, Tarot y Disfrute",
+  "Vino, Tarot y Disfrute"
+ ],
+ "3290": [
+  "Visibility",
+  "Visibilidade"
+ ],
+ "3291": [
+  "Guided tour",
+  "Visita guiada"
+ ],
+ "3292": [
+  "Guided tour<span>✕</span>",
+  "Visita guiada<span>✕</span>"
+ ],
+ "3293": [
+  "profile visits in the last month",
+  "visitas ao perfil no último mês"
+ ],
+ "3294": [
+  "seen, understood and chosen",
+  "vista, compreendida e escolhida"
+ ],
+ "3295": [
+  "Reels views",
+  "visualizações em Reels"
+ ],
+ "3296": [
+  "Live visuals / VJ",
+  "Visuais ao vivo / VJ"
+ ],
+ "3297": [
+  "Creative visualization",
+  "Visualização criativa"
+ ],
+ "3298": [
+  "Volleyball",
+  "Vôlei"
+ ],
+ "3299": [
+  "Volunteering",
+  "Voluntariado"
+ ],
+ "3300": [
+  "Volunteering<span>✕</span>",
+  "Voluntariado<span>✕</span>"
+ ],
+ "3301": [
+  "Back",
+  "Voltar"
+ ],
+ "3302": [
+  "Back to my account",
+  "Voltar para minha conta"
+ ],
+ "3303": [
+  "Back to the Tribu Network",
+  "Voltar para a Rede Tribu"
+ ],
+ "3306": [
+  "Web",
+  "Web"
+ ],
+ "3312": [
+  "WhatsApp",
+  "WhatsApp"
+ ],
+ "3313": [
+  "WhatsApp / Email",
+  "WhatsApp / E-mail"
+ ],
+ "3314": [
+  "WhatsApp <span>(optional)</span>",
+  "WhatsApp <span>(opcional)</span>"
+ ],
+ "3315": [
+  "WhatsApp or contact",
+  "WhatsApp ou contato"
+ ],
+ "3320": [
+  "and how much you earn with each extra person who joins the tribe.",
+  "e quanto ganha com cada pessoa extra que se soma à tribo."
+ ],
+ "3321": [
+  "and find out if it resonates with you.",
+  "e descobrir se ressoa com você."
+ ],
+ "3322": [
+  "and enjoy the benefits?",
+  "e aproveitar os benefícios?"
+ ],
+ "3323": [
+  "and the",
+  "e a"
+ ],
+ "3324": [
+  "and inner calm.",
+  "e a calma interior."
+ ],
+ "3325": [
+  "and bring them to those looking for them",
+  "e as aproximamos de quem as procura"
+ ],
+ "3326": [
+  "and get the benefit on this experience.",
+  "e obtenha o benefício nesta experiência."
+ ],
+ "3327": [
+  "And you can",
+  "E você pode"
+ ],
+ "3328": [
+  "And you can <strong>add yours</strong> so more people discover it",
+  "E você pode <strong>incluir a sua</strong> para que mais pessoas a descubram"
+ ],
+ "3329": [
+  "and use the hashtags",
+  "e use as hashtags"
+ ],
+ "3330": [
+  "We've already told the stories of",
+  "Já contamos as histórias de"
+ ],
+ "3331": [
+  "We've already told the stories of <strong>Sagrada Madre</strong>, <strong>Hawka</strong> and <strong>Unifungi</strong>.",
+  "Já contamos as histórias de <strong>Sagrada Madre</strong>, <strong>Hawka</strong> e <strong>Unifungi</strong>."
+ ],
+ "3332": [
+  "An account with that email already exists. Try \"I already have an account\".",
+  "Já existe uma conta com esse e-mail. Tente \"Já tenho conta\"."
+ ],
+ "3333": [
+  "Already happened · See upcoming",
+  "Já aconteceu · Ver próximas"
+ ],
+ "3334": [
+  "We sent you a link very recently. Wait a few minutes and check your spam folder too.",
+  "Enviamos um link há pouquíssimo tempo. Espere alguns minutos e confira também a pasta de spam."
+ ],
+ "3335": [
+  "You already have an account with this email. Log in with your password or, if you don't remember it, tap \"Forgot your password?\" and we'll send you a link to choose a new one.",
+  "Você já tem uma conta com este e-mail. Entre com sua senha ou, se não lembrar, toque em \"Esqueceu sua senha?\" e enviamos um link para escolher uma nova."
+ ],
+ "3336": [
+  "I already have an account",
+  "Já tenho conta"
+ ],
+ "3338": [
+  "Yoga",
+  "Yoga"
+ ],
+ "3339": [
+  "Yoga · Meditation",
+  "Yoga · Meditação"
+ ],
+ "3340": [
+  "Kids' yoga",
+  "Yoga infantil"
+ ],
+ "3359": [
+  "Stilts",
+  "Pernas de pau"
+ ],
+ "3361": [
+  "Break-even zone",
+  "Zona de equilíbrio"
+ ],
+ "3362": [
+  "Zoom",
+  "Zoom"
+ ]
+}
