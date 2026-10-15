@@ -21,6 +21,8 @@
    - window.TRIBU_I18N.variantes(texto) pasa una búsqueda escrita en inglés o
      portugués a sus equivalentes en español (glosario), para que el
      buscador, la Red Tribu y el chat entiendan los tres idiomas.
+   - Los diccionarios se generan con tools/i18n/build.js. Si cambian, subir
+     VERSION_DIC (y la ?v= de este archivo en las páginas).
    ============================================================ */
 (function(){
   'use strict';
@@ -95,15 +97,29 @@
   /* ---------- Diccionario ---------- */
   let DIC = null, PATRONES = [];
   const escRx = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  /* Claves con {*} (un nombre u otro dato variable): 'Conectar con {*}'. */
+  /* Claves con {*} (un nombre u otro dato variable): 'Conectar con {*}'.
+     Se guarda el comienzo fijo de cada una para descartar rápido. */
   function armarPatrones(){
-    PATRONES = Object.keys(DIC).filter(k => k.includes('{*}')).map(k =>
-      [new RegExp('^' + k.split('{*}').map(escRx).join('(.+?)') + '$'), DIC[k]]);
+    PATRONES = Object.keys(DIC).filter(k => k.includes('{*}')).map(k => {
+      const partes = k.split('{*}');
+      return [new RegExp('^' + partes.map(escRx).join('(.+?)') + '$'), DIC[k], partes[0]];
+    });
   }
+  /* Caché de búsquedas (también de lo que no tiene traducción: nombres,
+     lugares, textos de cada perfil), así no se repite el trabajo. */
+  const CACHE = new Map();
   function buscar(clave){
     if(!DIC || !clave) return null;
-    let v = DIC[clave];
+    const v = DIC[clave];
     if(v != null) return v;
+    if(CACHE.has(clave)) return CACHE.get(clave);
+    const r = buscarGeneral(clave);
+    if(CACHE.size > 5000) CACHE.clear();
+    CACHE.set(clave, r);
+    return r;
+  }
+  function buscarGeneral(clave){
+    let v;
     if(/\d/.test(clave)){
       const { g, nums } = generalizarNumeros(clave);
       v = DIC[g];
@@ -113,7 +129,8 @@
       }
       if(v != null) return v.replace(/\{(\d+)\}/g, (m, i) => nums[+i] != null ? nums[+i] : m);
     }
-    for(const [rx, tr] of PATRONES){
+    for(const [rx, tr, ini] of PATRONES){
+      if(ini && !clave.startsWith(ini)) continue;
       const m = clave.match(rx);
       if(m){ let i = 1; return tr.replace(/\{\*\}/g, () => m[i++] || ''); }
     }
@@ -229,7 +246,7 @@
     }
   }
   function dentroDeSalto(el){
-    for(let e = el; e && e !== document.documentElement; e = e.parentElement) if(saltar(e) && e.nodeName !== 'SELECT') return true;
+    for(let e = el; e && e !== document.documentElement; e = e.parentElement) if(saltar(e)) return true;
     return false;
   }
   function traducirTitulo(){
@@ -255,9 +272,11 @@
       }
     });
     obs.observe(document.documentElement, { childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:ATRIBUTOS.concat(['value']) });
+    /* El observer arranca en el <head>, así que ve cada nodo que arma el
+       navegador: no hace falta otra pasada completa al terminar de cargar. */
     if(document.body) recorrer(document.body);
     traducirTitulo();
-    document.addEventListener('DOMContentLoaded', () => { recorrer(document.body); traducirTitulo(); });
+    document.addEventListener('DOMContentLoaded', traducirTitulo);
   }
 
   if(coleccionar){
@@ -331,14 +350,17 @@
     const st = document.createElement('style');
     st.textContent =
       '.lang-sel{position:relative;flex:none;z-index:70}' +
-      '.lang-sel>button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(244,241,234,.28);background:rgba(255,255,255,.05);color:#F4F1EA;font:700 .72rem/1 Poppins,system-ui,sans-serif;letter-spacing:.06em;cursor:pointer;display:grid;place-items:center;transition:.2s;padding:0}' +
+      '.lang-sel>button{width:40px;height:40px;border-radius:50%;border:1px solid rgba(244,241,234,.28);background:rgba(255,255,255,.05);color:#F4F1EA;font:700 .72rem/1 Poppins,system-ui,sans-serif;letter-spacing:.06em;cursor:pointer;display:grid;place-items:center;transition:.2s;padding:0;position:relative;touch-action:manipulation;-webkit-tap-highlight-color:transparent}' +
       '.lang-sel>button:hover,.lang-sel.open>button{border-color:#F4F1EA;background:rgba(255,255,255,.1)}' +
       '.lang-sel ul{position:absolute;top:calc(100% + 8px);right:0;list-style:none;margin:0;padding:.35rem;background:#16181f;border:1px solid rgba(244,241,234,.16);border-radius:14px;box-shadow:0 18px 40px -14px rgba(0,0,0,.7);display:none;min-width:150px}' +
       '.lang-sel.open ul{display:block}' +
-      '.lang-sel li button{width:100%;display:flex;align-items:center;gap:.6rem;background:none;border:0;color:#F4F1EA;font:500 .86rem/1.2 Poppins,system-ui,sans-serif;padding:.55rem .7rem;border-radius:9px;cursor:pointer;text-align:left}' +
+      '.lang-sel li button{width:100%;display:flex;align-items:center;gap:.6rem;background:none;border:0;color:#F4F1EA;font:500 .86rem/1.2 Poppins,system-ui,sans-serif;padding:.7rem .75rem;border-radius:9px;cursor:pointer;text-align:left;touch-action:manipulation;-webkit-tap-highlight-color:transparent}' +
       '.lang-sel li button b{font-weight:700;font-size:.72rem;letter-spacing:.06em;width:22px;opacity:.75}' +
       '.lang-sel li button:hover{background:rgba(255,255,255,.07)}' +
       '.lang-sel li button[aria-current="true"]{background:rgba(255,255,255,.1)}' +
+      '.lang-sel.cambiando>button{pointer-events:none}' +
+      '.lang-sel.cambiando>button::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid transparent;border-top-color:#F4F1EA;animation:langGira .7s linear infinite}' +
+      '@keyframes langGira{to{transform:rotate(360deg)}}' +
       '.lang-sel--flotante{position:fixed;top:14px;right:14px;z-index:900}' +
       '.lang-sel--flotante>button{background:rgba(12,13,17,.72);backdrop-filter:blur(8px)}' +
       '@media (max-width:640px){.lang-sel>button{width:36px;height:36px;font-size:.68rem}}';
@@ -357,8 +379,31 @@
       document.body.appendChild(box);
     }
     const btn = box.querySelector('button');
-    btn.addEventListener('click', e => { e.stopPropagation(); const o = box.classList.toggle('open'); btn.setAttribute('aria-expanded', o); });
-    box.querySelectorAll('[data-l]').forEach(b => b.addEventListener('click', () => { if(b.dataset.l !== lang) API.elegir(b.dataset.l); else box.classList.remove('open'); }));
+    /* Apenas se toca el círculo se bajan en segundo plano los otros
+       diccionarios: quedan en caché y el cambio de idioma es casi inmediato. */
+    let precargado = false;
+    const precargar = () => {
+      if(precargado) return; precargado = true;
+      Object.keys(IDIOMAS).filter(l => l !== 'es' && l !== lang).forEach(l => {
+        try{ fetch('/assets/i18n/' + l + '.js?v=' + VERSION_DIC, { priority:'low' }).catch(() => {}); }catch(e){}
+      });
+    };
+    btn.addEventListener('pointerdown', precargar, { passive:true });
+    btn.addEventListener('click', e => { e.stopPropagation(); precargar(); const o = box.classList.toggle('open'); btn.setAttribute('aria-expanded', o); });
+    /* Un solo toque alcanza: se cierra el menú, el círculo muestra el idioma
+       nuevo girando mientras carga y los toques siguientes se ignoran (antes
+       cada toque reiniciaba la recarga y parecía que había que insistir). */
+    let cambiando = false;
+    box.querySelectorAll('[data-l]').forEach(b => b.addEventListener('click', e => {
+      e.stopPropagation();
+      if(cambiando) return;
+      if(b.dataset.l === lang){ box.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); return; }
+      cambiando = true;
+      box.classList.remove('open');
+      box.classList.add('cambiando');
+      btn.textContent = b.dataset.l.toUpperCase();
+      requestAnimationFrame(() => setTimeout(() => API.elegir(b.dataset.l), 30));
+    }));
     document.addEventListener('click', e => { if(!box.contains(e.target)){ box.classList.remove('open'); btn.setAttribute('aria-expanded', 'false'); } });
     document.addEventListener('keydown', e => { if(e.key === 'Escape') box.classList.remove('open'); });
   }
