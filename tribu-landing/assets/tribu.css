@@ -1445,3 +1445,34 @@ body.tc-lift .tc-dock{ bottom:calc(96px + var(--tc-lift,118px)); }
   .faq.faq--2col summary{ white-space:nowrap; font-size:var(--faq-fs,.98rem); }
   .faq.faq--2col.parte summary{ white-space:normal; }
 }
+
+/* ===================== Ajustes móvil (revisión 16/10) ===================== */
+/* Títulos de bloques chicos: más aire entre renglones */
+.mini-cta h3, .plan-continua h3{ line-height:1.28; }
+@media (max-width:760px){
+  /* El pie termina por encima de los botones flotantes (chat y WhatsApp) */
+  .footer{ padding-bottom:calc(120px + env(safe-area-inset-bottom, 0px)); }
+  /* Historias destacadas: carrusel horizontal en lugar de cuatro fotos
+     enormes una debajo de otra (la página se hacía eterna) */
+  .cases.cases--foto{
+    display:flex; overflow-x:auto; gap:.8rem; scroll-snap-type:x mandatory; scroll-padding-inline:var(--pad);
+    margin-inline:calc(-1 * var(--pad)); padding:0 var(--pad) .6rem; scrollbar-width:none;
+  }
+  .cases.cases--foto::-webkit-scrollbar{ display:none; }
+  .cases.cases--foto .case--foto{ flex:0 0 72%; scroll-snap-align:start; }
+  /* Tarjetas con foto: la foto más baja para que no ocupe toda la pantalla */
+  .challenge.con-foto .ch-img{ aspect-ratio:16/9; }
+}
+/* El título de un modal no pasa por debajo de la ✕ */
+.modal h2{ padding-right:2.6rem; }
+/* Con un modal, el menú del celular, la hoja "Conectar" o el panel de
+   filtros abiertos, los botones flotantes (chat y WhatsApp) se esconden:
+   si no, tapan campos y botones. */
+body:has(.modal-overlay.open) :is(.tc-wa, .tc-dock),
+body:has(.mobile-menu.open) :is(.tc-wa, .tc-dock),
+body:has(.pp-sheet.open) :is(.tc-wa, .tc-dock),
+body[style*="overflow: hidden"] :is(.tc-wa, .tc-dock){ opacity:0; pointer-events:none; transform:translateY(12px); animation:none; }
+@media (max-width:760px){
+  body:has(#panelFiltros:not([hidden])) :is(.tc-wa, .tc-dock){ opacity:0; pointer-events:none; animation:none; }
+}
+.tc-wa, .tc-dock{ transition:opacity .2s ease, transform .2s ease; }

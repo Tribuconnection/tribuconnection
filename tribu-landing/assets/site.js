@@ -198,7 +198,7 @@ document.querySelectorAll('.stat .num').forEach(el => statIO.observe(el));
   /* Foto de cada evento: la propia si la tiene; si no, una foto real de la
      Tribu elegida siempre igual para el mismo evento (por su nombre), así se
      ve la misma en la agenda, el inicio y la Red Tribu. */
-  const FOTOS_EVENTO = ['/assets/reels/reel1.jpg?v=3', '/assets/stories/musica-en-vivo.jpg?v=3', '/assets/reels/reel3.jpg?v=3', '/assets/stories/conciencia-festival.jpg?v=3', '/assets/reels/reel4.jpg?v=3', '/assets/stories/entrevistas-en-vivo.jpg?v=3', '/assets/stories/resonar-2026.jpg?v=3'];
+  const FOTOS_EVENTO = ['/assets/reels/reel1.webp?v=1', '/assets/stories/musica-en-vivo.webp?v=1', '/assets/reels/reel3.webp?v=1', '/assets/stories/conciencia-festival.webp?v=1', '/assets/reels/reel4.webp?v=1', '/assets/stories/entrevistas-en-vivo.webp?v=1', '/assets/stories/resonar-2026.webp?v=1'];
   window.TRIBU_FOTO_EVENTO = e => {
     if(e && e.foto) return e.foto;
     let h = 0; for(const c of slugEvent((e && e.title) || '')) h = (h * 31 + c.charCodeAt(0)) >>> 0;
@@ -603,7 +603,7 @@ const PROVINCIAS_AR = {
 (function(){
   const CAMINOS = [
     {
-      color:'var(--red)', href:'/organizas-experiencias/', foto:'/assets/tarjetas/camino-creas.jpg?v=2', alt:'Público de un festival levantando las manos',
+      color:'var(--red)', href:'/organizas-experiencias/', foto:'/assets/tarjetas/camino-creas.webp?v=1', alt:'Público de un festival levantando las manos',
       titulo:'CREÁS', que:'Experiencias, actividades, eventos, arte, encuentros.',
       texto:'Si estás dando vida a una propuesta que reúne personas, te ayudamos a hacerla crecer, conectar con más gente y generar un impacto que perdure.',
       cta:'Conocé cómo podemos acompañarte',
@@ -611,7 +611,7 @@ const PROVINCIAS_AR = {
       ic:'<svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2c.9 5 1.6 5.7 6.6 6.6-5 .9-5.7 1.6-6.6 6.6-.9-5-1.6-5.7-6.6-6.6C10.4 7.7 11.1 7 12 2z"/><path d="M18.5 15c.4 2.2.8 2.6 3 3-2.2.4-2.6.8-3 3-.4-2.2-.8-2.6-3-3 2.2-.4 2.6-.8 3-3z"/></svg>'
     },
     {
-      color:'var(--teal)', href:'/representas-marca/', foto:'/assets/tarjetas/camino-impulsas.jpg?v=2', alt:'Entrevista de Tribu a una marca en su stand',
+      color:'var(--teal)', href:'/representas-marca/', foto:'/assets/tarjetas/camino-impulsas.webp?v=1', alt:'Entrevista de Tribu a una marca en su stand',
       titulo:'IMPULSÁS', que:'Una marca, un espacio, un emprendimiento, una organización.',
       texto:'Creamos conexiones genuinas entre tu marca y comunidades afines, desarrollando estrategias y acciones de colaboración y beneficio mutuo.',
       cta:'Potenciá tu marca',
@@ -1083,14 +1083,14 @@ const PROVINCIAS_AR = {
     { tipo:'lugar', t:'Espacio Om', s:'Lugar · Palermo, CABA', u:rt('Espacio Om', 'lugar'), k:'sala circulos sonido holistico palermo' },
     { tipo:'lugar', t:'Parque Centenario', s:'Lugar · CABA', u:rt('Parque Centenario', 'lugar'), k:'parque aire libre ferias' },
     /* Historias destacadas (abren el reel en Instagram) */
-    { tipo:'historia', t:'Conciencia Festival · Michelle Gibson', s:'Entrevista · Instagram', u:'https://www.instagram.com/reel/DX-HV1RAk43/', k:'michelle gibson conciencia festival entrevista danza', img:'/assets/historias/conciencia-michelle-gibson.jpg?v=2' },
-    { tipo:'historia', t:'Fiesta Clapper', s:'Sorteo de entradas · Instagram', u:'https://www.instagram.com/reel/DZYaexfgHE5/', k:'clapper fiesta sorteo', img:'/assets/historias/fiesta-clapper.jpg?v=2' },
-    { tipo:'historia', t:'Meeting Point · Resonar Festival', s:'Cobertura · Instagram', u:'https://www.instagram.com/reel/DakrN-bg84K/', k:'meeting point resonar cobertura', img:'/assets/historias/meeting-point-resonar.jpg?v=2' },
-    { tipo:'historia', t:'Vino, Tarot y Disfrute', s:'Experiencia · Instagram', u:'https://www.instagram.com/reel/DZ-8fJpASJ-/', k:'vino tarot disfrute', img:'/assets/historias/vino-tarot-disfrute.jpg?v=2' },
-    { tipo:'historia', t:'Sagrada Madre', s:'Historia de marca · Instagram', u:'https://www.instagram.com/reel/Db5pnPMATSC/', k:'sagrada madre marca', img:'/assets/historias/sagrada-madre.jpg?v=2' },
-    { tipo:'historia', t:'SkyddSpine', s:'Historia de marca · Instagram', u:'https://www.instagram.com/reel/DbrNLhuAjFJ/', k:'skydd spine skyddspine marca', img:'/assets/historias/skyddspine.jpg?v=2' },
-    { tipo:'historia', t:'Unifungi', s:'Historia de marca · Instagram', u:'https://www.instagram.com/reel/DYXDEb9gNlJ/', k:'unifungi hongos marca', img:'/assets/historias/unifungi.jpg?v=3' },
-    { tipo:'historia', t:'Hawka', s:'Historia de marca', u:'/representas-marca/#casos', k:'hawka marca', img:'/assets/historias/hawka.jpg?v=2' }
+    { tipo:'historia', t:'Conciencia Festival · Michelle Gibson', s:'Entrevista · Instagram', u:'https://www.instagram.com/reel/DX-HV1RAk43/', k:'michelle gibson conciencia festival entrevista danza', img:'/assets/historias/conciencia-michelle-gibson.webp?v=1' },
+    { tipo:'historia', t:'Fiesta Clapper', s:'Sorteo de entradas · Instagram', u:'https://www.instagram.com/reel/DZYaexfgHE5/', k:'clapper fiesta sorteo', img:'/assets/historias/fiesta-clapper.webp?v=1' },
+    { tipo:'historia', t:'Meeting Point · Resonar Festival', s:'Cobertura · Instagram', u:'https://www.instagram.com/reel/DakrN-bg84K/', k:'meeting point resonar cobertura', img:'/assets/historias/meeting-point-resonar.webp?v=1' },
+    { tipo:'historia', t:'Vino, Tarot y Disfrute', s:'Experiencia · Instagram', u:'https://www.instagram.com/reel/DZ-8fJpASJ-/', k:'vino tarot disfrute', img:'/assets/historias/vino-tarot-disfrute.webp?v=1' },
+    { tipo:'historia', t:'Sagrada Madre', s:'Historia de marca · Instagram', u:'https://www.instagram.com/reel/Db5pnPMATSC/', k:'sagrada madre marca', img:'/assets/historias/sagrada-madre.webp?v=1' },
+    { tipo:'historia', t:'SkyddSpine', s:'Historia de marca · Instagram', u:'https://www.instagram.com/reel/DbrNLhuAjFJ/', k:'skydd spine skyddspine marca', img:'/assets/historias/skyddspine.webp?v=1' },
+    { tipo:'historia', t:'Unifungi', s:'Historia de marca · Instagram', u:'https://www.instagram.com/reel/DYXDEb9gNlJ/', k:'unifungi hongos marca', img:'/assets/historias/unifungi.webp?v=1' },
+    { tipo:'historia', t:'Hawka', s:'Historia de marca', u:'/representas-marca/#casos', k:'hawka marca', img:'/assets/historias/hawka.webp?v=1' }
   ];
 
   /* ---- Índice: lo fijo + lo que llega después (Supabase, catálogo) ---- */

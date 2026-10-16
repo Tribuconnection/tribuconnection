@@ -173,7 +173,7 @@ const PLACEHOLDER_V = 1;
 function tribuAvatarVacio(cat, forma){
   const categoria = CATEGORIA_COLOR[cat] ? cat : 'creador';
   const prop = forma === 'busto' ? '1x1' : forma === 'ancho' ? '4x3' : '4x5';
-  return '/assets/placeholders/' + categoria + '_' + prop + '.png?v=' + PLACEHOLDER_V;
+  return '/assets/placeholders/' + categoria + '_' + prop + '.webp?v=' + PLACEHOLDER_V;
 }
 
 /* Versión dibujada del mismo símbolo, en SVG data: URI. Queda para donde no

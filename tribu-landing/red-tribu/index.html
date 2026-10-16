@@ -2,7 +2,7 @@
 <html lang="es-AR">
 <head>
 <meta charset="UTF-8">
-<script src="/assets/i18n.js?v=2"></script>
+<script src="/assets/i18n.js?v=3"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Red Tribu · Tribu Connection</title>
 <meta name="description" content="Descubrí creadores, marcas y lugares que forman parte de la Red Tribu: la comunidad de experiencias, espacios y proyectos conscientes.">
@@ -20,8 +20,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Protest+Strike&family=Caveat:wght@400;500;600;700&family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/tribu.css?v=53">
-<link rel="stylesheet" href="/assets/home.css?v=17">
+<link rel="stylesheet" href="/assets/tribu.css?v=56">
+<link rel="stylesheet" href="/assets/home.css?v=19">
 <style>
   .rt-head{ max-width:640px; align-self:flex-start; margin-right:auto; text-align:left; }
   #top .wrap{ width:100%; }
@@ -499,9 +499,9 @@
 </div>
 
 <script src="/assets/vendor/supabase-js-2.117.3.min.js"></script>
-<script src="/assets/supabase-client.js?v=19"></script>
+<script src="/assets/supabase-client.js?v=20"></script>
 <script src="/assets/red-tribu-filtros.js?v=1"></script>
-<script src="/assets/site.js?v=26"></script>
+<script src="/assets/site.js?v=27"></script>
 <script>
 /* Directorio Red Tribu: perfiles + experiencias reales de Supabase + eventos
    del calendario, en 5 categorías (Creador/a, Comunidad, Experiencia, Marca,
@@ -640,7 +640,7 @@
 
   /* ---- Eventos del calendario (home/agenda), vía window.TRIBU_EVENTS de site.js ---- */
   const MESES_CORTO = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-  const IMG_EV = ['/assets/reels/reel1.jpg?v=3', '/assets/stories/musica-en-vivo.jpg?v=3', '/assets/reels/reel3.jpg?v=3', '/assets/stories/conciencia-festival.jpg?v=3'];
+  const IMG_EV = ['/assets/reels/reel1.webp?v=1', '/assets/stories/musica-en-vivo.webp?v=1', '/assets/reels/reel3.webp?v=1', '/assets/stories/conciencia-festival.webp?v=1'];
   function pintarEventosCalendario(){
     dinamicoEventosCal.innerHTML = '';
     const vistos = new Set(); let i = 0;

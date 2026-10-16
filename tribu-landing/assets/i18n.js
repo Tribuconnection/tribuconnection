@@ -362,7 +362,7 @@
       '.lang-sel.cambiando>button::after{content:"";position:absolute;inset:-3px;border-radius:50%;border:2px solid transparent;border-top-color:#F4F1EA;animation:langGira .7s linear infinite}' +
       '@keyframes langGira{to{transform:rotate(360deg)}}' +
       '.lang-sel--flotante{position:fixed;top:14px;right:14px;z-index:900}' +
-      '.lang-sel--flotante>button{background:rgba(12,13,17,.72);backdrop-filter:blur(8px)}' +
+      '.lang-sel--flotante>button,.lang-sel--solido>button{background:rgba(12,13,17,.78);backdrop-filter:blur(8px)}' +
       '@media (max-width:640px){.lang-sel>button{width:36px;height:36px;font-size:.68rem}}';
     document.head.appendChild(st);
     const box = document.createElement('div');
@@ -371,7 +371,11 @@
     box.innerHTML = '<button type="button" aria-haspopup="true" aria-expanded="false" aria-label="Idioma · Language · Idioma">' + lang.toUpperCase() + '</button>' +
       '<ul>' + Object.keys(IDIOMAS).map(l => '<li><button type="button" data-l="' + l + '"' + (l === lang ? ' aria-current="true"' : '') + '><b>' + l.toUpperCase() + '</b>' + IDIOMAS[l] + '</button></li>').join('') + '</ul>';
     const cta = document.querySelector('.nav .nav-cta');
-    if(cta){
+    const lugar = document.querySelector('[data-lang-slot]');   // páginas sin menú que reservan su lugar
+    if(lugar){
+      box.classList.add('lang-sel--solido');
+      lugar.appendChild(box);
+    } else if(cta){
       const burger = cta.querySelector('.burger');
       if(burger) cta.insertBefore(box, burger); else cta.appendChild(box);
     } else {

@@ -2,7 +2,7 @@
 <html lang="es-AR">
 <head>
 <meta charset="UTF-8">
-<script src="/assets/i18n.js?v=2"></script>
+<script src="/assets/i18n.js?v=3"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Marca que el JS está vivo. Las animaciones de reveal se esconden solo
      detrás de html.js, así una caída del JS no deja la página en blanco. -->
@@ -31,11 +31,11 @@
 <link rel="icon" type="image/png" href="/assets/isotipo.png?v=3">
 
 <!-- El CSS propio es lo único que bloquea el primer pintado. -->
-<link rel="stylesheet" href="/assets/tribu.css?v=53">
-<link rel="stylesheet" href="/assets/home.css?v=17">
+<link rel="stylesheet" href="/assets/tribu.css?v=56">
+<link rel="stylesheet" href="/assets/home.css?v=19">
 
 <!-- La foto grande del collage es el LCP: que empiece a bajar ya, desde el HTML. -->
-<link rel="preload" as="image" href="/assets/stories/meditacion-grupal.jpg?v=2" fetchpriority="high">
+<link rel="preload" as="image" href="/assets/stories/meditacion-grupal.webp?v=1" fetchpriority="high">
 
 <!-- Tipografías: Protest Strike (títulos grandes) + Caveat (eyebrows) + Poppins
      (todo lo demás). Solo los pesos que el CSS realmente usa — antes pedía 11
@@ -113,9 +113,9 @@
     </div>
     <div class="hero-collage reveal-now d2" aria-hidden="true">
       <div class="collage-grid">
-        <div class="collage-tile big" style="background-image:url(/assets/stories/meditacion-grupal.jpg?v=2)"></div>
-        <div class="collage-tile" style="background-image:url(/assets/stories/entrevista-oikos.jpg?v=2)"></div>
-        <div class="collage-tile" style="background-image:url(/assets/reels/reel1.jpg?v=3)"></div>
+        <div class="collage-tile big" style="background-image:url(/assets/stories/meditacion-grupal.webp?v=1)"></div>
+        <div class="collage-tile" style="background-image:url(/assets/stories/entrevista-oikos.webp?v=1)"></div>
+        <div class="collage-tile" style="background-image:url(/assets/reels/reel1.webp?v=1)"></div>
       </div>
     </div>
   </div>
@@ -144,21 +144,21 @@
       <a class="row-link" href="/agenda/">Ver todas las selecciones <span class="arr">→</span></a>
     </div>
     <div class="picks-row">
-      <a class="pick-card reveal" data-bg="/assets/stories/entrevistas-en-vivo.jpg?v=3" href="/agenda/">
+      <a class="pick-card reveal" data-bg="/assets/stories/entrevistas-en-vivo.webp?v=1" href="/agenda/">
         <span class="pick-tag">Selección recomendada</span>
         <div class="pick-body">
           <h3>Rituales para reconectar en comunidad</h3>
           <p>5 experiencias para volver al vínculo.</p>
         </div>
       </a>
-      <a class="pick-card reveal d1" data-bg="/assets/stories/resonar-2026.jpg?v=3" href="/agenda/">
+      <a class="pick-card reveal d1" data-bg="/assets/stories/resonar-2026.webp?v=1" href="/agenda/">
         <span class="pick-tag">Imprescindibles de la semana</span>
         <div class="pick-body">
           <h3>Lo mejor de este finde</h3>
           <p>Eventos que no te podés perder.</p>
         </div>
       </a>
-      <a class="pick-card reveal d2" data-bg="/assets/reels/reel4.jpg?v=3" href="/agenda/">
+      <a class="pick-card reveal d2" data-bg="/assets/reels/reel4.webp?v=1" href="/agenda/">
         <span class="pick-tag">Experiencia especial</span>
         <div class="pick-body">
           <h3>Respirá, soltá, transformá</h3>
@@ -217,7 +217,7 @@
     </div>
     <div class="stories-row2">
       <a class="story-card2 reveal" href="https://www.instagram.com/tribuconnection/reel/DZV13kpg4_h/" target="_blank" rel="noopener">
-        <div class="story-card2-media" data-bg="/assets/stories/entrevistas-en-vivo.jpg?v=3">
+        <div class="story-card2-media" data-bg="/assets/stories/entrevistas-en-vivo.webp?v=1">
           <span class="story-card2-tag" style="background:var(--purple)">Entrevista</span>
           <span class="story-card2-play"><svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><path d="M0 0l14 8-14 8z"/></svg></span>
         </div>
@@ -228,7 +228,7 @@
         </div>
       </a>
       <a class="story-card2 reveal d1" href="https://www.instagram.com/tribuconnection/reel/DXuro13gLj7/" target="_blank" rel="noopener">
-        <div class="story-card2-media" data-bg="/assets/stories/conciencia-festival.jpg?v=3">
+        <div class="story-card2-media" data-bg="/assets/stories/conciencia-festival.webp?v=1">
           <span class="story-card2-tag" style="background:var(--amber);color:#15110f">Artículo</span>
           <span class="story-card2-play"><svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><path d="M0 0l14 8-14 8z"/></svg></span>
         </div>
@@ -239,7 +239,7 @@
         </div>
       </a>
       <a class="story-card2 reveal d2" href="https://www.instagram.com/tribuconnection/reel/DbEf9UNAU2L/" target="_blank" rel="noopener">
-        <div class="story-card2-media" data-bg="/assets/stories/resonar-2026.jpg?v=3">
+        <div class="story-card2-media" data-bg="/assets/stories/resonar-2026.webp?v=1">
           <span class="story-card2-tag" style="background:var(--red)">Reel</span>
           <span class="story-card2-play"><svg width="14" height="16" viewBox="0 0 14 16" fill="currentColor"><path d="M0 0l14 8-14 8z"/></svg></span>
         </div>
@@ -727,8 +727,8 @@
      dibujar un mapa (tribuLoadLeaflet), y eso se saca de encima dos pedidos a
      unpkg más los tiles de Esri en la carga inicial. -->
 <script defer src="/assets/vendor/supabase-js-2.117.3.min.js"></script>
-<script defer src="/assets/supabase-client.js?v=19"></script>
-<script defer src="/assets/site.js?v=26"></script>
+<script defer src="/assets/supabase-client.js?v=20"></script>
+<script defer src="/assets/site.js?v=27"></script>
 <script defer src="/assets/tribu-chat.js?v=5"></script>
 </body>
 </html>
