@@ -27,7 +27,7 @@
 (function(){
   'use strict';
   const IDIOMAS = { es:'Español', en:'English', pt:'Português' };
-  const VERSION_DIC = '1';
+  const VERSION_DIC = '2';
 
   /* ---------- Idioma elegido ---------- */
   function leerIdioma(){

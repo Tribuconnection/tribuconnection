@@ -1476,3 +1476,31 @@ body[style*="overflow: hidden"] :is(.tc-wa, .tc-dock){ opacity:0; pointer-events
   body:has(#panelFiltros:not([hidden])) :is(.tc-wa, .tc-dock){ opacity:0; pointer-events:none; animation:none; }
 }
 .tc-wa, .tc-dock{ transition:opacity .2s ease, transform .2s ease; }
+
+/* ===== Tarjetas con ícono (landing de creadores, ronda 20/10) =====
+   Sin fotos: el texto manda y un ícono alusivo acompaña. */
+.challenge.con-icono{
+  text-align:left; padding:1.7rem 1.6rem 1.8rem; display:flex; flex-direction:column;
+  border-top:3px solid var(--c,var(--teal));
+  background:linear-gradient(180deg, color-mix(in srgb, var(--c,var(--teal)) 7%, var(--ink-1)), var(--ink-1) 55%);
+}
+.challenge.con-icono .ch-icono{
+  width:60px; height:60px; border-radius:18px; display:grid; place-items:center; flex:none; margin-bottom:1.25rem;
+  color:var(--c,var(--teal)); background:color-mix(in srgb, var(--c,var(--teal)) 13%, transparent);
+  border:1px solid color-mix(in srgb, var(--c,var(--teal)) 34%, transparent);
+}
+.challenge.con-icono .ch-icono svg{ width:31px; height:31px; }
+.challenges--eq .challenge.con-icono b{ font-size:1.22rem; line-height:1.28; min-height:0; margin-bottom:.75rem; color:var(--cream); }
+.challenge.con-icono p{ font-size:1rem; line-height:1.68; color:var(--soft); margin:0; }
+.challenge.con-icono:hover .ch-icono{ transform:translateY(-2px); }
+.challenge.con-icono .ch-icono{ transition:transform .3s ease; }
+/* 9:16 como en Instagram (las portadas de reels traen texto abajo) */
+.cases--reel .case--foto img{ aspect-ratio:9/16; }
+@media (max-width:760px){
+  .challenge.con-icono{ padding:1.4rem 1.3rem 1.5rem; }
+  .challenge.con-icono .ch-icono{ width:52px; height:52px; border-radius:15px; margin-bottom:1rem; }
+  .challenge.con-icono .ch-icono svg{ width:27px; height:27px; }
+  .challenges--eq .challenge.con-icono b{ font-size:1.12rem; }
+  .challenge.con-icono p{ font-size:.95rem; }
+  .cases--reel.cases--foto .case--foto{ flex-basis:62%; }
+}
