@@ -211,7 +211,12 @@
 #miniMapHome{ position:absolute; inset:0; width:100%; height:100%; transition:filter .2s; }
 @media (max-width:860px){
   .map-cta{ grid-template-columns:1fr; }
-  .map-cta-pins, .map-cta-embed{ display:none; }
+  /* En celular el mapa ilustrado (trazos + íconos) va como franja arriba del
+     texto, en lugar de desaparecer; el mini mapa real queda para la Agenda. */
+  .map-cta-pins{ display:block; order:-1; height:170px; border-bottom:1px solid var(--line); }
+  .map-pin{ width:38px; height:38px; }
+  .map-pin svg{ width:16px; height:16px; }
+  .map-cta-embed{ display:none; }
 }
 
 /* ---------- Mini CTA banner (organizás / marca) ---------- */
